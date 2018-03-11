@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="happyFeetWeb">
+		<class>cl.camiletti.happyFeetWeb.model.Agenda</class>
+		<class>cl.camiletti.happyFeetWeb.model.Atencion</class>
+		<class>cl.camiletti.happyFeetWeb.model.Comuna</class>
+		<class>cl.camiletti.happyFeetWeb.model.Detallepresupuesto</class>
+		<class>cl.camiletti.happyFeetWeb.model.Evaluacion</class>
+		<class>cl.camiletti.happyFeetWeb.model.Horario</class>
+		<class>cl.camiletti.happyFeetWeb.model.Mensaje</class>
+		<class>cl.camiletti.happyFeetWeb.model.Paciente</class>
+		<class>cl.camiletti.happyFeetWeb.model.Parametro</class>
+		<class>cl.camiletti.happyFeetWeb.model.Patologia</class>
+		<class>cl.camiletti.happyFeetWeb.model.Podologo</class>
+		<class>cl.camiletti.happyFeetWeb.model.Presupuesto</class>
+		<class>cl.camiletti.happyFeetWeb.model.Solicitud</class>
+		<class>cl.camiletti.happyFeetWeb.model.Solicitudatencion</class>
+		<class>cl.camiletti.happyFeetWeb.model.Tratamiento</class>
+		<class>cl.camiletti.happyFeetWeb.model.Ubicacion</class>
+		<class>cl.camiletti.happyFeetWeb.model.Usuario</class>
+	</persistence-unit>
+</persistence>
