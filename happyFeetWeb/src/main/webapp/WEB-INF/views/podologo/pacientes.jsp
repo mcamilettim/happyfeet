@@ -59,103 +59,90 @@
 <body>
 
     <div id="wrapper">
+		<!-- Navigation -->
+		<nav class="navbar navbar-default navbar-static-top" role="navigation"
+			style="margin-bottom: 0">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="sr-only">Navegación</span> <span class="icon-bar"></span>
+					<span class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="${contextPath}/podologo/index"><img
+					src="${contextPath}/resources/img/logo1.png" class="img-responsive"
+					style="width: 120px;"></a>
+			</div>
+			<!-- /.navbar-header -->
 
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Navegación</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="${contextPath}/podologo/index"><img src="${contextPath}/resources/img/logo1.png" class="img-responsive" style="width: 120px;"></a>
-            </div>
-            <!-- /.navbar-header -->
+			<ul class="nav navbar-top-links navbar-right">
+				<li class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="#"> <i
+						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+				</a>
+					<ul class="dropdown-menu dropdown-messages">
+						<li><a href="#"> <strong></strong> <span
+								class="pull-right text-muted"> <em>Ahora</em>
+							</span> Sin mensajes nuevos.
+						</a></li>
+						<li class="divider"></li>
+						<li><a class="text-center"
+							href="${contextPath}/podologo/vermensajes"> <strong>Ver
+									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
+						</a></li>
+					</ul> <!-- /.dropdown-messages --></li>
+			 
+				<!-- /.dropdown -->
+				<li class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
+						<i class="fa fa-caret-down"></i>
+				</a>
+					<ul class="dropdown-menu dropdown-user">
+						<li><a href="${contextPath}/podologo/modificardatos"><i
+								class="fa fa-gear fa-fw"></i>Mis Datos</a></li>
+						<li class="divider"></li>
+						<li><a href="<c:url value="/logout" />"><i
+								class="fa fa-sign-out fa-fw"></i> Cerrar Sesión</a></li>
+					</ul> <!-- /.dropdown-user --></li>
+				<!-- /.dropdown -->
+			</ul>
+			<!-- /.navbar-top-links -->
 
-            <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-messages">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong></strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Ahora</em>
-                                    </span>
-                                </div>
-                                <div>Sin mensajes nuevos.</div>
-                            </a>
-                        </li> 
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="${contextPath}/podologo/vermensajes">
-                                <strong>Ver todos los mensajes</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-messages -->
-                </li>
-                </li>
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="${contextPath}/podologo/modificardatos"><i class="fa fa-gear fa-fw"></i>Mis Datos</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="<c:url value="/logout" />"><i class="fa fa-sign-out fa-fw"></i> Cerrar Sesión</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
-            <!-- /.navbar-top-links -->
+			<div class="navbar-default sidebar" role="navigation">
+				<div class="sidebar-nav navbar-collapse">
+					<ul class="nav" id="side-menu">
+						<li class="sidebar-search">
+							<div class="input-group custom-search-form">
+								<img src="${contextPath}/resources/img/sinfoto.jpg"
+									class="img-responsive" style="width: 200px;"> <br>
+								<div align="center">
+									<span class="text-info text-center"><b>${podologo.nombres}
+											${podologo.apellidos}</b></span>
+								</div>
 
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                    	<li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <img src="${contextPath}/resources/img/sinfoto.jpg" class="img-responsive" style="width: 200px;">
-                                 <br>
-                                <center><span class="text-info text-center"><b>${podologo.nombres} ${podologo.apellidos}</b></span></center>
-                                <center><span class="text-info">Podólogo</span></center>
-                            </div>
-                            <!-- /input-group -->
-                        </li>
-                        <li>
-                            <a href="${contextPath}/podologo/index"><i class="fa fa-dashboard fa-fw"></i> Inicio</a>
-                        </li>
-                        <li>
-                            <a href="${contextPath}/podologo/index"><i class="fa fa-edit fa-fw"></i> Agendar Horario</a>
-                        </li>
-                        <li>
-                            <a href="${contextPath}/podologo/modificardatos"><i class="fa fa-gear fa-fw"></i> Modificar mis datos</a>
-                        </li>
-                        <li>
-                            <a href="${contextPath}/podologo/index"><i class="fa fa-table fa-fw"></i> Historial de atenciones</a>
-                        </li>
-                        <li>
-                            <a href="${contextPath}/podologo/index"><i class="fa fa-edit fa-fw"></i> Solicitudes nuevas</a>
-                        </li>
-                        <li>
-                            <a href="${contextPath}/podologo/pacientes"><i class="fa fa-table fa-fw"></i> Lista de Pacientes</a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.sidebar-collapse -->
-            </div>
-            <!-- /.navbar-static-side -->
-        </nav>
-
+								<div align="center">
+									<span class="text-info">Podólogo</span>
+								</div>
+							</div> <!-- /input-group -->
+						</li>
+						<li><a href="${contextPath}/podologo/index"><i
+								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
+						<li><a href="${contextPath}/podologo/index"><i
+								class="fa fa-edit fa-fw"></i> Agendar Horario</a></li>
+						<li><a href="${contextPath}/podologo/modificardatos"><i
+								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
+						<li><a href="${contextPath}/podologo/index"><i
+								class="fa fa-table fa-fw"></i> Historial de atenciones</a></li>
+						<li><a href="${contextPath}/podologo/index"><i
+								class="fa fa-edit fa-fw"></i> Solicitudes nuevas</a></li>
+						<li><a href="${contextPath}/podologo/pacientes"><i
+								class="fa fa-table fa-fw"></i> Lista de Pacientes</a></li>
+					</ul>
+				</div>
+				<!-- /.sidebar-collapse -->
+			</div>
+			<!-- /.navbar-static-side -->
+		</nav>
+<!-- Navigation -->
               <!-- Page Content -->
         <div id="page-wrapper">
             <div class="container-fluid">
@@ -231,24 +218,8 @@
                             <!-- /.row (nested) -->
                         </div>
                         <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-               
-            <!-- /.container-fluid -->
-        </div>
-                
 
-               
-            <!-- /.container-fluid -->
-        </div>
-        <!-- /#page-wrapper -->
-
-    </div>
-    <!-- /#wrapper -->
-
+       
     <!-- jQuery -->
     <script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 

@@ -203,7 +203,6 @@ public class PodologoController {
     	mensaje.setEmisorRut(podologo.getRut());
     	mensaje.setReceptorRut(paciente.getRut());
     	mensajeRepository.save(mensaje);
-    	mensaje.setCuerpo("Yo: "+mensaje.getCuerpo());
     	conversacion.add(mensaje);
     	mensaje=null;
     	model.addAttribute("conversacion", conversacion);
