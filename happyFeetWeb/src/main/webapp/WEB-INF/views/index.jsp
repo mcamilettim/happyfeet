@@ -31,6 +31,7 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="${contextPath}/resources/icon/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="${contextPath}/resources/icon/favicon-96x96.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="${contextPath}/resources/icon/favicon-16x16.png">
+	<link rel="manifest" href="/manifest.json">
 	<meta name="msapplication-TileColor" content="#ffffff">
 	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 	<meta name="theme-color" content="#ffffff">	
@@ -61,6 +62,7 @@
 				        <li class="active"><a href="#banner">Inicio</a></li>
 				        <li class=""><a href="#service">Servicios</a></li>
 				        <li class=""><a href="#about">Nuestro equipo</a></li>
+				        <li class=""><a href="#testimonial">Opiniones</a></li>
 				        <li class=""><a href="#contact">Cont&aacute;ctanos</a></li>
 				      </ul>
 				    </div>
@@ -140,7 +142,14 @@
 		</div>
 	</section>
 	<!--/ service-->
- 
+	<!--cta-->
+	<section id="cta-1" class="section-padding">
+		<div class="container">
+			<div class="row">
+			</div>
+		</div>
+	</section>
+	<!--cta-->
 	<!--about-->
 	<section id="about" class="section-padding">
 		<div class="container">
@@ -242,8 +251,71 @@
 		</div>
 	</section>
 	<!--/ doctor team-->
-	
-	
+	<!--testimonial-->
+	<section id="testimonial" class="section-padding">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h2 class="ser-title">Comentarios de nuestros pacientes</h2>
+					<hr class="botm-line">
+				</div>
+				<div class="col-md-4 col-sm-4">
+					<div class="testi-details">
+						<!-- Paragraph -->
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+					</div>
+					<div class="testi-info">
+						<!-- User Image -->
+						<a href="#"><img src="${contextPath}/resources/img/thumb.png" alt="" class="img-responsive"></a>
+						<!-- User Name -->
+						<h3>Alex<span>Texas</span></h3>
+					</div>
+				</div>
+			    <div class="col-md-4 col-sm-4">
+					<div class="testi-details">
+						<!-- Paragraph -->
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+					</div>
+					<div class="testi-info">
+						<!-- User Image -->
+						<a href="#"><img src="${contextPath}/resources/img/thumb.png" alt="" class="img-responsive"></a>
+						<!-- User Name -->
+						<h3>Alex<span>Texas</span></h3>
+					</div>
+				</div>
+			    <div class="col-md-4 col-sm-4">
+					<div class="testi-details">
+						<!-- Paragraph -->
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+					</div>
+					<div class="testi-info">
+						<!-- User Image -->
+						<a href="#"><img src="${contextPath}/resources/img/thumb.png" alt="" class="img-responsive"></a>
+						<!-- User Name -->
+						<h3>Alex<span>Texas</span></h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--/ testimonial-->
+	<!--cta 2-->
+	<section id="cta-2" class="section-padding">
+		<div class="container">
+			<div class=" row">
+				<div class="col-md-2"></div>
+	            <div class="text-right-md col-md-4 col-sm-4">
+	              <h2 class="section-title white lg-line">« A few words<br> about us »</h2>
+	            </div>
+	            <div class="col-md-4 col-sm-5">
+	              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a typek
+	              <p class="text-right text-primary"><i>— Medilap Healthcare</i></p>
+	            </div>
+	            <div class="col-md-2"></div>
+	        </div>
+		</div>
+	</section>
+	<!--cta-->
 	<!--contact-->
 	<section id="contact" class="section-padding">
 		<div class="container">
@@ -353,5 +425,6 @@
     <script src="${contextPath}/resources/js/jquery.easing.min.js"></script>
     <script src="${contextPath}/resources/js/bootstrap.min.js"></script>
     <script src="${contextPath}/resources/js/custom.js"></script>
-    </body>
+    <script src="${contextPath}/resources/contactform/contactform.js"></script>
+  </body>
 </html>

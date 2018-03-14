@@ -11,4 +11,5 @@ public interface HorarioService {
 	List<Horario> findAll();
 	void deleteById(Horario horario);
 	List<Horario >findByPodologo(Podologo podologo);
+	List<Horario> findByFechaAndPodologo(String fecha, Podologo podologo);	
 }

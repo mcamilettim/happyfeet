@@ -67,10 +67,12 @@ public class MensajeServiceImpl implements MensajeService{
 			
 		for (Mensaje mensaje : iterator) {
 			if(mensaje.getEmisorRut().equals(podologo.getRut())&&mensaje.getReceptorRut().equals(paciente.getRut())){
+				mensaje.setCuerpo("Yo: "+mensaje.getCuerpo());
 				conversacion.add(mensaje);
 			}
 			else{
 				if(mensaje.getEmisorRut().equals(paciente.getRut())&&mensaje.getReceptorRut().equals(podologo.getRut())){
+					mensaje.setCuerpo(paciente.getNombres()+": "+mensaje.getCuerpo());
 					conversacion.add(mensaje);
 				}
 			}

@@ -5,7 +5,9 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
 
 <meta charset="utf-8">
@@ -71,9 +73,20 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+<style>
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button
+	{
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	margin: 0;
+}
+</style>
+
 </head>
 
 <body>
+
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -97,9 +110,12 @@
 						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-messages">
-						<li><a href="#"> <strong></strong> <span
-								class="pull-right text-muted"> <em>Ahora</em>
-							</span> Sin mensajes nuevos.
+						<li><a href="#">
+								<div>
+									<strong></strong> <span class="pull-right text-muted"> <em>Ahora</em>
+									</span>
+								</div>
+								<div>Sin mensajes nuevos.</div>
 						</a></li>
 						<li class="divider"></li>
 						<li><a class="text-center"
@@ -107,7 +123,7 @@
 									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
 					</ul> <!-- /.dropdown-messages --></li>
-
+				</li>
 				<!-- /.dropdown -->
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
@@ -131,14 +147,13 @@
 							<div class="input-group custom-search-form">
 								<img src="${contextPath}/resources/img/sinfoto.jpg"
 									class="img-responsive" style="width: 200px;"> <br>
-								<div align="center">
+								<center>
 									<span class="text-info text-center"><b>${podologo.nombres}
 											${podologo.apellidos}</b></span>
-								</div>
-
-								<div align="center">
+								</center>
+								<center>
 									<span class="text-info">Podólogo</span>
-								</div>
+								</center>
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/podologo/index"><i
@@ -159,7 +174,7 @@
 			</div>
 			<!-- /.navbar-static-side -->
 		</nav>
-		<!-- Navigation -->
+
 		<!-- Page Content -->
 		<div id="page-wrapper">
 			<div class="container-fluid">
@@ -178,103 +193,82 @@
 				</div>
 				<!-- /.row -->
 			</div>
+
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default">
-						<div class="panel-heading">
-							<strong>Historial Paciente ${paciente.nombres}</strong>
-						</div>
+						<!-- /.panel-heading -->
+						<div class="panel-body">
+							<div class="table-responsive">							
+								<div>
+									<form:form method="POST" modelAttribute="patologiaForm"
+										action="modificarPatologia" enctype="multipart/form-data">
+										<h2 class="form-signin-heading">${mensaje}</h2>
+										<spring:bind path="id">
+											<div class="form-group ${status.error ? 'has-error' : ''}">
 
-						<div class="table-responsive">
-							<table class="table table-hover">
-								<tr>
-									<th>Foto Perfil</th>
-								</tr>
-								<tr>
-									<td><div align="center">
-											<img style="width: 300px; height: 300px;"
-												src="${contextPath}/resources/imagenes/${paciente.pathFotoPerfil}">
-										</div></td>
-								</tr>
-							</table>
-							<div align="center">
-								<button
-									onclick="location.href='${contextPath}/podologo/perfilPaciente?rut=${paciente.rut}'"
-									type="submit" class="btn btn-primary">Ver Perfil</button>
-								<button
-									onclick="location.href='${contextPath}/podologo/enviarMensaje?rut=${paciente.rut}'"
-									type="submit" class="btn btn-primary">Enviar Mensaje</button>
-							</div>
-							<br>  
-										<div class="panel panel-default">
-											<div class="panel-heading">
-												<strong>Listado de atenciones paciente :
-													${paciente.nombres}</strong>
+												<form:input type="hidden" path="id" class="form-control"
+													autofocus="true" required="true"></form:input>
+												<form:errors path="id"></form:errors>
 											</div>
-											<div class="table-responsive">
-												<table class="table table-hover">
-													<tr>
-													<tr>
-														<th>Nombre Completo</th>
-														<th>Patologia tratada</th>
-														<th>Fecha</th>
-														<th>Presupuesto</th>
-														<th>Dirección</th>
-														<th>Diagnostico</th>
-														<th>Foto Post Atención</th>
-														<th>Evaluación
-														<th>
-													</tr>
-														<tr>
-															<td>${paciente.nombres}${paciente.apellidos}</td>
-															<td>${atencion.patologia.nombre}</td>
-															<td>${atencion.agenda.horario.fecha}</td>
-															<td><a class="btn btn-large btn-info"
-																href="${contextPath}/podologo/detallePresupesto">Detalle
-																	: $${atencion.presupuesto.total}</a></td>
-															<td>${paciente.ubicacion.comuna.nombre}</td>
-															<td><a class="btn btn-large btn-danger"
-																href="${contextPath}/podologo/diagnostico">Diagnostico
-																	e Indicaciones</a></td>
-															<td width="200" height="200" class="center "><img
-																src="${contextPath}/resources/imagenes/${atencion.agenda.fotoPie} "
-																width="130" height="80"></td>
-															<td><fieldset class="starability-basic">
-																	<c:forEach begin="1" end="${atencion.evaluacion.valor}"
-																		varStatus="loop">
-																		<input type="radio" id="rate" name="rating"
-																			value="loop" />
-																		<label for="loop"
-																			title="${atencion.evaluacion.comentario}"></label>
-																	</c:forEach>
-																</fieldset></td>
-															<td><a class="btn btn-large btn-success"
-																href="${contextPath}/podologo/exportarDetalle">Exportar
-																	PDF</a></td>
+										</spring:bind>
+										<spring:bind path="nombre">
+											<div class="form-group ${status.error ? 'has-error' : ''}">
 
-														</tr>
-												
-												</table>
+												<form:input type="text" path="nombre" class="form-control"
+													autofocus="true" required="true"></form:input>
+												<form:errors path="nombre"></form:errors>
 											</div>
-										</div>
-										<button
-											onclick="location.href='${contextPath}/podologo/historialPaciente?rut=${paciente.rut}'"
-											type="button" class="btn">Volver</button>
-										<!-- /.table-responsive -->
-									</div>
-									<!-- /.panel-body -->
+										</spring:bind>
+										</h2>
+										<spring:bind path="costo">
+											<div class="form-group ${status.error ? 'has-error' : ''}">
+
+												<form:input type="number" path="costo" class="form-control"
+													autofocus="true" required="true"></form:input>
+												<form:errors path="costo"></form:errors>
+											</div>
+										</spring:bind>
+										<spring:bind path="nombre">
+											<div class="form-group ${status.error ? 'has-error' : ''}">
+
+												<input type="file" name="fotoFile" required
+													accept=".png, .jpg, .jpeg">
+											</div>
+										</spring:bind>
+										<button class="btn btn-lg btn-primary btn-block" type="submit">Modificar</button>
+									</form:form>
 								</div>
-
 							</div>
-
-							<!-- /.panel -->
+							<!-- /.table-responsive -->
 						</div>
+						<!-- /.panel-body -->
 					</div>
-					<!-- /.col-lg-6 (nested) -->
+					<!-- /.panel -->
 				</div>
-				<!-- /.row (nested) -->
-		 
+			</div>
+			<!-- /.col-lg-6 (nested) -->
+		</div>
+		<!-- /.row (nested) -->
+	</div>
+	<!-- /.panel-body -->
+	</div>
+	<!-- /.panel -->
+	</div>
+	<!-- /.col-lg-12 -->
+	</div>
 
+	<!-- /.container-fluid -->
+	</div>
+
+
+
+	<!-- /.container-fluid -->
+	</div>
+	<!-- /#page-wrapper -->
+
+	</div>
+	<!-- /#wrapper -->
 
 	<!-- jQuery -->
 	<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
@@ -289,6 +283,8 @@
 
 	<!-- Custom Theme JavaScript -->
 	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+
 </body>
-</body>
+
 </html>
+

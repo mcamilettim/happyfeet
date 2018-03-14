@@ -229,6 +229,18 @@
 												</c:forEach>
 
 											</table>
+ 
+			Total: ${presupuesto.total}		
+ 
+		<div>
+			<h2>Detalles Específicos</h2>
+			Fecha: ${atencion.agenda.horario.fecha}<br>
+			Punto de Partida: ${presupuesto.ubicacionPartida.nombre}<br>
+			Punto de Llegada: ${presupuesto.ubicacionLlegada.nombre}<br>
+			Tarifa Aplicada : $${presupuesto.tarifaKM} Por KM<br>
+			Viaje Podologo : ${presupuesto.viajePodologo}KM<br>
+			Diagnostico: ${atencion.patologia.nombre}<br>
+		</div>
 										</div>
 									</div>
 									<!-- /.table-responsive -->

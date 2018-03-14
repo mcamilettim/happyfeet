@@ -162,8 +162,9 @@
         <!-- Page Content -->
         <div id="page-wrapper">
             <div class="container-fluid">             
-           
+       
             </div>  
+             ${mensaje}
             <form action="ingresarHora" method="post">  
 	            <div class="row">        
 		            <div class="col-lg-3 col-md-6">
@@ -190,6 +191,7 @@
 				</div>
 				<input type="submit" value="guardarHora">
 			</form>
+			<form method="POST" action="buscarHorario">Fecha a buscar: <input type="date" name="diaAgenda"><input type="submit" value="buscar"></form>
         <table class="table table-hover">
 		<tr>
 			<th>Fecha</th><th>Hora Inicio</th><th>Hora Fin</th><th>Estado</th><th></th>
@@ -200,6 +202,7 @@
 				<td> ${horario.hora}</td>
 				<td> ${horario.horaFin}</td>
 				<td> ${horario.paramEstadoHorario.valor}</td>		
+				<td><a href="modificarHorario?id=${horario.id}">Modificar</a></td>
 				<td><a href="eliminarHorario?id=${horario.id}">Eliminar</a></td>			   
 		    </tr>
 		</c:forEach>

@@ -13,5 +13,6 @@ public interface HorarioRepository extends JpaRepository<Horario, Long> {
 	  List<Horario> findAll();	 	
 	  void delete(Horario horario);	 
 	  List<Horario >findByPodologo(Podologo podologo);
+	  List<Horario> findByFechaAndPodologo(String fecha, Podologo podologo);
 }
 

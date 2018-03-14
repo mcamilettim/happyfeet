@@ -131,18 +131,20 @@
                             </div>
                             <!-- /input-group -->
                         </li>
-                        
+                        <li>
+                            <a href="${contextPath}/podologo/miAgenda"><i class="fa fa-dashboard fa-fw"></i> Mi Agenda</a>
+                        </li>                        
                         <li>
                             <a href="${contextPath}/podologo/index"><i class="fa fa-dashboard fa-fw"></i> Inicio</a>
                         </li>
-                        <li>
-                            <a href="${contextPath}/podologo/miAgenda"><i class="fa fa-dashboard fa-fw"></i> Mi Agenda</a>
-                        </li>         
                         <li>
                             <a href="${contextPath}/podologo/index"><i class="fa fa-edit fa-fw"></i> Agendar Horario</a>
                         </li>
                         <li>
                             <a href="${contextPath}/podologo/modificardatos"><i class="fa fa-gear fa-fw"></i> Modificar mis datos</a>
+                        </li>
+                        <li>
+                            <a href="${contextPath}/podologo/index"><i class="fa fa-table fa-fw"></i> Historial de atenciones</a>
                         </li>
                         <li>
                             <a href="${contextPath}/podologo/verSolicitudes"><i class="fa fa-edit fa-fw"></i> Solicitudes nuevas</a>
@@ -159,165 +161,66 @@
 
         <!-- Page Content -->
         <div id="page-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h2 class="page-header">Bienvenid<c:if test="${podologo.paramSexo.id==6}">o</c:if><c:if test="${podologo.paramSexo.id==7}">a</c:if></h2>
-                    </div>
-                    <!-- /.col-lg-12 -->
-                </div>
-                <!-- /.row -->
-            </div>
-            
-            <div class="col-lg-3 col-md-6">
-            <a href="${contextPath}/podologo/index">
-                   <div class="panel panel-primary">
-                       <div class="panel-heading">
-                           <div class="row">
-                               <div class="col-xs-3">
-                                   <i class="fa fa-warning fa-5x"></i>
-                               </div>
-                               <div class="col-xs-9 text-right">
-                                   <div class="huge">Solicitudes</div>
-                                   <div></div>
-                               </div>
-                           </div>
-                       </div>
-                           <div class="panel-footer">
-                               <span class="pull-left">Solicitudes nuevas</span>
-                               <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                               <div class="clearfix"></div>
-                           </div>
-                       
-                   </div>
-                </a>
-                </div>
-                
-                <div class="col-lg-3 col-md-6">
-                <a href="${contextPath}/podologo/index">
-                   <div class="panel panel-green">
-                       <div class="panel-heading">
-                           <div class="row">
-                               <div class="col-xs-3">
-                                   <i class="fa fa-edit fa-5x"></i>
-                               </div>
-                               <div class="col-xs-9 text-right">
-                                   <div class="huge">Agendar</div>
-                                   <div></div>
-                               </div>
-                           </div>
-                       </div>
-                           <div class="panel-footer">
-                               <span class="pull-left">Disponibilidad horarios de atención</span>
-                               <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                               <div class="clearfix"></div>
-                           </div>
-                       
-                   </div>
-                </a>
-                </div>
-                
-				<div class="col-lg-3 col-md-6">
-                <a href="${contextPath}/podologo/index">
-                   <div class="panel panel-red">
-                       <div class="panel-heading">
-                           <div class="row">
-                               <div class="col-xs-3">
-                                   <i class="fa fa-comments fa-5x"></i>
-                               </div>
-                               <div class="col-xs-9 text-right">
-                                   <div class="huge">Mensajes</div>
-                                   <div></div>
-                               </div>
-                           </div>
-                       </div>
-                           <div class="panel-footer">
-                               <span class="pull-left">Nuevo mensajes!</span>
-                               <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                               <div class="clearfix"></div>
-                           </div>
-                       
-                   </div>
-                </a>
-                </div>
-                
-                <div class="col-lg-3 col-md-6">
-                <a href="${contextPath}/podologo/pacientes">
-                   <div class="panel panel-primary">
-                       <div class="panel-heading">
-                           <div class="row">
-                               <div class="col-xs-3">
-                                   <i class="fa fa-users fa-5x"></i>
-                               </div>
-                               <div class="col-xs-9 text-right">
-                                   <div class="huge">Pacientes</div>
-                                   <div></div>
-                               </div>
-                           </div>
-                       </div>
-                           <div class="panel-footer">
-                               <span class="pull-left">Lista de pacientes</span>
-                               <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                               <div class="clearfix"></div>
-                           </div>
-                       
-                   </div>
-                </a>
-                </div>
-                
-                <div class="col-lg-3 col-md-6">
-                <a href="${contextPath}/podologo/index">
-                   <div class="panel panel-yellow">
-                       <div class="panel-heading">
-                           <div class="row">
-                               <div class="col-xs-3">
-                                   <i class="fa fa-table fa-5x"></i>
-                               </div>
-                               <div class="col-xs-9 text-right">
-                                   <div class="huge">Atenciones</div>
-                                   <div></div>
-                               </div>
-                           </div>
-                       </div>
-                           <div class="panel-footer">
-                               <span class="pull-left">Revisa el historial de tus atenciones</span>
-                               <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                               <div class="clearfix"></div>
-                           </div>
-                       
-                   </div>
-                </a>
-                </div>
-                
-               <div class="col-lg-3 col-md-6">
-                <a href="${contextPath}/podologo/modificardatos">
-                   <div class="panel panel-red">
-                       <div class="panel-heading">
-                           <div class="row">
-                               <div class="col-xs-3">
-                                   <i class="fa fa-gear fa-5x"></i>
-                               </div>
-                               <div class="col-xs-9 text-right">
-                                   <div class="huge">Mis Datos</div>
-                                   <div></div>
-                               </div>
-                           </div>
-                       </div>
-                           <div class="panel-footer">
-                               <span class="pull-left">Modificar mis datos</span>
-                               <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                               <div class="clearfix"></div>
-                           </div>
-                       
-                   </div>
-                </a>
-                </div>
-                
+            <div class="container-fluid">             
+           
+            </div>  
+           	<form:form method="POST" modelAttribute="horarioAModifcar"  action="modificarHorario">
+								        <spring:bind path="id">
+								        <div class="form-group ${status.error ? 'has-error' : ''}">								         
+								                <form:input type="hidden" path="id" class="form-control"  required="true"></form:input>
+								                <form:errors path="id"></form:errors>
+								            </div>
+								        </spring:bind>
+								        <spring:bind path="podologo">
+								        <div class="form-group ${status.error ? 'has-error' : ''}">								         
+								                <form:input type="hidden" path="podologo.rut" class="form-control"  required="true"></form:input>
+								                <form:errors path="podologo.rut"></form:errors>
+								            </div>
+								        </spring:bind>
+								        
+								           <spring:bind path="fecha">
+								            <div class="form-group ${status.error ? 'has-error' : ''}">
+								            Fecha
+								                <form:input type="date" path="fecha" class="form-control"  required="true"></form:input>
+								                <form:errors path="fecha"></form:errors>
+								            </div>
+								        </spring:bind>
+								
+								        <spring:bind path="hora">
+								            <div class="form-group ${status.error ? 'has-error' : ''}">
+								            Hora inicio
+								                <form:input type="time" path="hora" class="form-control" disabled="" required="true" ></form:input>
+								                <form:errors path="hora"></form:errors>
+								            </div>
+								        </spring:bind>
+								        
+								        <spring:bind path="horaFin">
+								            <div class="form-group ${status.error ? 'has-error' : ''}">
+								            Hora Fin
+								                <form:input type="time" path="horaFin" class="form-control" readonly="readonly" required="true"></form:input>
+								                <form:errors path="horaFin"></form:errors>
+								            </div>
+								        </spring:bind>
+	
+									<spring:bind path="paramEstadoHorario">
+									            <div class="form-group ${status.error ? 'has-error' : ''}">
+									            Estado
+								            	<form:select path="paramEstadoHorario.id">  
+												   <form:options items="${estadosHorario}" itemLabel="valor" itemValue="id" required="true" class="form-control"/>
+											    </form:select>          	            
+									                <form:errors path="paramEstadoHorario"></form:errors>
+									            </div>
+									     </spring:bind>
+								      
+								   		 <button class="btn btn-lg btn-primary btn-block" type="submit">Modificar</button>
 
-               
-            <!-- /.container-fluid -->
+								    </form:form>
+
+      
         </div>
+
         <!-- /#page-wrapper -->
+
 
     </div>
     <!-- /#wrapper -->

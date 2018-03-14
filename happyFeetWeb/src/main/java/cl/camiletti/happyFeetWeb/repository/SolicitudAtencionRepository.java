@@ -14,6 +14,6 @@ public interface SolicitudAtencionRepository extends JpaRepository<Solicitudaten
 	  List<Solicitudatencion> findAll();	 	
 	  void delete(Solicitudatencion solicitudAtencion);	
 	  List<Solicitudatencion> findByPodologo(Podologo podologo);
-	  List<Solicitudatencion> findByParamEstadoSolicitudAtencion(Parametro parametro);
+	  List<Solicitudatencion> findByParamEstadoSolicitudAtencionAndPodologo(Parametro parametro, Podologo podologo);
 }
 

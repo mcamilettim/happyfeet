@@ -12,5 +12,5 @@ public interface SolicitudAtencionService {
 	List<Solicitudatencion> findAll();
 	void deleteById(Solicitudatencion solicitudAtencion);
 	List<Solicitudatencion> findByPodologo(Podologo podologo);
-	List<Solicitudatencion> findByParamEstadoSolicitudAtencion(Parametro parametro);
+	List<Solicitudatencion> findByParamEstadoSolicitudAtencion(Parametro parametro, Podologo podologo);
 }

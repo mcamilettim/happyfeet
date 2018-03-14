@@ -203,6 +203,7 @@ public class PodologoController {
     	mensaje.setEmisorRut(podologo.getRut());
     	mensaje.setReceptorRut(paciente.getRut());
     	mensajeRepository.save(mensaje);
+    	mensaje.setCuerpo("Yo: "+mensaje.getCuerpo());
     	conversacion.add(mensaje);
     	mensaje=null;
     	model.addAttribute("conversacion", conversacion);
@@ -215,7 +216,7 @@ public class PodologoController {
 
     @RequestMapping(value = "/podologo/verSolicitudes", method = RequestMethod.GET)
     public String verSolicitudes(@ModelAttribute("podologo")Podologo podologo, Model model){    	
-    	List<Solicitudatencion> solicitudes=solicitudAtencionService.findByParamEstadoSolicitudAtencion(new Parametro(12));
+    	List<Solicitudatencion> solicitudes=solicitudAtencionService.findByParamEstadoSolicitudAtencion(new Parametro(12), podologo);
     	model.addAttribute("solicitudes",solicitudes);
     	if(solicitudes.isEmpty()){
     		model.addAttribute("mensaje","No tiene solicitudes pendientes.");
@@ -227,7 +228,7 @@ public class PodologoController {
     public String verDetalleSolicitud(@ModelAttribute("podologo")Podologo podologo, Model model, @RequestParam("id")int id){    	
     	List<Parametro> estados=parametroService.findByNumero(77);
     	Solicitudatencion solicitudAtencion=solicitudAtencionService.findById(id);
-    	model.addAttribute("solicitudAtencion",solicitudAtencion);
+    	model.addAttribute("solicitudAtencion",solicitudAtencion);	
     	model.addAttribute("estados", estados);
     	return "podologo/verSolicitudDetalle";
     } 
@@ -235,13 +236,11 @@ public class PodologoController {
 
     @RequestMapping(value = "/podologo/modificarSolicitud", method = RequestMethod.POST)
     public String modificarSolicitud(@ModelAttribute("podologo")Podologo podologo,@ModelAttribute("solicitudAtencion") Solicitudatencion solicitudAtencion, Model model,@RequestParam("comentario")String comentario, @RequestParam("selectEstado")int idParam){    	
-    	
-    	solicitudAtencion.setComentario(comentario);
     	solicitudAtencion.setParamEstadoSolicitudAtencion(new Parametro(idParam));
     	solicitudAtencionService.save(solicitudAtencion);
     	model.addAttribute("solicitudAtencion",solicitudAtencion);
     	model.addAttribute("mensaje", "Solicitud de atención modificada con exito");
-    	List<Solicitudatencion> solicitudes=solicitudAtencionService.findByParamEstadoSolicitudAtencion(new Parametro(12));
+    	List<Solicitudatencion> solicitudes=solicitudAtencionService.findByParamEstadoSolicitudAtencion(new Parametro(12),podologo);
     	model.addAttribute("solicitudes",solicitudes);
     	return "podologo/verSolicitudesPendientes";
     } 
@@ -366,5 +365,45 @@ public class PodologoController {
     	model.addAttribute("horarios",horarioService.findByPodologo(podologo));
     	return "podologo/miAgenda";
     }
+    
+    @RequestMapping(value = "/podologo/modificarHorario", method = RequestMethod.GET)
+    public String modificarHorarioGet(Model model, @RequestParam("id")int horarioId) {
+    	model.addAttribute("horarioAModifcar", horarioService.findById(horarioId));
+    	model.addAttribute("estadosHorario",parametroService.findByNumero(22));
+    	return "podologo/modificarHorario";
+    }
+        
+    @RequestMapping(value = "/podologo/modificarHorario", method = RequestMethod.POST)
+    public String modificarHorarioPost(Model model, @ModelAttribute("horarioAModifcar") Horario horario) {
+    	horario.setFecha(dateUtil.formatearFecha(horario.getFecha()));
+    	horarioService.save(horario);
+    	model.addAttribute("mensaje", "Horario modificado con éxito");
+    	model.addAttribute("estadosHorario",parametroService.findByNumero(22));
+    	model.addAttribute("horarios",horarioService.findByPodologo(horario.getPodologo()));
+    	return "podologo/miAgenda";
+    }
+    
+    @RequestMapping(value = "/podologo/buscarHorario", method = RequestMethod.POST)
+    public String buscarHorario(Model model, @RequestParam("diaAgenda")@DateTimeFormat(pattern="dd/MM/yyyy") String diaAgenda) {
+    	User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	Podologo podologo=podologoService.findByEmail(user.getUsername());     	
+    	model.addAttribute("estadosHorario",parametroService.findByNumero(22));
+    	model.addAttribute("horarios",horarioService.findByFechaAndPodologo(dateUtil.formatearFecha(diaAgenda), podologo));
+    	return "podologo/miAgenda";
+    }
+    
+    @RequestMapping(value = "/podologo/detalleSolicitudAtendida", method = RequestMethod.GET)
+    public String verAtenciones(Model model, @ModelAttribute("podologo") Podologo podologo, @RequestParam("id") int solicitudId) {
+    	Solicitudatencion solicitudAtencion=solicitudAtencionService.findById(solicitudId);
+    	Agenda agenda=new Agenda();
+    	Atencion atencion= new Atencion();
+    	atencion.setUbicacion(solicitudAtencion.getPaciente().getUbicacion());
+    	atencion.setPodologo(podologo);
+    	atencion.setPatologia(solicitudAtencion.getPatologia());
+    	agenda.setFotoPie(solicitudAtencion.getFotoPiePath());
+    	agenda.setPaciente(solicitudAtencion.getPaciente());
+    	return "podologo/atenciones";
+    }
+    
     
 }

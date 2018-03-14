@@ -66,7 +66,7 @@
 				</c:if>
 				<c:if test="${not empty solicitudesEncontradas}">
 				      <tr>
-						<td>Fecha-Hora Atencion</td><td>Patologia tratada</td><td>Paciente</td><td>Comuna</td><td>Monto Cancelado</td><td>Detalle</td>
+						<td>Fecha-Hora Atencion</td><td>Patologia tratada</td><td>Paciente</td><td>Comuna</td><td>Monto Cancelado</td><td>Detalle</td><td>Atendida</td>
 					</tr>
 					<c:forEach items="${solicitudesEncontradas}" var="solicitud">
 					<tr>
@@ -75,7 +75,8 @@
 						<td> ${solicitud.paciente.nombres}</td>
 						<td> ${solicitud.ubicacionLlegada.comuna.nombre}</td>	
 						<td> ${solicitud.presupuesto.total}</td>					
-						<td> <a href="${contextPath}/podologo/detalleSolicitud?id=${solicitud.id}">Ver</a></td>			   
+						<td><a href="${contextPath}/podologo/detalleSolicitud?id=${solicitud.id}">Ver</a></td>		
+						<td><a href="${contexPath}/podologo/detalleSolicitudAtendida?id=${solicitud.id}">Atendida</a></td>	   
 				    </tr>
 				</c:forEach>
 				</c:if>

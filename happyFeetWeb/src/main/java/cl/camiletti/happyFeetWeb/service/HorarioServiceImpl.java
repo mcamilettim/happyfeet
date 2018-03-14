@@ -38,4 +38,9 @@ public class HorarioServiceImpl implements HorarioService{
 	public List<Horario> findByPodologo(Podologo podologo) {
 		return horarioRepository.findByPodologo(podologo);
 	}
+	
+	@Override
+	public List<Horario> findByFechaAndPodologo(String fecha, Podologo podologo) {
+		return horarioRepository.findByFechaAndPodologo(fecha, podologo);
+	}
 }

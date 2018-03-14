@@ -28,6 +28,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
@@ -300,16 +304,63 @@ public class AdminController {
     
     @RequestMapping(value = "/admin/ingresarPatologia", method = RequestMethod.POST)
     public String ingresarPatologia(Model model, @ModelAttribute("patologiaForm") Patologia patologiaForm, @RequestParam("fotoFile") MultipartFile foto) {
-    	Path resourceDirectory = Paths.get("src","webapp","resources","imagenes");
-    	try {
-			foto.transferTo(new File(""));
+    	
+    	patologiaForm.setFoto(patologiaForm.getNombre()+"."+FilenameUtils.getExtension(foto.getOriginalFilename()));
+    /*	try {
+			foto.transferTo(new File("c:\\"+patologiaForm.getFoto()));
 		} catch (IllegalStateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-    	return "paciente/paciente";
+		}*/
+    	
+    	fileManagerUtil.subirArchivoPaciente(foto,"c:/");
+    	
+    	patologiaService.save(patologiaForm);
+    	model.addAttribute("patologias", patologiaService.findAll());
+    	return "admin/listarPatologias";
     }
+    
+    @RequestMapping(value = "/admin/eliminarPatologia", method = RequestMethod.GET)
+    public String eliminarPatologia(Model model, @RequestParam("idPatologia") int idPatologia) {
+    	Patologia patologia=new Patologia();
+    	patologia.setId(idPatologia);
+    	patologiaService.deleteById(patologia); 
+    	model.addAttribute("mensaje", "Patologia eliminada con éxito");
+    	List<Patologia> patologias = patologiaService.findAll();
+    	model.addAttribute("patologias",patologias);  
+    	model.addAttribute("patologiaForm", new Patologia());
+    	return "admin/listarPatologias";
+    }
+    
+    @RequestMapping(value = "/admin/modificarPatologia", method = RequestMethod.GET)
+    public String modificarPatologiaGet(Model model, @RequestParam("idPatologia") int idPatologia) {
+    	Patologia patologiaForm=patologiaService.findById(idPatologia);
+    	model.addAttribute("patologiaForm", patologiaForm);
+    	return "admin/modificarPatologia";
+    } 
+    
+    @RequestMapping(value = "/admin/modificarPatologia", method = RequestMethod.POST)
+    public String modificarPatologiaPost(Model model, @ModelAttribute("patologiaForm") Patologia patologiaForm, @RequestParam("fotoFile") MultipartFile foto) {
+    	    	
+    	patologiaForm.setFoto(patologiaForm.getNombre()+"."+FilenameUtils.getExtension(foto.getOriginalFilename()));
+    /*	try {
+			foto.transferTo(new File("c:\\"+patologiaForm.getFoto()));
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+    	
+    	fileManagerUtil.subirArchivoPaciente(foto,"c:/");
+    	patologiaService.save(patologiaForm);
+    	model.addAttribute("mensaje", "Patologia modificada con éxito");
+    	model.addAttribute("patologias", patologiaService.findAll());
+    	return "admin/listarPatologias";
+
+    }   
 }

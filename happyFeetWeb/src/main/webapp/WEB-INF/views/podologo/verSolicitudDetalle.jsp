@@ -55,8 +55,7 @@
 			Punto de Llegada: ${solicitudAtencion.presupuesto.ubicacionLlegada.nombre}<br>
 			Monto de la Atención: ${solicitudAtencion.presupuesto.total}<br>
 			Diagnostico: ${solicitudAtencion.patologia.nombre}<br>			
-			<a href="${contextPath}/podologo/modificarDiagnostico?id=${solicitudAtencion.id}">Modificar Diagnóstico</a><br>
-			
+						
 			<form action="${contextPath}/podologo/modificarSolicitud" method="POST">	
 				<select name="selectEstado">
 					<option value="0">Seleccione un Estado</option>
@@ -70,6 +69,6 @@
 			</form>
 		</div>
 		</div>
-		<a href="${contextPath}/podologo/verSolicitudesPendientes">Volver</a>
+		<a href="${contextPath}/podologo/verSolicitudes">Volver</a>
 	</body>
 </html>
