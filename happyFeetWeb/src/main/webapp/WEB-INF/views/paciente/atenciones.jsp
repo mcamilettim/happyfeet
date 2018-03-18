@@ -5,7 +5,9 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
 
 <meta charset="utf-8">
@@ -74,6 +76,7 @@
 </head>
 
 <body>
+
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -85,7 +88,7 @@
 					<span class="sr-only">Navegación</span> <span class="icon-bar"></span>
 					<span class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="${contextPath}/podologo/index"><img
+				<a class="navbar-brand" href="${contextPath}/paciente/index"><img
 					src="${contextPath}/resources/img/logo1.png" class="img-responsive"
 					style="width: 120px;"></a>
 			</div>
@@ -97,24 +100,27 @@
 						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-messages">
-						<li><a href="#"> <strong></strong> <span
-								class="pull-right text-muted"> <em>Ahora</em>
-							</span> Sin mensajes nuevos.
+						<li><a href="#">
+								<div>
+									<strong></strong> <span class="pull-right text-muted"> <em>Ahora</em>
+									</span>
+								</div>
+								<div>Sin mensajes nuevos.</div>
 						</a></li>
 						<li class="divider"></li>
 						<li><a class="text-center"
-							href="${contextPath}/podologo/vermensajes"> <strong>Ver
+							href="${contextPath}/paciente/vermensajes"> <strong>Ver
 									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
 					</ul> <!-- /.dropdown-messages --></li>
-
+				</li>
 				<!-- /.dropdown -->
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
 						<i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-user">
-						<li><a href="${contextPath}/podologo/modificardatos"><i
+						<li><a href="${contextPath}/paciente/modificardatos"><i
 								class="fa fa-gear fa-fw"></i>Mis Datos</a></li>
 						<li class="divider"></li>
 						<li><a href="<c:url value="/logout" />"><i
@@ -132,158 +138,91 @@
 								<img src="${contextPath}/resources/img/sinfoto.jpg"
 									class="img-responsive" style="width: 200px;"> <br>
 								<div align="center">
-									<span class="text-info text-center"><b>${podologo.nombres}
-											${podologo.apellidos}</b></span>
-								</div>
-
-								<div align="center">
-									<span class="text-info">Podólogo</span>
+									<span class="text-info text-center"><b>${paciente.nombres}
+											${paciente.apellidos}</b></span> <span class="text-info">Paciente</span>
 								</div>
 							</div> <!-- /input-group -->
 						</li>
-						<li><a href="${contextPath}/podologo/index"><i
+						<li><a href="${contextPath}/paciente/index"><i
 								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
-						<li><a href="${contextPath}/podologo/index"><i
-								class="fa fa-edit fa-fw"></i> Agendar Horario</a></li>
-						<li><a href="${contextPath}/podologo/modificardatos"><i
+						<li><a href="${contextPath}/paciente/solicitud"><i
+								class="fa fa-edit fa-fw"></i> Pedir hora!</a></li>
+						<li><a href="${contextPath}/paciente/modificardatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
-						<li><a href="${contextPath}/podologo/index"><i
-								class="fa fa-table fa-fw"></i> Historial de atenciones</a></li>
-						<li><a href="${contextPath}/podologo/index"><i
-								class="fa fa-edit fa-fw"></i> Solicitudes nuevas</a></li>
-						<li><a href="${contextPath}/podologo/pacientes"><i
-								class="fa fa-table fa-fw"></i> Lista de Pacientes</a></li>
+						<li><a href="${contextPath}/paciente/misatenciones"><i
+								class="fa fa-table fa-fw"></i> Mis atenciones</a></li>
+						<li><a href="${contextPath}/paciente/califica"><i
+								class="fa fa-edit fa-fw"></i> Calificar a profesional</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
 			</div>
 			<!-- /.navbar-static-side -->
 		</nav>
-		<!-- Navigation -->
+
 		<!-- Page Content -->
 		<div id="page-wrapper">
 			<div class="container-fluid">
+				<br>
 				<div class="row">
 					<div class="col-lg-12">
-						<c:if test="${mensaje != null}">
-							<div class="alert alert-success alert-dismissable">
-								<button type="button" class="close" data-dismiss="alert"
-									aria-hidden="true">×</button>
-								${mensaje}
-							</div>
-						</c:if>
-						<h2 class="page-header"></h2>
-					</div>
-					<!-- /.col-lg-12 -->
-				</div>
-				<!-- /.row -->
-			</div>
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<strong>Historial Paciente ${paciente.nombres}</strong>
-						</div>
-
-						<div class="table-responsive">
-							<table class="table table-hover">
-								<tr>
-									<th>Foto Perfil</th>
-								</tr>
-								<tr>
-									<td><div align="center">
-											<img style="width: 300px; height: 300px;"
-												src="${contextPath}/resources/imagenes/${paciente.pathFotoPerfil}">
-										</div></td>
-								</tr>
-							</table>
-							<div align="center">
-								<button
-									onclick="location.href='${contextPath}/podologo/perfilPaciente?rut=${paciente.rut}'"
-									type="submit" class="btn btn-primary">Ver Perfil</button>
-								<button
-									onclick="location.href='${contextPath}/podologo/enviarMensaje?rut=${paciente.rut}'"
-									type="submit" class="btn btn-primary">Enviar Mensaje</button>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<strong>Mis atenciones Realizadas</strong>
 							</div>
 							<br>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<strong>Listado de atenciones paciente :
-										${paciente.nombres}</strong>
-								</div>
+							<div align="center">
+								<p>A continuación se detallan todas las atenciones
+									efectuadas en la aplicación, no se contemplan las horas
+									agendadas que no se llevaron a cabo.</p>
+								<br>
+							</div>
+							<div class="container-fluid">
 								<div class="table-responsive">
 									<table class="table table-hover">
 										<tr>
-										<tr>
-											<th>Nombre Completo</th>
-											<th>Patologia tratada</th>
-											<th>Fecha</th>
-											<th>Presupuesto</th>
-											<th>Dirección</th>
-											<th>Diagnostico</th>
-											<th>Foto Post Atención</th>
-											<th>Evaluación
-											<th>
+											<th><div align="center">Podologo tratante</div></th>
+											<th><div align="center">Patologia</div></th>
+											<th><div align="center">Fecha</div></th>
+											<th><div align="center">Detalle</div></th>
 										</tr>
-										<tr>
-											<td>${paciente.nombres}${paciente.apellidos}</td>
-											<td>${atencion.patologia.nombre}</td>
-											<td>${atencion.agenda.horario.fecha}</td>
-											<td><a class="btn btn-large btn-info"
-												href="${contextPath}/podologo/detallePresupesto">Detalle
-													: $${atencion.presupuesto.total}</a></td>
-											<td>${paciente.ubicacion.comuna.nombre}</td>
-											<td><a class="btn btn-large btn-danger"
-												href="${contextPath}/podologo/diagnostico">Detalle</a></td>
-											<td width="200" height="100" class="center "><img
-												src="${contextPath}/resources/imagenes/${atencion.agenda.fotoPie} "
-												width="130" height="80"></td>
-											<td><fieldset class="starability-basic">
-													<c:forEach begin="1" end="${atencion.evaluacion.valor}"
-														varStatus="loop">
-														<input type="radio" id="rate" name="rating" value="loop" />
-														<label for="loop"
-															title="${atencion.evaluacion.comentario}"></label>
-													</c:forEach>
-												</fieldset></td>
-
-										</tr>
-
+										<c:forEach items="${atenciones}" var="atencion">
+											<tr>
+												<td align="center">${atencion.podologo.nombres}
+													${atencion.podologo.apellidos}</td>
+												<td align="center">${atencion.patologia.nombre}</td>
+												<td align="center">${atencion.agenda.horario.fecha}</td>
+												<td align="center"><button
+										onclick="location.href='${contextPath}/paciente/detalleAtencion?id=${atencion.id}'"
+										type="submit" class="btn btn-primary">Ver</button></td>
+											</tr>
+										</c:forEach>
 									</table>
 								</div>
 							</div>
-							<button
-								onclick="location.href='${contextPath}/podologo/historialPaciente?rut=${paciente.rut}'"
-								type="button" class="btn">Volver</button>
-							<!-- /.table-responsive -->
+							<br> <br>
 						</div>
-						<!-- /.panel-body -->
 					</div>
-
+					<!-- /.row -->
 				</div>
-
-				<!-- /.panel -->
 			</div>
 		</div>
-		<!-- /.col-lg-6 (nested) -->
-	</div>
-	<!-- /.row (nested) -->
 
 
 
-	<!-- jQuery -->
-	<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+		<!-- jQuery -->
+		<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 
-	<!-- Bootstrap Core JavaScript -->
-	<script
-		src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+		<!-- Bootstrap Core JavaScript -->
+		<script
+			src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 
-	<!-- Metis Menu Plugin JavaScript -->
-	<script
-		src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
+		<!-- Metis Menu Plugin JavaScript -->
+		<script
+			src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
 
-	<!-- Custom Theme JavaScript -->
-	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+		<!-- Custom Theme JavaScript -->
+		<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
 </body>
-</body>
+
 </html>

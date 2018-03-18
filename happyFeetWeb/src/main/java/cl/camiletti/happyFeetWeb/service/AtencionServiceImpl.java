@@ -59,4 +59,11 @@ public class AtencionServiceImpl implements AtencionService{
 		return atencions;
 	}
 
+	@Override
+	public Atencion findByAgenda(Agenda agenda) {
+		return atencionRepository.findByAgenda(agenda);
+	}
+
+ 
+
 }

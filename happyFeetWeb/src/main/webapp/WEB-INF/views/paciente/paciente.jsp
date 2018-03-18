@@ -100,7 +100,7 @@
                     </ul>
                     <!-- /.dropdown-messages -->
                 </li>
-                </li>
+                
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -214,7 +214,7 @@
                 </div>
                 
                 <div class="col-lg-3 col-md-6">
-                <a href="${contextPath}/paciente/modificardatos">
+                <a href="${contextPath}/paciente/misatenciones">
                    <div class="panel panel-red">
                        <div class="panel-heading">
                            <div class="row">

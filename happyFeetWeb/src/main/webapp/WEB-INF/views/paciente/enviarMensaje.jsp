@@ -1,11 +1,14 @@
+
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-
+<c:set var="rut_podologo" scope="session" value="${podologo.rut}" />
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
 
 <meta charset="utf-8">
@@ -74,6 +77,7 @@
 </head>
 
 <body>
+
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -160,6 +164,8 @@
 			<!-- /.navbar-static-side -->
 		</nav>
 		<!-- Navigation -->
+
+
 		<!-- Page Content -->
 		<div id="page-wrapper">
 			<div class="container-fluid">
@@ -178,97 +184,128 @@
 				</div>
 				<!-- /.row -->
 			</div>
+
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<strong>Historial Paciente ${paciente.nombres}</strong>
+							Chat con Paciente: <strong>${paciente.nombres}
+								${paciente.apellidos}</strong>
 						</div>
-
-						<div class="table-responsive">
-							<table class="table table-hover">
-								<tr>
-									<th>Foto Perfil</th>
-								</tr>
-								<tr>
-									<td><div align="center">
-											<img style="width: 300px; height: 300px;"
-												src="${contextPath}/resources/imagenes/${paciente.pathFotoPerfil}">
-										</div></td>
-								</tr>
-							</table>
-							<div align="center">
-								<button
-									onclick="location.href='${contextPath}/podologo/perfilPaciente?rut=${paciente.rut}'"
-									type="submit" class="btn btn-primary">Ver Perfil</button>
-								<button
-									onclick="location.href='${contextPath}/podologo/enviarMensaje?rut=${paciente.rut}'"
-									type="submit" class="btn btn-primary">Enviar Mensaje</button>
+						<!-- /.panel-heading -->
+						<br>
+						<div class="row">
+							<div class="col-md-3">
+								<div align="center">
+									<img class="img-responsive"
+										style="width: 300px; height: 300px;"
+										src="${contextPath}/resources/imagenes/${paciente.pathFotoPerfil}">
+								</div>
 							</div>
 							<br>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<strong>Listado de atenciones paciente :
-										${paciente.nombres}</strong>
-								</div>
-								<div class="table-responsive">
-									<table class="table table-hover">
-										<tr>
-										<tr>
-											<th>Nombre Completo</th>
-											<th>Patologia tratada</th>
-											<th>Fecha</th>
-											<th>Presupuesto</th>
-											<th>Dirección</th>
-											<th>Diagnostico</th>
-											<th>Foto Post Atención</th>
-											<th>Evaluación
-											<th>
-										</tr>
-										<tr>
-											<td>${paciente.nombres}${paciente.apellidos}</td>
-											<td>${atencion.patologia.nombre}</td>
-											<td>${atencion.agenda.horario.fecha}</td>
-											<td><a class="btn btn-large btn-info"
-												href="${contextPath}/podologo/detallePresupesto">Detalle
-													: $${atencion.presupuesto.total}</a></td>
-											<td>${paciente.ubicacion.comuna.nombre}</td>
-											<td><a class="btn btn-large btn-danger"
-												href="${contextPath}/podologo/diagnostico">Detalle</a></td>
-											<td width="200" height="100" class="center "><img
-												src="${contextPath}/resources/imagenes/${atencion.agenda.fotoPie} "
-												width="130" height="80"></td>
-											<td><fieldset class="starability-basic">
-													<c:forEach begin="1" end="${atencion.evaluacion.valor}"
-														varStatus="loop">
-														<input type="radio" id="rate" name="rating" value="loop" />
-														<label for="loop"
-															title="${atencion.evaluacion.comentario}"></label>
-													</c:forEach>
-												</fieldset></td>
+							<div class="col-md-5">
+								<div class="panel panel-primary">
+									<div class="panel-heading">
+										<span class="glyphicon glyphicon-comment"></span> Chat
+										<div class="btn-group pull-right">
+											<button type="button"
+												class="btn btn-default btn-xs dropdown-toggle"
+												data-toggle="dropdown">
+												<span class="glyphicon glyphicon-chevron-down"></span>
+											</button>
+											<ul class="dropdown-menu slidedown">
+												<li><a href="${contextPath}/podologo/enviarMensaje?rut=${paciente.rut}"><span
+														class="glyphicon glyphicon-refresh"> </span>Refresh</a></li>
+												 
+											</ul>
+										</div>
+									</div>
+									<div class="panel-body"
+										style="width: 100%; overflow-y: scroll; height: 250px;">
+										<ul class="chat">
+											<c:forEach items="${conversacion}" var="mensaje">
+												<c:choose>
+													<c:when test="${mensaje.emisorRut eq rut_podologo}">
+														<li class="left clearfix"><span
+															class="chat-img pull-left"> <img
+																src="http://placehold.it/50/55C1E7/fff&text=Yo"
+																alt="User Avatar" class="img-circle" />
+														</span>
+															<div class="chat-body clearfix">
+																<div class="header">
+																	<strong class="primary-font">${podologo.nombres}</strong>
+																	<small class="pull-right text-muted"> <span
+																		class="glyphicon glyphicon-time"></span>12 mins ago
+																	</small>
+																</div>
+																<p>${mensaje.cuerpo}</p>
+															</div></li>
+													</c:when>
+													<c:otherwise>
+														<li class="right clearfix"><span
+															class="chat-img pull-right"> <img
+																src="http://placehold.it/50/FA6F57/fff&text=P"
+																alt="User Avatar" class="img-circle" />
+														</span>
+															<div class="chat-body clearfix">
+																<div class="header">
+																	<small class=" text-muted"><span
+																		class="glyphicon glyphicon-time"></span>13 mins ago</small> <strong
+																		class="pull-right primary-font">${paciente.nombres}
+																		${paciente.apellidos}</strong>
+																</div>
+																 
+																	<p>${mensaje.cuerpo}</p>
+															 
+															</div></li>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
+										</ul>
+									</div>
+									<div class="panel-footer">
+										<form:form method="POST" modelAttribute="mensajeForm"
+											action="${contextPath}/podologo/enviarMensaje?rut=${paciente.rut}">
+											<div class="input-group">
 
-										</tr>
+												<spring:bind path="cuerpo">
+													<div class="form-group ${status.error ? 'has-error' : ''}">
+														<form:input type="text" class="form-control input-sm"
+															placeholder="Escriba su mensaje ..." path="cuerpo"></form:input>
+														<form:errors path="cuerpo"></form:errors>
+													</div>
+												</spring:bind>
 
-									</table>
+												<span class="input-group-btn">
+													<button type="submit" class="btn btn-warning btn-sm"
+														id="btn-chat">Enviar</button>
+												</span>
+											</div>
+										</form:form>
+
+
+									</div>
 								</div>
 							</div>
-							<button
-								onclick="location.href='${contextPath}/podologo/historialPaciente?rut=${paciente.rut}'"
-								type="button" class="btn">Volver</button>
-							<!-- /.table-responsive -->
 						</div>
-						<!-- /.panel-body -->
+
+						<button
+							onclick="location.href='${contextPath}/podologo/historialPaciente?rut=${paciente.rut}'"
+							type="button" class="btn">Volver</button>
 					</div>
 
+					<!-- /.table-responsive -->
 				</div>
-
-				<!-- /.panel -->
+				<!-- /.panel-body -->
 			</div>
+			<!-- /.panel -->
 		</div>
-		<!-- /.col-lg-6 (nested) -->
 	</div>
+	<!-- /.col-lg-6 (nested) -->
+
 	<!-- /.row (nested) -->
 
+	<!-- /.panel-body -->
 
 
 	<!-- jQuery -->
@@ -284,6 +321,7 @@
 
 	<!-- Custom Theme JavaScript -->
 	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+
 </body>
-</body>
+
 </html>
