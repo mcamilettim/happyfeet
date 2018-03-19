@@ -52,11 +52,8 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 </head>
-
 <body>
-
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
@@ -70,8 +67,8 @@
 			        <h2 class="form-signin-heading">Registro de paciente</h2>
 			        <spring:bind path="rut">
 			            <div class="form-group ${status.error ? 'has-error' : ''}">
-			            Rut
-			                <form:input type="text" path="rut" class="form-control" autofocus="true" required="true"></form:input>
+			            Rut(Sin puntos y con guión)
+			                <form:input type="text" path="rut" class="form-control" autofocus="true" required="true" maxlength="10" size="10"></form:input>
 			                <form:errors path="rut"></form:errors>
 			            </div>
 			        </spring:bind>
@@ -91,19 +88,30 @@
 			                <form:errors path="apellidos"></form:errors>
 			            </div>
 			        </spring:bind>
-			        
 			         <spring:bind path="ubicacion">
 			            <div class="form-group ${status.error ? 'has-error' : ''}">
-			            Dirección
-			                <form:input type="text" path="ubicacion.nombre" class="form-control" required="true"></form:input>
+			            <p id="mensajeDirecion">Dirección<p>
+			                <form:input id="ubicacion" type="text" path="ubicacion.nombre" class="form-control" required="true"></form:input>
 			                <form:errors path="ubicacion"></form:errors>
 			            </div>
 			        </spring:bind>
+			        <spring:bind path="ubicacion.latitud">
+			            <div class="form-group ${status.error ? 'has-error' : ''}">    
+			                <form:input id="latitud" type="hidden" path="ubicacion.latitud" class="form-control" required="true"></form:input>
+			                <form:errors path="ubicacion.latitud"></form:errors>
+			            </div>
+			        </spring:bind>
+			        <spring:bind path="ubicacion.longitud">
+			            <div class="form-group ${status.error ? 'has-error' : ''}">
+			                <form:input id="longitud" type="hidden" path="ubicacion.longitud" class="form-control" required="true"></form:input>
+			                <form:errors path="ubicacion.longitud"></form:errors>
+			            </div>
+			        </spring:bind>
 			        
-			        <spring:bind path="ubicacion.comuna">
+			        <spring:bind path="ubicacion.comuna" >
 			            <div class="form-group ${status.error ? 'has-error' : ''}">
 			            Comuna: 
-			            	<form:select path="ubicacion.comuna.id">  
+			            	<form:select id="comuna" path="ubicacion.comuna.id" disabled="true">  
 							   <form:options items="${comunas}" itemLabel="nombre" itemValue="id" required="true" class="form-control"/>
 							 </form:select>                
 			                <form:errors path="ubicacion"></form:errors>
@@ -178,7 +186,8 @@
 
     <!-- jQuery -->
     <script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
-
+    <script type="text/javascript"
+			src="http://maps.googleapis.com/maps/api/js?v3&libraries=places&key=AIzaSyAVgzIQhGvX45D1OGk-De6fgj-12xDuZjU"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 
@@ -189,8 +198,57 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+    
+    
 	<script type="text/javascript">
+ 
 	$(document).ready(function () {
+		$(':input[type="submit"]').prop('disabled', true);
+		var latitud="";
+		var longitud="";
+		function getLocale(address){
+			var geocoder = new google.maps.Geocoder();
+			 geocoder.geocode( { 'address': address}, function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK)
+					{
+					latitud=results[0].geometry.location.lat();
+					longitud=results[0].geometry.location.lng();
+					$("#latitud").val(results[0].geometry.location.lat());
+					$("#longitud").val(results[0].geometry.location.lng());
+					console.log(results);
+				    $(':input[type="submit"]').prop('disabled', false);
+				    $("#mensajeDirecion").html("Dirección [Validada]");
+				    $("#mensajeDirecion").css("color", "black");	
+				    $("#ubicacion").val(results[0].formatted_address);	
+				    validaComuna(results[0].address_components[2].short_name);
+				   // console.log(results[0].address_components[2].short_name);
+				  //  $("#ubicacion").val("");
+					}else{
+						 $("#mensajeDirecion").html("Dirección [No encontrada]");
+						 $("#mensajeDirecion").css("color", "red");
+						 $(':input[type="submit"]').prop('disabled', true);
+					}
+		   });
+		}			
+		$("#ubicacion" ).focusout(function() {
+			var address = document.getElementById("ubicacion").value;
+			//alert("FOCUS OUT");
+			getLocale(address);
+		 });	
+		
+		function validaComuna(address){
+			if(address==="Maipú"){
+				$("#comuna").val('1');
+			}else{
+				if(address==="Pudahuel"){
+					$("#comuna").val('2');
+				}else{
+					$("#comuna").val('3');
+				}
+			}
+		}
+		
+		
 		$.datepicker.regional['es'] = {
 				closeText : 'Cerrar',
 				prevText : '<Ant',

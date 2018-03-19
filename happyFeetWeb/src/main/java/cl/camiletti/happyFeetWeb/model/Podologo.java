@@ -27,6 +27,8 @@ public class Podologo implements Serializable {
 	private String foto;
 
 	private String nombres;
+	
+	private String pathFotoPerfil;
 
 	//bi-directional many-to-one association to Atencion
 	@OneToMany(mappedBy="podologo", fetch=FetchType.EAGER)
@@ -206,6 +208,14 @@ public class Podologo implements Serializable {
 		solicitudatencion.setPodologo(null);
 
 		return solicitudatencion;
+	}
+
+	public String getPathFotoPerfil() {
+		return pathFotoPerfil;
+	}
+
+	public void setPathFotoPerfil(String pathFotoPerfil) {
+		this.pathFotoPerfil = pathFotoPerfil;
 	}
 
 }
