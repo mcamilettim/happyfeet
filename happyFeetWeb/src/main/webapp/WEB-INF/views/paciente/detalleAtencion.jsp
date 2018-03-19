@@ -172,9 +172,34 @@
 									${atencion.patologia.nombre}</strong>
 							</div>
 							<br>
-
 							<div class="container-fluid">
 								<div>
+									<div class="table-responsive">
+										<table class="table table-hover">
+											<tr>
+												<th>Foto Perfil Podólogo</th>
+											</tr>
+											<tr>
+												<td><div align="center">
+														<img style="width: 200px; height: 200px;"
+															src="${contextPath}/resources/img/sinfoto.jpg">
+													</div></td>
+											</tr>
+										</table>
+
+										<div align="center">
+											<button
+												onclick="location.href='${contextPath}/paciente/perfilPodologo?rut=${paciente.rut}'"
+												type="submit" class="btn btn-primary">Ver Perfil</button>
+											<button
+												onclick="location.href='${contextPath}/paciente/enviarMensaje?rut=${paciente.rut}'"
+												type="submit" class="btn btn-primary">Enviar
+												Mensaje</button>
+
+										</div>
+										<br>
+									</div>
+									<br>
 									<table class="table table-hover">
 										<tr>
 											<th><div align="left">Podólogo tratante</div></th>
@@ -201,14 +226,63 @@
 											<th><div align="left">Monto Pagado</div></th>
 											<td align="left">${atencion.montoCancelado}</td>
 										</tr>
-										<tr>
-											<th><div align="left">Monto Pagado</div></th>
-											<td align="left">${atencion.montoCancelado}</td>
-										</tr>
+
 									</table>
 								</div>
-								<br>
-								
+								<br> <br>
+								<div>
+									<p align="center">
+										<strong> Detalle del Pago de esta Atención</strong>
+									</p>
+									<br>
+									<table class="table table-hover">
+										<tr>
+											<th><div align="left">Tratamiento de Patología</div></th>
+											<td align="left">$ ${atencion.patologia.costo}</td>
+										</tr>
+										<tr>
+											<th><div align="left">Kilómetros recorridos del
+													Podólogo</div></th>
+											<td align="left">${atencion.presupuesto.viajePodologo}</td>
+										</tr>
+										<tr>
+											<th><div align="left">Tarifa por Kilómetro</div></th>
+											<td align="left">${atencion.presupuesto.tarifaKM}</td>
+										</tr>
+										<tr>
+											<th><div align="left">Punto Partida</div></th>
+											<td align="left">${atencion.presupuesto.ubicacionPartida.nombre}</td>
+										</tr>
+										<tr>
+											<th><div align="left">Punto Partida</div></th>
+											<td align="left">${atencion.presupuesto.ubicacionLlegada.nombre}</td>
+										</tr>
+										<tr>
+											<th><div align="left">Monto total</div></th>
+											<td align="left">${atencion.presupuesto.total}</td>
+										</tr>
+									</table>
+									<br>
+								</div>
+
+								<div>
+									<p align="center">
+										<strong> Diagnóstico e Indicaciones</strong>
+									</p>
+									<br>
+									<table class="table table-hover">
+										<tr>
+											<th><div align="left">Diagnóstico</div></th>
+											<td align="left">${atencion.diagnostico}</td>
+										</tr>
+										<tr>
+											<th><div align="left">Indicaciones</div></th>
+											<td align="left">${atencion.indicaciones}</td>
+										</tr>
+										
+									</table>
+									<br>
+								</div>
 							</div>
 							<br> <br>
 						</div>
