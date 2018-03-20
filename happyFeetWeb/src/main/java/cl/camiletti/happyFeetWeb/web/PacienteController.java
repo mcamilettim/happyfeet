@@ -92,10 +92,13 @@ public class PacienteController {
 
 	@RequestMapping(value = "/registrarPaciente", method = RequestMethod.POST)
 	public String registration(@ModelAttribute("pacienteForm") Paciente pacienteForm, BindingResult bindingResult,
-			Model model) {
+			Model model,@RequestParam("fotoPerfil") MultipartFile fotoPerfilPath) {
 		if (bindingResult.hasErrors()) {
 
 		} else {
+			File fotoPerfil = fileManagerUtil.subirArchivo(fotoPerfilPath);
+			if(fotoPerfil!=null)
+			pacienteForm.setPathFotoPerfil(fotoPerfil.getAbsolutePath());
 			if (usuarioService.findByEmail(pacienteForm.getEmail()) == null) {
 				if (ubicacionService.findByNombre(pacienteForm.getUbicacion().getNombre()) == null) {
 					ubicacionService.save(pacienteForm.getUbicacion());

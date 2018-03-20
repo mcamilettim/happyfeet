@@ -55,6 +55,16 @@
 </head>
 <body>
     <div class="container">
+    <br>
+     
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                           <strong> NOTA </strong>
+                        </div>
+						<div style="text-align: justify;" align="center">
+    			 <p style="padding-left: 10px; padding-right: 10px;" >Estimado Paciente, por el sistema opera en las comunas de Pudahuel y Maipú (Santiago), próximamente abarcarémos más Comunas. <strong>¡ESTAMOS TRABAJANDO PARA USTED ! </strong>  </p>
+    				  </div>	 
+		   </div>						     
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
@@ -63,7 +73,7 @@
                         <h1 class="panel-title" style="margin-top: -16px;"></h1>
                     </div>
                     <div class="panel-body">
-                    <form:form method="POST" modelAttribute="pacienteForm"  action="registrarPaciente">
+                    <form:form method="POST" modelAttribute="pacienteForm"  action="registrarPaciente" enctype="multipart/form-data" >
 			        <h2 class="form-signin-heading">Registro de paciente</h2>
 			        <spring:bind path="rut">
 			            <div class="form-group ${status.error ? 'has-error' : ''}">
@@ -108,15 +118,15 @@
 			            </div>
 			        </spring:bind>
 			        
-			        <spring:bind path="ubicacion.comuna" >
-			            <div class="form-group ${status.error ? 'has-error' : ''}">
-			            Comuna: 
-			            	<form:select id="comuna" path="ubicacion.comuna.id" disabled="true">  
-							   <form:options items="${comunas}" itemLabel="nombre" itemValue="id" required="true" class="form-control"/>
+			       <spring:bind path="ubicacion.comuna">
+         			   <div class="form-group ${status.error ? 'has-error' : ''}" style = "display:none">
+          			  Comuna
+           		 			<form:select id="comunaID" path="ubicacion.comuna.id">  
+							   <form:options items="${comunas}" itemLabel="nombre" itemValue="id" required="true"/>
 							 </form:select>                
-			                <form:errors path="ubicacion"></form:errors>
-			            </div>
-			        </spring:bind>
+              			  <form:errors path="ubicacion"></form:errors>
+          				  </div>
+       				 </spring:bind>
 			        <spring:bind path="diabetico">
 			        	<div class="form-group ${status.error ? 'has-error' : ''}">
 			                <label>¿Eres Diabetico?
@@ -157,7 +167,10 @@
 			               <form:errors path="email"></form:errors>
 			           </div>
 				    </spring:bind>
-				    
+				    <div class="form-group ${status.error ? 'has-error' : ''}">      
+	               Foto Perfil<input type="file"  class="form-control" name="fotoPerfil" value="Subir Foto" accept=".png, .jpg, .jpeg"></input>
+	                </div>
+					 
 				    <spring:bind path="usuario">
 			           <div class="form-group ${status.error ? 'has-error' : ''}">
 			           Password
@@ -177,6 +190,9 @@
 			   		 <button class="btn btn-lg btn-primary btn-block" type="submit">Crear cuenta!</button>
 			   		 <br> <center><a href="${contextPath}/login">¿Ya tienes cuenta?</a></center>
 			   		 <br> <center><a href="/">Volver al Home</a></center>
+			   		  <br>
+			   		   <br>
+			   		    <br>
 			    </form:form>
                     </div>
                 </div>
@@ -216,7 +232,7 @@
 					$("#latitud").val(results[0].geometry.location.lat());
 					$("#longitud").val(results[0].geometry.location.lng());
 					console.log(results);
-				    $(':input[type="submit"]').prop('disabled', false);
+				   
 				    $("#mensajeDirecion").html("Dirección [Validada]");
 				    $("#mensajeDirecion").css("color", "black");	
 				    $("#ubicacion").val(results[0].formatted_address);	
@@ -225,8 +241,7 @@
 				  //  $("#ubicacion").val("");
 					}else{
 						 $("#mensajeDirecion").html("Dirección [No encontrada]");
-						 $("#mensajeDirecion").css("color", "red");
-						 $(':input[type="submit"]').prop('disabled', true);
+						 $("#mensajeDirecion").css("color", "red");				
 					}
 		   });
 		}			
@@ -238,12 +253,18 @@
 		
 		function validaComuna(address){
 			if(address==="Maipú"){
-				$("#comuna").val('1');
+				$("#comunaID").val('1').change();;
+				$("#comunaNombre").val(address);
+				 $(':input[type="submit"]').prop('disabled', false);
 			}else{
 				if(address==="Pudahuel"){
-					$("#comuna").val('2');
+					 $(':input[type="submit"]').prop('disabled', false);
+					$("#comunaID").val('2').change();;
+					$("#comunaNombre").val(address);
 				}else{
-					$("#comuna").val('3');
+					 $(':input[type="submit"]').prop('disabled', true);
+					 $("#mensajeDirecion").css("color", "red");	
+					 $("#mensajeDirecion").html("Dirección [ Sólo Pudahuel y Maipú ]");
 				}
 			}
 		}
