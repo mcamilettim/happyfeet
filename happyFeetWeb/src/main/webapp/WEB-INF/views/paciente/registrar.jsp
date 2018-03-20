@@ -8,13 +8,11 @@
 <html lang="es">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>Cuido mis pies - Login</title>
 	<link rel="apple-touch-icon" sizes="57x57" href="${contextPath}/resources/icon/apple-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="${contextPath}/resources/icon/apple-icon-60x60.png">
@@ -52,12 +50,20 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style type="text/css">
+	.rut-error{
+		color: red;
+		font-weight: bold;
+		padding: 3px 10px;
+		display: inline-block;
+		margin-left: 10px;
+	}
+	</style>
 </head>
 <body>
     <div class="container">
     <br>
-     
-                    <div class="panel panel-default">
+                 <div class="panel panel-default">
                         <div class="panel-heading">
                            <strong> NOTA </strong>
                         </div>
@@ -75,10 +81,10 @@
                     <div class="panel-body">
                     <form:form method="POST" modelAttribute="pacienteForm"  action="registrarPaciente" enctype="multipart/form-data" >
 			        <h2 class="form-signin-heading">Registro de paciente</h2>
-			        <spring:bind path="rut">
+			         <spring:bind path="rut">
 			            <div class="form-group ${status.error ? 'has-error' : ''}">
-			            Rut(Sin puntos y con guión)
-			                <form:input type="text" path="rut" class="form-control" autofocus="true" required="true" maxlength="10" size="10"></form:input>
+			              Rut
+			                <form:input type="text" id="rut"  path="rut" class="form-control" autofocus="true" required="true" maxlength="10" size="10"></form:input>		           
 			                <form:errors path="rut"></form:errors>
 			            </div>
 			        </spring:bind>
@@ -214,11 +220,11 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
-    
+    <script src="${contextPath}/resources/js/jquery.rut.chileno.min.js"></script>
     
 	<script type="text/javascript">
- 
 	$(document).ready(function () {
+		$('#rut').rut(); 
 		$(':input[type="submit"]').prop('disabled', true);
 		var latitud="";
 		var longitud="";
@@ -231,9 +237,8 @@
 					longitud=results[0].geometry.location.lng();
 					$("#latitud").val(results[0].geometry.location.lat());
 					$("#longitud").val(results[0].geometry.location.lng());
-					console.log(results);
-				   
-				    $("#mensajeDirecion").html("Dirección [Validada]");
+					//console.log(results); 
+				    $("#mensajeDirecion").html("Dirección [OK]");
 				    $("#mensajeDirecion").css("color", "black");	
 				    $("#ubicacion").val(results[0].formatted_address);	
 				    validaComuna(results[0].address_components[2].short_name);

@@ -73,6 +73,7 @@
 		$("#loader").show();
 		$("#loginform").submit();
 	}
+
 	</script>
 </head>
 
@@ -89,7 +90,7 @@
                     <div class="panel-body">
                          <form method="POST" action="${contextPath}/login" name="loginForm" id="loginform">
                          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                         <center><div class="loader" style="display: none;" id="loader"></div></center>
+                        <div align="center" class="loader" style="display: none;" id="loader"></div>
                          <div class="form-group ${error != null ? 'has-error' : ''}" id="formbody">
                             <fieldset>
                             
