@@ -10,4 +10,5 @@ public interface PodologoService {
 	List<Podologo> findAll();
 	void deleteById(Podologo podologo);
 	Podologo findByEmail(String email);
+	List<Podologo> findAllByComuna();
 }

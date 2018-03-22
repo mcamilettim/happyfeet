@@ -72,6 +72,16 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+   <style>
+    input[type=number]::-webkit-inner-spin-button, 
+	input[type=number]::-webkit-outer-spin-button { 
+	    -webkit-appearance: none;
+	    -moz-appearance: none;
+	    appearance: none;
+	    margin: 0; 
+	}
+   </style>
 
 </head>
 
@@ -212,12 +222,14 @@
 											<table class="table table-hover">
 												<tr>
 													<th>Nombre</th>
+													<th>Costo</th>
 													<th>Foto</th>
 													<th></th>
 												</tr>
 												<c:forEach items="${patologias}" var="patologia">
 													<tr>
 														<td>${patologia.nombre}</td>
+														<td>${patologia.costo}</td>
 														<td><img src="${contextPath}/resources/imagenes/${patologia.foto}"></td>
 													</tr>
 												</c:forEach>
@@ -229,6 +241,15 @@
 																	<form:input type="text" path="nombre"
 																		class="form-control" autofocus="true" required="true"></form:input>
 																	<form:errors path="nombre"></form:errors>
+																</div>
+															</spring:bind></td>
+															<td></h2> <spring:bind path="costo">
+																<div
+																	class="form-group ${status.error ? 'has-error' : ''}">
+																
+																	<form:input type="number" path="costo"
+																		class="form-control" autofocus="true" required="true"></form:input>
+																	<form:errors path="costo"></form:errors>
 																</div>
 															</spring:bind></td>
 														<td><spring:bind path="nombre">

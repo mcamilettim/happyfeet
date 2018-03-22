@@ -3,12 +3,15 @@ package cl.camiletti.happyFeetWeb.web;
 import cl.camiletti.happyFeetWeb.model.Agenda;
 import cl.camiletti.happyFeetWeb.model.Atencion;
 import cl.camiletti.happyFeetWeb.model.Comuna;
+import cl.camiletti.happyFeetWeb.model.Evaluacion;
 import cl.camiletti.happyFeetWeb.model.Horario;
 import cl.camiletti.happyFeetWeb.model.Mensaje;
 import cl.camiletti.happyFeetWeb.model.Paciente;
 import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Podologo;
+import cl.camiletti.happyFeetWeb.model.Presupuesto;
 import cl.camiletti.happyFeetWeb.model.Solicitudatencion;
+import cl.camiletti.happyFeetWeb.model.Ubicacion;
 import cl.camiletti.happyFeetWeb.model.Usuario;
 import cl.camiletti.happyFeetWeb.repository.MensajeRepository;
 import cl.camiletti.happyFeetWeb.service.AgendaService;
@@ -28,6 +31,7 @@ import cl.camiletti.happyFeetWeb.util.Mail;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -241,15 +245,35 @@ public class PodologoController {
 	}
 
 	@RequestMapping(value = "/podologo/modificarSolicitud", method = RequestMethod.POST)
-	public String modificarSolicitud(@ModelAttribute("podologo") Podologo podologo,
+	public String modificarSolicitud(@RequestParam("comentario") String comentario,
+			@ModelAttribute("podologo") Podologo podologo,
 			@ModelAttribute("solicitudAtencion") Solicitudatencion solicitudAtencion, Model model,
-			@RequestParam("comentario") String comentario, @RequestParam("selectEstado") int idParam) {
-		solicitudAtencion.setParamEstadoSolicitudAtencion(new Parametro(idParam));
-		solicitudAtencionService.save(solicitudAtencion);
+			@RequestParam("selectEstado") int idParam) {
+		solicitudAtencion.setParamEstadoSolicitudAtencion(parametroService.findOne(idParam));
 		model.addAttribute("solicitudAtencion", solicitudAtencion);
 		model.addAttribute("mensaje", "Solicitud de atención modificada con exito");
-		List<Solicitudatencion> solicitudes = solicitudAtencionService
-				.findByParamEstadoSolicitudAtencion(new Parametro(12), podologo);
+
+		if (solicitudAtencion.getParamEstadoSolicitudAtencion().getValor().equals("Aceptada")) {
+			Agenda agenda = new Agenda();
+			Atencion atencion = new Atencion();
+			Presupuesto presupuesto = new Presupuesto();
+			presupuesto.setUbicacionLlegada(solicitudAtencion.getPaciente().getUbicacion());
+			presupuesto.setUbicacionPartida(solicitudAtencion.getPodologo().getUbicacion());
+			atencion.setUbicacion(solicitudAtencion.getPaciente().getUbicacion());
+			atencion.setPatologia(solicitudAtencion.getPatologia());
+			atencion.setPodologo(podologo);
+			agenda.setFotoPie(solicitudAtencion.getFotoPiePath());
+			agenda.setPaciente(solicitudAtencion.getPaciente());
+			agenda.setHorario(solicitudAtencion.getHorario());
+			agenda.setPaciente(solicitudAtencion.getPaciente());
+			agenda.setComentario(comentario);
+			agenda.setParamEstadoAgenda(parametroService.findOne(1));
+			atencion.setAgenda(agenda);
+			solicitudAtencionService.save(solicitudAtencion);
+			agendaService.save(agenda);
+			atencionService.save(atencion);
+		}
+		List<Solicitudatencion> solicitudes = solicitudAtencionService.findByParamEstadoSolicitudAtencion(new Parametro(12), podologo);
 		model.addAttribute("solicitudes", solicitudes);
 		return "podologo/verSolicitudesPendientes";
 	}
@@ -421,5 +445,17 @@ public class PodologoController {
 		agenda.setPaciente(solicitudAtencion.getPaciente());
 		return "podologo/atenciones";
 	}
-
+	
+	@RequestMapping(value = "/podologo/atencionesPendientes", method = RequestMethod.GET)
+	public String atencionesPendientes(Model model, @ModelAttribute("podologo") Podologo podologo) {
+		List<Atencion> atencionesAux = atencionService.findByPodologo(podologo);
+		ArrayList<Atencion> atenciones=new ArrayList();
+		for (int i = 0; i < atencionesAux.size(); i++) {
+			if(atencionesAux.get(i).getAgenda().getParamEstadoAgenda().getValor().equals("Pendiente")){
+				atenciones.add(atencionesAux.get(i));
+			}
+		}
+		model.addAttribute("atenciones", atenciones);
+		return "podologo/atenciones";
+	}	
 }

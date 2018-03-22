@@ -44,10 +44,12 @@
 			${mensaje}
 			<table>
 				<tr>
-					<td>Fecha-Hora Atencion</td><td>Patologia tratada</td><td>Comuna</td><td>Monto Cancelado</td><td>Detalle</td>
+					<td>Paciente</td><td>Rut Paciente</td><td>Fecha-Hora Atencion</td><td>Patologia tratada</td><td>Comuna</td><td>Monto Cancelado</td><td>Detalle</td>
 				</tr>
 				<c:forEach items="${atenciones}" var="atencion">
 					<tr>
+						<td> ${atencion.agenda.paciente.nombres} ${atencion.agenda.paciente.apellidos}</td>
+						<td> ${atencion.agenda.paciente.rut}</td>
 						<td> ${atencion.agenda.horario.fecha}-${atencion.agenda.horario.hora}</td>
 						<td> ${atencion.patologia.nombre}</td>
 						<td> ${paciente.nombres}</td>	

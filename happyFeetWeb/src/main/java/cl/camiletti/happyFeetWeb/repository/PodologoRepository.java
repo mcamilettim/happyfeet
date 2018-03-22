@@ -11,6 +11,6 @@ public interface PodologoRepository extends JpaRepository<Podologo, Long> {
 	  Podologo findByRut(String rut);
 	  List<Podologo> findAll();	 	
 	  void delete(Podologo podologo);	
-	  Podologo findByEmail(String email);
+	  Podologo findByEmail(String email);	
 }
 

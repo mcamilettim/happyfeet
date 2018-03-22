@@ -4,18 +4,17 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the podologo database table.
  * 
  */
 @Entity
-@NamedQuery(name="Podologo.findAll", query="SELECT p FROM Podologo p")
+@NamedQuery(name = "Podologo.findAll", query = "SELECT p FROM Podologo p")
 public class Podologo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String rut;
 
 	private String apellidos;
@@ -27,37 +26,35 @@ public class Podologo implements Serializable {
 	private String foto;
 
 	private String nombres;
-	
-	private String pathFotoPerfil;
 
-	//bi-directional many-to-one association to Atencion
-	@OneToMany(mappedBy="podologo", fetch=FetchType.EAGER)
+	// bi-directional many-to-one association to Atencion
+	@OneToMany(mappedBy = "podologo", fetch = FetchType.EAGER)
 	private List<Atencion> atencions;
 
-	//bi-directional many-to-one association to Horario
-	@OneToMany(mappedBy="podologo", fetch=FetchType.EAGER)
+	// bi-directional many-to-one association to Horario
+	@OneToMany(mappedBy = "podologo", fetch = FetchType.EAGER)
 	private List<Horario> horarios;
-	
-	//bi-directional many-to-one association to Parametro
+
+	// bi-directional many-to-one association to Parametro
 	@ManyToOne
-	@JoinColumn(name="paramEstadoPodologo_id")
+	@JoinColumn(name = "paramEstadoPodologo_id")
 	private Parametro paramEstadoPodologo;
 
-	//bi-directional many-to-one association to Parametro
+	// bi-directional many-to-one association to Parametro
 	@ManyToOne
-	@JoinColumn(name="paramSexo_id")
+	@JoinColumn(name = "paramSexo_id")
 	private Parametro paramSexo;
 
-	//bi-directional many-to-one association to Ubicacion
+	// bi-directional many-to-one association to Ubicacion
 	@ManyToOne
 	private Ubicacion ubicacion;
 
-	//bi-directional many-to-one association to Usuario
+	// bi-directional many-to-one association to Usuario
 	@ManyToOne
 	private Usuario usuario;
 
-	//bi-directional many-to-one association to Solicitudatencion
-	@OneToMany(mappedBy="podologo", fetch=FetchType.EAGER)
+	// bi-directional many-to-one association to Solicitudatencion
+	@OneToMany(mappedBy = "podologo", fetch = FetchType.EAGER)
 	private List<Solicitudatencion> solicitudatencions;
 
 	public Podologo() {
@@ -155,7 +152,6 @@ public class Podologo implements Serializable {
 		return horario;
 	}
 
-
 	public Parametro getParamEstadoPodologo() {
 		return this.paramEstadoPodologo;
 	}
@@ -208,14 +204,6 @@ public class Podologo implements Serializable {
 		solicitudatencion.setPodologo(null);
 
 		return solicitudatencion;
-	}
-
-	public String getPathFotoPerfil() {
-		return pathFotoPerfil;
-	}
-
-	public void setPathFotoPerfil(String pathFotoPerfil) {
-		this.pathFotoPerfil = pathFotoPerfil;
 	}
 
 }

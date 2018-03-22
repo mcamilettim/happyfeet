@@ -35,7 +35,7 @@ public class Paciente implements Serializable {
 
 	private String nombres;
 
-	private String pathFotoPerfil;
+ 
 
 	//bi-directional many-to-one association to Agenda
 	@OneToMany(mappedBy="paciente", fetch=FetchType.EAGER)
@@ -147,14 +147,7 @@ public class Paciente implements Serializable {
 		this.nombres = nombres;
 	}
 
-	public String getPathFotoPerfil() {
-		return this.pathFotoPerfil;
-	}
-
-	public void setPathFotoPerfil(String pathFotoPerfil) {
-		this.pathFotoPerfil = pathFotoPerfil;
-	}
-
+	 
 	public List<Agenda> getAgendas() {
 		return this.agendas;
 	}

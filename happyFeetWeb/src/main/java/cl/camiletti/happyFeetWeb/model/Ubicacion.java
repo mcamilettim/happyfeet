@@ -23,6 +23,8 @@ public class Ubicacion implements Serializable {
 	private String longitud;
 
 	private String nombre;
+	
+	private String pathFoto;
 
 	//bi-directional many-to-one association to Atencion
 	@OneToMany(mappedBy="ubicacion", fetch=FetchType.EAGER)
@@ -225,6 +227,14 @@ public class Ubicacion implements Serializable {
 
 	public void setComuna(Comuna comuna) {
 		this.comuna = comuna;
+	}
+
+	public String getPathFoto() {
+		return pathFoto;
+	}
+
+	public void setPathFoto(String pathFoto) {
+		this.pathFoto = pathFoto;
 	}
 
 }

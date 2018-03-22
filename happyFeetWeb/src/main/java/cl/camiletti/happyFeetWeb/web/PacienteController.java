@@ -98,7 +98,7 @@ public class PacienteController {
 		} else {
 			File fotoPerfil = fileManagerUtil.subirArchivo(fotoPerfilPath);
 			if(fotoPerfil!=null)
-			pacienteForm.setPathFotoPerfil(fotoPerfil.getAbsolutePath());
+			pacienteForm.setFoto(fotoPerfil.getAbsolutePath());
 			if (usuarioService.findByEmail(pacienteForm.getEmail()) == null) {
 				if (ubicacionService.findByNombre(pacienteForm.getUbicacion().getNombre()) == null) {
 					ubicacionService.save(pacienteForm.getUbicacion());

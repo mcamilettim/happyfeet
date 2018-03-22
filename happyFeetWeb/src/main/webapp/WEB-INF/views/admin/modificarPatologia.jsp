@@ -231,6 +231,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 										</spring:bind>
 										<spring:bind path="nombre">
 											<div class="form-group ${status.error ? 'has-error' : ''}">
+
 												<input type="file" name="fotoFile" required
 													accept=".png, .jpg, .jpeg">
 											</div>

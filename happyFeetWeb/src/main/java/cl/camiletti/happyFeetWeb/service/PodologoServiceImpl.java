@@ -37,4 +37,10 @@ public class PodologoServiceImpl implements PodologoService{
 	public Podologo findByEmail(String email) {
 		return podologoRepository.findByEmail(email);
 	}
+
+	@Override
+	public List<Podologo> findAllByComuna() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
