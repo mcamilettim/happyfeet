@@ -35,7 +35,7 @@ public class PodologoControllerRest {
 		List<Podologo> podologos=new ArrayList();
 		
 		for (Ubicacion ubicacion : ubicaciones) {
-			for (Podologo podologo : ubicacion.getPodologos()) {
+			for (Podologo podologo : ubicacion.getPodologos())  {
 				Podologo podoAux=new Podologo();
 				podoAux.setNombres(podologo.getNombres());
 				podoAux.setRut(podologo.getRut());
