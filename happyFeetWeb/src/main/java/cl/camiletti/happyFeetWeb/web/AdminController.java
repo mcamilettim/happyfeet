@@ -19,6 +19,7 @@ import cl.camiletti.happyFeetWeb.service.UsuarioService;
 import cl.camiletti.happyFeetWeb.util.DateUtil;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 import cl.camiletti.happyFeetWeb.util.Mail;
+import cl.camiletti.happyFeetWeb.util.Seccion;
 
 import java.io.File;
 import java.io.IOException;
@@ -147,9 +148,9 @@ public class AdminController {
 		} else {
 			Mail mail = new Mail(env);
 			if (archivo != null) {
-				File file = fileManagerUtil.subirArchivo(archivo);
+				String file = fileManagerUtil.subirArchivo(archivo,Seccion.ADMIN,pacienteForm.getRut());
 				List<String> archivos = new ArrayList<String>();
-				archivos.add(file.getName());
+				archivos.add(file);
 				mail.sendEmailSolicitudPaciente(env.getProperty("emails.admins"), archivos, null);
 			}
 

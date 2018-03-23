@@ -1,5 +1,7 @@
 package cl.camiletti.happyFeetWeb.web;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +22,7 @@ import cl.camiletti.happyFeetWeb.model.Podologo;
 import cl.camiletti.happyFeetWeb.model.Ubicacion;
 import cl.camiletti.happyFeetWeb.service.ComunaService;
 import cl.camiletti.happyFeetWeb.service.PodologoService;
+import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 
 @RestController
 @RequestMapping("/servicesPodologo")
@@ -37,7 +40,13 @@ public class PodologoControllerRest {
 		for (Ubicacion ubicacion : ubicaciones) {
 			for (Podologo podologo : ubicacion.getPodologos())  {
 				Podologo podoAux=new Podologo();
+				try {
+					podoAux.setFoto(FileManagerUtil.encodeFileToBase64Binary(FileManagerUtil.ROOT_PATH+File.separator+podologo.getFoto()));
+				} catch (IOException e) {
+					podoAux.setFoto("");
+				}
 				podoAux.setNombres(podologo.getNombres());
+				podoAux.setApellidos(podologo.getApellidos());
 				podoAux.setRut(podologo.getRut());
 				Ubicacion ubicacionAux=new Ubicacion();
 				ubicacionAux.setLatitud(ubicacion.getLatitud());

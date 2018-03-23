@@ -38,6 +38,7 @@ import cl.camiletti.happyFeetWeb.service.UsuarioService;
 import cl.camiletti.happyFeetWeb.util.DateUtil;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 import cl.camiletti.happyFeetWeb.util.Mail;
+import cl.camiletti.happyFeetWeb.util.Seccion;
 
 @Controller
 @SessionAttributes("sessionUser")
@@ -96,9 +97,10 @@ public class PacienteController {
 		if (bindingResult.hasErrors()) {
 
 		} else {
-			File fotoPerfil = fileManagerUtil.subirArchivo(fotoPerfilPath);
+			pacienteForm.setRut(pacienteForm.getRut().replace(".", ""));
+			String fotoPerfil = fileManagerUtil.subirArchivo(fotoPerfilPath,Seccion.PACIENTE,pacienteForm.getRut());
 			if(fotoPerfil!=null)
-			pacienteForm.setFoto(fotoPerfil.getAbsolutePath());
+			pacienteForm.setFoto(fotoPerfil);
 			if (usuarioService.findByEmail(pacienteForm.getEmail()) == null) {
 				if (ubicacionService.findByNombre(pacienteForm.getUbicacion().getNombre()) == null) {
 					ubicacionService.save(pacienteForm.getUbicacion());
@@ -183,9 +185,9 @@ public class PacienteController {
 				model.addAttribute("mensaje", "Sus datos fueron guardados con éxito");
 
 				if (!archivo.isEmpty()) {
-					File file = fileManagerUtil.subirArchivo(archivo);
+					String file = fileManagerUtil.subirArchivo(archivo,Seccion.PACIENTE,pacienteForm.getRut());
 					List<String> archivos = new ArrayList<String>();
-					archivos.add(file.getName());
+					archivos.add(file);
 					mail.sendEmailSolicitudPaciente(env.getProperty("emails.admins"), archivos, paciente);
 				}
 			}

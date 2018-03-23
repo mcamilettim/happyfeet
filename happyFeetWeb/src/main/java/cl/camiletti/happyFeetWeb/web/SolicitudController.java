@@ -15,6 +15,7 @@ import cl.camiletti.happyFeetWeb.service.UbicacionService;
 import cl.camiletti.happyFeetWeb.service.UsuarioService;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 import cl.camiletti.happyFeetWeb.util.Mail;
+import cl.camiletti.happyFeetWeb.util.Seccion;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -83,11 +84,11 @@ public class SolicitudController {
     public String solicitud(@ModelAttribute("solicitudForm") Solicitud solicitud, BindingResult bindingResult, Model model, @RequestParam("carnet") MultipartFile carnet, @RequestParam("titulo") MultipartFile titulo) throws IOException {
     	
     	
-    	File fotoCarnet = fileManagerUtil.subirArchivo(carnet);
-    	File fotoTitulo = fileManagerUtil.subirArchivo(titulo);
+    	String fotoCarnet = fileManagerUtil.subirArchivo(carnet, Seccion.SOLICITUDES,solicitud.getRutPodologo());
+    	String fotoTitulo = fileManagerUtil.subirArchivo(titulo,Seccion.SOLICITUDES,solicitud.getRutPodologo());
     	
-    	solicitud.setCarnet(fotoCarnet.getName());
-    	solicitud.setTitulo(fotoTitulo.getName());
+    	solicitud.setCarnet(fotoCarnet);
+    	solicitud.setTitulo(fotoCarnet);
     	solicitud.setParamEstadoSolicitud(new Parametro(12));
     	ubicacionService.save(solicitud.getUbicacion());
     	solicitud.setUbicacion(ubicacionService.findByNombre(solicitud.getUbicacion().getNombre()));
@@ -95,8 +96,8 @@ public class SolicitudController {
     	
     	Mail mail = new Mail(env);
     	List<String> archivos = new ArrayList<String>();
-    	archivos.add(fotoCarnet.getName());
-    	archivos.add(fotoTitulo.getName());
+    	archivos.add(fotoCarnet);
+    	archivos.add(fotoTitulo);
     	mail.sendEmailSolicitudPodologo(solicitud.getEmail(), solicitud.getNombres() + solicitud.getApellidos(), "", "", null, solicitud);
     	mail.sendEmailSolicitudPodologoAdmin(env.getProperty("emails.admins"), solicitud.getNombres(), "", "", archivos, solicitud);
     	model.addAttribute("exito", "Solicitud enviada con éxito.");

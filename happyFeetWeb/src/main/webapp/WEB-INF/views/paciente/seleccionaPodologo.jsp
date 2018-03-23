@@ -171,20 +171,40 @@
 								<strong>Seleccion de Podologo</strong>
 							</div>
 							<br>
+							<div class="container-fluid">
+								<div class="table-responsive">
+								 <table class="table table-hover">
+									<tr>
+										<th><div align="center">Foto de lo que usted dice tener</div></th>
+
+									</tr>
+									<tr>
+										<td><div align="center">
+												<img style="width: 150px; height: 150px;"
+													src="${contextPath}/resources/imagenes/${patologia.foto}">
+											</div></td>
+
+									</tr>
+								</table>
+								</div>
+							</div>
 							<div align="center">
 								<p>De acuerdo a la distancia del podologo seleccionado y
 									usted se sacara el monto del viaje</p>
 								<br>
-							</div>
+ 
+	 
 							<div class="container-fluid">
 								<div class="table-responsive">
-								<button onclick="botonObtenerDireccionDinamica()">Obtener imagen dinámica de direccion por GPS</button>
-									<div id="mapa2" style="width: 700px; height: 500px;">
-									
-									</div>
-									<p><h2 id="total"></h2></p>
+									<div id="mapa2" class="col-lg-12" style="height: 500px"></div>
+									<p>
+									<h2 id="total"></h2>
+									</p>
 								</div>
 							</div>
+							</div>
+								<br>
+	
 							<br> <br>
 						</div>
 					</div>
@@ -211,21 +231,33 @@
 		<script type="text/javascript"
 			src="http://maps.googleapis.com/maps/api/js?v3&libraries=places&key=AIzaSyAVgzIQhGvX45D1OGk-De6fgj-12xDuZjU
 			">
+			
 		</script>
 		<script type="text/javascript">
+		//llamada ajax para traer direcciones
+        function getPodologosPorComuna() {
+           $.ajax({
+               url: "/servicesPodologo/podologo/getPodologosPorComuna?idComuna=1",
+               type: "get",
+               success: function(podologos) {
+                    botonObtenerDireccionDinamica(podologos);              
+               }
+           });
+		}
+		
 		//CODIGO PARA IMAGEN DINÁMICA
 		var divMapa2 = document.getElementById('mapa2');
 		
-		function botonObtenerDireccionDinamica() {
-			navigator.geolocation.getCurrentPosition(geoDinOk, geoDinError);
+		function botonObtenerDireccionDinamica(podologos) {
+			//navigator.geolocation.getCurrentPosition(geoDinOk, geoDinError);
+			geoDinOk(podologos);
 		}
 		
-		
-		function geoDinOk(respuesta) {
-			//divMapa.innerHTML = 'Autorizado.'
-			var latitud = respuesta.coords.latitude;
-			var longitud = respuesta.coords.longitude;
-			
+			//Coordenadas ORIGEN
+		var latitud = "-33.5253895";
+		var longitud = "-70.76047649999998";
+		var gMapa = null;
+		function geoDinOk(podologos) {
 			var gLatLon = new google.maps.LatLng(latitud,longitud);
 			
 			//configuracion de mapa
@@ -234,105 +266,139 @@
 				center: gLatLon
 			}
 			//pintar el mapa en el DIV con la configuracion de objConfig
-			var gMapa = new google.maps.Map(divMapa2, objConfig);
+			gMapa = new google.maps.Map(divMapa2, objConfig);
 			
 			//MARKER = MARCA DENTRO DEL MAPA
 			//EL MARCADOR EXISTA EN LA POSICION DEL USUARIO Y DENTRO DEL MAPA
 			var objConfigMarker = {
 				position: gLatLon,
 				map: gMapa,
-				title: "Esta es su dirección actual."
+				title: "Direccion ORIGEN"
 			}
 			//SE AGREGA AL MAPA el MARKER "objConfigMarker"
 			var gMarker = new google.maps.Marker(objConfigMarker);
-			
-			
-			
-			
-			//Obtener direccion en base a direccion escrita por usuario
-			//'Santa Victoria 492, Santiago'
-			var gCoder = new google.maps.Geocoder();
-			var objDireccion = {
-				address: 'Santa Victoria 492, Santiago'
+			// nombre, latitud, longitud, id
+			var aMarkers = [];
+			console.log(podologos);
+			 for (var i = 0; i < podologos.length; i++) {
+				aMarkers.push([podologos[i].nombres +" "+ podologos[i].apellidos, podologos[i].ubicacion.latitud, podologos[i].ubicacion.longitud, i, podologos[i].foto]);
 			}
-			gCoder.geocode(objDireccion, fnCoder);
-			
-			
-			function fnCoder(datos) {
-				var coordenadas = datos[0].geometry.location;
-				var config = {
-					map: gMapa,
-					animation: google.maps.Animation.DROP,
-					position: coordenadas,
-					title: 'Casa de Pablo'
-				}
-				var gMarkerDin = new google.maps.Marker(config);
-				gMarkerDin.setIcon('');
-
-				var objHtml = {
-					content: '<div style="height:150px; width:300px;"><h2>SERVEL</h2><h3>Servicio Electoral de Chile</h3><p><a href="www.servel.cl">www.servel.cl</a></p></div>'
-				}
-
-				var gInfoWindow = new google.maps.InfoWindow(objHtml);
-				
-				google.maps.event.addListener(gMarkerDin,'click', function (){
-					gInfoWindow.open(gMapa, gMarkerDin);
-				});
-				
-				var objConfigDR = {
-					map: gMapa,
-					supressMarkers: true
-				};
-				var objConfigDS = {
-					origin: gLatLon,
-					destination: 'Santa Victoria 492, Santiago',
-					travelMode: google.maps.TravelMode.DRIVING,
-					drivingOptions: {
-						departureTime: new Date(Date.now())
-					}
-				};
-				//obtener coordenadas
-				var ds = new google.maps.DirectionsService( );
-				//traduce coordenadas a ruta visible
-				var dr = new google.maps.DirectionsRenderer(objConfigDR );
-				
-				ds.route(objConfigDS, rutear);
-				
-				function rutear(resultados,status) {
-					//mostrar ruta entre A y B
-					//    OK indica que la respuesta contiene un DirectionsResult válido.
-					//    NOT_FOUND indica que no se pudo geocodificar al menos a una de las ubicaciones especificadas en el origen, el destino o los waypoints de la solicitud.
-					//    ZERO_RESULTS indica que no fue posible hallar una ruta entre el origen y el destino.
-					//   MAX_WAYPOINTS_EXCEEDED indica que se proporcionaron demasiados campos DirectionsWaypoint en DirectionsRequest. Consulta la sección sobre límites de waypoints más adelante.
-					//    INVALID_REQUEST indica que el DirectionsRequest proporcionado no fue válido. Estos códigos de error se deben con mayor frecuencia a la falta un origen o un destino en las solicitudes, o bien a la inclusión de waypoints en las mismas.
-					//    OVER_QUERY_LIMIT indica que la página web ha enviado demasiadas solicitudes dentro del período de tiempo permitido.
-					//   REQUEST_DENIED indica que la página web no puede usar el servicio de indicaciones.
-					//    UNKNOWN_ERROR indica que no se pudo procesar una solicitud de indicaciones debido a un error en el servidor. La solicitud puede tener éxito si realizas un nuevo intento.
-
-						
-					if(status == 'OK') {
-						dr.setDirections(resultados);
-						var total = 0;
-						var myroute = resultados.routes[0];
-						for (var i = 0; i < myroute.legs.length; i++) {
-							total += myroute.legs[i].distance.value;
-						}
-						total = total / 1000;
-						document.getElementById('total').innerHTML = total + ' kms';
-					} else{
-						alert('Error: '+status);
-					}
-				}
-			}
-			
-			
+			console.log(aMarkers);
+		 
+			setearMarcadores(gMapa, gLatLon, aMarkers);	
 		}
-		
+			var arrayMarkers = [];
+			var arrayDR = [];
+			var arrayInfoMarkers = [];
+			var currentMarker = null;
+			var currentPointsResult = null;
+			function setearMarcadores(gMapa, gLatLonOrigin, aMarkers) {
+				
+				for (var i = 0; i < aMarkers.length; i++) {
+					var destino = aMarkers[i];
+					var gLatLon = new google.maps.LatLng(destino[1], destino[2]);
+					
+					
+					
+					//creando icono
+					var icono = {
+    						url: 'data:image/png;base64,'+destino[4], // url
+   							scaledSize: new google.maps.Size(50, 50), // scaled size
+    						origin: new google.maps.Point(0,0), // origin
+   							anchor: new google.maps.Point(0, 0) // anchor
+						};
+					
+					
+					var gMarkerDin = new google.maps.Marker({
+					  position: gLatLon,
+					  map: gMapa,
+					  icon: icono,
+					  title: destino[0],
+					  zIndex: destino[3]
+					});
+					arrayMarkers[destino[3]] = gMarkerDin;
+					
+					console.log(aMarkers[i][4]);
+					var objHtml = {
+						content: '<div style="height:150px; width:300px;"><h3> Cuido mis pies </h3><h4>'+aMarkers[i][0]+'</h4><p><a href="www.cuidomispies.cl">www.cuidomispies.cl</a></p>  </div>'
+					}
+
+					var gInfoWindow = new google.maps.InfoWindow(objHtml);
+					arrayInfoMarkers[i] = gInfoWindow;
+					
+					google.maps.event.addListener(gMarkerDin,'click', (function(gMarkerDin,objHtml,gInfoWindow){
+						return function() {
+							arrayDR.forEach(function(entry) {
+								entry.setMap(null);
+							});
+							arrayInfoMarkers.forEach(function(entry) {
+								entry.close();
+							});
+							
+						    gInfoWindow.open(gMapa,gMarkerDin);
+							currentMarker = gMarkerDin;
+							
+							
+							var objConfigDR = {
+								map: gMapa,
+								supressMarkers: true
+							};
+								
+							var objConfigDS = {
+								origin: gLatLonOrigin,
+								destination: gMarkerDin.getPosition(),
+								travelMode: google.maps.TravelMode.DRIVING,
+								drivingOptions: {
+									departureTime: new Date(Date.now())
+								}
+							};
+							//obtener coordenadas
+							var ds = new google.maps.DirectionsService( );
+							//traduce coordenadas a ruta visible
+							var dr = new google.maps.DirectionsRenderer(objConfigDR );
+							arrayDR[i] = dr;
+							ds.route(objConfigDS, rutear);	
+							function rutear(resultados,status) {
+								if(status == 'OK') {
+									dr.setDirections(resultados);
+									var total = 0;
+									var myroute = resultados.routes[0];
+									currentPointsResult = resultados.routes[0].overview_polyline;
+									for (var i = 0; i < myroute.legs.length; i++) {
+										total += myroute.legs[i].distance.value;
+									}
+									total = total / 1000;
+									document.getElementById('total').innerHTML = total + ' kms';
+								} else{
+									alert('Error: '+status);
+								}
+							}
+							
+							
+						};
+					})(gMarkerDin,objHtml,gInfoWindow));
+					
+				}
+			}
+			
+		function obtenerImagen() {
+			document.getElementById('error').innerHTML = "";
+			if(currentPointsResult == null){
+				document.getElementById('error').innerHTML = "No ha seleccionado destino.";
+			}else {
+				var url = "http://maps.googleapis.com/maps/api/staticmap?sensor=false&"+
+						"&zoom=14&size=700x500&markers=color:blue%7&path=enc:"+encodeURI(currentPointsResult);	
+				document.getElementById('mapa').innerHTML = '<img src="'+url+'" />';
+			}
+				
+							
+		}					
 		function geoDinError() {
 			divMapa2.innerHTML = 'GPS No autorizado.'
-		}	
+		}
+		
 		//FIN CODIGO PARA IMAGEN DINÁMICA
-
+ getPodologosPorComuna();
 	</script>
 </body>
 

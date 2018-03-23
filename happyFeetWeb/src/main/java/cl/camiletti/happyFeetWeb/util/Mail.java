@@ -165,7 +165,7 @@ public class Mail {
          if(archivos != null)
          for (String archivo : archivos) {
              messageBodyPart = new MimeBodyPart();
-             DataSource source = new FileDataSource(System.getProperty("user.dir") + File.separator + "DOCS" + File.separator + archivo);
+             DataSource source = new FileDataSource(FileManagerUtil.ROOT_PATH + File.separator + FileManagerUtil.DIR_SINGLE + File.separator + archivo);
              messageBodyPart.setDataHandler(new DataHandler(source));
              messageBodyPart.setFileName(archivo);
              multipart.addBodyPart(messageBodyPart);

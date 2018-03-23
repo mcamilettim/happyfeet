@@ -25,6 +25,7 @@ public class PatologiaServiceImpl implements PatologiaService{
 
 	@Override
 	public List<Patologia> findAll() {
+		
 		return patologiaRepository.findAll();
 	}
 
