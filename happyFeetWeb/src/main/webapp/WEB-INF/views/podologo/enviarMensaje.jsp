@@ -199,7 +199,7 @@
 								<div align="center">
 									<img class="img-responsive"
 										style="width: 300px; height: 300px;"
-										src="${contextPath}/resources/imagenes/${paciente.pathFotoPerfil}">
+										src="${contextPath}/resources/imagenes/${paciente.foto}">
 								</div>
 							</div>
 							<br>

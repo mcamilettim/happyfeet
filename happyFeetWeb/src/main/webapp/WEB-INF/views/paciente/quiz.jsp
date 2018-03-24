@@ -72,7 +72,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+ 
 </head>
 
 <body>
@@ -100,12 +100,9 @@
 						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-messages">
-						<li><a href="#">
-								<div>
-									<strong></strong> <span class="pull-right text-muted"> <em>Ahora</em>
-									</span>
-								</div>
-								<div>Sin mensajes nuevos.</div>
+						<li><a href="#"> <strong></strong> <span
+								class="pull-right text-muted"> <em>Ahora</em>
+							</span> Sin mensajes nuevos.
 						</a></li>
 						<li class="divider"></li>
 						<li><a class="text-center"
@@ -113,7 +110,7 @@
 									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
 					</ul> <!-- /.dropdown-messages --></li>
-				</li>
+
 				<!-- /.dropdown -->
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
@@ -135,8 +132,17 @@
 					<ul class="nav" id="side-menu">
 						<li class="sidebar-search">
 							<div class="input-group custom-search-form">
-								<img src="${contextPath}/resources/img/sinfoto.jpg"
-									class="img-responsive" style="width: 200px;"> <br>
+								<c:choose>
+									<c:when test="${empty paciente.foto}">
+										<img src="${contextPath}/resources/img/sinfoto.jpg"
+											class="img-responsive" style="width: 200px;">
+									</c:when>
+									<c:otherwise>
+										<img src="${contextPath}/resources/imagenes/${paciente.foto}"
+											class="img-responsive" style="width: 200px;">
+									</c:otherwise>
+								</c:choose>
+								<br>
 								<div align="center">
 									<span class="text-info text-center"><b>${paciente.nombres}
 											${paciente.apellidos}</b></span> <span class="text-info">Paciente</span>
@@ -172,54 +178,62 @@
 							</div>
 							<br>
 							<div align="center">
-								<p>Antes de que solicites una hora, necesitamos saber cual
-									es tu problema, por favor, selecciona una de estas alternativas</p>
-								<br>
+								<p
+									style="text-align: justify; padding-left: 10px; padding-right: 10px">Estimado
+									Paciente, antes de que solicite una hora, necesitamos saber
+									cual es tu problema, por favor, seleccione una de estas
+									alternativas presionando el Botón...</p>
+								<button type="button" class="btn btn-warning">Esto Tengo</button>		 
 							</div>
-							<div class="container-fluid">
-								<div class="table-responsive">
-									<table class="table table-hover">
-										<tr>
-											<th><div align="center">Patologia</div></th>
-											<th><div align="center">Click en la Foto</div></th>
-										</tr>
-										<c:forEach items="${patologias}" var="patologia">
-											<tr>
-												<td align="center">${patologia.nombre}</td>
-												<td align="center"><img class="img-responsive"
-													style="width: 150px; height: 150px;"
-													src="${contextPath}/resources/imagenes/${patologia.foto}" /><a
-													href="${contextPath}/paciente/selectPatologia?id=${patologia.id}">Esto es lo que tengo</a></td>
-
-											</tr>
-										</c:forEach>
-									</table>
-								</div>
-							</div>
-							<br>
-							<br>
+						 
 						</div>
+					</div></div>
 					</div>
-					<!-- /.row -->
+					<div class="container-fluid">
+					<div class="row">
+					<div class="col-sm-12" >
+					<div class="panel panel-default">
+								<table class="table table-hover">
+									<tr>
+										<th style="background-color: #F5F5F5"><div align="left">Patologia</div></th>
+										<th style="background-color: #F5F5F5"><div align="center">Click
+												en la Foto</div></th>
+									</tr>
+									<c:forEach items="${patologias}" var="patologia">
+										<tr>
+											<td><div>
+													<strong>${patologia.nombre}:</strong>
+													<p	style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">${patologia.descripcion}</p>
+												</div></td>
+											<td><img class="img-responsive"
+												style="width: 110px; height: 110px; padding-top: 10px;"
+												src="${contextPath}/resources/imagenes/${patologia.foto}" />
+												<button
+													onclick="location.href='${contextPath}/paciente/selectPatologia?id=${patologia.id}'"
+													type="button" class="btn btn-warning">Esto Tengo</button></td>
+										</tr>
+									</c:forEach>
+								</table>
+							</div></div>
 				</div>
 			</div>
 		</div>
+	 </div>
 
 
+	<!-- jQuery -->
+	<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 
-		<!-- jQuery -->
-		<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+	<!-- Bootstrap Core JavaScript -->
+	<script
+		src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 
-		<!-- Bootstrap Core JavaScript -->
-		<script
-			src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Metis Menu Plugin JavaScript -->
+	<script
+		src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
 
-		<!-- Metis Menu Plugin JavaScript -->
-		<script
-			src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
-
-		<!-- Custom Theme JavaScript -->
-		<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+	<!-- Custom Theme JavaScript -->
+	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
 </body>
 
 </html>

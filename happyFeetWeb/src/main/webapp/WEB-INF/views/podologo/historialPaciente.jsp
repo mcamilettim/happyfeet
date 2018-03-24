@@ -132,7 +132,7 @@
 					<ul class="nav" id="side-menu">
 						<li class="sidebar-search">
 							<div class="input-group custom-search-form">
-								<img src="${contextPath}/resources/img/sinfoto.jpg"
+								<img src="${contextPath}/resources/imagenes/${podologo.foto}"
 									class="img-responsive" style="width: 200px;"> <br>
 								<div align="center">
 									<span class="text-info text-center"><b>${podologo.nombres}
@@ -199,7 +199,7 @@
 										<td><div align="center">
 												<img class="img-responsive"
 													style="width: 300px; height: 300px;"
-													src="${contextPath}/resources/imagenes/${paciente.pathFotoPerfil}">
+													src="${contextPath}/resources/imagenes/${paciente.foto}">
 											</div></td>
 
 									</tr>

@@ -124,7 +124,7 @@
                     <ul class="nav" id="side-menu">
                     	<li class="sidebar-search">
                             <div class="input-group custom-search-form">
-                                <img src="${contextPath}/resources/imagenes/${podologo.foto}" class="img-responsive" style="width: 200px;">
+                                <img src="${contextPath}/resources/img/sinfoto.jpg" class="img-responsive" style="width: 200px;">
                                  <br>
                                 <center><span class="text-info text-center"><b>${podologo.nombres} ${podologo.apellidos}</b></span></center>
                                 <center><span class="text-info">Podólogo</span></center>
@@ -178,54 +178,98 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Buscar Pacientes
+                            Modificar mis datos
                         </div>
-                        <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div class="table-responsive">
-                             <form method="POST" action="buscarPacientes">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                        <form:form method="POST" modelAttribute="podologoForm"  action="modificardatos" role="form" enctype="multipart/form-data">
+								        <spring:bind path="rut">
+								            <div class="form-group ${status.error ? 'has-error' : ''}">
+								            Rut
+								                <form:input type="text" path="rut" class="form-control" readonly="readonly" required="true"></form:input>
+								                <form:errors path="rut"></form:errors>
+								            </div>
+								        </spring:bind>
+								
+								        <spring:bind path="nombres">
+								            <div class="form-group ${status.error ? 'has-error' : ''}">
+								            Nombres
+								                <form:input type="text" path="nombres" class="form-control" disabled="" required="true" ></form:input>
+								                <form:errors path="nombres"></form:errors>
+								            </div>
+								        </spring:bind>
+								        
+								        <spring:bind path="apellidos">
+								            <div class="form-group ${status.error ? 'has-error' : ''}">
+								            Apellidos
+								                <form:input type="text" path="apellidos" class="form-control" readonly="readonly" required="true"></form:input>
+								                <form:errors path="apellidos"></form:errors>
+								            </div>
+								        </spring:bind>
+								        
+								         <spring:bind path="ubicacion">
+								            <div class="form-group ${status.error ? 'has-error' : ''}">
+								            Dirección
+								                <form:input type="text" path="ubicacion.nombre" class="form-control" required="true"></form:input>
+								                <form:errors path="ubicacion"></form:errors>
+								            </div>
+								        </spring:bind>
+								        
+								        <spring:bind path="ubicacion.comuna">
+								            <div class="form-group ${status.error ? 'has-error' : ''}">
+								            Comuna: 
+								            	<form:select path="ubicacion.comuna.id">  
+												   <form:options items="${comunas}" itemLabel="nombre" itemValue="id" required="true" class="form-control"/>
+												 </form:select>                
+								                <form:errors path="ubicacion"></form:errors>
+								            </div>
+								        </spring:bind>
+								    	  <spring:bind path="fono">
 								           <div class="form-group ${status.error ? 'has-error' : ''}">
-								        	Buscar Por   
-								        	<select name="selectBuscar">			
-												<option value="Nombre">Nombre</option>
-												<option value="Rut">Rut</option>
-											</select><br/>       
+								           Teléfono
+								               <form:input type="text" path="fono" class="form-control" required="true"></form:input>
+								               <form:errors path="fono"></form:errors>
 								           </div>
-										<div class="input-group custom-search-form">
-                                			<input class="form-control" name="textBuscar" placeholder="Buscar" type="text">
-			                                <span class="input-group-btn">
-			                                <button class="btn btn-default" type="submit">
-			                                    <i class="fa fa-search"></i>
-			                                </button>
-			                            </span>
-			                            </div>
-										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-							 </form>
-										<div>
-											${mensaje}
-											 <table class="table table-hover">
-												<tr>
-													<th>Nombre Completo</th><th>Edad</th><th>Comuna</th><th>Ultima atención</th><th>Historial</th>
-												</tr>
-												<c:forEach items="${pacientes}" var="paciente">
-													<tr>
-														<td> ${paciente.nombres}  ${paciente.apellidos}</td>
-														<td> ${paciente.edad}</td>
-														<td> ${paciente.ubicacion.comuna.nombre}</td>	
-														<td> ${paciente.fechaUltimaAtencion}</td>
-														<td> <a href="${contextPath}/podologo/historialPaciente?rut=${paciente.rut}">Ver Atención</a></td>			   
-												    </tr>
-												</c:forEach>
-											</table>
-										</div>
-				                            </div>
-				                            <!-- /.table-responsive -->
-				                        </div>
-				                        <!-- /.panel-body -->
-				                    </div>
-				                    <!-- /.panel -->
-				                </div>
-                                 </div>
+									    </spring:bind>
+									    <spring:bind path="paramSexo">
+									            <div class="form-group ${status.error ? 'has-error' : ''}">
+									            Sexo
+								            	<form:select path="paramSexo.id">  
+												   <form:options items="${sexos}" itemLabel="valor" itemValue="id" required="true" class="form-control"/>
+											    </form:select>          	            
+									                <form:errors path="paramSexo"></form:errors>
+									            </div>
+									     </spring:bind>
+									     
+									     <spring:bind path="fono">
+								           <div class="form-group ${status.error ? 'has-error' : ''}">
+								           Email
+								               <form:input type="email" path="email" class="form-control" required="true" readonly="readonly"></form:input>
+								               <form:errors path="email"></form:errors>
+								           </div>
+									    </spring:bind>
+									    
+									    <spring:bind path="usuario">
+								           <div class="form-group ${status.error ? 'has-error' : ''}">
+								           Password
+								               <form:input type="password" path="usuario.password" class="form-control" required="true" ></form:input>
+								               <form:errors path="usuario.password"></form:errors>
+								           </div>
+									    </spring:bind>
+									    
+									    <spring:bind path="usuario">
+								           <div class="form-group ${status.error ? 'has-error' : ''}">
+								           Confirmar Password
+								               <form:input type="password" path="usuario.passwordConfirm" class="form-control"  required="true" ></form:input>
+								               <form:errors path="usuario.passwordConfirm"></form:errors>
+								           </div>
+									    </spring:bind>
+
+								   		 <button class="btn btn-lg btn-primary btn-block" type="submit">Guardar</button>
+
+								    </form:form>
+                                </div>
                                 <!-- /.col-lg-6 (nested) -->
                             </div>
                             <!-- /.row (nested) -->

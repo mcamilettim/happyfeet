@@ -21,6 +21,10 @@ public class Evaluacion implements Serializable {
 	private String comentario;
 
 	private int valor;
+	
+	private int rutEmisor;
+	
+	private int rutReceptor;
 
 	//bi-directional many-to-one association to Atencion
 	@OneToMany(mappedBy="evaluacion", fetch=FetchType.EAGER)
@@ -73,6 +77,22 @@ public class Evaluacion implements Serializable {
 		atencion.setEvaluacion(null);
 
 		return atencion;
+	}
+
+	public int getRutEmisor() {
+		return rutEmisor;
+	}
+
+	public void setRutEmisor(int rutEmisor) {
+		this.rutEmisor = rutEmisor;
+	}
+
+	public int getRutReceptor() {
+		return rutReceptor;
+	}
+
+	public void setRutReceptor(int rutReceptor) {
+		this.rutReceptor = rutReceptor;
 	}
 
 }

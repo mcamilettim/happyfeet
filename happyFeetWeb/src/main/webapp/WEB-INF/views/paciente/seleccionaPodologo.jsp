@@ -79,7 +79,7 @@
 
 	<div id="wrapper">
 
-		<!-- Navigation -->
+	<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
@@ -100,12 +100,9 @@
 						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-messages">
-						<li><a href="#">
-								<div>
-									<strong></strong> <span class="pull-right text-muted"> <em>Ahora</em>
-									</span>
-								</div>
-								<div>Sin mensajes nuevos.</div>
+						<li><a href="#"> <strong></strong> <span
+								class="pull-right text-muted"> <em>Ahora</em>
+							</span> Sin mensajes nuevos.
 						</a></li>
 						<li class="divider"></li>
 						<li><a class="text-center"
@@ -113,7 +110,7 @@
 									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
 					</ul> <!-- /.dropdown-messages --></li>
-				</li>
+
 				<!-- /.dropdown -->
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
@@ -135,8 +132,17 @@
 					<ul class="nav" id="side-menu">
 						<li class="sidebar-search">
 							<div class="input-group custom-search-form">
-								<img src="${contextPath}/resources/img/sinfoto.jpg"
-									class="img-responsive" style="width: 200px;"> <br>
+								<c:choose>
+									<c:when test="${empty paciente.foto}">
+										<img src="${contextPath}/resources/img/sinfoto.jpg"
+											class="img-responsive" style="width: 200px;">
+									</c:when>
+									<c:otherwise>
+										<img src="${contextPath}/resources/imagenes/${paciente.foto}"
+											class="img-responsive" style="width: 200px;">
+									</c:otherwise>
+								</c:choose>
+								<br>
 								<div align="center">
 									<span class="text-info text-center"><b>${paciente.nombres}
 											${paciente.apellidos}</b></span> <span class="text-info">Paciente</span>
@@ -162,6 +168,32 @@
 
 		<!-- Page Content -->
 		<div id="page-wrapper">
+			<br>
+		 	<div class="container-fluid">
+		 	<div class="row">
+					<div class="col-lg-12" >
+					<div class="panel panel-default">
+							<table class="table table-hover">
+								<tr>
+									<th style="background-color: #F5F5F5"><div align="left">Patologia</div></th>
+									<th style="background-color: #F5F5F5"><div align="center">Foto</div></th>
+								</tr>
+
+								<tr>
+									<td><strong>${patologia.nombre}</strong></td>
+									<td><img class="img-responsive"
+										style="width: 110px; height: 110px;"
+										src="${contextPath}/resources/imagenes/${patologia.foto}" /></td>
+								</tr>
+								<tr>
+									<td colspan="2"><strong>Descripción: </strong>
+									<p style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">${patologia.descripcion}
+									<br><strong>Tratar esta Patología tiene un precio Base de:  $ ${patologia.costo} pesos, a esto se le debe sumar el costo de viaje del Podólogo a su hogar, el cual se calculará a continuación.</strong>
+									</p></td>
+								</tr>
+							</table>
+						</div></div>
+				</div></div>
 			<div class="container-fluid">
 				<br>
 				<div class="row">
@@ -170,48 +202,25 @@
 							<div class="panel-heading">
 								<strong>Seleccion de Podologo</strong>
 							</div>
-							<br>
-							<div class="container-fluid">
-								<div class="table-responsive">
-								 <table class="table table-hover">
-									<tr>
-										<th><div align="center">Foto de lo que usted dice tener</div></th>
-
-									</tr>
-									<tr>
-										<td><div align="center">
-												<img style="width: 150px; height: 150px;"
-													src="${contextPath}/resources/imagenes/${patologia.foto}">
-											</div></td>
-
-									</tr>
-								</table>
-								</div>
-							</div>
 							<div align="center">
-								<p>De acuerdo a la distancia del podologo seleccionado y
+								<p style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">De acuerdo a la distancia del podologo seleccionado y
 									usted se sacara el monto del viaje</p>
-								<br>
- 
-	 
-							<div class="container-fluid">
+								<br>	 
+							 
 								<div class="table-responsive">
 									<div id="mapa2" class="col-lg-12" style="height: 500px"></div>
 									<p>
-									<h2 id="total"></h2>
-									</p>
+									<h2 id="total"></h2>	
 								</div>
-							</div>
+							 
 							</div>
 								<br>
-	
-							<br> <br>
 						</div>
 					</div>
 					<!-- /.row -->
 				</div>
 			</div>
-		</div>
+		</div></div>
 
 
 
@@ -281,7 +290,7 @@
 			var aMarkers = [];
 			console.log(podologos);
 			 for (var i = 0; i < podologos.length; i++) {
-				aMarkers.push([podologos[i].nombres +" "+ podologos[i].apellidos, podologos[i].ubicacion.latitud, podologos[i].ubicacion.longitud, i, podologos[i].foto]);
+				aMarkers.push([podologos[i].nombres +" "+ podologos[i].apellidos, podologos[i].ubicacion.latitud, podologos[i].ubicacion.longitud, i, podologos[i].foto,podologos[i].evaluacion]);
 			}
 			console.log(aMarkers);
 		 
@@ -303,11 +312,10 @@
 					//creando icono
 					var icono = {
     						url: 'data:image/png;base64,'+destino[4], // url
-   							scaledSize: new google.maps.Size(50, 50), // scaled size
+   							scaledSize: new google.maps.Size(40, 40), // scaled size
     						origin: new google.maps.Point(0,0), // origin
    							anchor: new google.maps.Point(0, 0) // anchor
 						};
-					
 					
 					var gMarkerDin = new google.maps.Marker({
 					  position: gLatLon,
@@ -320,7 +328,7 @@
 					
 					console.log(aMarkers[i][4]);
 					var objHtml = {
-						content: '<div style="height:150px; width:300px;"><h3> Cuido mis pies </h3><h4>'+aMarkers[i][0]+'</h4><p><a href="www.cuidomispies.cl">www.cuidomispies.cl</a></p>  </div>'
+						content: '<div class="table-responsive" style="height:200px; width:250px;">Podólogo(a):<h4>'+aMarkers[i][0]+'</h4> <img style="height:100px; width:100px;" class="img-responsive" src="data:image/png;base64,'+destino[4]+'" /><p>Evaluación:'+destino[5]+'</p>  </div>'
 					}
 
 					var gInfoWindow = new google.maps.InfoWindow(objHtml);

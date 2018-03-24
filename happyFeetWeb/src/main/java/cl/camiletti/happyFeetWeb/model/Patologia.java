@@ -23,6 +23,8 @@ public class Patologia implements Serializable {
 	private String nombre;
 	
 	private	int costo;
+	
+	private String descripcion;
 
 	//bi-directional many-to-one association to Atencion
 	@OneToMany(mappedBy="patologia", fetch=FetchType.EAGER)
@@ -136,6 +138,14 @@ public class Patologia implements Serializable {
 		tratamiento.setPatologia(null);
 
 		return tratamiento;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 }
