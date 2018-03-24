@@ -61,7 +61,7 @@ public class PodologoControllerRest {
 	
 	@RequestMapping(value = "/podologo/getEvaluacionPodologo", method = RequestMethod.GET, produces = "application/json")
 	public List<Podologo> getEvaluacion(Model model, @RequestParam("idComuna")int idComuna) {
-		Comuna comuna=comunaService.findById(idComuna);
+		Comuna comuna=evaluacionService.findById(id).findById(idComuna);
 		List<Ubicacion> ubicaciones=comuna.getUbicacions();
 		List<Podologo> podologos=new ArrayList<Podologo>();
 		
