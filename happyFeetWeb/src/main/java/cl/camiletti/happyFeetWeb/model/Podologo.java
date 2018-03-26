@@ -27,7 +27,7 @@ public class Podologo implements Serializable {
 
 	private String nombres;
 	
-	private double evaluacion;
+ 
 
 	// bi-directional many-to-one association to Atencion
 	@OneToMany(mappedBy = "podologo", fetch = FetchType.EAGER)
@@ -208,12 +208,5 @@ public class Podologo implements Serializable {
 		return solicitudatencion;
 	}
 
-	public double getEvaluacion() {
-		return evaluacion;
-	}
-
-	public void setEvaluacion(double evaluacion) {
-		this.evaluacion = evaluacion;
-	}
-
+	 
 }

@@ -7,6 +7,7 @@ import cl.camiletti.happyFeetWeb.model.Evaluacion;
 public interface EvaluacionService {
 	void save(Evaluacion evaluacion);
 	Evaluacion findById(int id);
+	 List<Evaluacion>  findByRutReceptor(String rutReceptor);
 	List<Evaluacion> findAll();
 	void deleteById(Evaluacion evaluacion);
 }
