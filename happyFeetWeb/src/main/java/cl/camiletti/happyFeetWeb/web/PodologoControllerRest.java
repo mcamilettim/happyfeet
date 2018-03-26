@@ -42,7 +42,7 @@ public class PodologoControllerRest {
 				try {
 					podoAux.setFoto(FileManagerUtil.encodeFileToBase64Binary(FileManagerUtil.ROOT_PATH+File.separator+podologo.getFoto()));
 				} catch (IOException e) {
-					podoAux.setFoto("");
+					podoAux.setFoto(null);
 				}
 				podoAux.setNombres(podologo.getNombres());
 				podoAux.setApellidos(podologo.getApellidos());
@@ -53,6 +53,7 @@ public class PodologoControllerRest {
 				ubicacionAux.setLongitud(ubicacion.getLongitud());
 				
 				podoAux.setUbicacion(ubicacionAux);
+				podoAux.setEvaluacion(getEvaluacion(podoAux.getRut()));
 				podologos.add(podoAux);
 			}
 		}
@@ -60,8 +61,8 @@ public class PodologoControllerRest {
 		return podologos;
 	}
 	
-	@RequestMapping(value = "/podologo/getEvaluacionPodologo", method = RequestMethod.GET, produces = "application/json")
-	public Double getEvaluacion(Model model, @RequestParam("rut")String rut) {
+	 
+	public Double getEvaluacion(String rut) {
 		List<Evaluacion> evaluaciones=evaluacionService.findByRutReceptor(rut);
 		double valoracionTotal=0;
 		for (Evaluacion evaluacion : evaluaciones) {
@@ -72,7 +73,5 @@ public class PodologoControllerRest {
 		}else {
 			return (double) 0;
 		}
-			
-		
 	}
 }
