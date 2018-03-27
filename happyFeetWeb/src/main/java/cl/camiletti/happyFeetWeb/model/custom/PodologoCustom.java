@@ -1,5 +1,9 @@
 package cl.camiletti.happyFeetWeb.model.custom;
 
+import java.util.ArrayList;
+import java.util.List;
+
+ 
 import cl.camiletti.happyFeetWeb.model.Ubicacion;
 
 public class PodologoCustom {
@@ -14,11 +18,28 @@ public class PodologoCustom {
 	private String foto;
 
 	private String nombres;
-	
+
 	private Ubicacion ubicacion;
-	
+
 	private double evaluacion;
 
+	private List<HorarioCustom> horarios;
+
+	
+	
+	
+	public PodologoCustom() {
+		super();
+		this.horarios=new ArrayList<HorarioCustom>();
+	}
+
+	public List<HorarioCustom> getHorarios() {
+		return horarios;
+	}
+
+	public void setHorarios(List<HorarioCustom> horarios) {
+		this.horarios = horarios;
+	}
 
 	public Ubicacion getUbicacion() {
 		return ubicacion;
@@ -27,7 +48,7 @@ public class PodologoCustom {
 	public void setUbicacion(Ubicacion ubicacion) {
 		this.ubicacion = ubicacion;
 	}
- 
+
 	public double getEvaluacion() {
 		return evaluacion;
 	}

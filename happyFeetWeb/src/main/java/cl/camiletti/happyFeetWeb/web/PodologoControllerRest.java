@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cl.camiletti.happyFeetWeb.model.Comuna;
 import cl.camiletti.happyFeetWeb.model.Evaluacion;
+import cl.camiletti.happyFeetWeb.model.Horario;
 import cl.camiletti.happyFeetWeb.model.Paciente;
 import cl.camiletti.happyFeetWeb.model.Patologia;
 import cl.camiletti.happyFeetWeb.model.Podologo;
 import cl.camiletti.happyFeetWeb.model.Ubicacion;
+import cl.camiletti.happyFeetWeb.model.custom.HorarioCustom;
 import cl.camiletti.happyFeetWeb.model.custom.PodologoCustom;
 import cl.camiletti.happyFeetWeb.model.custom.PresupuestoCustom;
 import cl.camiletti.happyFeetWeb.service.ComunaService;
@@ -73,6 +75,15 @@ public class PodologoControllerRest {
 
 				podoAux.setUbicacion(ubicacionAux);
 				podoAux.setEvaluacion(getEvaluacion(podoAux.getRut()));
+
+				for (Horario horario : podologo.getHorarios()) {
+					if (horario.getParamEstadoHorario().getId() == 2) {
+						podoAux.getHorarios()
+								.add(new HorarioCustom(horario.getId(), horario.getFecha(), horario.getHora(),
+										horario.getHoraFin(), horario.getPodologo().getRut(),
+										horario.getParamEstadoHorario().getId()));
+					}
+				}
 				podologos.add(podoAux);
 			}
 		}
@@ -82,20 +93,25 @@ public class PodologoControllerRest {
 
 	@RequestMapping(value = "/podologo/getPresupuesto", method = RequestMethod.GET, produces = "application/json")
 	public PresupuestoCustom getPresupuesto(Model model, @RequestParam("idPatologia") int idPatologia,
-			@RequestParam("rutPodologo") String rutPodologo,@RequestParam("kilometros") String kilometros) throws IOException {
-		PresupuestoCustom presupuestoCustom=new PresupuestoCustom();
+			@RequestParam("rutPodologo") String rutPodologo, @RequestParam("kilometros") String kilometros)
+			throws IOException {
+		PresupuestoCustom presupuestoCustom = new PresupuestoCustom();
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Paciente paciente = pacienteService.findByEmail(user.getUsername());
 		Patologia patologia = patologiaServie.findById(idPatologia);
 		Podologo podologo = podologoService.find(rutPodologo);
-		
-		presupuestoCustom.setDireccion_origen(paciente.getUbicacion().getNombre());
-		presupuestoCustom.setDireccion_destino(podologo.getUbicacion().getNombre());
+
+		presupuestoCustom.setDireccion_origen(podologo.getUbicacion().getNombre());
+		presupuestoCustom.setDireccion_destino(paciente.getUbicacion().getNombre());
 		presupuestoCustom.setKilometros(kilometros);
 		presupuestoCustom.setMontoPorKilometro(1125);
 		presupuestoCustom.setPatologia_nombre(patologia.getNombre());
 		presupuestoCustom.setPatologia_monto(patologia.getCosto());
-		System.out.println(kilometros);
+		presupuestoCustom.setNombrePodologo(podologo.getNombres() + " " + podologo.getApellidos());
+		presupuestoCustom.setEvaluacion(getEvaluacion(podologo.getRut()));
+		presupuestoCustom.setMontoKilometros((int) (Double.parseDouble(kilometros) * 1125));
+
+		presupuestoCustom.setTotal(presupuestoCustom.getMontoKilometros() + presupuestoCustom.getPatologia_monto());
 		return presupuestoCustom;
 	}
 
@@ -108,7 +124,7 @@ public class PodologoControllerRest {
 		if (evaluaciones != null && evaluaciones.size() > 0) {
 			return valoracionTotal / evaluaciones.size();
 		} else {
-			return (double) 0;
+			return (double) 5;
 		}
 	}
 }

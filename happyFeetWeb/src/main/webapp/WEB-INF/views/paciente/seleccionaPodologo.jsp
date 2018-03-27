@@ -217,19 +217,25 @@
 								<br>
 
 								<div class="table-responsive">
-									<div id="mapa2" class="col-lg-12" style="height: 500px"></div>
-									<p>
-									<h2 id="total"></h2>
+									<div id="mapa2" class="col-lg-12" style="height: 550px"></div>
 								</div>
 
 							</div>
-							<br>
+							<div ng-if="!presupuesto" align="center" class=" bg-danger "
+								style="height: 40px; padding-top: 10px;">
+								<p>
+									<strong> Seleccione un Podólogo(a) para continuar</strong>
+								</p>
+							</div>
 						</div>
+
 					</div>
 					<!-- /.row -->
+
 				</div>
 			</div>
-			<div class="container-fluid">
+
+			<div class="container-fluid" ng-if="presupuesto">
 				<br>
 				<div class="row">
 					<div class="col-lg-12">
@@ -237,9 +243,21 @@
 							<div class="panel-heading">
 								<strong>Detalle Presupuesto</strong>
 							</div>
-							<div class="panel panel-default">
+							<div>
 								<table class="table">
+									<tr>
+										<th scope="col">Podólogo</th>
+										<th scope="row">{{presupuesto.nombrePodologo}}</th>
+									</tr>
+									<tr>
+										<th scope="col">Evaluación</th>
+										<th scope="row">&nbsp;{{presupuesto.evaluacion}}<img
+											align="left" ng-if="presupuesto.evaluacion"
+											style="height: 15px; width: 15px;" class="img-responsive"
+											src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/96/star-icon.png" />
 
+										</th>
+									</tr>
 									<tr>
 										<th scope="col">Direccion Origen</th>
 										<th scope="row">{{presupuesto.direccion_origen}}</th>
@@ -248,10 +266,75 @@
 										<th scope="col">Direccion Destino</th>
 										<th scope="row">{{presupuesto.direccion_destino}}</th>
 									</tr>
-
+									<tr>
+										<th scope="col">Kilómetros</th>
+										<th scope="row">{{presupuesto.kilometros}} Kms</th>
+									</tr>
+									<tr>
+										<th scope="col">Monto por Kilómetro</th>
+										<th scope="row">$ {{presupuesto.montoPorKilometro}}</th>
+									</tr>
+									<tr>
+										<th scope="col">Viaje del Podólogo a su Casa</th>
+										<th scope="row">$ {{presupuesto.montoKilometros}}</th>
+									</tr>
+									<tr>
+										<th scope="col">Patología a Tratar</th>
+										<th scope="row">{{presupuesto.patologia_nombre}}</th>
+									</tr>
+									<tr>
+										<th scope="col">Patología a Tratar Monto</th>
+										<th scope="row">$ {{presupuesto.patologia_monto}}</th>
+									</tr>
 								</table>
 							</div>
-							<br>
+							<div align="center" class="bg-info"
+								style="height: 40px; padding-top: 10px;">
+								<p>
+									<strong> Monto total por la atención : $
+										{{presupuesto.total}}</strong>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div align="center">
+						<table>
+							<tr>
+								<td><button type="button" class="btn">Volver</button></td>
+
+								<td>&nbsp;&nbsp;</td>
+								<td>
+									<button type="button" class="btn btn-primary"
+										data-toggle="modal"
+						                data-target="#exampleModal">Confirmar solicitud
+										de atención</button>
+								</td>
+							<tr>
+						</table>
+						<br> <br> <br> <br> <br>
+					</div>
+					 
+
+					<!-- Modal -->
+					<div class="modal fade" id="exampleModal" tabindex="-1"
+						role="dialog" aria-labelledby="exampleModalLabel"
+						aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title" id="exampleModalLabel"><strong>Confirmación de Solicitud Podológica</strong></h4>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body"><p style="text-align: justify;"><strong><span style="color: red;">*</span> Monto Atención: $ {{presupuesto.total}} <br> <span style="color: red;">*</span> Horario Atención: $ {{presupuesto.total}} <br><span style="color: red;">*</span>  La foto subida al Sistema debe coincidir con la Patología seleccionada.</strong></p></div>
+								<div class="modal-footer" align="left">
+									<button type="button" class="btn btn-secondary"
+										data-dismiss="modal">Cancelar</button>
+									<button type="button" class="btn btn-primary" ng-click="confirmarSeleccion()">Si, estoy de acuerdo</button>
+								</div>
+							</div>
 						</div>
 					</div>
 					<!-- /.row -->

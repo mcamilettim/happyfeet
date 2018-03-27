@@ -1,7 +1,7 @@
 angular.module('myApp', [])
 .controller('UserCtrl', function($rootScope,$scope, $http,$q) {
  $scope.showLoading = true;
-	 
+ $scope.modalConfirmar = false; 
  $scope.setPromesas=function(){
 	   
 	  var promesas=[];	
@@ -17,13 +17,18 @@ angular.module('myApp', [])
 	      $http.get('/servicesPodologo/podologo/getPresupuesto?idPatologia='+idPatologia+'&rutPodologo='+$scope.podologos[index].rut+'&kilometros='+kilometros).
 		    then(function(response) {
 		        $scope.presupuesto = response.data;
-	            console.log($scope.presupuesto);
+	            //console.log($scope.presupuesto);
+	            //window.scrollTo(0,document.body.scrollHeight); 
 		      }),
 		      function(response) {
 		        $scope.data = response.data || 'Request failed';
 		        $scope.status = response.status;
 		      };
 		}
+	
+	$scope.confirmarSeleccion= function(){
+		console.log( true);			     		 
+	 }
 	
 	 
  
@@ -35,7 +40,7 @@ angular.module('myApp', [])
 		
 		//configuracion de mapa
 		var objConfig = {
-			zoom: 15,
+			zoom: 13,
 			center: gLatLon
 		}
 		//pintar el mapa en el DIV con la configuracion de objConfig
@@ -73,8 +78,8 @@ angular.module('myApp', [])
 				//creando icono
 				var icono = {
 						url: 'data:image/png;base64,'+podologo.foto, // url
-							scaledSize: new google.maps.Size(40, 40), // scaled size
-						origin: new google.maps.Point(0,0), // origin
+							scaledSize: new google.maps.Size(35, 35), // scaled size
+						    origin: new google.maps.Point(0,0), // origin
 							anchor: new google.maps.Point(0, 0) // anchor
 					};
 				
@@ -88,8 +93,8 @@ angular.module('myApp', [])
 			 
 	 
 				var objHtml = {
-					content: '<div class="table-responsive" style="height:200px; width:250px;">Pod&oacute;logo(a):'+
-						 '<h4>'+podologo.nombres+ ' '+ podologo.apellidos+'</h4> <img style="height:100px; width:100px;" '+
+					content: '<div class="table-responsive" style="height:150px; width:150px;">Pod&oacute;logo(a):'+
+						 '<h6>'+podologo.nombres+ ' '+ podologo.apellidos+'</h6> <img style="height:60px; width:60px;" '+
 						 'class="img-responsive" src="data:image/png;base64,'+podologo.foto+'" />'+
 						 '<table><tr><td>Evaluaci&oacute;n:&nbsp;'+podologo.evaluacion+'</td><td><img style="height:15px; width:15px;" class="img-responsive" src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/96/star-icon.png" /></td></tr></table>  </div>'
 				}
@@ -139,7 +144,7 @@ angular.module('myApp', [])
 								}
 								total = total / 1000;
 								$scope.obtenerPresupuesto("1",currentMarker.zIndex,total);
-								document.getElementById('total').innerHTML = total + ' kms';
+								//document.getElementById('total').innerHTML = total + ' kms';
 							} else{
 								alert('Error: '+status);
 							}

@@ -1,15 +1,41 @@
 package cl.camiletti.happyFeetWeb.model.custom;
 
+import java.util.List;
+
+import cl.camiletti.happyFeetWeb.model.Horario;
+
 public class PresupuestoCustom {
+	private String isDiabetico;
+	private List<Horario> horarios;
 	private String direccion_origen;
 	private String direccion_destino;
 	private String kilometros;
 	private int montoKilometros;
 	private int montoPorKilometro;
 	private String nombrePodologo;
-	private String evaluacion;
+	private Double evaluacion;
 	private String patologia_nombre;
 	private int patologia_monto;
+	private int total;
+ 
+	public List<Horario> getHorarios() {
+		return horarios;
+	}
+	public void setHorarios(List<Horario> horarios) {
+		this.horarios = horarios;
+	}
+	public int getTotal() {
+		return total;
+	}
+	public void setTotal(int total) {
+		this.total = total;
+	}
+	public String getIsDiabetico() {
+		return isDiabetico;
+	}
+	public void setIsDiabetico(String isDiabetico) {
+		this.isDiabetico = isDiabetico;
+	}
 	public String getDireccion_origen() {
 		return direccion_origen;
 	}
@@ -46,10 +72,10 @@ public class PresupuestoCustom {
 	public void setNombrePodologo(String nombrePodologo) {
 		this.nombrePodologo = nombrePodologo;
 	}
-	public String getEvaluacion() {
+	public Double getEvaluacion() {
 		return evaluacion;
 	}
-	public void setEvaluacion(String evaluacion) {
+	public void setEvaluacion(Double evaluacion) {
 		this.evaluacion = evaluacion;
 	}
 	public String getPatologia_nombre() {
