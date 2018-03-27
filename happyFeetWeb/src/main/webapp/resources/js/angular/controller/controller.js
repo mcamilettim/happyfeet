@@ -12,22 +12,26 @@ angular.module('myApp', [])
 	$scope.obtenerDatosPodologos = function(){
 	 return $http.get('/servicesPodologo/podologo/getPodologosPorComuna?idComuna=1');
 	}
+	
+	$scope.obtenerPresupuesto  = function(idPatologia,index,kilometros){
+	      $http.get('/servicesPodologo/podologo/getPresupuesto?idPatologia='+idPatologia+'&rutPodologo='+$scope.podologos[index].rut+'&kilometros='+kilometros).
+		    then(function(response) {
+		        $scope.presupuesto = response.data;
+	            console.log($scope.presupuesto);
+		      }),
+		      function(response) {
+		        $scope.data = response.data || 'Request failed';
+		        $scope.status = response.status;
+		      };
+		}
+	
+	 
  
 	//CODIGO PARA IMAGEN DINÁMICA
 	var divMapa2 = document.getElementById('mapa2');
 	
-	function botonObtenerDireccionDinamica(podologos) {
-		//navigator.geolocation.getCurrentPosition(geoDinOk, geoDinError);
-		geoDinOk(podologos);
-	}
-	
-		//Coordenadas ORIGEN
-	var latitud = "-33.5253895";
-	var longitud = "-70.76047649999998";
-	var gMapa = null;
-	function geoDinOk(podologos) {
-		
-		var gLatLon = new google.maps.LatLng(latitud,longitud);
+	$scope.obtenerDireccionDinamica=function() {
+	var gLatLon = new google.maps.LatLng(latitud,longitud);
 		
 		//configuracion de mapa
 		var objConfig = {
@@ -46,17 +50,24 @@ angular.module('myApp', [])
 		}
 		//SE AGREGA AL MAPA el MARKER "objConfigMarker"
 		var gMarker = new google.maps.Marker(objConfigMarker);
-		setearMarcadores(gMapa, gLatLon, podologos);	
+		$scope.setearMarcadores(gMapa, gLatLon);	
 	}
+	
+		//Coordenadas ORIGEN
+	var latitud = "-33.5253895";
+	var longitud = "-70.76047649999998";
+	var gMapa = null;
+ 
 	 
 		var arrayDR = [];
 		var arrayInfoMarkers = [];
 		var currentMarker = null;
 		var currentPointsResult = null;
-		function setearMarcadores(gMapa, gLatLonOrigin, podologos) {
+		
+		$scope.setearMarcadores=function(gMapa, gLatLonOrigin) {
 			
-			for (var i = 0; i < podologos.length; i++) {
-				var podologo = podologos[i];
+			for (var i = 0; i < $scope.podologos.length; i++) {
+				var podologo = $scope.podologos[i];
 				var gLatLon = new google.maps.LatLng(podologo.ubicacion.latitud, podologo.ubicacion.longitud);
  
 				//creando icono
@@ -97,8 +108,7 @@ angular.module('myApp', [])
 						
 					    gInfoWindow.open(gMapa,gMarkerDin);
 						currentMarker = gMarkerDin;
-						
-						
+			 
 						var objConfigDR = {
 							map: gMapa,
 							supressMarkers: true
@@ -128,13 +138,12 @@ angular.module('myApp', [])
 									total += myroute.legs[i].distance.value;
 								}
 								total = total / 1000;
+								$scope.obtenerPresupuesto("1",currentMarker.zIndex,total);
 								document.getElementById('total').innerHTML = total + ' kms';
 							} else{
 								alert('Error: '+status);
 							}
-						}
-						
-						
+						}	
 					};
 				})(gMarkerDin,objHtml,gInfoWindow));
 				
@@ -163,7 +172,7 @@ angular.module('myApp', [])
 		  function(response){
 			   $scope.showLoading=false;
 			   $scope.podologos = response[0].data;
-			   botonObtenerDireccionDinamica( $scope.podologos );
+			   $scope.obtenerDireccionDinamica();
 		       console.log($scope.podologos); 
 		  })
           } 

@@ -79,7 +79,7 @@
 
 	<div id="wrapper">
 
-	<!-- Navigation -->
+		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
@@ -169,10 +169,10 @@
 		<!-- Page Content -->
 		<div id="page-wrapper">
 			<br>
-		 	<div class="container-fluid">
-		 	<div class="row">
-					<div class="col-lg-12" >
-					<div class="panel panel-default">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
 							<table class="table table-hover">
 								<tr>
 									<th style="background-color: #F5F5F5"><div align="left">Patologia</div></th>
@@ -187,14 +187,20 @@
 								</tr>
 								<tr>
 									<td colspan="2"><strong>Descripción: </strong>
-									<p style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">${patologia.descripcion}
-									<br><strong>Tratar esta Patología tiene un precio Base de:  $ ${patologia.costo} pesos, a esto se le debe sumar el costo de viaje del Podólogo a su hogar, el cual se calculará a continuación.</strong>
-									</p></td>
+										<p
+											style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">${patologia.descripcion}
+											<br> <strong>Tratar esta Patología tiene un
+												precio Base de: $ ${patologia.costo} pesos, a esto se le
+												debe sumar el costo de viaje del Podólogo a su hogar, el
+												cual se calculará a continuación.</strong>
+										</p></td>
 								</tr>
 							</table>
-						</div></div>
-				</div></div>
-			 
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="container-fluid">
 				<br>
 				<div class="row">
@@ -204,48 +210,82 @@
 								<strong>Seleccion de Podologo</strong>
 							</div>
 							<div align="center">
-								<p style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">De acuerdo a la distancia del podologo seleccionado y
-									usted se sacara el monto del viaje</p>
-								<br>	 
-							 
+								<p
+									style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">De
+									acuerdo a la distancia del podologo seleccionado y usted se
+									sacara el monto del viaje</p>
+								<br>
+
 								<div class="table-responsive">
 									<div id="mapa2" class="col-lg-12" style="height: 500px"></div>
 									<p>
-									<h2 id="total"></h2>	
+									<h2 id="total"></h2>
 								</div>
-							 
+
 							</div>
-								<br>
+							<br>
 						</div>
 					</div>
 					<!-- /.row -->
 				</div>
 			</div>
-		</div></div>
- 
-		<!-- jQuery -->
-		<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+			<div class="container-fluid">
+				<br>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<strong>Detalle Presupuesto</strong>
+							</div>
+							<div class="panel panel-default">
+								<table class="table">
 
-		<!-- Bootstrap Core JavaScript -->
-		<script
-			src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+									<tr>
+										<th scope="col">Direccion Origen</th>
+										<th scope="row">{{presupuesto.direccion_origen}}</th>
+									</tr>
+									<tr>
+										<th scope="col">Direccion Destino</th>
+										<th scope="row">{{presupuesto.direccion_destino}}</th>
+									</tr>
 
-		<!-- Metis Menu Plugin JavaScript -->
-		<script
-			src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
+								</table>
+							</div>
+							<br>
+						</div>
+					</div>
+					<!-- /.row -->
+				</div>
+			</div>
+		</div>
+	</div>
 
-		<!-- Custom Theme JavaScript -->
-		<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
-		<script type="text/javascript"
-			src="http://maps.googleapis.com/maps/api/js?v3&libraries=places&key=AIzaSyAVgzIQhGvX45D1OGk-De6fgj-12xDuZjU
-			">	
-		</script>
-		<script type="text/javascript" src="${contextPath}/resources/js/angular/angular.js"></script>
-		<script type="text/javascript" src="${contextPath}/resources/js/angular/controller/controller.js"></script>
+	<!-- jQuery -->
+	<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script
+		src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+	<!-- Metis Menu Plugin JavaScript -->
+	<script
+		src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
+
+	<!-- Custom Theme JavaScript -->
+	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+	<script type="text/javascript"
+		src="http://maps.googleapis.com/maps/api/js?v3&libraries=places&key=AIzaSyAVgzIQhGvX45D1OGk-De6fgj-12xDuZjU
+			">
 		
+	</script>
+	<script type="text/javascript"
+		src="${contextPath}/resources/js/angular/angular.js"></script>
+	<script type="text/javascript"
+		src="${contextPath}/resources/js/angular/controller/controller.js"></script>
+
+
+	<script type="text/javascript">
 		
-		<script type="text/javascript">
-	
 	</script>
 </body>
 
