@@ -234,6 +234,43 @@
 
 				</div>
 			</div>
+			<div class="container-fluid" ng-if="presupuesto">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<strong>Seleccione un Horario de Atención de
+									{{presupuesto.nombrePodologo}}</strong>
+							</div>
+							<div>
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="col">Fecha</th>
+											<th scope="col">Hora Inicio</th>
+											<th scope="col">Hora Fin</th>
+											<th scope="col">Seleccionar</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="horario in podologoSeleccionado.horarios">
+											<td scope="row">{{horario.fecha}}</td>
+											<td scope="row">{{horario.hora}}</td>
+											<td scope="row">{{horario.horaFin}}</td>
+											<td scope="row">
+												<div class="form-check">
+													<input ng-model="horarioSeleccionado" type="radio" name="rdoResult" ng-value="{{horario.id}}" />
+												</div>  
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<div class="container-fluid" ng-if="presupuesto">
 				<br>
@@ -241,7 +278,7 @@
 					<div class="col-lg-12">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<strong>Detalle Presupuesto</strong>
+								<strong>Detalle Presupuesto {{horarioSeleccionado}}</strong>
 							</div>
 							<div>
 								<table class="table">
@@ -285,6 +322,10 @@
 									<tr>
 										<th scope="col">Patología a Tratar Monto</th>
 										<th scope="row">$ {{presupuesto.patologia_monto}}</th>
+									</tr> 
+									<tr>
+										<th scope="col" colspan="2">Foto de sus Pies<br><input type="file"  class="form-control" name="carnet" value="Subir Foto" required="true"/></th>
+										 
 									</tr>
 								</table>
 							</div>
@@ -305,15 +346,14 @@
 								<td>&nbsp;&nbsp;</td>
 								<td>
 									<button type="button" class="btn btn-primary"
-										data-toggle="modal"
-						                data-target="#exampleModal">Confirmar solicitud
-										de atención</button>
+										data-toggle="modal" data-target="#exampleModal">Confirmar
+										solicitud de atención</button>
 								</td>
 							<tr>
 						</table>
 						<br> <br> <br> <br> <br>
 					</div>
-					 
+
 
 					<!-- Modal -->
 					<div class="modal fade" id="exampleModal" tabindex="-1"
@@ -322,17 +362,29 @@
 						<div class="modal-dialog" role="document">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h4 class="modal-title" id="exampleModalLabel"><strong>Confirmación de Solicitud Podológica</strong></h4>
+									<h4 class="modal-title" id="exampleModalLabel">
+										<strong>Confirmación de Solicitud Podológica</strong>
+									</h4>
 									<button type="button" class="close" data-dismiss="modal"
 										aria-label="Close">
 										<span aria-hidden="true">&times;</span>
 									</button>
 								</div>
-								<div class="modal-body"><p style="text-align: justify;"><strong><span style="color: red;">*</span> Monto Atención: $ {{presupuesto.total}} <br> <span style="color: red;">*</span> Horario Atención: $ {{presupuesto.total}} <br><span style="color: red;">*</span>  La foto subida al Sistema debe coincidir con la Patología seleccionada.</strong></p></div>
+								<div class="modal-body">
+									<p style="text-align: justify;">
+										<strong><span style="color: red;">*</span> Monto
+											Atención: $ {{presupuesto.total}} <br> <span
+											style="color: red;">*</span> Horario Atención: $
+											{{horarioSeleccionado}} <br> <span style="color: red;">*</span>
+											La foto subida al Sistema debe coincidir con la Patología
+											seleccionada.</strong>
+									</p>
+								</div>
 								<div class="modal-footer" align="left">
 									<button type="button" class="btn btn-secondary"
 										data-dismiss="modal">Cancelar</button>
-									<button type="button" class="btn btn-primary" ng-click="confirmarSeleccion()">Si, estoy de acuerdo</button>
+									<button type="button" class="btn btn-primary"
+										ng-click="confirmarSeleccion()">Si, estoy de acuerdo</button>
 								</div>
 							</div>
 						</div>
@@ -367,9 +419,7 @@
 		src="${contextPath}/resources/js/angular/controller/controller.js"></script>
 
 
-	<script type="text/javascript">
-		
-	</script>
+
 </body>
 
 </html>

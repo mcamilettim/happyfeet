@@ -14,13 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 @Component
 public class FileManagerUtil {
 
-//	public static final String ROOT_PATH = System.getProperty("os.name").toLowerCase().indexOf("win") >= 0
-//			? "C:/repository/tesis/happyFeetWeb/src/main/webapp/resources/imagenes"
-//			: "/opt";
-	
 	public static final String ROOT_PATH = System.getProperty("os.name").toLowerCase().indexOf("win") >= 0
-			? "D:/repository_sis/tesis/happyFeetWeb/src/main/webapp/resources/imagenes"
+			? "C:/repository/tesis/happyFeetWeb/src/main/webapp/resources/imagenes"
 			: "/opt";
+	
+//	public static final String ROOT_PATH = System.getProperty("os.name").toLowerCase().indexOf("win") >= 0
+//			? "D:/repository_sis/tesis/happyFeetWeb/src/main/webapp/resources/imagenes"
+//			: "/opt";
 	public static final String DIR_SINGLE = "DOCS";
 
 	public String subirArchivo(MultipartFile archivoEntrada, String seccion, String rut) {

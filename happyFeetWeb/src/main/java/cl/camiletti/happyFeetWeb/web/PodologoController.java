@@ -168,7 +168,6 @@ public class PodologoController {
 	public String diagnostico(@ModelAttribute("paciente") Paciente paciente,
 			@ModelAttribute("podologo") Podologo podologo, @ModelAttribute("atencion") Atencion atencion, Model model,
 			@ModelAttribute("pacientes") List<Paciente> pacientes) {
-
 		model.addAttribute("atencion", atencion);
 		model.addAttribute("paciente", paciente);
 		model.addAttribute("podologo", podologo);
@@ -179,7 +178,6 @@ public class PodologoController {
 	@RequestMapping(value = "/podologo/detallePresupesto", method = RequestMethod.GET)
 	public String detallePresupuesto(@ModelAttribute("paciente") Paciente paciente,
 			@ModelAttribute("podologo") Podologo podologo, @ModelAttribute("atencion") Atencion atencion, Model model) {
-
 		model.addAttribute("detallePresupuesto", atencion.getPresupuesto().getDetallepresupuestos());
 		model.addAttribute("presupuesto", atencion.getPresupuesto());
 		model.addAttribute("atencion", atencion);

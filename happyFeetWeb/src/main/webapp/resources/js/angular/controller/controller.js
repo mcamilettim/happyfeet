@@ -2,6 +2,8 @@ angular.module('myApp', [])
 .controller('UserCtrl', function($rootScope,$scope, $http,$q) {
  $scope.showLoading = true;
  $scope.modalConfirmar = false; 
+ $scope.podologoSeleccionado = {};
+ $scope.horarioSeleccionado = 2; 
  $scope.setPromesas=function(){
 	   
 	  var promesas=[];	
@@ -16,6 +18,7 @@ angular.module('myApp', [])
 	$scope.obtenerPresupuesto  = function(idPatologia,index,kilometros){
 	      $http.get('/servicesPodologo/podologo/getPresupuesto?idPatologia='+idPatologia+'&rutPodologo='+$scope.podologos[index].rut+'&kilometros='+kilometros).
 		    then(function(response) {
+		    	 $scope.podologoSeleccionado=$scope.podologos[index];
 		        $scope.presupuesto = response.data;
 	            //console.log($scope.presupuesto);
 	            //window.scrollTo(0,document.body.scrollHeight); 

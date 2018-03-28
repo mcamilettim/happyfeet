@@ -100,7 +100,7 @@
 		                <form:errors path="fechaNacimiento"></form:errors>           
 		            </div>
 		        </spring:bind>
-		       	  <spring:bind path="fono">
+		       	  <spring:bind path="idMinSal">
 	           <div class="form-group ${status.error ? 'has-error' : ''}">
 	           idMinSal
 	               <form:input type="text" path="idMinSal" class="form-control" required="true"></form:input>
