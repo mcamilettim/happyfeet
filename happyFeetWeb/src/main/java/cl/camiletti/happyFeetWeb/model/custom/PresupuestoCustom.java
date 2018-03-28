@@ -17,7 +17,21 @@ public class PresupuestoCustom {
 	private String patologia_nombre;
 	private int patologia_monto;
 	private int total;
- 
+	private String rutPodologo;
+	private int patologia_id;
+	
+	public int getPatologia_id() {
+		return patologia_id;
+	}
+	public void setPatologia_id(int patologia_id) {
+		this.patologia_id = patologia_id;
+	}
+	public String getRutPodologo() {
+		return rutPodologo;
+	}
+	public void setRutPodologo(String rutPodologo) {
+		this.rutPodologo = rutPodologo;
+	}
 	public List<Horario> getHorarios() {
 		return horarios;
 	}

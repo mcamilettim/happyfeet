@@ -1,37 +1,6 @@
 package cl.camiletti.happyFeetWeb.web;
 
-import cl.camiletti.happyFeetWeb.model.Agenda;
-import cl.camiletti.happyFeetWeb.model.Atencion;
-import cl.camiletti.happyFeetWeb.model.Comuna;
-import cl.camiletti.happyFeetWeb.model.Evaluacion;
-import cl.camiletti.happyFeetWeb.model.Horario;
-import cl.camiletti.happyFeetWeb.model.Mensaje;
-import cl.camiletti.happyFeetWeb.model.Paciente;
-import cl.camiletti.happyFeetWeb.model.Parametro;
-import cl.camiletti.happyFeetWeb.model.Podologo;
-import cl.camiletti.happyFeetWeb.model.Presupuesto;
-import cl.camiletti.happyFeetWeb.model.Solicitudatencion;
-import cl.camiletti.happyFeetWeb.model.Ubicacion;
-import cl.camiletti.happyFeetWeb.model.Usuario;
-import cl.camiletti.happyFeetWeb.repository.MensajeRepository;
-import cl.camiletti.happyFeetWeb.service.AgendaService;
-import cl.camiletti.happyFeetWeb.service.AtencionService;
-import cl.camiletti.happyFeetWeb.service.ComunaService;
-import cl.camiletti.happyFeetWeb.service.HorarioService;
-import cl.camiletti.happyFeetWeb.service.MensajeService;
-import cl.camiletti.happyFeetWeb.service.PacienteService;
-import cl.camiletti.happyFeetWeb.service.ParametroService;
-import cl.camiletti.happyFeetWeb.service.PodologoService;
-import cl.camiletti.happyFeetWeb.service.SecurityService;
-import cl.camiletti.happyFeetWeb.service.SolicitudAtencionService;
-import cl.camiletti.happyFeetWeb.service.UbicacionService;
-import cl.camiletti.happyFeetWeb.service.UsuarioService;
-import cl.camiletti.happyFeetWeb.util.DateUtil;
-import cl.camiletti.happyFeetWeb.util.Mail;
-
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,7 +17,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.multipart.MultipartFile;
+
+import cl.camiletti.happyFeetWeb.model.Agenda;
+import cl.camiletti.happyFeetWeb.model.Atencion;
+import cl.camiletti.happyFeetWeb.model.Horario;
+import cl.camiletti.happyFeetWeb.model.Mensaje;
+import cl.camiletti.happyFeetWeb.model.Paciente;
+import cl.camiletti.happyFeetWeb.model.Parametro;
+import cl.camiletti.happyFeetWeb.model.Podologo;
+import cl.camiletti.happyFeetWeb.model.Presupuesto;
+import cl.camiletti.happyFeetWeb.model.Solicitudatencion;
+import cl.camiletti.happyFeetWeb.model.Usuario;
+import cl.camiletti.happyFeetWeb.repository.MensajeRepository;
+import cl.camiletti.happyFeetWeb.service.AgendaService;
+import cl.camiletti.happyFeetWeb.service.AtencionService;
+import cl.camiletti.happyFeetWeb.service.ComunaService;
+import cl.camiletti.happyFeetWeb.service.HorarioService;
+import cl.camiletti.happyFeetWeb.service.MensajeService;
+import cl.camiletti.happyFeetWeb.service.PacienteService;
+import cl.camiletti.happyFeetWeb.service.ParametroService;
+import cl.camiletti.happyFeetWeb.service.PodologoService;
+import cl.camiletti.happyFeetWeb.service.SolicitudAtencionService;
+import cl.camiletti.happyFeetWeb.service.UbicacionService;
+import cl.camiletti.happyFeetWeb.service.UsuarioService;
+import cl.camiletti.happyFeetWeb.util.DateUtil;
+import cl.camiletti.happyFeetWeb.util.Mail;
 
 @Controller
 @SessionAttributes(value = { "podologo", "paciente", "atencion", "pacientes", "solicitudes", "solicitudAtencion" })
@@ -456,4 +449,6 @@ public class PodologoController {
 		model.addAttribute("atenciones", atenciones);
 		return "podologo/atenciones";
 	}	
+	
+	
 }

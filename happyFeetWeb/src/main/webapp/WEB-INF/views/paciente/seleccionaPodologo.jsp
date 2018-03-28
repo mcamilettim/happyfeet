@@ -224,7 +224,15 @@
 							<div ng-if="!presupuesto" align="center" class=" bg-danger "
 								style="height: 40px; padding-top: 10px;">
 								<p>
-									<strong> Seleccione un Podólogo(a) para continuar</strong>
+									<strong> Seleccione un(a) Podólogo(a) para continuar</strong>
+								</p>
+							</div>
+							<div ng-if="podologoSeleccionado.horarios.length==0"
+								align="center" class=" bg-danger "
+								style="height: 40px; padding-top: 10px;">
+								<p>
+									<strong> El Podólogo seleccionado no posee horarios
+										disponibles</strong>
 								</p>
 							</div>
 						</div>
@@ -234,7 +242,8 @@
 
 				</div>
 			</div>
-			<div class="container-fluid" ng-if="presupuesto">
+			<div class="container-fluid"
+				ng-if="presupuesto && podologoSeleccionado.horarios.length>0">
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="panel panel-default">
@@ -259,102 +268,135 @@
 											<td scope="row">{{horario.horaFin}}</td>
 											<td scope="row">
 												<div class="form-check">
-													<input ng-model="horarioSeleccionado" type="radio" name="rdoResult" ng-value="{{horario.id}}" />
-												</div>  
+													<input ng-model="horarioSeleccionado" type="radio"
+														name="rdoResult"
+														ng-click="setHorarioSeleccionado(horario)"
+														ng-value="horario.id" />
+												</div>
 											</td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
-
 						</div>
 					</div>
 				</div>
 			</div>
-
-			<div class="container-fluid" ng-if="presupuesto">
+			<div class="container-fluid" ng-if="horarioSeleccionado">
 				<br>
 				<div class="row">
-					<div class="col-lg-12">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<strong>Detalle Presupuesto {{horarioSeleccionado}}</strong>
-							</div>
-							<div>
-								<table class="table">
-									<tr>
-										<th scope="col">Podólogo</th>
-										<th scope="row">{{presupuesto.nombrePodologo}}</th>
-									</tr>
-									<tr>
-										<th scope="col">Evaluación</th>
-										<th scope="row">&nbsp;{{presupuesto.evaluacion}}<img
-											align="left" ng-if="presupuesto.evaluacion"
-											style="height: 15px; width: 15px;" class="img-responsive"
-											src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/96/star-icon.png" />
+					<form:form method="POST" modelAttribute="solicitudForm"
+						action="guardarAgenda" enctype="multipart/form-data">
+						<div class="col-lg-12">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<strong>Detalle Presupuesto</strong>
+								</div>
+								<div>
 
-										</th>
-									</tr>
-									<tr>
-										<th scope="col">Direccion Origen</th>
-										<th scope="row">{{presupuesto.direccion_origen}}</th>
-									</tr>
-									<tr>
-										<th scope="col">Direccion Destino</th>
-										<th scope="row">{{presupuesto.direccion_destino}}</th>
-									</tr>
-									<tr>
-										<th scope="col">Kilómetros</th>
-										<th scope="row">{{presupuesto.kilometros}} Kms</th>
-									</tr>
-									<tr>
-										<th scope="col">Monto por Kilómetro</th>
-										<th scope="row">$ {{presupuesto.montoPorKilometro}}</th>
-									</tr>
-									<tr>
-										<th scope="col">Viaje del Podólogo a su Casa</th>
-										<th scope="row">$ {{presupuesto.montoKilometros}}</th>
-									</tr>
-									<tr>
-										<th scope="col">Patología a Tratar</th>
-										<th scope="row">{{presupuesto.patologia_nombre}}</th>
-									</tr>
-									<tr>
-										<th scope="col">Patología a Tratar Monto</th>
-										<th scope="row">$ {{presupuesto.patologia_monto}}</th>
-									</tr> 
-									<tr>
-										<th scope="col" colspan="2">Foto de sus Pies<br><input type="file"  class="form-control" name="carnet" value="Subir Foto" required="true"/></th>
-										 
-									</tr>
-								</table>
-							</div>
-							<div align="center" class="bg-info"
-								style="height: 40px; padding-top: 10px;">
-								<p>
-									<strong> Monto total por la atención : $
-										{{presupuesto.total}}</strong>
-								</p>
+									<table class="table">
+										<tr>
+											<th scope="col">Podólogo {{horarioSeleccionado.id}}</th>
+											<th scope="row">{{presupuesto.nombrePodologo}}</th>
+										</tr>
+										<tr>
+											<th scope="row" colspan="2"><input
+												ng-model="horarioSeleccionado.id" type="text"
+												class="form-control" name="horario.id" required="required"
+												readonly="readonly" /></th>
+										</tr>
+										<tr>
+											<th scope="row" colspan="2"><input ng-model="presupuesto.rutPodologo"
+												type="text" class="form-control" name="podologo.rut"
+												required="required" readonly="readonly" /></th>
+										</tr>
+										<tr>
+											<th scope="row" colspan="2"><input
+												ng-model="presupuesto.patologia_id" type="text"
+												class="form-control" name="patologia.id" required="required"
+												readonly="readonly"/></th>
+										</tr>
+										<tr>
+											<th scope="row" colspan="2"><input
+												ng-model="presupuesto.kilometros" type="text"
+												class="form-control" name="kilometros" required="required"
+												readonly="readonly"/></th>
+										</tr>
+										<tr>
+											<th scope="col">Evaluación</th>
+											<th scope="row">&nbsp;{{presupuesto.evaluacion}}<img
+												align="left" ng-if="presupuesto.evaluacion"
+												style="height: 15px; width: 15px;" class="img-responsive"
+												src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/96/star-icon.png" />
+											</th>
+										</tr>
+										<tr>
+											<th scope="col">Direccion Origen</th>
+											<th scope="row">{{presupuesto.direccion_origen}}</th>
+										</tr>
+										<tr>
+											<th scope="col">Direccion Destino</th>
+											<th scope="row">{{presupuesto.direccion_destino}}</th>
+										</tr>
+										<tr>
+											<th scope="col">Kilómetros</th>
+											<th scope="row">{{presupuesto.kilometros}} Kms</th>
+										</tr>
+										<tr>
+											<th scope="col">Monto por Kilómetro</th>
+											<th scope="row">$ {{presupuesto.montoPorKilometro}}</th>
+										</tr>
+										<tr>
+											<th scope="col">Viaje del Podólogo a su Casa</th>
+											<th scope="row">$ {{presupuesto.montoKilometros}}</th>
+										</tr>
+										<tr>
+											<th scope="col">Patología a Tratar</th>
+											<th scope="row">{{presupuesto.patologia_nombre}}</th>
+										</tr>
+										<tr>
+											<th scope="col">Patología a Tratar Monto</th>
+											<th scope="row">$ {{presupuesto.patologia_monto}}</th>
+										</tr>
+										<tr>
+											<th scope="col" colspan="2">Foto de sus Pies  <input
+												type="file" class="form-control" name="fotoPiePaciente"
+												value="Subir Carnet" required="required"></input></th>
+										</tr>
+										<tr>
+											<th scope="col" colspan="2">Comentario para el Podólogo  <textarea class="form-control" rows="3" name="comentario"></textarea></th>
+										</tr>
+
+									</table>
+								</div>
+								<div align="center" class="bg-info"
+									style="height: 40px; padding-top: 10px;">
+									<p>
+										<strong> Monto total por la atención : $
+											{{presupuesto.total}}</strong>
+									</p>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div align="center">
-						<table>
-							<tr>
-								<td><button type="button" class="btn">Volver</button></td>
+						<div align="center">
+							<table>
+								<tr>
+									<td><button type="button" class="btn">Volver</button></td>
 
-								<td>&nbsp;&nbsp;</td>
-								<td>
-									<button type="button" class="btn btn-primary"
-										data-toggle="modal" data-target="#exampleModal">Confirmar
-										solicitud de atención</button>
-								</td>
-							<tr>
-						</table>
-						<br> <br> <br> <br> <br>
-					</div>
+									<td>&nbsp;&nbsp;</td>
+									<td>
+										<button type="button" class="btn btn-primary"
+											data-toggle="modal" data-target="#exampleModal">Confirmar
+											solicitud de atención</button>
+										<button type="submit" class="btn btn-primary">Enviar</button>
+									</td>
+								<tr>
+							</table>
+							<br> <br> <br> <br>
 
+						</div>
 
+					</form:form>
 					<!-- Modal -->
 					<div class="modal fade" id="exampleModal" tabindex="-1"
 						role="dialog" aria-labelledby="exampleModalLabel"

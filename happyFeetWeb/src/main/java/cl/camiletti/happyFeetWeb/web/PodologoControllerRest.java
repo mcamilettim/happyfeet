@@ -32,6 +32,7 @@ import cl.camiletti.happyFeetWeb.service.HorarioService;
 import cl.camiletti.happyFeetWeb.service.PacienteService;
 import cl.camiletti.happyFeetWeb.service.PatologiaService;
 import cl.camiletti.happyFeetWeb.service.PodologoService;
+import cl.camiletti.happyFeetWeb.util.Constantes;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 
 @RestController
@@ -109,36 +110,21 @@ public class PodologoControllerRest {
 		Paciente paciente = pacienteService.findByEmail(user.getUsername());
 		Patologia patologia = patologiaServie.findById(idPatologia);
 		Podologo podologo = podologoService.find(rutPodologo);
-
+		
+		
+		presupuestoCustom.setRutPodologo(podologo.getRut());
 		presupuestoCustom.setDireccion_origen(podologo.getUbicacion().getNombre());
 		presupuestoCustom.setDireccion_destino(paciente.getUbicacion().getNombre());
 		presupuestoCustom.setKilometros(kilometros);
-		presupuestoCustom.setMontoPorKilometro(1125);
+		presupuestoCustom.setMontoPorKilometro(Constantes.VALOR_POR_KILOMETRO);
 		presupuestoCustom.setPatologia_nombre(patologia.getNombre());
 		presupuestoCustom.setPatologia_monto(patologia.getCosto());
 		presupuestoCustom.setNombrePodologo(podologo.getNombres() + " " + podologo.getApellidos());
 		presupuestoCustom.setEvaluacion(getEvaluacion(podologo.getRut()));
 		presupuestoCustom.setMontoKilometros((int) (Double.parseDouble(kilometros) * 1125));
-
+		presupuestoCustom.setPatologia_id(idPatologia);
 		presupuestoCustom.setTotal(presupuestoCustom.getMontoKilometros() + presupuestoCustom.getPatologia_monto());
 		return presupuestoCustom;
-	}
-	@RequestMapping(value = "/podologo/agendar", method = RequestMethod.GET, produces = "application/json")
-	public PresupuestoCustom guardarAgenda(Model model, @RequestParam("idHorario") int idHorario,
-			@RequestParam("rutPodologo") String rutPodologo, @RequestParam("kilometros") String kilometros)
-			throws IOException {
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Paciente paciente = pacienteService.findByEmail(user.getUsername());
-		Horario horario= horarioService.findById(idHorario);
-		Agenda agenda =new Agenda();
-		agenda.setPaciente(paciente);
-		agenda.setHorario(horario);
-		agenda.setFotoPie("");
-		agenda.setValorViaje(0);
-		agenda.setComentario("");
-		agenda.setParamEstadoAgenda(null);
-		agendaService.save(agenda);
-		return null;
 	}
 	public Double getEvaluacion(String rut) {
 		List<Evaluacion> evaluaciones = evaluacionService.findByRutReceptor(rut);

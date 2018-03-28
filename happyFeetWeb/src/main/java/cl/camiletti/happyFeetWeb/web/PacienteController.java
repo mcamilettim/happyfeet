@@ -1,6 +1,5 @@
 package cl.camiletti.happyFeetWeb.web;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,20 +20,29 @@ import org.springframework.web.multipart.MultipartFile;
 import cl.camiletti.happyFeetWeb.model.Agenda;
 import cl.camiletti.happyFeetWeb.model.Atencion;
 import cl.camiletti.happyFeetWeb.model.Comuna;
+import cl.camiletti.happyFeetWeb.model.Horario;
 import cl.camiletti.happyFeetWeb.model.Paciente;
 import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Patologia;
+import cl.camiletti.happyFeetWeb.model.Podologo;
+import cl.camiletti.happyFeetWeb.model.Presupuesto;
+import cl.camiletti.happyFeetWeb.model.Solicitudatencion;
 import cl.camiletti.happyFeetWeb.model.Ubicacion;
 import cl.camiletti.happyFeetWeb.model.Usuario;
 import cl.camiletti.happyFeetWeb.service.AgendaService;
 import cl.camiletti.happyFeetWeb.service.AtencionService;
 import cl.camiletti.happyFeetWeb.service.ComunaService;
+import cl.camiletti.happyFeetWeb.service.HorarioService;
 import cl.camiletti.happyFeetWeb.service.PacienteService;
 import cl.camiletti.happyFeetWeb.service.ParametroService;
 import cl.camiletti.happyFeetWeb.service.PatologiaService;
+import cl.camiletti.happyFeetWeb.service.PodologoService;
+import cl.camiletti.happyFeetWeb.service.PresupuestoService;
 import cl.camiletti.happyFeetWeb.service.SecurityService;
+import cl.camiletti.happyFeetWeb.service.SolicitudAtencionService;
 import cl.camiletti.happyFeetWeb.service.UbicacionService;
 import cl.camiletti.happyFeetWeb.service.UsuarioService;
+import cl.camiletti.happyFeetWeb.util.Constantes;
 import cl.camiletti.happyFeetWeb.util.DateUtil;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 import cl.camiletti.happyFeetWeb.util.Mail;
@@ -43,6 +51,10 @@ import cl.camiletti.happyFeetWeb.util.Seccion;
 @Controller
 @SessionAttributes("sessionUser")
 public class PacienteController {
+	@Autowired
+	PodologoService podologoService;
+	@Autowired
+	SolicitudAtencionService solicitudAtencionService;
 	@Autowired
 	private PacienteService pacienteService;
 
@@ -55,6 +67,8 @@ public class PacienteController {
 	@Autowired
 	private UbicacionService ubicacionService;
 
+	@Autowired
+	HorarioService horarioService;
 	@Autowired
 	private SecurityService securityService;
 
@@ -69,6 +83,8 @@ public class PacienteController {
 
 	@Autowired
 	private DateUtil dateUtil;
+	
+	private PresupuestoService presupuestoService;
 
 	@Autowired
 	private Environment env;
@@ -93,14 +109,14 @@ public class PacienteController {
 
 	@RequestMapping(value = "/registrarPaciente", method = RequestMethod.POST)
 	public String registration(@ModelAttribute("pacienteForm") Paciente pacienteForm, BindingResult bindingResult,
-			Model model,@RequestParam("fotoPerfil") MultipartFile fotoPerfilPath) {
+			Model model, @RequestParam("fotoPerfil") MultipartFile fotoPerfilPath) {
 		if (bindingResult.hasErrors()) {
 
 		} else {
 			pacienteForm.setRut(pacienteForm.getRut().replace(".", ""));
-			String fotoPerfil = fileManagerUtil.subirArchivo(fotoPerfilPath,Seccion.PACIENTE,pacienteForm.getRut());
-			if(fotoPerfil!=null)
-			pacienteForm.setFoto(fotoPerfil);
+			String fotoPerfil = fileManagerUtil.subirArchivo(fotoPerfilPath, Seccion.PACIENTE, pacienteForm.getRut());
+			if (fotoPerfil != null)
+				pacienteForm.setFoto(fotoPerfil);
 			if (usuarioService.findByEmail(pacienteForm.getEmail()) == null) {
 				if (ubicacionService.findByNombre(pacienteForm.getUbicacion().getNombre()) == null) {
 					ubicacionService.save(pacienteForm.getUbicacion());
@@ -185,7 +201,7 @@ public class PacienteController {
 				model.addAttribute("mensaje", "Sus datos fueron guardados con éxito");
 
 				if (!archivo.isEmpty()) {
-					String file = fileManagerUtil.subirArchivo(archivo,Seccion.PACIENTE,pacienteForm.getRut());
+					String file = fileManagerUtil.subirArchivo(archivo, Seccion.PACIENTE, pacienteForm.getRut());
 					List<String> archivos = new ArrayList<String>();
 					archivos.add(file);
 					mail.sendEmailSolicitudPaciente(env.getProperty("emails.admins"), archivos, paciente);
@@ -232,7 +248,7 @@ public class PacienteController {
 		return "paciente/paciente";
 	}
 
-	@RequestMapping(value = "/paciente/solicitud", method = RequestMethod.GET)
+	@RequestMapping(value = "/paciente/quizPatologia", method = RequestMethod.GET)
 	public String solicitud(Model model) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Paciente paciente = pacienteService.findByEmail(user.getUsername());
@@ -242,13 +258,50 @@ public class PacienteController {
 		return "paciente/quiz";
 	}
 
-	@RequestMapping(value = "/paciente/selectPatologia", method = RequestMethod.GET)
+	@RequestMapping(value = "/paciente/selectPodologo", method = RequestMethod.GET)
 	public String seleccionaPatologia(Model model, @RequestParam("id") int id) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Paciente paciente = pacienteService.findByEmail(user.getUsername());
 		model.addAttribute("paciente", paciente);
 		Patologia patologia = patologiaService.findById(id);
 		model.addAttribute("patologia", patologia);
+		model.addAttribute("solicitudForm", new Solicitudatencion());
+
 		return "paciente/seleccionaPodologo";
+	}
+
+	@RequestMapping(value = "/paciente/guardarAgenda", method = RequestMethod.POST)
+	public String guardarAgenda(Model model, @ModelAttribute("solicitudForm") Solicitudatencion solicitudAtencion,
+			@RequestParam("fotoPiePaciente") MultipartFile fotoPiePaciente,@RequestParam("kilometros") String kilometros) {
+		System.out.println(solicitudAtencion);
+		System.out.println(fotoPiePaciente);
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Paciente paciente = pacienteService.findByEmail(user.getUsername());
+		Patologia patologia = patologiaService.findById(solicitudAtencion.getPatologia().getId());
+		Podologo podologo = podologoService.find(solicitudAtencion.getPodologo().getRut());
+		Horario horario = horarioService.findById(solicitudAtencion.getHorario().getId());
+        Parametro parametro=parametroService.findOne(12);//pendiente
+        Double cantidad_Kilometros=Double.parseDouble(kilometros);
+        //saca presupuesto
+        Presupuesto presupuesto=new Presupuesto();
+        presupuesto.setUbicacionPartida(podologo.getUbicacion());
+        presupuesto.setUbicacionLlegada(paciente.getUbicacion());
+        presupuesto.setCantidadKM(cantidad_Kilometros);
+        presupuesto.setTarifaKM(Constantes.VALOR_POR_KILOMETRO);
+        presupuesto.setViajePodologo((int)(presupuesto.getTarifaKM()*presupuesto.getCantidadKM()));
+        presupuesto.setTotal(presupuesto.getViajePodologo()+patologia.getCosto());
+       
+        solicitudAtencion.setPaciente(paciente);
+		solicitudAtencion.setPatologia(patologia);
+		solicitudAtencion.setPodologo(podologo);
+		solicitudAtencion.setPresupuesto(null);
+		solicitudAtencion.setHorario(horario);
+		solicitudAtencion.setParamEstadoSolicitudAtencion(parametro);
+		solicitudAtencion.setFechaSolicitud(DateUtil.getFechaHoyString());
+		solicitudAtencion.setFechaSolicitud(DateUtil.getFechaHoyString());
+		solicitudAtencion.setPresupuesto(presupuesto);
+		solicitudAtencionService.save(solicitudAtencion);
+
+		return "paciente/paciente";
 	}
 }

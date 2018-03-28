@@ -151,7 +151,7 @@
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
 								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
-						<li><a href="${contextPath}/paciente/solicitud"><i
+						<li><a href="${contextPath}/paciente/quizPatologia"><i
 								class="fa fa-edit fa-fw"></i> Pedir hora!</a></li>
 						<li><a href="${contextPath}/paciente/modificardatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
@@ -182,7 +182,7 @@
 			</div>
 
 			<div class="col-lg-3 col-md-6">
-				<a href="${contextPath}/paciente/solicitud">
+				<a href="${contextPath}/paciente/quizPatologia">
 					<div class="panel panel-primary">
 						<div class="panel-heading">
 							<div class="row">

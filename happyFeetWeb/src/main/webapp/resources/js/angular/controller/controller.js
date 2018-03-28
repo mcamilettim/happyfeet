@@ -3,17 +3,17 @@ angular.module('myApp', [])
  $scope.showLoading = true;
  $scope.modalConfirmar = false; 
  $scope.podologoSeleccionado = {};
- $scope.horarioSeleccionado = 2; 
- $scope.setPromesas=function(){
-	   
+ 
+ 
+ $scope.setPromesas=function(){	   
 	  var promesas=[];	
 	  promesas.push($scope.obtenerDatosPodologos());
 	  return $q.all(promesas);
 }
-	
-	$scope.obtenerDatosPodologos = function(){
+
+$scope.obtenerDatosPodologos = function(){
 	 return $http.get('/servicesPodologo/podologo/getPodologosPorComuna?idComuna=1');
-	}
+}
 	
 	$scope.obtenerPresupuesto  = function(idPatologia,index,kilometros){
 	      $http.get('/servicesPodologo/podologo/getPresupuesto?idPatologia='+idPatologia+'&rutPodologo='+$scope.podologos[index].rut+'&kilometros='+kilometros).
@@ -32,9 +32,10 @@ angular.module('myApp', [])
 	$scope.confirmarSeleccion= function(){
 		console.log( true);			     		 
 	 }
-	
-	 
  
+	$scope.setHorarioSeleccionado=function(horario){
+		$scope.horarioSeleccionado=horario;
+	}
 	//CODIGO PARA IMAGEN DINÁMICA
 	var divMapa2 = document.getElementById('mapa2');
 	

@@ -134,7 +134,6 @@
 	
 	           <div class="form-group ${status.error ? 'has-error' : ''}">      
 	               Carnet<input type="file"  class="form-control" name="carnet" value="Subir Carnet" required="true"></input>
-	               
 	           </div>	  
 		    
 	           <div class="form-group ${status.error ? 'has-error' : ''}">      

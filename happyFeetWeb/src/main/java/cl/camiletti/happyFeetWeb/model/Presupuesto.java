@@ -19,7 +19,7 @@ public class Presupuesto implements Serializable {
 	private int id;
 
 	private int tarifaKM;
-
+	private Double  cantidadKM;
 	private int total;
 
 	private int viajePodologo;
@@ -33,12 +33,12 @@ public class Presupuesto implements Serializable {
 	private List<Detallepresupuesto> detallepresupuestos;
 
 	//bi-directional many-to-one association to Ubicacion
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.ALL})
 	@JoinColumn(name="ubicacionLlegada_id")
 	private Ubicacion ubicacionLlegada;
 
 	//bi-directional many-to-one association to Ubicacion
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.ALL})
 	@JoinColumn(name="ubicacionPartida_id")
 	private Ubicacion ubicacionPartida;
 
@@ -161,6 +161,14 @@ public class Presupuesto implements Serializable {
 		solicitudatencion.setPresupuesto(null);
 
 		return solicitudatencion;
+	}
+
+	public Double getCantidadKM() {
+		return cantidadKM;
+	}
+
+	public void setCantidadKM(Double cantidadKM) {
+		this.cantidadKM = cantidadKM;
 	}
 
 }

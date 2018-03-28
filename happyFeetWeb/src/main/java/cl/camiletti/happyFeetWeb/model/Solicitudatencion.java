@@ -46,7 +46,7 @@ public class Solicitudatencion implements Serializable {
 	private Podologo podologo;
 
 	//bi-directional many-to-one association to Presupuesto
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.ALL})
 	private Presupuesto presupuesto;
 
 	public Solicitudatencion() {

@@ -209,7 +209,7 @@
 												style="width: 110px; height: 110px; padding-top: 10px;"
 												src="${contextPath}/resources/imagenes/${patologia.foto}" />
 												<button
-													onclick="location.href='${contextPath}/paciente/selectPatologia?id=${patologia.id}'"
+													onclick="location.href='${contextPath}/paciente/selectPodologo?id=${patologia.id}'"
 													type="button" class="btn btn-warning">Esto Tengo</button></td>
 										</tr>
 									</c:forEach>
