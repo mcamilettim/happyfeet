@@ -306,21 +306,22 @@
 												readonly="readonly" /></th>
 										</tr>
 										<tr>
-											<th scope="row" colspan="2"><input ng-model="presupuesto.rutPodologo"
-												type="text" class="form-control" name="podologo.rut"
-												required="required" readonly="readonly" /></th>
+											<th scope="row" colspan="2"><input
+												ng-model="presupuesto.rutPodologo" type="text"
+												class="form-control" name="podologo.rut" required="required"
+												readonly="readonly" /></th>
 										</tr>
 										<tr>
 											<th scope="row" colspan="2"><input
 												ng-model="presupuesto.patologia_id" type="text"
 												class="form-control" name="patologia.id" required="required"
-												readonly="readonly"/></th>
+												readonly="readonly" /></th>
 										</tr>
 										<tr>
 											<th scope="row" colspan="2"><input
 												ng-model="presupuesto.kilometros" type="text"
 												class="form-control" name="kilometros" required="required"
-												readonly="readonly"/></th>
+												readonly="readonly" /></th>
 										</tr>
 										<tr>
 											<th scope="col">Evaluación</th>
@@ -359,12 +360,14 @@
 											<th scope="row">$ {{presupuesto.patologia_monto}}</th>
 										</tr>
 										<tr>
-											<th scope="col" colspan="2">Foto de sus Pies  <input
+											<th scope="col" colspan="2">Foto de sus Pies <input
 												type="file" class="form-control" name="fotoPiePaciente"
 												value="Subir Carnet" required="required"></input></th>
 										</tr>
 										<tr>
-											<th scope="col" colspan="2">Comentario para el Podólogo  <textarea class="form-control" rows="3" name="comentario"></textarea></th>
+											<th scope="col" colspan="2">Comentario para el Podólogo
+												<textarea class="form-control" rows="3" name="comentario"></textarea>
+											</th>
 										</tr>
 
 									</table>
@@ -388,49 +391,51 @@
 										<button type="button" class="btn btn-primary"
 											data-toggle="modal" data-target="#exampleModal">Confirmar
 											solicitud de atención</button>
-										<button type="submit" class="btn btn-primary">Enviar</button>
 									</td>
 								<tr>
 							</table>
 							<br> <br> <br> <br>
 
 						</div>
-
-					</form:form>
-					<!-- Modal -->
-					<div class="modal fade" id="exampleModal" tabindex="-1"
-						role="dialog" aria-labelledby="exampleModalLabel"
-						aria-hidden="true">
-						<div class="modal-dialog" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h4 class="modal-title" id="exampleModalLabel">
-										<strong>Confirmación de Solicitud Podológica</strong>
-									</h4>
-									<button type="button" class="close" data-dismiss="modal"
-										aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div class="modal-body">
-									<p style="text-align: justify;">
-										<strong><span style="color: red;">*</span> Monto
-											Atención: $ {{presupuesto.total}} <br> <span
-											style="color: red;">*</span> Horario Atención: $
-											{{horarioSeleccionado}} <br> <span style="color: red;">*</span>
-											La foto subida al Sistema debe coincidir con la Patología
-											seleccionada.</strong>
-									</p>
-								</div>
-								<div class="modal-footer" align="left">
-									<button type="button" class="btn btn-secondary"
-										data-dismiss="modal">Cancelar</button>
-									<button type="button" class="btn btn-primary"
-										ng-click="confirmarSeleccion()">Si, estoy de acuerdo</button>
+						<!-- Modal -->
+						<div class="modal fade" id="exampleModal" tabindex="-1"
+							role="dialog" aria-labelledby="exampleModalLabel"
+							aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title" id="exampleModalLabel">
+											<strong>Confirmación de Solicitud Podológica</strong>
+										</h4>
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<p style="text-align: justify;">
+											<strong><span style="color: red;">*</span> Monto
+												Atención: $ {{presupuesto.total}} <br> <span
+												style="color: red;">*</span> Horario Atención:
+												{{horarioSeleccionado.hora}} -
+												{{horarioSeleccionado.horaFin}} <br> <span
+												style="color: red;">*</span> Fecha Atención:
+												{{horarioSeleccionado.fecha}} <br> <span
+												style="color: red;">*</span> La foto subida al Sistema debe
+												coincidir con la Patología seleccionada.</strong>
+										</p>
+									</div>
+									<div class="modal-footer" align="left">
+										<button type="button" class="btn btn-secondary"
+											data-dismiss="modal">Cancelar</button>
+										<button type="submit" class="btn btn-primary">Si,
+											estoy de acuerdo</button>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+					</form:form>
+
 					<!-- /.row -->
 				</div>
 			</div>

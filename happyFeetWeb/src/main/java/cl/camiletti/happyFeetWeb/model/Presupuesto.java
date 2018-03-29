@@ -33,12 +33,12 @@ public class Presupuesto implements Serializable {
 	private List<Detallepresupuesto> detallepresupuestos;
 
 	//bi-directional many-to-one association to Ubicacion
-	@ManyToOne(cascade = {CascadeType.ALL})
+	@ManyToOne
 	@JoinColumn(name="ubicacionLlegada_id")
 	private Ubicacion ubicacionLlegada;
 
 	//bi-directional many-to-one association to Ubicacion
-	@ManyToOne(cascade = {CascadeType.ALL})
+	@ManyToOne
 	@JoinColumn(name="ubicacionPartida_id")
 	private Ubicacion ubicacionPartida;
 

@@ -17,13 +17,12 @@ public class FileManagerUtil {
 //	public static final String ROOT_PATH = System.getProperty("os.name").toLowerCase().indexOf("win") >= 0
 //			? "C:/repository/tesis/happyFeetWeb/src/main/webapp/resources/imagenes"
 //			: "/opt";
-	
-	public static final String ROOT_PATH = System.getProperty("os.name").toLowerCase().indexOf("win") >= 0
-			? "D:/repository_sis/tesis/happyFeetWeb/src/main/webapp/resources/imagenes"
-			: "/opt";
-	public static final String DIR_SINGLE = "DOCS";
-
+	public static final UtilProperties util=new UtilProperties();
+	public static final String ROOT_PATH=util.getProperty(Properties.ROOT_PATH);
+	public static final String DIR_SINGLE=util.getProperty(Properties.DIR_SINGLE);
+ 
 	public String subirArchivo(MultipartFile archivoEntrada, String seccion, String rut) {
+
 		File serverFilearchivoEntrada = null;
 		if (!archivoEntrada.isEmpty()) {
 			try {
@@ -53,13 +52,16 @@ public class FileManagerUtil {
 						new FileOutputStream(serverFilearchivoEntrada));
 				streamarchivoEntrada.write(bytesarchivoEntrada);
 				streamarchivoEntrada.close();
-			} catch (IOException e) {
+				return DIR_SINGLE + File.separator + seccion + File.separator + serverFilearchivoEntrada.getName();
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return null;
 			}
+		}else {
+			return null;
 		}
-		return DIR_SINGLE + File.separator + seccion + File.separator + serverFilearchivoEntrada.getName();
+		
 	}
 
 	public File subirArchivoPaciente(MultipartFile archivoEntrada, String otroPath) {

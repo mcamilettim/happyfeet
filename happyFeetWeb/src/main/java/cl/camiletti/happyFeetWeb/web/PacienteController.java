@@ -46,6 +46,7 @@ import cl.camiletti.happyFeetWeb.util.Constantes;
 import cl.camiletti.happyFeetWeb.util.DateUtil;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 import cl.camiletti.happyFeetWeb.util.Mail;
+import cl.camiletti.happyFeetWeb.util.Parametros;
 import cl.camiletti.happyFeetWeb.util.Seccion;
 
 @Controller
@@ -83,8 +84,6 @@ public class PacienteController {
 
 	@Autowired
 	private DateUtil dateUtil;
-	
-	private PresupuestoService presupuestoService;
 
 	@Autowired
 	private Environment env;
@@ -272,36 +271,43 @@ public class PacienteController {
 
 	@RequestMapping(value = "/paciente/guardarAgenda", method = RequestMethod.POST)
 	public String guardarAgenda(Model model, @ModelAttribute("solicitudForm") Solicitudatencion solicitudAtencion,
-			@RequestParam("fotoPiePaciente") MultipartFile fotoPiePaciente,@RequestParam("kilometros") String kilometros) {
-		System.out.println(solicitudAtencion);
-		System.out.println(fotoPiePaciente);
+			@RequestParam("fotoPiePaciente") MultipartFile fotoPiePaciente,
+			@RequestParam("kilometros") String kilometros) {
+		
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Paciente paciente = pacienteService.findByEmail(user.getUsername());
 		Patologia patologia = patologiaService.findById(solicitudAtencion.getPatologia().getId());
 		Podologo podologo = podologoService.find(solicitudAtencion.getPodologo().getRut());
 		Horario horario = horarioService.findById(solicitudAtencion.getHorario().getId());
-        Parametro parametro=parametroService.findOne(12);//pendiente
-        Double cantidad_Kilometros=Double.parseDouble(kilometros);
-        //saca presupuesto
-        Presupuesto presupuesto=new Presupuesto();
-        presupuesto.setUbicacionPartida(podologo.getUbicacion());
-        presupuesto.setUbicacionLlegada(paciente.getUbicacion());
-        presupuesto.setCantidadKM(cantidad_Kilometros);
-        presupuesto.setTarifaKM(Constantes.VALOR_POR_KILOMETRO);
-        presupuesto.setViajePodologo((int)(presupuesto.getTarifaKM()*presupuesto.getCantidadKM()));
-        presupuesto.setTotal(presupuesto.getViajePodologo()+patologia.getCosto());
-       
-        solicitudAtencion.setPaciente(paciente);
+		Parametro parametroPendiente = parametroService.findOne(Parametros.ESTADO_SOLICITUD_PENDIENTE);// pendiente (estado Solicitud)
+		Parametro parametroTomado = parametroService.findOne(Parametros.ESTADO_HORARIO_TOMADO);// tomado
+		String fotoPie = fileManagerUtil.subirArchivo(fotoPiePaciente, Seccion.SOLICITUDES_ATENCION, paciente.getRut());
+		 
+		Double cantidad_Kilometros = Double.parseDouble(kilometros);
+		// saca presupuesto
+		Presupuesto presupuesto = new Presupuesto();
+		presupuesto.setUbicacionPartida(podologo.getUbicacion());
+		presupuesto.setUbicacionLlegada(paciente.getUbicacion());
+		presupuesto.setCantidadKM(cantidad_Kilometros);
+		presupuesto.setTarifaKM(Constantes.VALOR_POR_KILOMETRO);
+		presupuesto.setViajePodologo((int) (presupuesto.getTarifaKM() * presupuesto.getCantidadKM()));
+		presupuesto.setTotal(presupuesto.getViajePodologo() + patologia.getCosto());
+
+		solicitudAtencion.setPaciente(paciente);
 		solicitudAtencion.setPatologia(patologia);
 		solicitudAtencion.setPodologo(podologo);
-		solicitudAtencion.setPresupuesto(null);
 		solicitudAtencion.setHorario(horario);
-		solicitudAtencion.setParamEstadoSolicitudAtencion(parametro);
+		solicitudAtencion.setParamEstadoSolicitudAtencion(parametroPendiente);
 		solicitudAtencion.setFechaSolicitud(DateUtil.getFechaHoyString());
 		solicitudAtencion.setFechaSolicitud(DateUtil.getFechaHoyString());
 		solicitudAtencion.setPresupuesto(presupuesto);
+		solicitudAtencion.setFotoPiePath(fotoPie);
 		solicitudAtencionService.save(solicitudAtencion);
-
+		
+		horario.setParamEstadoHorario(parametroTomado);
+		
+		horarioService.save(horario);
+		
 		return "paciente/paciente";
 	}
 }

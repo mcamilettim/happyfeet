@@ -6,4 +6,5 @@ public interface Seccion {
 	String PODOLOGO = "Podologo";
 	String ADMIN = "Admin";
 	String SOLICITUDES = "Solicitudes";
+	String SOLICITUDES_ATENCION = "Solicitudes_Atencion";
 }
