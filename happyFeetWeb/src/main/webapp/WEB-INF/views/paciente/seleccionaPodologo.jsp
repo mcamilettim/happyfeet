@@ -1,9 +1,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-
+<fmt:setLocale value="es_CL" />
 <!DOCTYPE html>
 
 <html lang="es" ng-app="myApp">
@@ -151,8 +152,8 @@
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
 								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
-						<li><a href="${contextPath}/paciente/solicitud"><i
-								class="fa fa-edit fa-fw"></i> Pedir hora!</a></li>
+						<li><a href="${contextPath}/paciente/solicitud"
+							class="active"><i class="fa fa-edit fa-fw"></i> Pedir hora!</a></li>
 						<li><a href="${contextPath}/paciente/modificardatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
 						<li><a href="${contextPath}/paciente/misatenciones"><i
@@ -211,16 +212,54 @@
 							</div>
 							<div align="center">
 								<p
-									style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">De
-									acuerdo a la distancia del podologo seleccionado y usted se
-									sacara el monto del viaje</p>
-								<br>
-
-								<div class="table-responsive">
-									<div id="mapa2" class="col-lg-12" style="height: 550px"></div>
-								</div>
+									style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">
+									De acuerdo a la distancia del podólogo seleccionado y usted se
+									obtendrá el monto del viaje.<br>
+								</p>
 
 							</div>
+
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">Kms</th>
+										<th scope="col">Viaje</th>
+										<th scope="col">Patología</th>
+										<th scope="col">TOTAL</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="bg-info">
+
+										<td><strong id="detalleKilometros">?</strong></td>
+
+										<td><strong ng-if="presupuesto.montoKilometros">{{presupuesto.montoKilometros
+												| number}}</strong> <strong ng-if="!presupuesto.montoKilometros">
+												?</strong></td>
+										<td><strong><fmt:formatNumber
+													value="${patologia.costo}" type="currency" pattern="#,##0" />
+										</strong></td>
+										<td><strong ng-if="presupuesto.total">{{presupuesto.total
+												| number}}</strong><strong ng-if="!presupuesto.total">?</strong></td>
+
+									</tr>
+									<tr>
+										<td></td>
+
+										<td colspan="2" align="center"><button
+												ng-click="confirmarPresupuesto()" ng-if="presupuesto.total"
+												type="button" class="btn btn-success">Continuar</button></td>
+									</tr>
+
+								</tbody>
+							</table>
+
+							<br>
+							<div class="table-responsive">
+								<div id="mapa2" class="col-lg-12" style="height: 550px"></div>
+							</div>
+
+
 							<div ng-if="!presupuesto" align="center" class=" bg-danger "
 								style="height: 40px; padding-top: 10px;">
 								<p>
@@ -235,11 +274,16 @@
 										disponibles</strong>
 								</p>
 							</div>
+							<div
+								ng-if="presupuesto && !horarioSeleccionado && podologoSeleccionado.horarios.length!=0"
+								align="center" class=" bg-danger "
+								style="height: 40px; padding-top: 10px;">
+								<p>
+									<strong> Seleccione un horario de Atención</strong>
+								</p>
+							</div>
 						</div>
-
 					</div>
-					<!-- /.row -->
-
 				</div>
 			</div>
 			<div class="container-fluid"
@@ -282,6 +326,8 @@
 					</div>
 				</div>
 			</div>
+			<br ng-if="!horarioSeleccionado"> <br
+				ng-if="!horarioSeleccionado"> <br ng-if="!horarioSeleccionado">
 			<div class="container-fluid" ng-if="horarioSeleccionado">
 				<br>
 				<div class="row">
@@ -299,25 +345,25 @@
 											<th scope="col">Podólogo {{horarioSeleccionado.id}}</th>
 											<th scope="row">{{presupuesto.nombrePodologo}}</th>
 										</tr>
-										<tr>
+										<tr style="display: none;">
 											<th scope="row" colspan="2"><input
 												ng-model="horarioSeleccionado.id" type="text"
 												class="form-control" name="horario.id" required="required"
 												readonly="readonly" /></th>
 										</tr>
-										<tr>
+										<tr style="display: none;">
 											<th scope="row" colspan="2"><input
 												ng-model="presupuesto.rutPodologo" type="text"
 												class="form-control" name="podologo.rut" required="required"
 												readonly="readonly" /></th>
 										</tr>
-										<tr>
+										<tr style="display: none;">
 											<th scope="row" colspan="2"><input
 												ng-model="presupuesto.patologia_id" type="text"
 												class="form-control" name="patologia.id" required="required"
 												readonly="readonly" /></th>
 										</tr>
-										<tr>
+										<tr style="display: none;">
 											<th scope="row" colspan="2"><input
 												ng-model="presupuesto.kilometros" type="text"
 												class="form-control" name="kilometros" required="required"
@@ -345,11 +391,11 @@
 										</tr>
 										<tr>
 											<th scope="col">Monto por Kilómetro</th>
-											<th scope="row">$ {{presupuesto.montoPorKilometro}}</th>
+											<th scope="row">$ {{presupuesto.montoPorKilometro | number}}</th>
 										</tr>
 										<tr>
 											<th scope="col">Viaje del Podólogo a su Casa</th>
-											<th scope="row">$ {{presupuesto.montoKilometros}}</th>
+											<th scope="row">$ {{presupuesto.montoKilometros | number}}</th>
 										</tr>
 										<tr>
 											<th scope="col">Patología a Tratar</th>
@@ -357,7 +403,7 @@
 										</tr>
 										<tr>
 											<th scope="col">Patología a Tratar Monto</th>
-											<th scope="row">$ {{presupuesto.patologia_monto}}</th>
+											<th scope="row">$ {{presupuesto.patologia_monto | number}}</th>
 										</tr>
 										<tr>
 											<th scope="col" colspan="2">Foto de sus Pies <input
@@ -376,7 +422,7 @@
 									style="height: 40px; padding-top: 10px;">
 									<p>
 										<strong> Monto total por la atención : $
-											{{presupuesto.total}}</strong>
+											{{presupuesto.total | number}}</strong>
 									</p>
 								</div>
 							</div>
@@ -415,7 +461,7 @@
 									<div class="modal-body">
 										<p style="text-align: justify;">
 											<strong><span style="color: red;">*</span> Monto
-												Atención: $ {{presupuesto.total}} <br> <span
+												Atención: $ {{presupuesto.total | number}} <br> <span
 												style="color: red;">*</span> Horario Atención:
 												{{horarioSeleccionado.hora}} -
 												{{horarioSeleccionado.horaFin}} <br> <span
@@ -434,6 +480,7 @@
 								</div>
 							</div>
 						</div>
+
 					</form:form>
 
 					<!-- /.row -->

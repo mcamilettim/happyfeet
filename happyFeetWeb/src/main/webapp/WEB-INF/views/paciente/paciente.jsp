@@ -142,7 +142,7 @@
 											class="img-responsive" style="width: 200px;">
 									</c:otherwise>
 								</c:choose>
-								 <br>
+								<br>
 								<div align="center">
 									<span class="text-info text-center"><b>${paciente.nombres}
 											${paciente.apellidos}</b></span> <span class="text-info">Paciente</span>
@@ -172,8 +172,14 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h2 class="page-header">
-							Bienvenid<c:if test="${paciente.paramSexo.id==6}">o</c:if>
-							<c:if test="${paciente.paramSexo.id==7}">a</c:if>
+							<c:if test="${mensaje != null}">
+								<div class="alert alert-success alert-dismissable">
+									<button type="button" class="close" data-dismiss="alert"
+										aria-hidden="true">×</button>
+									${mensaje}
+								</div>
+							</c:if>
+							Bienvenid<c:if test="${paciente.paramSexo.id==6}">o</c:if><c:if test="${paciente.paramSexo.id==7}">a</c:if>
 						</h2>
 					</div>
 					<!-- /.col-lg-12 -->
@@ -207,7 +213,7 @@
 			</div>
 
 			<div class="col-lg-3 col-md-6">
-				<a href="${contextPath}/paciente/modificardatos">
+				<a href="${contextPath}/paciente/modificarDatos">
 					<div class="panel panel-green">
 						<div class="panel-heading">
 							<div class="row">

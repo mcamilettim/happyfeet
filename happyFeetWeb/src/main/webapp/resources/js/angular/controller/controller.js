@@ -29,8 +29,8 @@ $scope.obtenerDatosPodologos = function(){
 		      };
 		}
 	
-	$scope.confirmarSeleccion= function(){
-		console.log( true);			     		 
+	$scope.confirmarPresupuesto= function(){
+		window.scrollTo(0,document.body.scrollHeight);		     		 
 	 }
  
 	$scope.setHorarioSeleccionado=function(horario){
@@ -97,7 +97,7 @@ $scope.obtenerDatosPodologos = function(){
 			 
 	 
 				var objHtml = {
-					content: '<div class="table-responsive" style="height:150px; width:150px;">Pod&oacute;logo(a):'+
+					content: '<div align="center" class="table-responsive" style="height:150px; width:150px;">Pod&oacute;logo(a):'+
 						 '<h6>'+podologo.nombres+ ' '+ podologo.apellidos+'</h6> <img style="height:60px; width:60px;" '+
 						 'class="img-responsive" src="data:image/png;base64,'+podologo.foto+'" />'+
 						 '<table><tr><td>Evaluaci&oacute;n:&nbsp;'+podologo.evaluacion+'</td><td><img style="height:15px; width:15px;" class="img-responsive" src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/96/star-icon.png" /></td></tr></table>  </div>'
@@ -147,8 +147,12 @@ $scope.obtenerDatosPodologos = function(){
 									total += myroute.legs[i].distance.value;
 								}
 								total = total / 1000;
-								$scope.obtenerPresupuesto("1",currentMarker.zIndex,total);
-								//document.getElementById('total').innerHTML = total + ' kms';
+								var url_string = window.location.href
+								var url = new URL(url_string);
+								var id = url.searchParams.get("id");
+								console.log(id);
+								$scope.obtenerPresupuesto(id,currentMarker.zIndex,total);
+								document.getElementById('detalleKilometros').innerHTML = total;
 							} else{
 								alert('Error: '+status);
 							}

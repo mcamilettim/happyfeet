@@ -151,7 +151,7 @@
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
 								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
-						<li><a href="${contextPath}/paciente/solicitud"><i
+						<li><a href="${contextPath}/paciente/solicitud" class="active"><i
 								class="fa fa-edit fa-fw"></i> Pedir hora!</a></li>
 						<li><a href="${contextPath}/paciente/modificardatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>

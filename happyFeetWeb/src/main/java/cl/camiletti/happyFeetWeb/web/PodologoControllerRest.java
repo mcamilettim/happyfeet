@@ -63,17 +63,19 @@ public class PodologoControllerRest {
 		Comuna comuna = comunaService.findById(idComuna);
 		List<Ubicacion> ubicaciones = comuna.getUbicacions();
 		List<PodologoCustom> podologos = new ArrayList<PodologoCustom>();
-
+		FileManagerUtil fileManagerUtil =new FileManagerUtil();
+		  FileManagerUtil fileUtil=new FileManagerUtil();
 		for (Ubicacion ubicacion : ubicaciones) {
 			for (Podologo podologo : ubicacion.getPodologos()) {
 				PodologoCustom podoAux = new PodologoCustom();
-				File foto = new File(FileManagerUtil.ROOT_PATH + File.separator + podologo.getFoto());
+				File foto = new File(fileUtil.getROOT_PATH() + File.separator + podologo.getFoto());
+				
 				if (foto.exists()) {
-					podoAux.setFoto(FileManagerUtil
-							.encodeFileToBase64Binary(FileManagerUtil.ROOT_PATH + File.separator + podologo.getFoto()));
+					podoAux.setFoto(fileManagerUtil
+							.encodeFileToBase64Binary(fileUtil.getROOT_PATH() + File.separator + podologo.getFoto()));
 				} else {
-					podoAux.setFoto(FileManagerUtil
-							.encodeFileToBase64Binary(FileManagerUtil.ROOT_PATH + File.separator + "sinfoto.jpg"));
+					podoAux.setFoto(fileManagerUtil
+							.encodeFileToBase64Binary(fileUtil.getROOT_PATH() + File.separator + "sinfoto.jpg"));
 				}
 				podoAux.setNombres(podologo.getNombres());
 				podoAux.setApellidos(podologo.getApellidos());

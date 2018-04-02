@@ -14,13 +14,20 @@ import org.springframework.web.multipart.MultipartFile;
 @Component
 public class FileManagerUtil {
 
-//	public static final String ROOT_PATH = System.getProperty("os.name").toLowerCase().indexOf("win") >= 0
-//			? "C:/repository/tesis/happyFeetWeb/src/main/webapp/resources/imagenes"
-//			: "/opt";
-	public static final UtilProperties util=new UtilProperties();
-	public static final String ROOT_PATH=util.getProperty(Properties.ROOT_PATH);
-	public static final String DIR_SINGLE=util.getProperty(Properties.DIR_SINGLE);
- 
+	// public static final String ROOT_PATH =
+	// System.getProperty("os.name").toLowerCase().indexOf("win") >= 0
+	// ? "C:/repository/tesis/happyFeetWeb/src/main/webapp/resources/imagenes"
+	// : "/opt";
+	private UtilProperties util;
+	private String ROOT_PATH;
+	private String DIR_SINGLE;
+
+	public FileManagerUtil() {
+		this.util = new UtilProperties();
+		this.ROOT_PATH = this.util.getProperty(Properties.ROOT_PATH);
+		this.DIR_SINGLE = this.util.getProperty(Properties.DIR_SINGLE);
+	}
+
 	public String subirArchivo(MultipartFile archivoEntrada, String seccion, String rut) {
 
 		File serverFilearchivoEntrada = null;
@@ -58,10 +65,10 @@ public class FileManagerUtil {
 				e.printStackTrace();
 				return null;
 			}
-		}else {
+		} else {
 			return null;
 		}
-		
+
 	}
 
 	public File subirArchivoPaciente(MultipartFile archivoEntrada, String otroPath) {
@@ -101,25 +108,67 @@ public class FileManagerUtil {
 		return serverFilearchivoEntrada;
 	}
 
-	private static byte[] loadFile(File file) throws IOException {
-		InputStream is = new FileInputStream(file);
-		long length = file.length();
-		byte[] bytes = new byte[(int) length];
+	private static byte[] loadFile(File file) {
+		InputStream is = null;
+		byte[] bytes = null;
+		try {
+			is = new FileInputStream(file);
+			long length = file.length();
+			bytes = new byte[(int) length];
 
-		int offset = 0;
-		int numRead = 0;
-		while (offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
-			offset += numRead;
+			int offset = 0;
+			int numRead = 0;
+			while (offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
+				offset += numRead;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+				}
+			}
+
 		}
-		is.close();
+
 		return bytes;
 	}
 
-	public static String encodeFileToBase64Binary(String fileName) throws IOException {
+	public String encodeFileToBase64Binary(String fileName) {
 		File file = new File(fileName);
 		byte[] bytes = loadFile(file);
-		return Base64.encodeBase64String(bytes);
+		if (bytes != null)
+			return Base64.encodeBase64String(bytes);
+		else
+			return null;
 	}
 
-	
+	public UtilProperties getUtil() {
+		return util;
+	}
+
+	public void setUtil(UtilProperties util) {
+		this.util = util;
+	}
+
+	public String getROOT_PATH() {
+		return ROOT_PATH;
+	}
+
+	public void setROOT_PATH(String rOOT_PATH) {
+		ROOT_PATH = rOOT_PATH;
+	}
+
+	public String getDIR_SINGLE() {
+		return DIR_SINGLE;
+	}
+
+	public void setDIR_SINGLE(String dIR_SINGLE) {
+		DIR_SINGLE = dIR_SINGLE;
+	}
+
 }

@@ -72,7 +72,7 @@
     				  </div>	 
 		   </div>						     
         <div class="row">
-            <div class="col-md-4 col-md-offset-4">
+            <div class="col-md-4 col-md-offset-4" style="top: -90px;">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading" style="background-color: #286090;">
                     	<img src="${contextPath}/resources/img/logo2.png" class="img-responsive" style="width: 360px;">
@@ -166,7 +166,7 @@
 				            </div>
 				     </spring:bind>
 				     
-				     <spring:bind path="fono">
+				     <spring:bind path="email">
 			           <div class="form-group ${status.error ? 'has-error' : ''}">
 			           Email
 			               <form:input type="email" path="email" class="form-control" required="true"></form:input>

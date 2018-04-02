@@ -162,10 +162,11 @@ public class Mail {
          messageBodyPart.setContent(htmlBody, "text/html; charset=UTF-8");
 		 Multipart multipart = new MimeMultipart();
          multipart.addBodyPart(messageBodyPart);
+         FileManagerUtil fileUtil=new FileManagerUtil();
          if(archivos != null)
          for (String archivo : archivos) {
              messageBodyPart = new MimeBodyPart();
-             DataSource source = new FileDataSource(FileManagerUtil.ROOT_PATH + File.separator + FileManagerUtil.DIR_SINGLE + File.separator + archivo);
+             DataSource source = new FileDataSource(fileUtil.getROOT_PATH() + File.separator + fileUtil.getDIR_SINGLE() + File.separator + archivo);
              messageBodyPart.setDataHandler(new DataHandler(source));
              messageBodyPart.setFileName(archivo);
              multipart.addBodyPart(messageBodyPart);
