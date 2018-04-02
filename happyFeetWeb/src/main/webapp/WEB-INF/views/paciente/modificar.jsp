@@ -153,7 +153,7 @@
 								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
 								class="fa fa-edit fa-fw"></i> Pedir hora!</a></li>
-						<li><a href="${contextPath}/paciente/modificardatos" class="active"><i
+						<li><a href="${contextPath}/paciente/modificarDatos" class="active"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
 						<li><a href="${contextPath}/paciente/misatenciones"><i
 								class="fa fa-table fa-fw"></i> Mis atenciones</a></li>
@@ -183,7 +183,7 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default">
-						<div class="panel-heading">Modificar mis datos</div>
+						<div class="panel-heading"><strong>Modificar mis datos</strong></div>
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-lg-6">
@@ -393,8 +393,8 @@
 		 });	
 		
 		function validaComuna(address){
-			console.log(address);
-			console.log(address.localeCompare("Maipú"));
+			//console.log(address);
+			//console.log(address.localeCompare("Maipú"));
 			if(address.localeCompare("Maipú")==0){
 				$("#comunaID").val('1').change();;
 				$("#comunaNombre").val(address);

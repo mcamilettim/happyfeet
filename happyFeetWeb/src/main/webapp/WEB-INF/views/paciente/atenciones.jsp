@@ -79,7 +79,7 @@
 
 	<div id="wrapper">
 
-		<!-- Navigation -->
+				<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
@@ -100,12 +100,9 @@
 						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-messages">
-						<li><a href="#">
-								<div>
-									<strong></strong> <span class="pull-right text-muted"> <em>Ahora</em>
-									</span>
-								</div>
-								<div>Sin mensajes nuevos.</div>
+						<li><a href="#"> <strong></strong> <span
+								class="pull-right text-muted"> <em>Ahora</em>
+							</span> Sin mensajes nuevos.
 						</a></li>
 						<li class="divider"></li>
 						<li><a class="text-center"
@@ -113,7 +110,7 @@
 									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
 					</ul> <!-- /.dropdown-messages --></li>
-				</li>
+
 				<!-- /.dropdown -->
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
@@ -135,19 +132,28 @@
 					<ul class="nav" id="side-menu">
 						<li class="sidebar-search">
 							<div class="input-group custom-search-form">
-								<img src="${contextPath}/resources/img/sinfoto.jpg"
-									class="img-responsive" style="width: 200px;"> <br>
+								<c:choose>
+									<c:when test="${empty paciente.foto}">
+										<img src="${contextPath}/resources/img/sinfoto.jpg"
+											class="img-responsive" style="width: 200px;">
+									</c:when>
+									<c:otherwise>
+										<img src="${contextPath}/resources/imagenes/${paciente.foto}"
+											class="img-responsive" style="width: 200px;">
+									</c:otherwise>
+								</c:choose>
+								<br>
 								<div align="center">
 									<span class="text-info text-center"><b>${paciente.nombres}
 											${paciente.apellidos}</b></span> <span class="text-info">Paciente</span>
 								</div>
-							</div> <!-- /input-group -->
+							</div><!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
 								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
-						<li><a href="${contextPath}/paciente/solicitud"><i
+						<li><a href="${contextPath}/paciente/quizPatologia"><i
 								class="fa fa-edit fa-fw"></i> Pedir hora!</a></li>
-						<li><a href="${contextPath}/paciente/modificardatos"><i
+						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
 						<li><a href="${contextPath}/paciente/misatenciones"><i
 								class="fa fa-table fa-fw"></i> Mis atenciones</a></li>
@@ -172,7 +178,7 @@
 							</div>
 							<br>
 							<div align="center">
-								<p>A continuación se detallan todas las atenciones
+								<p style="text-align: justify; padding-left: 10px; padding-right: 10px;">A continuación se detallan todas las atenciones
 									efectuadas en la aplicación, no se contemplan las horas
 									agendadas que no se llevaron a cabo.</p>
 								<br>
@@ -192,8 +198,7 @@
 													${atencion.podologo.apellidos}</td>
 												<td align="center">${atencion.patologia.nombre}</td>
 												<td align="center">${atencion.agenda.horario.fecha}</td>
-												<td align="center"><button
-										onclick="location.href='${contextPath}/paciente/detalleAtencion?id=${atencion.id}'"
+												<td align="center"><button onclick="location.href='${contextPath}/paciente/detalleAtencion?id=${atencion.id}'"
 										type="submit" class="btn btn-primary">Ver</button></td>
 											</tr>
 										</c:forEach>
@@ -206,6 +211,7 @@
 					<!-- /.row -->
 				</div>
 			</div>
+		</div>
 		</div>
 
 

@@ -153,7 +153,7 @@
 								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
 								class="fa fa-edit fa-fw"></i> Pedir hora!</a></li>
-						<li><a href="${contextPath}/paciente/modificardatos"><i
+						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
 						<li><a href="${contextPath}/paciente/misatenciones"><i
 								class="fa fa-table fa-fw"></i> Mis atenciones</a></li>
@@ -172,11 +172,18 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h2 class="page-header">
-							<c:if test="${mensaje != null}">
+							<c:if test="${mensaje != null && mensaje.length>0}">
 								<div class="alert alert-success alert-dismissable">
 									<button type="button" class="close" data-dismiss="alert"
 										aria-hidden="true">×</button>
 									${mensaje}
+								</div>
+							</c:if>
+							<c:if test="${mensajeError != null}">
+								<div class="alert alert-danger alert-dismissable">
+									<button type="button" class="close" data-dismiss="alert"
+										aria-hidden="true">×</button>
+									${mensajeError}
 								</div>
 							</c:if>
 							Bienvenid<c:if test="${paciente.paramSexo.id==6}">o</c:if><c:if test="${paciente.paramSexo.id==7}">a</c:if>

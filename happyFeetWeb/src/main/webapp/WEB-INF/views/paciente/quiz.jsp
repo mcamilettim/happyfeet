@@ -153,7 +153,7 @@
 								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
 						<li><a href="${contextPath}/paciente/solicitud" class="active"><i
 								class="fa fa-edit fa-fw"></i> Pedir hora!</a></li>
-						<li><a href="${contextPath}/paciente/modificardatos"><i
+						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
 						<li><a href="${contextPath}/paciente/misatenciones"><i
 								class="fa fa-table fa-fw"></i> Mis atenciones</a></li>

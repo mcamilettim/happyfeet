@@ -100,20 +100,17 @@
 						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-messages">
-						<li><a href="#">
-								<div>
-									<strong></strong> <span class="pull-right text-muted"> <em>Ahora</em>
-									</span>
-								</div>
-								<div>Sin mensajes nuevos.</div>
+						<li><a href="#"> <strong></strong> <span
+								class="pull-right text-muted"> <em>Ahora</em>
+							</span> Sin mensajes nuevos.
 						</a></li>
 						<li class="divider"></li>
 						<li><a class="text-center"
-							href="${contextPath}/podologo/index"> <strong>Ver
+							href="${contextPath}/podologo/vermensajes"> <strong>Ver
 									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
 					</ul> <!-- /.dropdown-messages --></li>
-				</li>
+
 				<!-- /.dropdown -->
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
@@ -133,20 +130,25 @@
 			<div class="navbar-default sidebar" role="navigation">
 				<div class="sidebar-nav navbar-collapse">
 					<ul class="nav" id="side-menu">
-						<li class="sidebar-search">
+							<li class="sidebar-search">
 							<div class="input-group custom-search-form">
-								<img src="${contextPath}/resources/imagenes/${podologo.foto}"
-									class="img-responsive" style="width: 200px;"> <br>
-								<center>
+								<c:choose>
+									<c:when test="${empty podologo.foto}">
+										<img src="${contextPath}/resources/img/sinfoto.jpg"
+											class="img-responsive" style="width: 200px;">
+									</c:when>
+									<c:otherwise>
+										<img src="${contextPath}/resources/imagenes/${podologo.foto}"
+											class="img-responsive" style="width: 200px;">
+									</c:otherwise>
+								</c:choose>
+								<br>
+								<div align="center">
 									<span class="text-info text-center"><b>${podologo.nombres}
-											${podologo.apellidos}</b></span>
-								</center>
-								<center>
-									<span class="text-info">Podólogo</span>
-								</center>
+											${podologo.apellidos}</b></span> <span class="text-info">Paciente</span>
+								</div>
 							</div> <!-- /input-group -->
 						</li>
-
 						<li><a href="${contextPath}/podologo/index"><i
 								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
 						<li><a href="${contextPath}/podologo/miAgenda"><i
@@ -174,9 +176,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h2 class="page-header">
-							Bienvenid
-							<c:if test="${podologo.paramSexo.id==6}">o</c:if>
-							<c:if test="${podologo.paramSexo.id==7}">a</c:if>
+							Bienvenid<c:if test="${podologo.paramSexo.id==6}">o</c:if><c:if test="${podologo.paramSexo.id==7}">a</c:if>
 						</h2>
 					</div>
 					<!-- /.col-lg-12 -->
@@ -185,7 +185,7 @@
 			</div>
 
 			<div class="col-lg-3 col-md-6">
-				<a href="${contextPath}/podologo/index">
+				<a href="${contextPath}/podologo/verSolicitudes">
 					<div class="panel panel-primary">
 						<div class="panel-heading">
 							<div class="row">
@@ -228,7 +228,6 @@
 								class="fa fa-arrow-circle-right"></i></span>
 							<div class="clearfix"></div>
 						</div>
-
 					</div>
 				</a>
 			</div>

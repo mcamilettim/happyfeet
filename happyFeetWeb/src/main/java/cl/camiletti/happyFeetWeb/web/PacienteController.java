@@ -1,6 +1,5 @@
 package cl.camiletti.happyFeetWeb.web;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -166,31 +165,33 @@ public class PacienteController {
 	}
 
 	@RequestMapping(value = "/paciente/modificarDatos", method = RequestMethod.POST)
-	public String modificarpost(@ModelAttribute("paciente") Paciente paciente,@ModelAttribute("pacienteForm") Paciente pacienteForm,
+	public String modificarpost(@ModelAttribute("pacienteForm") Paciente pacienteForm,
 			@RequestParam("archivo") MultipartFile archivo, BindingResult bindingResult, Model model) {
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Paciente paciente = pacienteService.findByEmail(user.getUsername());
 		if(paciente==null)
         	return "paciente/paciente"; 
 		FileManagerUtil fileManagerUtil =new FileManagerUtil();
 		if (bindingResult.hasErrors()) {
 
 		} else {
-			Mail mail = new Mail(env); 
+			//Mail mail = new Mail(env); 
+			if(paciente.getUsuario().getPassword().equals(pacienteForm.getUsuario().getPassword()) && paciente.getUsuario().getPasswordConfirm().equals(pacienteForm.getUsuario().getPasswordConfirm())) {
 				paciente.getUbicacion().setLatitud(pacienteForm.getUbicacion().getLatitud());
 				paciente.getUbicacion().setNombre(pacienteForm.getUbicacion().getNombre());
 				paciente.getUbicacion().setLongitud(pacienteForm.getUbicacion().getLongitud());
 				paciente.getUbicacion().getComuna().setId(pacienteForm.getUbicacion().getComuna().getId());
 				paciente.setFono(pacienteForm.getFono());
-			
 				if(!archivo.isEmpty()) {
-					
 					String file = fileManagerUtil.subirArchivo(archivo, Seccion.PACIENTE, pacienteForm.getRut());
 					paciente.setFoto(file);
 				}
 				pacienteService.save(paciente);
 				model.addAttribute("mensaje", "Sus datos fueron guardados con éxito");
-			
+			}else {
+				model.addAttribute("mensajeError", "Contraseña Incorrecta");
+			}
 		}
-		
 		return "paciente/paciente";
 	}
 

@@ -337,11 +337,11 @@ public class PodologoController {
 			if (fechaBusqueda.equals(solicitudatencion.getHorario().getFecha()))
 				solicitudesEncontradas.add(solicitudatencion);
 		}
-		String mensaje = "";
+		String mensaje = null;
 		if (solicitudesEncontradas.isEmpty()) {
 			mensaje = "No se encontraron resultados";
 		}
-		solicitudes.clear();
+		 
 		model.addAttribute("solicitudesEncontradas", solicitudesEncontradas);
 		model.addAttribute("podologo", podologo);
 		model.addAttribute("mensaje", mensaje);
