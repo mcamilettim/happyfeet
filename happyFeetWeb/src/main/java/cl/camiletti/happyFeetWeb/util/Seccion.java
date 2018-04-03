@@ -7,4 +7,5 @@ public interface Seccion {
 	String ADMIN = "Admin";
 	String SOLICITUDES = "Solicitudes";
 	String SOLICITUDES_ATENCION = "Solicitudes_Atencion";
+	String SOLICITUDES_RUTAS = "Rutas";
 }

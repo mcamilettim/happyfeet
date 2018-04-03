@@ -233,174 +233,218 @@
 							<strong>Detalle de Solicitud
 								${solicitudAtencion.fechaSolicitud}</strong>
 						</div>
-						<div class="panel-body">
-							<div align="center">
-								<table class="table">
-									<thead>
-										<tr>
-											<th><div align="center">Foto Enviada por Paciente</div></th>
-											<th><div align="center">Foto referencial Patología ${solicitudAtencion.patologia.nombre}</div></th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td><div align="center">
-													<img class="img-responsive"
-														src="${contextPath}/resources/imagenes/${solicitudAtencion.fotoPiePath}"
-														style="width: 200px; height: 200px;">
-												</div></td>
-											<td><div align="center">
-													<img class="img-responsive"
-														src="${contextPath}/resources/imagenes/${solicitudAtencion.patologia.foto}"
-														style="width: 200px; height: 200px;">
-												</div></td>
-										</tr>
-									</tbody>
-								</table>
-								<br>
-								<table class="table">
-								    <tr>
-										<th>Horario Solicitado</th>
-										<td>${solicitudAtencion.horario.fecha}   ${solicitudAtencion.horario.hora} -
-											${solicitudAtencion.horario.horaFin}</td>
-									</tr>
-			                        <tr>
-										<th>Diagnóstico</th>
-										<td>${solicitudAtencion.patologia.nombre}</td>
-									</tr>
-									<tr>
-										<th>Nombre Paciente</th>
-										<td>${solicitudAtencion.paciente.nombres}
-											${solicitudAtencion.paciente.apellidos}</td>
-									</tr>
 
-									<tr>
-										<th>Ubicación</th>
-										<td>${solicitudAtencion.paciente.ubicacion.nombre}</td>
-									</tr>
-									<tr>
-										<th>Tarifa por Kilómetro</th>
-										<td>$<fmt:formatNumber
-														value="${solicitudAtencion.presupuesto.tarifaKM}" type="currency"
-														pattern="#,##0" /></td>
-									</tr>
-									<tr>
-										<th>Cantidad de Kilómetro</th>
-										<td>${solicitudAtencion.presupuesto.cantidadKM}</td>
-									</tr>
-									<tr>
-										<th>Monto Viaje</th>
-										<td>$<fmt:formatNumber
-														value="${solicitudAtencion.presupuesto.viajePodologo}" type="currency"
-														pattern="#,##0" /></td>
-									</tr>
-									<tr>
-										<th>Monto Patología</th>
-										<td>$<fmt:formatNumber
-														value="${solicitudAtencion.patologia.costo}" type="currency"
-														pattern="#,##0" /></td>
-									</tr>
-									<tr>
-										<th>Total por la Atencion</th>
-										<td>$<fmt:formatNumber
-														value="${solicitudAtencion.presupuesto.total}" type="currency"
-														pattern="#,##0" /></td>
-									</tr>
-								</table>
+
+						<table class="table">
+							<thead>
+								<tr>
+									<th><div align="center">Foto Enviada por Paciente</div></th>
+									<th><div align="center">Foto referencial Patología
+											${solicitudAtencion.patologia.nombre}</div></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><div align="center">
+											<img class="img-responsive"
+												src="${contextPath}/resources/imagenes/${solicitudAtencion.fotoPiePath}"
+												style="width: 200px; height: 200px;">
+										</div></td>
+									<td><div align="center">
+											<img class="img-responsive"
+												src="${contextPath}/resources/imagenes/${solicitudAtencion.patologia.foto}"
+												style="width: 200px; height: 200px;">
+										</div></td>
+								</tr>
+							</tbody>
+						</table>
+						<br>
+
+						<table class="table">
+							<tr>
+								<th class="bg-info">Horario Solicitado</th>
+								<td style="background: #FAFAFA;">${solicitudAtencion.horario.fecha}
+									${solicitudAtencion.horario.hora} -
+									${solicitudAtencion.horario.horaFin}</td>
+							</tr>
+							<tr>
+								<th class="bg-info">Diagnóstico</th>
+								<td style="background: #FAFAFA;">${solicitudAtencion.patologia.nombre}</td>
+							</tr>
+							<tr>
+								<th class="bg-info">Nombre Paciente</th>
+								<td style="background: #FAFAFA;">${solicitudAtencion.paciente.nombres}
+									${solicitudAtencion.paciente.apellidos}</td>
+							</tr>
+							<tr>
+								<th class="bg-info">Diabético</th>
+								<c:if test="${not empty solicitudAtencion.paciente.diabetico}">
+									<td style="background: #FAFAFA;">SI</td>
+								</c:if>
+								<c:if test="${empty solicitudAtencion.paciente.diabetico}">
+									<td style="background: #FAFAFA;">NO</td>
+								</c:if>
+
+							</tr>
+							<tr>
+								<th class="bg-info">Ubicación</th>
+								<td style="background: #FAFAFA;">${solicitudAtencion.paciente.ubicacion.nombre}</td>
+							</tr>
+							<tr>
+								<th class="bg-info">Tarifa por Kilómetro</th>
+								<td style="background: #FAFAFA;">$<fmt:formatNumber
+										value="${solicitudAtencion.presupuesto.tarifaKM}"
+										type="currency" pattern="#,##0" /></td>
+							</tr>
+							<tr>
+								<th class="bg-info">Cantidad de Kilómetro</th>
+								<td style="background: #FAFAFA;">${solicitudAtencion.presupuesto.cantidadKM}</td>
+							</tr>
+							<tr>
+								<th class="bg-info">Monto Viaje</th>
+								<td style="background: #FAFAFA;">$<fmt:formatNumber
+										value="${solicitudAtencion.presupuesto.viajePodologo}"
+										type="currency" pattern="#,##0" /></td>
+							</tr>
+							<tr>
+								<th class="bg-info">Monto Patología</th>
+								<td style="background: #FAFAFA;">$<fmt:formatNumber
+										value="${solicitudAtencion.patologia.costo}" type="currency"
+										pattern="#,##0" /></td>
+							</tr>
+							<tr>
+								<th class="bg-success" colspan="2">Total por la Atención: $<fmt:formatNumber
+										value="${solicitudAtencion.presupuesto.total}" type="currency"
+										pattern="#,##0" /></th>
+
+							</tr>
+						</table>
+
+	<form action="${contextPath}/podologo/modificarSolicitud"
+							method="POST">
+						<table class="table">
+							<tr>
+								<td style="background: #FAFAFA;">Respuesta</td>
+								<td style="background: #FAFAFA;" align="left"><textarea
+										class="form-control" name="comentario"
+										placeholder="Agregar Comentario"></textarea></td>
+							</tr>
+						</table>
+					
+							<table class="table">
+								<tr>
+									<td style="background: #FAFAFA;" align="right"><button
+											type="button" class="btn btn-primary" data-toggle="modal"
+											data-target="#exampleModal">Aceptar Atención</button></td>
+									<td style="background: #FAFAFA;" align="left"><button
+											type="button" class="btn btn-danger" data-toggle="modal"
+											data-target="#exampleModalRechazo">Rechazar Atención</button></td>
+								</tr>
+							</table>
+							<!-- Modal Aceptar-->
+							<div class="modal fade" id="exampleModal" tabindex="-1"
+								role="dialog" aria-labelledby="exampleModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h4 class="modal-title" id="exampleModalLabel">
+												<strong>Confirmación de Atención Podológica</strong>
+											</h4>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<p style="text-align: justify;"><b>
+												<span style="color: red;">*</span> Horario
+													Atención: ${solicitudAtencion.horario.fecha}
+									${solicitudAtencion.horario.hora} -
+									${solicitudAtencion.horario.horaFin}</b></p><p style="text-align: justify;"> <b><span style="color: red;">*</span> Total
+													Atención: $<fmt:formatNumber
+										value="${solicitudAtencion.presupuesto.total}" type="currency"
+										pattern="#,##0" />
+											</b></p>
+											 
+										</div>
+										<div class="modal-footer" align="left">
+											<button type="button" class="btn btn-secondary" 
+												data-dismiss="modal">Cancelar</button>
+											<button type="submit" class="btn btn-primary" name="respuesta" value="si">Si,
+												estoy de acuerdo</button>
+										</div>
+									</div>
+								</div>
 							</div>
-
-						</div>
-						<br> Foto Referencial Patologia<br>
-						<div>
-
-							${mensaje}
-							<h2>Detalle Solicitud pendiente</h2>
-							<div>
-								Nombre Completo: Fecha y hora de Atención:
-								${solicitudAtencion.horario.fecha}
-								${solicitudAtencion.horario.hora} Solicitud del:
-								${solicitudAtencion.fechaSolicitud}<br> Foto Enviada por el
-								Paciente<br> <br> Punto de Partida:
-								${solicitudAtencion.presupuesto.ubicacionPartida.nombre}<br>
-								Punto de Llegada:
-								${solicitudAtencion.presupuesto.ubicacionLlegada.nombre}<br>
-								Monto de la Atención: ${solicitudAtencion.presupuesto.total}<br>
-								Diagnostico: ${solicitudAtencion.patologia.nombre}<br>
-
-								<form action="${contextPath}/podologo/modificarSolicitud"
-									method="POST">
-									<select name="selectEstado">
-										<option value="0">Seleccione un Estado</option>
-										<c:forEach items="${estados}" var="estado">
-											<option value="${estado.id}">${estado.valor}</option>
-										</c:forEach>
-									</select>
-									<textarea name="comentario" placeholder="Agregar Comentario"></textarea>
-									<input type="hidden" name="${_csrf.parameterName}"
-										value="${_csrf.token}" /> <input type="submit" value="Enviar">
-								</form>
+							<!-- Modal Aceptar-->
+							<!-- Modal Rechazar-->
+							<div class="modal fade" id="exampleModalRechazo" tabindex="-1"
+								role="dialog" aria-labelledby="exampleModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h4 class="modal-title" id="exampleModalLabel">
+												<strong>Usted está rechazando esta de Atención Podológica</strong>
+											</h4>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<p style="text-align: justify;">
+												<strong> ¿ Está seguro ?</strong>
+											</p>
+										</div>
+										<div class="modal-footer" align="left">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Cancelar</button>
+											<button type="submit" name="respuesta" value="no" class="btn btn-danger">Si, 
+												rechazar</button>
+										</div>
+									</div>
+								</div>
 							</div>
-						</div>
-
+						</form>
 					</div>
+
+				</div>
+
+				<div>
+
+					<div></div>
 				</div>
 			</div>
+		</div>
+	</div>
 
-			<!-- /.row -->
+
+	<!-- /.row -->
 
 
-			<!-- /.container-fluid -->
+	<!-- /.container-fluid -->
 
-			<!-- /#wrapper -->
+	<!-- /#wrapper -->
 
-			<!-- jQuery -->
-			<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+	<!-- jQuery -->
+	<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 
-			<!-- Bootstrap Core JavaScript -->
-			<script
-				src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Bootstrap Core JavaScript -->
+	<script
+		src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 
-			<!-- Metis Menu Plugin JavaScript -->
-			<script
-				src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
-			<script src="${contextPath}/resources/js/bootstrap-datepicker.js"></script>
-			<script src="${contextPath}/resources/js/jquery-ui.min.js"></script>
+	<!-- Metis Menu Plugin JavaScript -->
+	<script
+		src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
 
-			<!-- Custom Theme JavaScript -->
-			<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+	<script src="${contextPath}/resources/js/jquery-ui.min.js"></script>
 
-			<script type="text/javascript">
-				$.datepicker.regional['es'] = {
-					closeText : 'Cerrar',
-					prevText : '<Ant',
-					 nextText: 'Sig>',
-					currentText : 'Hoy',
-					monthNames : [ 'Enero', 'Febrero', 'Marzo', 'Abril',
-							'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre',
-							'Octubre', 'Noviembre', 'Diciembre' ],
-					monthNamesShort : [ 'Ene', 'Feb', 'Mar', 'Abr', 'May',
-							'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic' ],
-					dayNames : [ 'Domingo', 'Lunes', 'Martes', 'Miercoles',
-							'Jueves', 'Viernes', 'Sabado' ],
-					dayNamesShort : [ 'Dom', 'Lun', 'Mar', 'Mie', 'Juv', 'Vie',
-							'Sab' ],
-					dayNamesMin : [ 'Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa' ],
-					weekHeader : 'Sm',
-					dateFormat : 'dd/mm/yy',
-					firstDay : 1,
-					isRTL : false,
-					showMonthAfterYear : false,
-					yearSuffix : '',
-				//beforeShow: function(i) { if ($('dp1').attr('readonly')) { return false; } }
-				};
-				$.datepicker.setDefaults($.datepicker.regional['es']);
+	<!-- Custom Theme JavaScript -->
+	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
 
-				$("#datePicker").datepicker({
-					//dateFormat: 'dd/mm/yy',
-					inline : true
-				//beforeShow: function(i) { if ($(i).attr('readonly')) { return false; } }
-				});
-			</script>
+
 </body>
 
 </html>

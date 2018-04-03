@@ -249,17 +249,17 @@ public class PacienteController {
 	@RequestMapping(value = "/paciente/guardarAgenda", method = RequestMethod.POST)
 	public String guardarAgenda(Model model, @ModelAttribute("solicitudForm") Solicitudatencion solicitudAtencion,
 			@RequestParam("fotoPiePaciente") MultipartFile fotoPiePaciente,
-			@RequestParam("kilometros") String kilometros) {
-
+			@RequestParam("kilometros") String kilometros, @RequestParam("urlRuta") String urlRuta) { 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Paciente paciente = pacienteService.findByEmail(user.getUsername());
 		Patologia patologia = patologiaService.findById(solicitudAtencion.getPatologia().getId());
 		Podologo podologo = podologoService.find(solicitudAtencion.getPodologo().getRut());
 		Horario horario = horarioService.findById(solicitudAtencion.getHorario().getId());
 		Parametro parametroPendiente = parametroService.findOne(Parametros.ESTADO_SOLICITUD_PENDIENTE);// pendiente
-																										// (estado
-																										// Solicitud)
+																								       // (estado
+																									  // Solicitud)
 		FileManagerUtil fileManagerUtil =new FileManagerUtil();
+		urlRuta=fileManagerUtil.getPathImageFromUrl(urlRuta, paciente.getRut(), podologo.getRut(), Seccion.SOLICITUDES_RUTAS);
 		Parametro parametroTomado = parametroService.findOne(Parametros.ESTADO_HORARIO_TOMADO);// tomado
 		String fotoPie = fileManagerUtil.subirArchivo(fotoPiePaciente, Seccion.SOLICITUDES_ATENCION, paciente.getRut());
 		if (solicitudAtencionService.findByHorario(horario) == null) {

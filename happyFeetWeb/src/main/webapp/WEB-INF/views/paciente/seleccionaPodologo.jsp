@@ -342,7 +342,7 @@
 
 									<table class="table">
 										<tr>
-											<th scope="col">Podólogo {{horarioSeleccionado.id}}</th>
+											<th scope="col">Podólogo</th>
 											<th scope="row">{{presupuesto.nombrePodologo}}</th>
 										</tr>
 										<tr style="display: none;">
@@ -367,6 +367,12 @@
 											<th scope="row" colspan="2"><input
 												ng-model="presupuesto.kilometros" type="text"
 												class="form-control" name="kilometros" required="required"
+												readonly="readonly" /></th>
+										</tr>
+										<tr style="display: none;">
+											<th scope="row" colspan="2"><input
+												ng-model="urlRuta" type="text"
+												class="form-control" name="urlRuta" required="required"
 												readonly="readonly" /></th>
 										</tr>
 										<tr>

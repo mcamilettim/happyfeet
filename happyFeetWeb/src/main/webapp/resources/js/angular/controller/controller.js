@@ -3,6 +3,7 @@ angular.module('myApp', [])
  $scope.showLoading = true;
  $scope.modalConfirmar = false; 
  $scope.podologoSeleccionado = {};
+ $scope.urlRuta = null;
  
  
  $scope.setPromesas=function(){	   
@@ -16,6 +17,10 @@ $scope.obtenerDatosPodologos = function(){
 }
 	
 	$scope.obtenerPresupuesto  = function(idPatologia,index,kilometros){
+		var url = "http://maps.googleapis.com/maps/api/staticmap?sensor=false&"+
+		"&zoom=14&size=850x650&markers=color:blue%7&path=enc:"+encodeURI(currentPointsResult);	
+		$scope.urlRuta=url;
+	 
 	      $http.get('/servicesPodologo/podologo/getPresupuesto?idPatologia='+idPatologia+'&rutPodologo='+$scope.podologos[index].rut+'&kilometros='+kilometros).
 		    then(function(response) {
 		    	 $scope.podologoSeleccionado=$scope.podologos[index];

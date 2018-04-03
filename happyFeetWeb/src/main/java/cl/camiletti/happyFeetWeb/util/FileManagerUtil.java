@@ -1,11 +1,14 @@
 package cl.camiletti.happyFeetWeb.util;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Component;
@@ -136,6 +139,43 @@ public class FileManagerUtil {
 		}
 
 		return bytes;
+	}
+
+	public String getPathImageFromUrl(String linkedin, String rutPaciente,String rutPodologo, String seccion) {
+		try {
+			String link = "http://maps.googleapis.com/maps/api/staticmap?sensor=false&&zoom=14&size=700x500&markers=color:blue%7&path=enc:z%7CrkE~k%7BnLEeRhBIpBEVBPBJCDK?a@ISGGu@mAkCeE%7DHsMI_@MW%7B@%7BAAKEIuAmByAcBWU%5BIqJFqDB%7DEAgGAm@?uBZsDKyACw@DSDoA%5C%5BNe@ZwBjBu@n@g@POL_@Vu@%60@u@VcAVwAHiDMyO%7B@iEIyGYaGc@kIo@sDUcM_AcAILoANBNCH_@XyC";
+			String pathImage = ROOT_PATH + File.separator + DIR_SINGLE + File.separator + seccion + File.separator;
+			String ext =".jpg";
+			String nameFile= rutPaciente+rutPodologo+ext;
+			URL url = new URL(link);
+			InputStream in = new BufferedInputStream(url.openStream());
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			byte[] buf = new byte[1024];
+			int n = 0;
+			while (-1 != (n = in.read(buf))) {
+				out.write(buf, 0, n);
+			}
+			out.close();
+			in.close();
+			byte[] response = out.toByteArray();
+	 
+			File serverFilearchivoEntrada = new File(pathImage + nameFile);
+			int i = 0;
+			while (serverFilearchivoEntrada.exists()) {
+				i++;
+				nameFile = nameFile.replace(ext, "");
+				nameFile = nameFile + "-" + i;
+				nameFile = nameFile + ext;
+				serverFilearchivoEntrada = new File(pathImage + nameFile);
+			}
+			FileOutputStream fos = new FileOutputStream(nameFile);
+			fos.write(response);
+			fos.close();
+			return  DIR_SINGLE + File.separator + seccion + File.separator + nameFile;
+		} catch (Exception e) {
+			return null;
+		}
+
 	}
 
 	public String encodeFileToBase64Binary(String fileName) {
