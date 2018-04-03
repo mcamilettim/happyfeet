@@ -42,6 +42,7 @@ import cl.camiletti.happyFeetWeb.service.UbicacionService;
 import cl.camiletti.happyFeetWeb.service.UsuarioService;
 import cl.camiletti.happyFeetWeb.util.DateUtil;
 import cl.camiletti.happyFeetWeb.util.Mail;
+import cl.camiletti.happyFeetWeb.util.Parametros;
 
 @Controller
 @SessionAttributes(value = { "podologo", "paciente", "atencion", "pacientes", "solicitudes", "solicitudAtencion" })
@@ -228,7 +229,7 @@ public class PodologoController {
 	@RequestMapping(value = "/podologo/detalleSolicitud", method = RequestMethod.GET)
 	public String verDetalleSolicitud(@ModelAttribute("podologo") Podologo podologo, Model model,
 			@RequestParam("id") int id) {
-		List<Parametro> estados = parametroService.findByNumero(77);
+		List<Parametro> estados = parametroService.findByNumero(Parametros.ESTADO_SOLICITUD);
 		Solicitudatencion solicitudAtencion = solicitudAtencionService.findById(id);
 		model.addAttribute("solicitudAtencion", solicitudAtencion);
 		model.addAttribute("estados", estados);
