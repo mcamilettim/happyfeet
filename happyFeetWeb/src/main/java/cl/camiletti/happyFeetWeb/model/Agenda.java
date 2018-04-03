@@ -4,48 +4,82 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the agenda database table.
  * 
  */
 @Entity
-@NamedQuery(name="Agenda.findAll", query="SELECT a FROM Agenda a")
+@NamedQuery(name = "Agenda.findAll", query = "SELECT a FROM Agenda a")
 public class Agenda implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
 	private String comentario;
 
-	private String fotoPie;
+	private String fotoPiePath;
 
-	private int valorViaje;
+	private String fechaAgenda;
+	// bi-directional many-to-one association to Patologia
+	@ManyToOne
+	private Patologia patologia;
 
-	//bi-directional many-to-one association to Horario
+	// bi-directional many-to-one association to Presupuesto
+	@ManyToOne(cascade = { CascadeType.ALL })
+	private Presupuesto presupuesto;
+
+	// bi-directional many-to-one association to Horario
 	@ManyToOne
 	private Horario horario;
 
-	//bi-directional many-to-one association to Paciente
+	// bi-directional many-to-one association to Paciente
 	@ManyToOne
 	private Paciente paciente;
 
-	//bi-directional many-to-one association to Parametro
+	// bi-directional many-to-one association to Paciente
 	@ManyToOne
-	@JoinColumn(name="paramEstadoAgenda_id")
+	private Podologo podologo;
+
+	// bi-directional many-to-one association to Parametro
+	@ManyToOne
+	@JoinColumn(name = "paramEstadoAgenda_id")
 	private Parametro paramEstadoAgenda;
 
-	//bi-directional many-to-one association to Atencion
-	@OneToMany(mappedBy="agenda", fetch=FetchType.EAGER)
+	// bi-directional many-to-one association to Atencion
+	@OneToMany(mappedBy = "agenda", fetch = FetchType.EAGER)
 	private List<Atencion> atencions;
+
+	public Podologo getPodologo() {
+		return podologo;
+	}
+
+	public void setPodologo(Podologo podologo) {
+		this.podologo = podologo;
+	}
+
+	public String getFechaAgenda() {
+		return fechaAgenda;
+	}
+
+	public void setFechaAgenda(String fechaAgenda) {
+		this.fechaAgenda = fechaAgenda;
+	}
 
 	public Agenda() {
 	}
 
 	public int getId() {
 		return this.id;
+	}
+
+	public Patologia getPatologia() {
+		return patologia;
+	}
+
+	public void setPatologia(Patologia patologia) {
+		this.patologia = patologia;
 	}
 
 	public void setId(int id) {
@@ -60,20 +94,20 @@ public class Agenda implements Serializable {
 		this.comentario = comentario;
 	}
 
-	public String getFotoPie() {
-		return this.fotoPie;
+	public String getFotoPiePath() {
+		return fotoPiePath;
 	}
 
-	public void setFotoPie(String fotoPie) {
-		this.fotoPie = fotoPie;
+	public void setFotoPiePath(String fotoPiePath) {
+		this.fotoPiePath = fotoPiePath;
 	}
 
-	public int getValorViaje() {
-		return this.valorViaje;
+	public Presupuesto getPresupuesto() {
+		return presupuesto;
 	}
 
-	public void setValorViaje(int valorViaje) {
-		this.valorViaje = valorViaje;
+	public void setPresupuesto(Presupuesto presupuesto) {
+		this.presupuesto = presupuesto;
 	}
 
 	public Horario getHorario() {

@@ -4,41 +4,52 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the patologia database table.
  * 
  */
 @Entity
-@NamedQuery(name="Patologia.findAll", query="SELECT p FROM Patologia p")
+@NamedQuery(name = "Patologia.findAll", query = "SELECT p FROM Patologia p")
 public class Patologia implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
 	private String foto;
 
 	private String nombre;
-	
-	private	int costo;
-	
+
+	private int costo;
+
 	private String descripcion;
 
-	//bi-directional many-to-one association to Atencion
-	@OneToMany(mappedBy="patologia", fetch=FetchType.EAGER)
+	// bi-directional many-to-one association to Atencion
+	@OneToMany(mappedBy = "patologia", fetch = FetchType.EAGER)
 	private List<Atencion> atencions;
 
-	//bi-directional many-to-one association to Solicitudatencion
-	@OneToMany(mappedBy="patologia", fetch=FetchType.EAGER)
+	// bi-directional many-to-one association to Solicitudatencion
+	@OneToMany(mappedBy = "patologia", fetch = FetchType.EAGER)
 	private List<Solicitudatencion> solicitudatencions;
 
-	//bi-directional many-to-one association to Tratamiento
-	@OneToMany(mappedBy="patologia", fetch=FetchType.EAGER)
+	// bi-directional many-to-one association to Solicitudatencion
+	@OneToMany(mappedBy = "patologia", fetch = FetchType.EAGER)
+	private List<Agenda> agendas;
+
+	// bi-directional many-to-one association to Tratamiento
+	@OneToMany(mappedBy = "patologia", fetch = FetchType.EAGER)
 	private List<Tratamiento> tratamientos;
 
 	public Patologia() {
+	}
+
+	public List<Agenda> getAgendas() {
+		return agendas;
+	}
+
+	public void setAgendas(List<Agenda> agendas) {
+		this.agendas = agendas;
 	}
 
 	public int getId() {
@@ -63,7 +74,7 @@ public class Patologia implements Serializable {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}	
+	}
 
 	public int getCosto() {
 		return costo;
@@ -72,7 +83,6 @@ public class Patologia implements Serializable {
 	public void setCosto(int costo) {
 		this.costo = costo;
 	}
-
 
 	public List<Atencion> getAtencions() {
 		return this.atencions;

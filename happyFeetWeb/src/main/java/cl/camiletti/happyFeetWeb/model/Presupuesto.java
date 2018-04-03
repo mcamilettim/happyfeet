@@ -45,12 +45,24 @@ public class Presupuesto implements Serializable {
 	//bi-directional many-to-one association to Solicitudatencion
 	@OneToMany(mappedBy="presupuesto", fetch=FetchType.EAGER)
 	private List<Solicitudatencion> solicitudatencions;
+	
+	//bi-directional many-to-one association to Solicitudatencion
+	@OneToMany(mappedBy="presupuesto", fetch=FetchType.EAGER)
+	private List<Agenda> agendas;
 
 	public Presupuesto() {
 	}
 
 	public int getId() {
 		return this.id;
+	}
+
+	public List<Agenda> getAgendas() {
+		return agendas;
+	}
+
+	public void setAgendas(List<Agenda> agendas) {
+		this.agendas = agendas;
 	}
 
 	public void setId(int id) {

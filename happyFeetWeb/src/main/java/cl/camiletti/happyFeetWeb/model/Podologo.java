@@ -26,8 +26,6 @@ public class Podologo implements Serializable {
 	private String foto;
 
 	private String nombres;
-	
- 
 
 	// bi-directional many-to-one association to Atencion
 	@OneToMany(mappedBy = "podologo", fetch = FetchType.EAGER)
@@ -58,8 +56,19 @@ public class Podologo implements Serializable {
 	// bi-directional many-to-one association to Solicitudatencion
 	@OneToMany(mappedBy = "podologo", fetch = FetchType.EAGER)
 	private List<Solicitudatencion> solicitudatencions;
+	// bi-directional many-to-one association to Solicitudatencion
+	@OneToMany(mappedBy = "podologo", fetch = FetchType.EAGER)
+	private List<Agenda> agendas;
 
 	public Podologo() {
+	}
+
+	public List<Agenda> getAgendas() {
+		return agendas;
+	}
+
+	public void setAgendas(List<Agenda> agendas) {
+		this.agendas = agendas;
 	}
 
 	public String getRut() {
@@ -208,5 +217,4 @@ public class Podologo implements Serializable {
 		return solicitudatencion;
 	}
 
-	 
 }
