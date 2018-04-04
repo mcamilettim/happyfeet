@@ -130,7 +130,7 @@
 			<div class="navbar-default sidebar" role="navigation">
 				<div class="sidebar-nav navbar-collapse">
 					<ul class="nav" id="side-menu">
-							<li class="sidebar-search">
+						<li class="sidebar-search">
 							<div class="input-group custom-search-form">
 								<c:choose>
 									<c:when test="${empty podologo.foto}">
@@ -150,10 +150,10 @@
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/podologo/index"><i
-								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
+								class=" active fa fa-dashboard fa-fw active"></i> Inicio</a></li>
 						<li><a href="${contextPath}/podologo/miAgenda"><i
 								class="fa fa-dashboard fa-fw"></i> Mi Agenda</a></li>
-						<li><a href="${contextPath}/podologo/index"><i
+						<li><a href="${contextPath}/podologo/miAgenda"><i
 								class="fa fa-edit fa-fw"></i> Agendar Horario</a></li>
 						<li><a href="${contextPath}/podologo/modificardatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
@@ -176,7 +176,9 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h2 class="page-header">
-							Bienvenid<c:if test="${podologo.paramSexo.id==6}">o</c:if><c:if test="${podologo.paramSexo.id==7}">a</c:if>
+							Bienvenid
+							<c:if test="${podologo.paramSexo.id==6}">o</c:if>
+							<c:if test="${podologo.paramSexo.id==7}">a</c:if>
 						</h2>
 					</div>
 					<!-- /.col-lg-12 -->

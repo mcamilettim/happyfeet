@@ -172,7 +172,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h2 class="page-header">
-							<c:if test="${mensaje != null && mensaje.length>0}">
+							<c:if test="${mensaje != null}">
 								<div class="alert alert-success alert-dismissable">
 									<button type="button" class="close" data-dismiss="alert"
 										aria-hidden="true">×</button>

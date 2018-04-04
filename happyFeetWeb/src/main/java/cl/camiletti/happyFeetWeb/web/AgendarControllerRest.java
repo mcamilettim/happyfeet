@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import cl.camiletti.happyFeetWeb.model.Agenda;
 import cl.camiletti.happyFeetWeb.model.Comuna;
 import cl.camiletti.happyFeetWeb.model.Evaluacion;
 import cl.camiletti.happyFeetWeb.model.Horario;
@@ -23,6 +22,7 @@ import cl.camiletti.happyFeetWeb.model.Patologia;
 import cl.camiletti.happyFeetWeb.model.Podologo;
 import cl.camiletti.happyFeetWeb.model.Ubicacion;
 import cl.camiletti.happyFeetWeb.model.custom.HorarioCustom;
+import cl.camiletti.happyFeetWeb.model.custom.PacienteCustom;
 import cl.camiletti.happyFeetWeb.model.custom.PodologoCustom;
 import cl.camiletti.happyFeetWeb.model.custom.PresupuestoCustom;
 import cl.camiletti.happyFeetWeb.service.AgendaService;
@@ -36,10 +36,10 @@ import cl.camiletti.happyFeetWeb.util.Constantes;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 
 @RestController
-@RequestMapping("/servicesPodologo")
-public class PodologoControllerRest {
+@RequestMapping("/servicesAgendar")
+public class AgendarControllerRest {
 	@Autowired
-	private PacienteService pacienteService;
+	PacienteService pacienteService;
 	@Autowired
 	ComunaService comunaService;
 	@Autowired
@@ -57,25 +57,25 @@ public class PodologoControllerRest {
 	@Autowired
 	HorarioService horarioService;
 
-	@RequestMapping(value = "/podologo/getPodologosPorComuna", method = RequestMethod.GET, produces = "application/json")
-	public List<PodologoCustom> cargarPacientes(Model model, @RequestParam("idComuna") int idComuna)
+	@RequestMapping(value = "/getPodologosPorComuna", method = RequestMethod.GET, produces = "application/json")
+	public List<PodologoCustom> getPodologosPorComuna(Model model, @RequestParam("idComuna") int idComuna)
 			throws IOException {
 		Comuna comuna = comunaService.findById(idComuna);
 		List<Ubicacion> ubicaciones = comuna.getUbicacions();
 		List<PodologoCustom> podologos = new ArrayList<PodologoCustom>();
 		FileManagerUtil fileManagerUtil =new FileManagerUtil();
-		  FileManagerUtil fileUtil=new FileManagerUtil();
+	 
 		for (Ubicacion ubicacion : ubicaciones) {
 			for (Podologo podologo : ubicacion.getPodologos()) {
 				PodologoCustom podoAux = new PodologoCustom();
-				File foto = new File(fileUtil.getROOT_PATH() + File.separator + podologo.getFoto());
+				File foto = new File(fileManagerUtil.getROOT_PATH() + File.separator + podologo.getFoto());
 				
 				if (foto.exists()) {
 					podoAux.setFoto(fileManagerUtil
-							.encodeFileToBase64Binary(fileUtil.getROOT_PATH() + File.separator + podologo.getFoto()));
+							.encodeFileToBase64Binary(fileManagerUtil.getROOT_PATH() + File.separator + podologo.getFoto()));
 				} else {
 					podoAux.setFoto(fileManagerUtil
-							.encodeFileToBase64Binary(fileUtil.getROOT_PATH() + File.separator + "sinfoto.jpg"));
+							.encodeFileToBase64Binary(fileManagerUtil.getROOT_PATH() + File.separator + "sinfoto.jpg"));
 				}
 				podoAux.setNombres(podologo.getNombres());
 				podoAux.setApellidos(podologo.getApellidos());
@@ -102,8 +102,38 @@ public class PodologoControllerRest {
 
 		return podologos;
 	}
-
-	@RequestMapping(value = "/podologo/getPresupuesto", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/getPaciente", method = RequestMethod.GET, produces = "application/json")
+	public PacienteCustom getPaciente(Model model) {
+		PacienteCustom custom=null;
+		try {
+			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			custom=new PacienteCustom();
+			Paciente paciente = pacienteService.findByEmail(user.getUsername()); 
+			Ubicacion ubicacionAux=new Ubicacion();
+		
+			ubicacionAux.setLatitud(paciente.getUbicacion().getLatitud());
+			ubicacionAux.setLongitud(paciente.getUbicacion().getLongitud());
+			ubicacionAux.setId(paciente.getUbicacion().getId());
+			ubicacionAux.setNombre(paciente.getUbicacion().getNombre());
+			
+			Comuna comunaAux=new Comuna();
+			comunaAux.setId(paciente.getUbicacion().getComuna().getId());
+			comunaAux.setNombre(paciente.getUbicacion().getComuna().getNombre());
+			ubicacionAux.setComuna(comunaAux);
+			
+			custom.setUbicacion(ubicacionAux);
+			custom.setNombres(paciente.getNombres());
+			custom.setApellidos(paciente.getApellidos());
+			custom.setRut(paciente.getRut());
+			
+		} catch (Exception e) {
+			custom=null;
+		}
+		
+		 
+		return custom;
+	}
+	@RequestMapping(value = "/getPresupuesto", method = RequestMethod.GET, produces = "application/json")
 	public PresupuestoCustom getPresupuesto(Model model, @RequestParam("idPatologia") int idPatologia,
 			@RequestParam("rutPodologo") String rutPodologo, @RequestParam("kilometros") String kilometros)
 			throws IOException {

@@ -230,13 +230,12 @@
 											<td>${atencion.patologia.nombre}</td>
 											<td>${atencion.agenda.horario.fecha}</td>
 											<td><a class="btn btn-large btn-info"
-												href="${contextPath}/podologo/detallePresupesto">Detalle
-													: $${atencion.presupuesto.total}</a></td>
+												href="${contextPath}/podologo/detallePresupesto">Detalle: $${atencion.presupuesto.total}</a></td>
 											<td>${paciente.ubicacion.comuna.nombre}</td>
 											<td><a class="btn btn-large btn-danger"
 												href="${contextPath}/podologo/diagnostico">Detalle</a></td>
 											<td width="200" height="100" class="center "><img
-												src="${contextPath}/resources/imagenes/${atencion.agenda.fotoPie} "
+												src="${contextPath}/resources/imagenes/${atencion.agenda.fotoPiePath} "
 												width="130" height="80"></td>
 											<td><fieldset class="starability-basic">
 													<c:forEach begin="1" end="${atencion.evaluacion.valor}"

@@ -20,6 +20,8 @@ public class Agenda implements Serializable {
 	private String comentario;
 
 	private String fotoPiePath;
+	
+	private String fotoViajePath;
 
 	private String fechaAgenda;
 	// bi-directional many-to-one association to Patologia
@@ -53,6 +55,14 @@ public class Agenda implements Serializable {
 
 	public Podologo getPodologo() {
 		return podologo;
+	}
+
+	public String getFotoViajePath() {
+		return fotoViajePath;
+	}
+
+	public void setFotoViajePath(String fotoViajePath) {
+		this.fotoViajePath = fotoViajePath;
 	}
 
 	public void setPodologo(Podologo podologo) {

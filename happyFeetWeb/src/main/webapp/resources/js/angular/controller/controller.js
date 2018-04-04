@@ -5,23 +5,31 @@ angular.module('myApp', [])
  $scope.podologoSeleccionado = {};
  $scope.urlRuta = null;
  
+ $scope.obtenerDatosPodologos = function(idComuna){
+	 return $http.get('/servicesAgendar/getPodologosPorComuna?idComuna='+idComuna);
+}
+$scope.obtenerDatosPaciente = function(){
+	 return $http.get('/servicesAgendar/getPaciente');
+}
  
- $scope.setPromesas=function(){	   
-	  var promesas=[];	
-	  promesas.push($scope.obtenerDatosPodologos());
+ $scope.setPromesaPaciente=function(){	   
+	  var promesas=[];
+	  promesas.push($scope.obtenerDatosPaciente());
+	  return $q.all(promesas);
+}
+ $scope.setPromesasPodologos=function(idComuna){	   
+	  var promesas=[];
+	  promesas.push( $scope.obtenerDatosPodologos(idComuna));
 	  return $q.all(promesas);
 }
 
-$scope.obtenerDatosPodologos = function(){
-	 return $http.get('/servicesPodologo/podologo/getPodologosPorComuna?idComuna=1');
-}
 	
 	$scope.obtenerPresupuesto  = function(idPatologia,index,kilometros){
 		var url = "http://maps.googleapis.com/maps/api/staticmap?sensor=false&"+
-		"&zoom=14&size=850x650&markers=color:blue%7&path=enc:"+encodeURI(currentPointsResult);	
+		"&zoom=$zoomParam&size=850x650&markers=color:blue%7&path=enc:"+encodeURI(currentPointsResult);	
 		$scope.urlRuta=url;
-	 
-	      $http.get('/servicesPodologo/podologo/getPresupuesto?idPatologia='+idPatologia+'&rutPodologo='+$scope.podologos[index].rut+'&kilometros='+kilometros).
+	 console.log(url);
+	      $http.get('/servicesAgendar/getPresupuesto?idPatologia='+idPatologia+'&rutPodologo='+$scope.podologos[index].rut+'&kilometros='+kilometros).
 		    then(function(response) {
 		    	 $scope.podologoSeleccionado=$scope.podologos[index];
 		        $scope.presupuesto = response.data;
@@ -45,6 +53,10 @@ $scope.obtenerDatosPodologos = function(){
 	var divMapa2 = document.getElementById('mapa2');
 	
 	$scope.obtenerDireccionDinamica=function() {
+		//Coordenadas ORIGEN
+		var latitud = $scope.paciente.ubicacion.latitud;
+		var longitud =$scope.paciente.ubicacion.longitud;
+		
 	var gLatLon = new google.maps.LatLng(latitud,longitud);
 		
 		//configuracion de mapa
@@ -67,9 +79,7 @@ $scope.obtenerDatosPodologos = function(){
 		$scope.setearMarcadores(gMapa, gLatLon);	
 	}
 	
-		//Coordenadas ORIGEN
-	var latitud = "-33.5253895";
-	var longitud = "-70.76047649999998";
+		
 	var gMapa = null;
  
 	 
@@ -155,7 +165,6 @@ $scope.obtenerDatosPodologos = function(){
 								var url_string = window.location.href
 								var url = new URL(url_string);
 								var id = url.searchParams.get("id");
-								console.log(id);
 								$scope.obtenerPresupuesto(id,currentMarker.zIndex,total);
 								document.getElementById('detalleKilometros').innerHTML = total;
 							} else{
@@ -183,18 +192,24 @@ $scope.obtenerDatosPodologos = function(){
 	function geoDinError() {
 		divMapa2.innerHTML = 'GPS No autorizado.'
 	}
-	
-	//FIN CODIGO PARA IMAGEN DINÁMICA
-	  $scope.buscar=function(){
-		  $scope.setPromesas().then(
+	 $scope.buscarPodologos=function(idComuna){
+		  $scope.setPromesasPodologos(idComuna).then(
 		  function(response){
-			   $scope.showLoading=false;
-			   $scope.podologos = response[0].data;
-			   $scope.obtenerDireccionDinamica();
-		       console.log($scope.podologos); 
+		   $scope.podologos = response[0].data;
+		   $scope.obtenerDireccionDinamica();
 		  })
-          } 
-	  $scope.buscar();
+    } 
+	//FIN CODIGO PARA IMAGEN DINÁMICA
+	  $scope.buscarPaciente=function(){
+		  $scope.setPromesaPaciente().then(
+		  function(response){
+			  console.log(response[0].data);
+			  $scope.paciente = response[0].data;
+			  $scope.buscarPodologos($scope.paciente.ubicacion.comuna.id);
+		  })
+     } 
+	 
+	  $scope.buscarPaciente();
 })
  
 

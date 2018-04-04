@@ -238,8 +238,8 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th><div align="center">Foto Enviada por Paciente</div></th>
-									<th><div align="center">Foto referencial Patología
+									<th style="background: #FAFAFA;"><div align="center">Foto Enviada por Paciente</div></th>
+									<th style="background: #FAFAFA;"><div align="center">Foto referencial Patología
 											${solicitudAtencion.patologia.nombre}</div></th>
 								</tr>
 							</thead>
@@ -258,8 +258,29 @@
 								</tr>
 							</tbody>
 						</table>
+					 
+						<table class="table">
+							<thead>
+								<tr>
+									<th colspan="2" style="background: #FAFAFA;"><div align="center">Ruta Recomendada <img class="img-responsive"
+												src="${contextPath}/resources/img/googleMaps.png"
+												style="width: 25px; height: 25px;"></div></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td colspan="2"><div align="center">
+											<img class="img-responsive"
+												src="${contextPath}/resources/imagenes/${solicitudAtencion.fotoViajePath}"
+												style="width: 600px; height: 400px;">
+										</div></td>
+									 
+								</tr>
+							</tbody>
+						</table>
 						<br>
-
+<form action="${contextPath}/podologo/modificarSolicitud"
+							method="POST">
 						<table class="table">
 							<tr>
 								<th class="bg-info">Horario Solicitado</th>
@@ -318,29 +339,22 @@
 										pattern="#,##0" /></th>
 
 							</tr>
-						</table>
-
-	<form action="${contextPath}/podologo/modificarSolicitud"
-							method="POST">
-						<table class="table">
 							<tr>
-								<td style="background: #FAFAFA;">Respuesta</td>
+								<td style="background: #FAFAFA;"><strong> Respuesta</strong></td>
 								<td style="background: #FAFAFA;" align="left"><textarea
 										class="form-control" name="comentario"
 										placeholder="Agregar Comentario"></textarea></td>
 							</tr>
-						</table>
-					
-							<table class="table">
-								<tr>
-									<td style="background: #FAFAFA;" align="right"><button
+							<tr>
+									<td  align="right"><button
 											type="button" class="btn btn-primary" data-toggle="modal"
 											data-target="#exampleModal">Aceptar Atención</button></td>
-									<td style="background: #FAFAFA;" align="left"><button
+									<td  align="left"><button
 											type="button" class="btn btn-danger" data-toggle="modal"
 											data-target="#exampleModalRechazo">Rechazar Atención</button></td>
 								</tr>
-							</table>
+						</table>
+ 	  
 							<!-- Modal Aceptar-->
 							<div class="modal fade" id="exampleModal" tabindex="-1"
 								role="dialog" aria-labelledby="exampleModalLabel"

@@ -3,7 +3,6 @@ package cl.camiletti.happyFeetWeb.service;
 import java.util.List;
 
 import cl.camiletti.happyFeetWeb.model.Paciente;
-import cl.camiletti.happyFeetWeb.model.Podologo;
 
 public interface PacienteService {
 	void save(Paciente paciente);

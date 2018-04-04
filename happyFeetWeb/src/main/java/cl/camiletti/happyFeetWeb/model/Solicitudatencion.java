@@ -23,7 +23,7 @@ public class Solicitudatencion implements Serializable {
 	
 	private String fechaSolicitud;
 	
-
+	private String fotoViajePath;
 	//bi-directional many-to-one association to Horario
 	@ManyToOne
 	private Horario horario;
@@ -50,6 +50,14 @@ public class Solicitudatencion implements Serializable {
 	private Presupuesto presupuesto;
 
 	public Solicitudatencion() {
+	}
+
+	public String getFotoViajePath() {
+		return fotoViajePath;
+	}
+
+	public void setFotoViajePath(String fotoViajePath) {
+		this.fotoViajePath = fotoViajePath;
 	}
 
 	public int getId() {

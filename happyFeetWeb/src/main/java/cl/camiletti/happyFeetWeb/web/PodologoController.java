@@ -25,7 +25,6 @@ import cl.camiletti.happyFeetWeb.model.Mensaje;
 import cl.camiletti.happyFeetWeb.model.Paciente;
 import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Podologo;
-import cl.camiletti.happyFeetWeb.model.Presupuesto;
 import cl.camiletti.happyFeetWeb.model.Solicitudatencion;
 import cl.camiletti.happyFeetWeb.model.Usuario;
 import cl.camiletti.happyFeetWeb.repository.MensajeRepository;
@@ -254,7 +253,7 @@ public class PodologoController {
 			atencion.setPatologia(solicitudAtencion.getPatologia());
 			atencion.setPodologo(podologo);
 			atencion.setPresupuesto(solicitudAtencion.getPresupuesto());
-			agenda.setFotoPie(solicitudAtencion.getFotoPiePath());
+			agenda.setFotoPiePath(solicitudAtencion.getFotoPiePath());
 			agenda.setPaciente(solicitudAtencion.getPaciente());
 			agenda.setHorario(solicitudAtencion.getHorario());
 			agenda.setPaciente(solicitudAtencion.getPaciente());
@@ -277,7 +276,7 @@ public class PodologoController {
 				atencion.setPatologia(solicitudAtencion.getPatologia());
 				atencion.setPodologo(podologo);
 				atencion.setPresupuesto(solicitudAtencion.getPresupuesto());
-				agenda.setFotoPie(solicitudAtencion.getFotoPiePath());
+				agenda.setFotoPiePath(solicitudAtencion.getFotoPiePath());
 				agenda.setPaciente(solicitudAtencion.getPaciente());
 				agenda.setHorario(solicitudAtencion.getHorario());
 				agenda.setPaciente(solicitudAtencion.getPaciente());
@@ -312,10 +311,11 @@ public class PodologoController {
 	}
 
 	@RequestMapping(value = "/podologo/modificardatos", method = RequestMethod.GET)
-	public String modificar(Model model) {
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Podologo podologo = podologoService.findByEmail(user.getUsername());
+	public String modificar(Model model,@ModelAttribute("podologo") Podologo podologo) {
+		podologo.getUsuario().setPassword("");
+		podologo.getUsuario().setPasswordConfirm("");
 		model.addAttribute("podologoForm", podologo);
+		
 		model.addAttribute("ubicacion", podologo.getUbicacion().getNombre());
 		model.addAttribute("comuna", podologo.getUbicacion().getComuna().getNombre());
 		model.addAttribute("paramSexo", podologo.getParamSexo());
@@ -466,7 +466,7 @@ public class PodologoController {
 		atencion.setUbicacion(solicitudAtencion.getPaciente().getUbicacion());
 		atencion.setPodologo(podologo);
 		atencion.setPatologia(solicitudAtencion.getPatologia());
-		agenda.setFotoPie(solicitudAtencion.getFotoPiePath());
+		agenda.setFotoPiePath(solicitudAtencion.getFotoPiePath());
 		agenda.setPaciente(solicitudAtencion.getPaciente());
 		return "podologo/atenciones";
 	}

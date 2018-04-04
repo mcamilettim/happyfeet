@@ -60,101 +60,96 @@
 
     <div id="wrapper">
 
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Navegación</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="${contextPath}/podologo/index"><img src="${contextPath}/resources/img/logo1.png" class="img-responsive" style="width: 120px;"></a>
-            </div>
-            <!-- /.navbar-header -->
+       <!-- Navigation -->
+		<nav class="navbar navbar-default navbar-static-top" role="navigation"
+			style="margin-bottom: 0">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="sr-only">Navegación</span> <span class="icon-bar"></span>
+					<span class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="${contextPath}/podologo/index"><img
+					src="${contextPath}/resources/img/logo1.png" class="img-responsive"
+					style="width: 120px;"></a>
+			</div>
+			<!-- /.navbar-header -->
 
-            <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-messages">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong></strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Ahora</em>
-                                    </span>
-                                </div>
-                                <div>Sin mensajes nuevos.</div>
-                            </a>
-                        </li> 
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="${contextPath}/podologo/vermensajes">
-                                <strong>Ver todos los mensajes</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-messages -->
-                </li>
-                </li>
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="${contextPath}/podologo/modificardatos"><i class="fa fa-gear fa-fw"></i>Mis Datos</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="<c:url value="/logout" />"><i class="fa fa-sign-out fa-fw"></i> Cerrar Sesión</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
-            <!-- /.navbar-top-links -->
+			<ul class="nav navbar-top-links navbar-right">
+				<li class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="#"> <i
+						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+				</a>
+					<ul class="dropdown-menu dropdown-messages">
+						<li><a href="#"> <strong></strong> <span
+								class="pull-right text-muted"> <em>Ahora</em>
+							</span> Sin mensajes nuevos.
+						</a></li>
+						<li class="divider"></li>
+						<li><a class="text-center"
+							href="${contextPath}/podologo/vermensajes"> <strong>Ver
+									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
+						</a></li>
+					</ul> <!-- /.dropdown-messages --></li>
 
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                    	<li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <img src="${contextPath}/resources/img/sinfoto.jpg" class="img-responsive" style="width: 200px;">
-                                 <br>
-                                <center><span class="text-info text-center"><b>${podologo.nombres} ${podologo.apellidos}</b></span></center>
-                                <center><span class="text-info">Podólogo</span></center>
-                            </div>
-                            <!-- /input-group -->
-                        </li>
-                        <li>
-                            <a href="${contextPath}/podologo/index"><i class="fa fa-dashboard fa-fw"></i> Inicio</a>
-                        </li>
-                        <li>
-                            <a href="${contextPath}/podologo/index"><i class="fa fa-edit fa-fw"></i> Agendar Horario</a>
-                        </li>
-                        <li>
-                            <a href="${contextPath}/podologo/modificardatos"><i class="fa fa-gear fa-fw"></i> Modificar mis datos</a>
-                        </li>
-                        <li>
-                            <a href="${contextPath}/podologo/index"><i class="fa fa-table fa-fw"></i> Historial de atenciones</a>
-                        </li>
-                        <li>
-                            <a href="${contextPath}/podologo/index"><i class="fa fa-edit fa-fw"></i> Solicitudes nuevas</a>
-                        </li>
-                        <li>
-                            <a href="${contextPath}/podologo/pacientes"><i class="fa fa-table fa-fw"></i> Lista de Pacientes</a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.sidebar-collapse -->
-            </div>
-            <!-- /.navbar-static-side -->
-        </nav>
+				<!-- /.dropdown -->
+				<li class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
+						<i class="fa fa-caret-down"></i>
+				</a>
+					<ul class="dropdown-menu dropdown-user">
+						<li><a href="${contextPath}/podologo/modificardatos"><i
+								class="fa fa-gear fa-fw"></i>Mis Datos</a></li>
+						<li class="divider"></li>
+						<li><a href="<c:url value="/logout" />"><i
+								class="fa fa-sign-out fa-fw"></i> Cerrar Sesión</a></li>
+					</ul> <!-- /.dropdown-user --></li>
+				<!-- /.dropdown -->
+			</ul>
+			<!-- /.navbar-top-links -->
+
+			<div class="navbar-default sidebar" role="navigation">
+				<div class="sidebar-nav navbar-collapse">
+					<ul class="nav" id="side-menu">
+							<li class="sidebar-search">
+							<div class="input-group custom-search-form">
+								<c:choose>
+									<c:when test="${empty podologo.foto}">
+										<img src="${contextPath}/resources/img/sinfoto.jpg"
+											class="img-responsive" style="width: 200px;">
+									</c:when>
+									<c:otherwise>
+										<img src="${contextPath}/resources/imagenes/${podologo.foto}"
+											class="img-responsive" style="width: 200px;">
+									</c:otherwise>
+								</c:choose>
+								<br>
+								<div align="center">
+									<span class="text-info text-center"><b>${podologo.nombres}
+											${podologo.apellidos}</b></span> <span class="text-info">Paciente</span>
+								</div>
+							</div> <!-- /input-group -->
+						</li>
+						<li><a href="${contextPath}/podologo/index"><i
+								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
+						<li><a href="${contextPath}/podologo/miAgenda"><i
+								class="fa fa-dashboard fa-fw"></i> Mi Agenda</a></li>
+						<li><a href="${contextPath}/podologo/index"><i
+								class="fa fa-edit fa-fw"></i> Agendar Horario</a></li>
+						<li><a href="${contextPath}/podologo/modificardatos"><i
+								class="active fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
+						<li><a href="${contextPath}/podologo/verSolicitudes"><i
+								class="fa fa-edit fa-fw"></i> Solicitudes nuevas</a></li>
+						<li><a href="${contextPath}/podologo/pacientes"><i
+								class="fa fa-table fa-fw"></i> Lista de Pacientes</a></li>
+						<li><a href="${contextPath}/podologo/atencionesPendientes"><i
+								class="fa fa-table fa-fw"></i> Atenciones Pendientes</a></li>
+					</ul>
+				</div>
+				<!-- /.sidebar-collapse -->
+			</div>
+			<!-- /.navbar-static-side -->
+		</nav>
 
               <!-- Page Content -->
         <div id="page-wrapper">
@@ -208,13 +203,35 @@
 								            </div>
 								        </spring:bind>
 								        
-								         <spring:bind path="ubicacion">
-								            <div class="form-group ${status.error ? 'has-error' : ''}">
-								            Dirección
-								                <form:input type="text" path="ubicacion.nombre" class="form-control" required="true"></form:input>
-								                <form:errors path="ubicacion"></form:errors>
-								            </div>
-								        </spring:bind>
+								          <spring:bind path="ubicacion">
+			            <div class="form-group ${status.error ? 'has-error' : ''}">
+			            <p id="mensajeDirecion">Dirección<p>
+			                <form:input id="ubicacion" type="text" path="ubicacion.nombre" class="form-control" required="true"></form:input>
+			                <form:errors path="ubicacion"></form:errors>
+			            </div>
+			        </spring:bind>
+			        <spring:bind path="ubicacion.latitud">
+			            <div class="form-group ${status.error ? 'has-error' : ''}">    
+			                <form:input id="latitud" type="hidden" path="ubicacion.latitud" class="form-control" required="true"></form:input>
+			                <form:errors path="ubicacion.latitud"></form:errors>
+			            </div>
+			        </spring:bind>
+			        <spring:bind path="ubicacion.longitud">
+			            <div class="form-group ${status.error ? 'has-error' : ''}">
+			                <form:input id="longitud" type="hidden" path="ubicacion.longitud" class="form-control" required="true"></form:input>
+			                <form:errors path="ubicacion.longitud"></form:errors>
+			            </div>
+			        </spring:bind>
+			        
+			       <spring:bind path="ubicacion.comuna">
+         			   <div class="form-group ${status.error ? 'has-error' : ''}" style = "display:none">
+          			  Comuna
+           		 			<form:select id="comunaID" path="ubicacion.comuna.id">  
+							   <form:options items="${comunas}" itemLabel="nombre" itemValue="id" required="true"/>
+							 </form:select>                
+              			  <form:errors path="ubicacion"></form:errors>
+          				  </div>
+       				 </spring:bind>
 								        
 								        <spring:bind path="ubicacion.comuna">
 								            <div class="form-group ${status.error ? 'has-error' : ''}">
@@ -290,21 +307,82 @@
         </div>
         <!-- /#page-wrapper -->
 
-    </div>
-    <!-- /#wrapper -->
-
-    <!-- jQuery -->
+    
+   <!-- jQuery -->
     <script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
-
+    <script type="text/javascript"
+			src="http://maps.googleapis.com/maps/api/js?v3&libraries=places&key=AIzaSyAVgzIQhGvX45D1OGk-De6fgj-12xDuZjU"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 
     <!-- Metis Menu Plugin JavaScript -->
     <script src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
+	<script src="${contextPath}/resources/js/bootstrap-datepicker.js"></script>
+	<script src="${contextPath}/resources/js/jquery-ui.min.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
-
+    <script src="${contextPath}/resources/js/jquery.rut.chileno.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		var address = document.getElementById("ubicacion").value;
+		getLocale(address);
+		$(':input[type="submit"]').prop('disabled', false);
+		var latitud="";
+		var longitud="";
+		function getLocale(address){
+			var geocoder = new google.maps.Geocoder();
+			 geocoder.geocode( { 'address': address}, function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK)
+					{
+					latitud=results[0].geometry.location.lat();
+					longitud=results[0].geometry.location.lng();
+					$("#latitud").val(results[0].geometry.location.lat());
+					$("#longitud").val(results[0].geometry.location.lng());
+					//console.log(results); 
+				    $("#mensajeDirecion").html("Dirección [OK]");
+				    $("#mensajeDirecion").css("color", "black");	
+				    $("#ubicacion").val(results[0].formatted_address);	
+				    validaComuna(results[0].address_components[2].short_name);
+				   // console.log(results[0].address_components[2].short_name);
+				  //  $("#ubicacion").val("");
+					}else{
+						 $("#mensajeDirecion").html("Dirección [No encontrada]");
+						 $("#mensajeDirecion").css("color", "red");				
+					}
+		   });
+		}			
+		$("#ubicacion" ).focusout(function() {
+			var address = document.getElementById("ubicacion").value;
+			//alert("FOCUS OUT");
+			getLocale(address);
+		 });	
+		
+		function validaComuna(address){
+			//console.log(address);
+			//console.log(address.localeCompare("Maipú"));
+			if(address.localeCompare("Maipú")==0){
+				$("#comunaID").val('1').change();;
+				$("#comunaNombre").val(address);
+				 $(':input[type="submit"]').prop('disabled', false);
+			}else{
+				if(address.localeCompare("Pudahuel")==0){
+					 $(':input[type="submit"]').prop('disabled', false);
+					$("#comunaID").val('2').change();;
+					$("#comunaNombre").val(address);
+				}else{
+					 $(':input[type="submit"]').prop('disabled', true);
+					 $("#mensajeDirecion").css("color", "red");	
+					 $("#mensajeDirecion").html("Dirección [ Sólo Pudahuel y Maipú ]");
+				}
+			}
+		}
+		
+		
+		 
+	});
+	
+	</script>
 </body>
 
 </html>

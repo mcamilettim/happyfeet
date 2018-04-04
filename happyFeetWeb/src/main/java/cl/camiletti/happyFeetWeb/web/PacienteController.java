@@ -256,14 +256,14 @@ public class PacienteController {
 		Podologo podologo = podologoService.find(solicitudAtencion.getPodologo().getRut());
 		Horario horario = horarioService.findById(solicitudAtencion.getHorario().getId());
 		Parametro parametroPendiente = parametroService.findOne(Parametros.ESTADO_SOLICITUD_PENDIENTE);// pendiente
-																								       // (estado
-																									  // Solicitud)
+																								       // (estado																					  // Solicitud)
 		FileManagerUtil fileManagerUtil =new FileManagerUtil();
-		urlRuta=fileManagerUtil.getPathImageFromUrl(urlRuta, paciente.getRut(), podologo.getRut(), Seccion.SOLICITUDES_RUTAS);
+		
 		Parametro parametroTomado = parametroService.findOne(Parametros.ESTADO_HORARIO_TOMADO);// tomado
 		String fotoPie = fileManagerUtil.subirArchivo(fotoPiePaciente, Seccion.SOLICITUDES_ATENCION, paciente.getRut());
 		if (solicitudAtencionService.findByHorario(horario) == null) {
 			Double cantidad_Kilometros = Double.parseDouble(kilometros);
+			urlRuta=fileManagerUtil.getPathImageFromUrl(urlRuta, paciente.getRut(), podologo.getRut(), Seccion.SOLICITUDES_RUTAS,cantidad_Kilometros );
 			// saca presupuesto
 			Presupuesto presupuesto = new Presupuesto();
 			presupuesto.setUbicacionPartida(podologo.getUbicacion());
@@ -282,10 +282,9 @@ public class PacienteController {
 			solicitudAtencion.setFechaSolicitud(DateUtil.getFechaHoyString());
 			solicitudAtencion.setPresupuesto(presupuesto);
 			solicitudAtencion.setFotoPiePath(fotoPie);
+			solicitudAtencion.setFotoViajePath(urlRuta);
 			solicitudAtencionService.save(solicitudAtencion);
-
 			horario.setParamEstadoHorario(parametroTomado);
-
 			horarioService.save(horario);
 			if (podologo.getParamSexo().getId() == Parametros.ESTADO_SEXO_M)
 				model.addAttribute("mensaje",
