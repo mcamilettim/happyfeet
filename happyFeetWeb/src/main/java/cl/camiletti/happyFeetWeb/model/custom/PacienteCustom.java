@@ -3,9 +3,22 @@ package cl.camiletti.happyFeetWeb.model.custom;
 import cl.camiletti.happyFeetWeb.model.Ubicacion;
 
 public class PacienteCustom {
+	
 	private String rut;
 
 	private String apellidos;
+
+	private String diabetico;
+
+	private int edad;
+
+	private String email;
+
+	private String fechaNacimiento;
+
+	private String fechaUltimaAtencion;
+
+	private String fono;
 
 	private String foto;
 
@@ -51,6 +64,54 @@ public class PacienteCustom {
 
 	public void setUbicacion(Ubicacion ubicacion) {
 		this.ubicacion = ubicacion;
+	}
+
+	public String getDiabetico() {
+		return diabetico;
+	}
+
+	public void setDiabetico(String diabetico) {
+		this.diabetico = diabetico;
+	}
+
+	public int getEdad() {
+		return edad;
+	}
+
+	public void setEdad(int edad) {
+		this.edad = edad;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(String fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public String getFechaUltimaAtencion() {
+		return fechaUltimaAtencion;
+	}
+
+	public void setFechaUltimaAtencion(String fechaUltimaAtencion) {
+		this.fechaUltimaAtencion = fechaUltimaAtencion;
+	}
+
+	public String getFono() {
+		return fono;
+	}
+
+	public void setFono(String fono) {
+		this.fono = fono;
 	}
 
 }

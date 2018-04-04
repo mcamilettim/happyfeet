@@ -285,7 +285,7 @@
 												<form:errors path="email"></form:errors>
 											</div>
 										</spring:bind>
-												<div class="form-group">      
+										<div class="form-group">      
 	              							 Foto Perfil<input type="file"
 												class="form-control" name="archivo"
 												value="${pacienteForm.foto}" accept=".png, .jpg, .jpeg"></input>

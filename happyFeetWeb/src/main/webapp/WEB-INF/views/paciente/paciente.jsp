@@ -138,7 +138,7 @@
 											class="img-responsive" style="width: 200px;">
 									</c:when>
 									<c:otherwise>
-										<img src="${contextPath}/resources/imagenes/${paciente.foto}"
+										<img src="data:image/png;base64,${paciente.foto}"
 											class="img-responsive" style="width: 200px;">
 									</c:otherwise>
 								</c:choose>

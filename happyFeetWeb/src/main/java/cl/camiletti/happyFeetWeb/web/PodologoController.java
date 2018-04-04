@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import cl.camiletti.happyFeetWeb.model.Agenda;
 import cl.camiletti.happyFeetWeb.model.Atencion;
@@ -41,6 +42,7 @@ import cl.camiletti.happyFeetWeb.service.UbicacionService;
 import cl.camiletti.happyFeetWeb.service.UsuarioService;
 import cl.camiletti.happyFeetWeb.util.Constantes;
 import cl.camiletti.happyFeetWeb.util.DateUtil;
+import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 import cl.camiletti.happyFeetWeb.util.Mail;
 import cl.camiletti.happyFeetWeb.util.Parametros;
 
@@ -326,40 +328,31 @@ public class PodologoController {
 	}
 
 	@RequestMapping(value = "/podologo/modificardatos", method = RequestMethod.POST)
-	public String modificarpost(@ModelAttribute("podologoForm") Podologo podologoForm, BindingResult bindingResult,
-			Model model) {
+	public String modificarpost(@ModelAttribute("podologoForm") Podologo podologoForm,@ModelAttribute("podologo") Podologo podologo, BindingResult bindingResult,
+			Model model,@RequestParam("archivo") MultipartFile archivo) {
 		if (bindingResult.hasErrors()) {
 
 		} else {
-			Mail mail = new Mail(env);
-
-			Usuario user = usuarioService.findByEmail(podologoForm.getEmail());
-
-			if (user != null) {
-				if (ubicacionService.findByNombre(podologoForm.getUbicacion().getNombre()) == null) {
-					ubicacionService.save(podologoForm.getUbicacion());
+			FileManagerUtil fileManagerUtil =new FileManagerUtil();
+			if(podologo.getUsuario().getPassword().equals(podologoForm.getUsuario().getPassword()) && podologo.getUsuario().getPasswordConfirm().equals(podologoForm.getUsuario().getPasswordConfirm())) {
+				podologo.getUbicacion().setLatitud(podologoForm.getUbicacion().getLatitud());
+				podologo.getUbicacion().setNombre(podologoForm.getUbicacion().getNombre());
+				podologo.getUbicacion().setLongitud(podologoForm.getUbicacion().getLongitud());
+				podologo.getUbicacion().getComuna().setId(podologoForm.getUbicacion().getComuna().getId());
+				podologo.setFono(podologoForm.getFono());
+				if(!archivo.isEmpty()) {
+					String file = fileManagerUtil.getBase64FromFoto(archivo);
+					podologo.setFoto(file);
 				}
-				user.setEmail(podologoForm.getEmail());
-				user.setPassword(podologoForm.getUsuario().getPassword());
-				user.setPasswordConfirm(podologoForm.getUsuario().getPasswordConfirm());
-				usuarioService.save(user);
-
-				Podologo podologo = podologoService.findByEmail(podologoForm.getEmail());
-				podologo.setUsuario(usuarioService.findByEmail(podologoForm.getEmail()));
-				podologo.setUbicacion(ubicacionService.findByNombre(podologoForm.getUbicacion().getNombre()));
-				podologo.getUsuario().setParamTipoUsuario(parametroService.findOne(17));
-				// podologo.setEdad(dateUtil.getAge(podologoForm.getFechaNacimiento()));
 				podologoService.save(podologo);
-
-				// mail.sendEmailBienvenidoPaciente(pacienteForm.getEmail(),
-				// pacienteForm.getNombres() + pacienteForm.getApellidos());
 				model.addAttribute("mensaje", "Sus datos fueron guardados con éxito");
-
+			}else {
+				model.addAttribute("mensajeError", "Contraseña Incorrecta");
 			}
+ 
 		}
-		model.addAttribute("sexos", parametroService.findByNumero(44));
-		model.addAttribute("comunas", comunaService.findAll());
-		return "podologo/modificar";
+		model.addAttribute("podologo", podologo);
+		return "podologo/podologo";
 	}
 
 	@RequestMapping(value = "/podologo/buscarSolicitudes", method = RequestMethod.POST)

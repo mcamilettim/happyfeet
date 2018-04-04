@@ -112,7 +112,7 @@ public class PacienteController {
 		} else {
 			pacienteForm.setRut(pacienteForm.getRut().replace(".", ""));
 			FileManagerUtil fileManagerUtil =new FileManagerUtil();
-			String fotoPerfil = fileManagerUtil.subirArchivo(fotoPerfilPath, Seccion.PACIENTE, pacienteForm.getRut());
+			String fotoPerfil = fileManagerUtil.getBase64FromFoto(fotoPerfilPath);
 			if (fotoPerfil != null)
 				pacienteForm.setFoto(fotoPerfil);
 			if (usuarioService.findByEmail(pacienteForm.getEmail()) == null) {
@@ -130,6 +130,7 @@ public class PacienteController {
 				pacienteForm.getUsuario().setParamTipoUsuario(parametroService.findOne(17));
 				pacienteForm.setEdad(dateUtil.getAge(pacienteForm.getFechaNacimiento()));
 				pacienteForm.setParamSexo(parametroService.findOne(pacienteForm.getParamSexo().getId()));
+				
 				usuarioService.save(pacienteForm.getUsuario());
 				pacienteService.save(pacienteForm);
 				Mail mail = new Mail(env);
@@ -183,7 +184,7 @@ public class PacienteController {
 				paciente.getUbicacion().getComuna().setId(pacienteForm.getUbicacion().getComuna().getId());
 				paciente.setFono(pacienteForm.getFono());
 				if(!archivo.isEmpty()) {
-					String file = fileManagerUtil.subirArchivo(archivo, Seccion.PACIENTE, pacienteForm.getRut());
+					String file = fileManagerUtil.getBase64FromFoto(archivo);
 					paciente.setFoto(file);
 				}
 				pacienteService.save(paciente);
@@ -192,8 +193,9 @@ public class PacienteController {
 				model.addAttribute("mensajeError", "Contraseña Incorrecta");
 			}
 		}
+		model.addAttribute("paciente", paciente);
 		return "paciente/paciente";
-	}
+	} 
 
 	@RequestMapping(value = "/paciente/misatenciones", method = RequestMethod.GET)
 	public String misatenciones(Model model) {
@@ -260,7 +262,8 @@ public class PacienteController {
 		FileManagerUtil fileManagerUtil =new FileManagerUtil();
 		
 		Parametro parametroTomado = parametroService.findOne(Parametros.ESTADO_HORARIO_TOMADO);// tomado
-		String fotoPie = fileManagerUtil.subirArchivo(fotoPiePaciente, Seccion.SOLICITUDES_ATENCION, paciente.getRut());
+		//String fotoPie = fileManagerUtil.subirArchivo(fotoPiePaciente, Seccion.SOLICITUDES_ATENCION, paciente.getRut());
+		String fotoPie=fileManagerUtil.getBase64FromFoto(fotoPiePaciente);
 		if (solicitudAtencionService.findByHorario(horario) == null) {
 			Double cantidad_Kilometros = Double.parseDouble(kilometros);
 			urlRuta=fileManagerUtil.getPathImageFromUrl(urlRuta, paciente.getRut(), podologo.getRut(), Seccion.SOLICITUDES_RUTAS,cantidad_Kilometros );

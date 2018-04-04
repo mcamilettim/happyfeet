@@ -2,7 +2,6 @@ package cl.camiletti.happyFeetWeb.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -56,8 +55,8 @@ public class FileManagerUtil {
 					nombreArchivo = nombreArchivo + ext;
 					serverFilearchivoEntrada = new File(rutaDefinitiva + nombreArchivo);
 				}
-				// serverFilearchivoEntrada = new File(ROOT_PATH + File.separator + DIR_SINGLE +
-				// File.separator + archivoEntrada.getOriginalFilename());
+				serverFilearchivoEntrada = new File(ROOT_PATH + File.separator + DIR_SINGLE + File.separator
+						+ archivoEntrada.getOriginalFilename());
 
 				BufferedOutputStream streamarchivoEntrada = new BufferedOutputStream(
 						new FileOutputStream(serverFilearchivoEntrada));
@@ -73,43 +72,6 @@ public class FileManagerUtil {
 			return null;
 		}
 
-	}
-
-	public File subirArchivoPaciente(MultipartFile archivoEntrada, String otroPath) {
-		File serverFilearchivoEntrada = null;
-		if (!archivoEntrada.isEmpty()) {
-			try {
-				byte[] bytesarchivoEntrada = archivoEntrada.getBytes();
-				File dir = new File(ROOT_PATH + File.separator + otroPath);
-				if (!dir.exists())
-					dir.mkdirs();
-				String nombreArchivo = archivoEntrada.getOriginalFilename();
-				String ext = nombreArchivo.substring(nombreArchivo.lastIndexOf("."));
-				String rutaDefinitiva = ROOT_PATH + File.separator + otroPath + File.separator;
-				String nombrePrimero = archivoEntrada.getOriginalFilename();
-				serverFilearchivoEntrada = new File(rutaDefinitiva + nombreArchivo);
-				int i = 0;
-				while (serverFilearchivoEntrada.exists()) {
-					i++;
-					nombreArchivo = nombrePrimero.replace(ext, "");
-					nombreArchivo = nombreArchivo + "-" + i;
-					nombreArchivo = nombreArchivo + ext;
-					serverFilearchivoEntrada = new File(rutaDefinitiva + nombreArchivo);
-				}
-				serverFilearchivoEntrada = new File(
-						ROOT_PATH + File.separator + otroPath + File.separator + archivoEntrada.getOriginalFilename());
-
-				BufferedOutputStream streamarchivoEntrada = new BufferedOutputStream(
-						new FileOutputStream(serverFilearchivoEntrada));
-
-				streamarchivoEntrada.write(bytesarchivoEntrada);
-				streamarchivoEntrada.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return serverFilearchivoEntrada;
 	}
 
 	private static byte[] loadFile(File file) {
@@ -142,29 +104,31 @@ public class FileManagerUtil {
 		return bytes;
 	}
 
-	public String getPathImageFromUrl(String link, String rutPaciente,String rutPodologo, String seccion, double cantidad_kilometros) {
+	public String getPathImageFromUrl(String link, String rutPaciente, String rutPodologo, String seccion,
+			double cantidad_kilometros) {
 		try {
-			if(1>cantidad_kilometros)
+			if (1 > cantidad_kilometros)
 				link.replace("$zoomParam", "16");
 			else
 				link.replace("$zoomParam", "14");
-			
-		 	File dir = new File(ROOT_PATH + File.separator + DIR_SINGLE + File.separator + seccion + File.separator);
+
+			File dir = new File(ROOT_PATH + File.separator + DIR_SINGLE + File.separator + seccion + File.separator);
 			if (!dir.exists())
 				dir.mkdirs();
-			String ext =".jpg";
-			String nameFile= rutPaciente+rutPodologo+ext;
+			String ext = ".jpg";
+			String nameFile = rutPaciente + rutPodologo + ext;
 			URL url = new URL(link);
-		 
-			InputStream in = new BufferedInputStream(url.openStream());
-			OutputStream out = new BufferedOutputStream(new FileOutputStream(ROOT_PATH + File.separator + DIR_SINGLE + File.separator + seccion + File.separator+nameFile));
 
-			for ( int i; (i = in.read()) != -1; ) {
-			    out.write(i);
+			InputStream in = new BufferedInputStream(url.openStream());
+			OutputStream out = new BufferedOutputStream(new FileOutputStream(
+					ROOT_PATH + File.separator + DIR_SINGLE + File.separator + seccion + File.separator + nameFile));
+
+			for (int i; (i = in.read()) != -1;) {
+				out.write(i);
 			}
 			in.close();
 			out.close();
-			return  DIR_SINGLE + File.separator + seccion + File.separator + nameFile;
+			return DIR_SINGLE + File.separator + seccion + File.separator + nameFile;
 		} catch (Exception e) {
 			return null;
 		}
@@ -178,6 +142,33 @@ public class FileManagerUtil {
 			return Base64.encodeBase64String(bytes);
 		else
 			return null;
+	}
+
+	public String getBase64FromFoto(MultipartFile archivoEntrada) {
+		String base64 = null;
+		File serverFilearchivoEntrada = null;
+		String name = null;
+		if (!archivoEntrada.isEmpty()) {
+			try {
+				name = ROOT_PATH + File.separator + new RandomString(10).nextString()
+						+ archivoEntrada.getOriginalFilename();
+				byte[] bytesarchivoEntrada = archivoEntrada.getBytes();
+				File dir = new File(ROOT_PATH);
+				if (!dir.exists())
+					dir.mkdirs();
+				serverFilearchivoEntrada = new File(name);
+				BufferedOutputStream streamarchivoEntrada = new BufferedOutputStream(
+						new FileOutputStream(serverFilearchivoEntrada));
+
+				streamarchivoEntrada.write(bytesarchivoEntrada);
+				streamarchivoEntrada.close();
+				base64 = encodeFileToBase64Binary(name);
+				serverFilearchivoEntrada.delete();
+			} catch (IOException e) {
+				base64 = null;
+			}
+		}
+		return base64;
 	}
 
 	public UtilProperties getUtil() {

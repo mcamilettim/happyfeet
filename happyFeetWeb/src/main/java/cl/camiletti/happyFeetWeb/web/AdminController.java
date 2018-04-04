@@ -144,7 +144,7 @@ public class AdminController {
 	public String modificarpost(@ModelAttribute("pacienteForm") Paciente pacienteForm,
 			@RequestParam("archivo") MultipartFile archivo, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
-
+			
 		} else {
 			Mail mail = new Mail(env);
 			if (archivo != null) {
@@ -317,7 +317,7 @@ public class AdminController {
 			e.printStackTrace();
 		}*/
     	
-    	fileManagerUtil.subirArchivoPaciente(foto,"c:/");
+    	//fileManagerUtil.subirArchivoPaciente(foto,"c:/");
     	
     	patologiaService.save(patologiaForm);
     	model.addAttribute("patologias", patologiaService.findAll());
@@ -357,7 +357,7 @@ public class AdminController {
 			e.printStackTrace();
 		}*/
     	
-    	fileManagerUtil.subirArchivoPaciente(foto,"c:/");
+    	//fileManagerUtil.subirArchivoPaciente(foto,"c:/");
     	patologiaService.save(patologiaForm);
     	model.addAttribute("mensaje", "Patologia modificada con éxito");
     	model.addAttribute("patologias", patologiaService.findAll());

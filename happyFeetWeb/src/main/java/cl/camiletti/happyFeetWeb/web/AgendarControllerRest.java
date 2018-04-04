@@ -1,6 +1,5 @@
 package cl.camiletti.happyFeetWeb.web;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,20 +62,13 @@ public class AgendarControllerRest {
 		Comuna comuna = comunaService.findById(idComuna);
 		List<Ubicacion> ubicaciones = comuna.getUbicacions();
 		List<PodologoCustom> podologos = new ArrayList<PodologoCustom>();
-		FileManagerUtil fileManagerUtil =new FileManagerUtil();
+
 	 
 		for (Ubicacion ubicacion : ubicaciones) {
 			for (Podologo podologo : ubicacion.getPodologos()) {
 				PodologoCustom podoAux = new PodologoCustom();
-				File foto = new File(fileManagerUtil.getROOT_PATH() + File.separator + podologo.getFoto());
-				
-				if (foto.exists()) {
-					podoAux.setFoto(fileManagerUtil
-							.encodeFileToBase64Binary(fileManagerUtil.getROOT_PATH() + File.separator + podologo.getFoto()));
-				} else {
-					podoAux.setFoto(fileManagerUtil
-							.encodeFileToBase64Binary(fileManagerUtil.getROOT_PATH() + File.separator + "sinfoto.jpg"));
-				}
+			     podoAux.setFoto( podologo.getFoto());
+				 
 				podoAux.setNombres(podologo.getNombres());
 				podoAux.setApellidos(podologo.getApellidos());
 				podoAux.setRut(podologo.getRut());

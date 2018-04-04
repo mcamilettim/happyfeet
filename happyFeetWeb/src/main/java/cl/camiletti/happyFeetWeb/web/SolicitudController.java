@@ -63,8 +63,8 @@ public class SolicitudController {
     public String solicitud(@ModelAttribute("solicitudForm") Solicitud solicitud, BindingResult bindingResult, Model model, @RequestParam("carnet") MultipartFile carnet, @RequestParam("titulo") MultipartFile titulo) throws IOException {
     	
     	
-    	String fotoCarnet = fileManagerUtil.subirArchivo(carnet, Seccion.SOLICITUDES,solicitud.getRutPodologo());
-    	String fotoTitulo = fileManagerUtil.subirArchivo(titulo,Seccion.SOLICITUDES,solicitud.getRutPodologo());
+    	String fotoCarnet = fileManagerUtil.getBase64FromFoto(carnet);
+    	String fotoTitulo = fileManagerUtil.getBase64FromFoto(titulo);
     	
     	solicitud.setCarnet(fotoCarnet);
     	solicitud.setTitulo(fotoCarnet);
