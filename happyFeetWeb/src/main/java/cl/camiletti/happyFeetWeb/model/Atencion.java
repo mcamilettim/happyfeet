@@ -23,7 +23,7 @@ public class Atencion implements Serializable {
 
 	private String indicaciones;
 
-	private int montoCancelado;
+ 
 
 	//bi-directional many-to-one association to Agenda
 	@ManyToOne
@@ -33,21 +33,7 @@ public class Atencion implements Serializable {
 	@ManyToOne
 	private Evaluacion evaluacion;
 
-	//bi-directional many-to-one association to Patologia
-	@ManyToOne
-	private Patologia patologia;
-
-	//bi-directional many-to-one association to Podologo
-	@ManyToOne
-	private Podologo podologo;
-
-	//bi-directional many-to-one association to Presupuesto
-	@ManyToOne
-	private Presupuesto presupuesto;
-
-	//bi-directional many-to-one association to Ubicacion
-	@ManyToOne
-	private Ubicacion ubicacion;
+	 
 
 	public Atencion() {
 	}
@@ -83,14 +69,7 @@ public class Atencion implements Serializable {
 	public void setIndicaciones(String indicaciones) {
 		this.indicaciones = indicaciones;
 	}
-
-	public int getMontoCancelado() {
-		return this.montoCancelado;
-	}
-
-	public void setMontoCancelado(int montoCancelado) {
-		this.montoCancelado = montoCancelado;
-	}
+ 
 
 	public Agenda getAgenda() {
 		return this.agenda;
@@ -107,37 +86,5 @@ public class Atencion implements Serializable {
 	public void setEvaluacion(Evaluacion evaluacion) {
 		this.evaluacion = evaluacion;
 	}
-
-	public Patologia getPatologia() {
-		return this.patologia;
-	}
-
-	public void setPatologia(Patologia patologia) {
-		this.patologia = patologia;
-	}
-
-	public Podologo getPodologo() {
-		return this.podologo;
-	}
-
-	public void setPodologo(Podologo podologo) {
-		this.podologo = podologo;
-	}
-
-	public Presupuesto getPresupuesto() {
-		return this.presupuesto;
-	}
-
-	public void setPresupuesto(Presupuesto presupuesto) {
-		this.presupuesto = presupuesto;
-	}
-
-	public Ubicacion getUbicacion() {
-		return this.ubicacion;
-	}
-
-	public void setUbicacion(Ubicacion ubicacion) {
-		this.ubicacion = ubicacion;
-	}
-
+ 
 }

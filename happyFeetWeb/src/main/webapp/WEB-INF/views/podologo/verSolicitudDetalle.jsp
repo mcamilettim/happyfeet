@@ -170,16 +170,19 @@
 											class="img-responsive" style="width: 200px;">
 									</c:when>
 									<c:otherwise>
-										<img src="${contextPath}/resources/imagenes/${podologo.foto}"
+										<img src="data:image/png;base64,${podologo.foto}"
 											class="img-responsive" style="width: 200px;">
 									</c:otherwise>
-								</c:choose>
-								<br>
+								</c:choose><br>
 								<div align="center">
 									<span class="text-info text-center"><b>${podologo.nombres}
-											${podologo.apellidos}</b></span> <span class="text-info">Paciente</span>
+											${podologo.apellidos}</b></span>
 								</div>
-							</div> <!-- /input-group -->
+
+								<div align="center">
+									<span class="text-info">Podólogo</span>
+								</div>
+							</div><!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/podologo/index"><i
 								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
@@ -247,12 +250,12 @@
 								<tr>
 									<td><div align="center">
 											<img class="img-responsive"
-												src="${contextPath}/resources/imagenes/${solicitudAtencion.fotoPiePath}"
+												src="data:image/png;base64,${solicitudAtencion.fotoPiePath}"
 												style="width: 200px; height: 200px;">
 										</div></td>
 									<td><div align="center">
 											<img class="img-responsive"
-												src="${contextPath}/resources/imagenes/${solicitudAtencion.patologia.foto}"
+												src="data:image/png;base64,${solicitudAtencion.patologia.foto}"
 												style="width: 200px; height: 200px;">
 										</div></td>
 								</tr>

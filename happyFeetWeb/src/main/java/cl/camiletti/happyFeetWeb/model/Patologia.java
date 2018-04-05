@@ -25,10 +25,7 @@ public class Patologia implements Serializable {
 
 	private String descripcion;
 
-	// bi-directional many-to-one association to Atencion
-	@OneToMany(mappedBy = "patologia", fetch = FetchType.EAGER)
-	private List<Atencion> atencions;
-
+ 
 	// bi-directional many-to-one association to Solicitudatencion
 	@OneToMany(mappedBy = "patologia", fetch = FetchType.EAGER)
 	private List<Solicitudatencion> solicitudatencions;
@@ -83,29 +80,7 @@ public class Patologia implements Serializable {
 	public void setCosto(int costo) {
 		this.costo = costo;
 	}
-
-	public List<Atencion> getAtencions() {
-		return this.atencions;
-	}
-
-	public void setAtencions(List<Atencion> atencions) {
-		this.atencions = atencions;
-	}
-
-	public Atencion addAtencion(Atencion atencion) {
-		getAtencions().add(atencion);
-		atencion.setPatologia(this);
-
-		return atencion;
-	}
-
-	public Atencion removeAtencion(Atencion atencion) {
-		getAtencions().remove(atencion);
-		atencion.setPatologia(null);
-
-		return atencion;
-	}
-
+ 
 	public List<Solicitudatencion> getSolicitudatencions() {
 		return this.solicitudatencions;
 	}

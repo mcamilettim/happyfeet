@@ -24,9 +24,7 @@ public class Presupuesto implements Serializable {
 
 	private int viajePodologo;
 
-	//bi-directional many-to-one association to Atencion
-	@OneToMany(mappedBy="presupuesto", fetch=FetchType.EAGER)
-	private List<Atencion> atencions;
+	 
 
 	//bi-directional many-to-one association to Detallepresupuesto
 	@OneToMany(mappedBy="presupuesto", fetch=FetchType.EAGER)
@@ -93,27 +91,7 @@ public class Presupuesto implements Serializable {
 		this.viajePodologo = viajePodologo;
 	}
 
-	public List<Atencion> getAtencions() {
-		return this.atencions;
-	}
-
-	public void setAtencions(List<Atencion> atencions) {
-		this.atencions = atencions;
-	}
-
-	public Atencion addAtencion(Atencion atencion) {
-		getAtencions().add(atencion);
-		atencion.setPresupuesto(this);
-
-		return atencion;
-	}
-
-	public Atencion removeAtencion(Atencion atencion) {
-		getAtencions().remove(atencion);
-		atencion.setPresupuesto(null);
-
-		return atencion;
-	}
+ 
 
 	public List<Detallepresupuesto> getDetallepresupuestos() {
 		return this.detallepresupuestos;

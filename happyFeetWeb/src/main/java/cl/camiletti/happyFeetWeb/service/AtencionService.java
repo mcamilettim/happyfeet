@@ -13,6 +13,6 @@ public interface AtencionService {
 	Atencion findByAgenda(Agenda agenda);
 	List<Atencion> findAll();
 	void deleteById(Atencion atencion);
-	List<Atencion> findByPodologo(Podologo podologo);
+	 
 	List<Atencion> findByAgenda(Paciente paciente,Podologo podologo);
 }

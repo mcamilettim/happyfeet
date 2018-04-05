@@ -27,9 +27,7 @@ public class Podologo implements Serializable {
 
 	private String nombres;
 
-	// bi-directional many-to-one association to Atencion
-	@OneToMany(mappedBy = "podologo", fetch = FetchType.EAGER)
-	private List<Atencion> atencions;
+	 
 
 	// bi-directional many-to-one association to Horario
 	@OneToMany(mappedBy = "podologo", fetch = FetchType.EAGER)
@@ -118,29 +116,7 @@ public class Podologo implements Serializable {
 	public void setNombres(String nombres) {
 		this.nombres = nombres;
 	}
-
-	public List<Atencion> getAtencions() {
-		return this.atencions;
-	}
-
-	public void setAtencions(List<Atencion> atencions) {
-		this.atencions = atencions;
-	}
-
-	public Atencion addAtencion(Atencion atencion) {
-		getAtencions().add(atencion);
-		atencion.setPodologo(this);
-
-		return atencion;
-	}
-
-	public Atencion removeAtencion(Atencion atencion) {
-		getAtencions().remove(atencion);
-		atencion.setPodologo(null);
-
-		return atencion;
-	}
-
+ 
 	public List<Horario> getHorarios() {
 		return this.horarios;
 	}

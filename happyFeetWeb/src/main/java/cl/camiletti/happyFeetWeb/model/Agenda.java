@@ -29,7 +29,7 @@ public class Agenda implements Serializable {
 	private Patologia patologia;
 
 	// bi-directional many-to-one association to Presupuesto
-	@ManyToOne(cascade = { CascadeType.ALL })
+	@ManyToOne
 	private Presupuesto presupuesto;
 
 	// bi-directional many-to-one association to Horario

@@ -62,8 +62,6 @@
 				        <li class="active"><a href="#banner">Inicio</a></li>
 				        <li class=""><a href="#service">Servicios</a></li>
 				        <li class=""><a href="#about">Nuestro equipo</a></li>
-				        <li class=""><a href="#testimonial">Opiniones</a></li>
-				        <li class=""><a href="#contact">Cont&aacute;ctanos</a></li>
 				      </ul>
 				    </div>
 				</div>
@@ -251,76 +249,7 @@
 		</div>
 	</section>
 	<!--/ doctor team-->
-	 
-	<!--cta 2-->
-	<section id="cta-2" class="section-padding">
-		<div class="container">
-			<div class=" row">
-				<div class="col-md-2"></div>
-	            <div class="text-right-md col-md-4 col-sm-4">
-	              <h2 class="section-title white lg-line">« A few words<br> about us »</h2>
-	            </div>
-	            <div class="col-md-4 col-sm-5">
-	              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a typek
-	              <p class="text-right text-primary"><i>— Medilap Healthcare</i></p>
-	            </div>
-	            <div class="col-md-2"></div>
-	        </div>
-		</div>
-	</section>
-	<!--cta-->
-	<!--contact-->
-	<section id="contact" class="section-padding">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<h2 class="ser-title">Contacto</h2>
-					<hr class="botm-line">
-				</div>
-				<div class="col-md-4 col-sm-4">
-			      <h3>Contact Info</h3>
-			      <div class="space"></div>
-			      <p><i class="fa fa-map-marker fa-fw pull-left fa-2x"></i>Santiago de Chile<br>
-			        Maip&uacute;, Ciudad Sat&eacute;lite</p>
-			      <div class="space"></div>
-			      <p><i class="fa fa-envelope-o fa-fw pull-left fa-2x"></i>cuidomiespies.cl@gmail.com</p>
-			      <div class="space"></div>
-			      <p><i class="fa fa-phone fa-fw pull-left fa-2x"></i>+56999999999</p>
-			    </div>
-				<div class="col-md-8 col-sm-8 marb20">
-					<div class="contact-info">
-							<h3 class="cnt-ttl">Si tiene alguna consulta con nuerstro servicio, env&iacute;enos un correo</h3>
-							<div class="space"></div>
-                            <div id="sendmessage">Your message has been sent. Thank you!</div>
-                            <div id="errormessage"></div>
-							<form action="" method="post" role="form" class="contactForm">
-							    <div class="form-group">
-                                    <input type="text" name="name" class="form-control br-radius-zero" id="name" placeholder="Su nombre" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-                                    <div class="validation"></div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="email" class="form-control br-radius-zero" name="email" id="email" placeholder="Su correo" data-rule="email" data-msg="Please enter a valid email" />
-                                    <div class="validation"></div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control br-radius-zero" name="subject" id="subject" placeholder="Asunto" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
-                                    <div class="validation"></div>
-                                </div>
-                                <div class="form-group">
-                                    <textarea class="form-control br-radius-zero" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Todas sus dudas aqu&iacute;"></textarea>
-                                    <div class="validation"></div>
-                                </div>
-                                
-								<div class="form-action">
-									<button type="submit" class="btn btn-form">Enviar Mensaje</button>
-								</div>
-							</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!--/ contact-->
+ 
 	<!--footer-->
 	<footer id="footer">
 		<div class="top-footer">
@@ -328,27 +257,27 @@
 				<div class="row">
 					<div class="col-md-4 col-sm-4 marb20">
 							<div class="ftr-tle">
-								<h4 class="white no-padding">About Us</h4>
+								<h4 class="white no-padding">Acerca de Nosotros</h4>
 							</div>
 							<div class="info-sec">
-								<p>Praesent convallis tortor et enim laoreet, vel consectetur purus latoque penatibus et dis parturient.</p>
+								<p>Somos un grupo de Podólogos Clínicos comprometidos con el cuidado de Tus Pies.</p>
 							</div>
 					</div>
 					<div class="col-md-4 col-sm-4 marb20">
 						<div class="ftr-tle">
-							<h4 class="white no-padding">Quick Links</h4>
+							<h4 class="white no-padding">Links directos</h4>
 						</div>
 						<div class="info-sec">
 							<ul class="quick-info">
-								<li><a href="index.html"><i class="fa fa-circle"></i>Home</a></li>
-								<li><a href="#service"><i class="fa fa-circle"></i>Service</a></li>
-								<li><a href="#contact"><i class="fa fa-circle"></i>Appointment</a></li>
+								<li><a href="index.html"><i class="fa fa-circle"></i>Iniciar Sesion</a></li>
+								<li><a href="#service"><i class="fa fa-circle"></i>Registrarme como Paciente</a></li>
+								<li><a href="#contact"><i class="fa fa-circle"></i>Registrarme como Podólogo</a></li>
 							</ul>
 						</div>
 					</div>
 					<div class="col-md-4 col-sm-4 marb20">
 						<div class="ftr-tle">
-							<h4 class="white no-padding">Follow us</h4>
+							<h4 class="white no-padding">Sigue nuestras Redes Sociales</h4>
 						</div>
 						<div class="info-sec">
 							<ul class="social-icon">

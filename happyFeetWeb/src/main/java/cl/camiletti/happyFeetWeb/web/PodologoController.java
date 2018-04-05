@@ -27,7 +27,6 @@ import cl.camiletti.happyFeetWeb.model.Paciente;
 import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Podologo;
 import cl.camiletti.happyFeetWeb.model.Solicitudatencion;
-import cl.camiletti.happyFeetWeb.model.Usuario;
 import cl.camiletti.happyFeetWeb.repository.MensajeRepository;
 import cl.camiletti.happyFeetWeb.service.AgendaService;
 import cl.camiletti.happyFeetWeb.service.AtencionService;
@@ -43,7 +42,6 @@ import cl.camiletti.happyFeetWeb.service.UsuarioService;
 import cl.camiletti.happyFeetWeb.util.Constantes;
 import cl.camiletti.happyFeetWeb.util.DateUtil;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
-import cl.camiletti.happyFeetWeb.util.Mail;
 import cl.camiletti.happyFeetWeb.util.Parametros;
 
 @Controller
@@ -96,9 +94,11 @@ public class PodologoController {
 
 	@RequestMapping(value = "/podologo/pacientes", method = RequestMethod.GET)
 	public String cargarPacientes(Model model, @ModelAttribute("podologo") Podologo podologo) {
+		List<Agenda> agendas = agendaService.findByPodologo(podologo);
 		ArrayList<Paciente> pacientes = new ArrayList<>();
-		for (int i = 0; i < podologo.getAtencions().size(); i++) {
-			pacientes.add(podologo.getAtencions().get(i).getAgenda().getPaciente());
+		for (int i = 0; i < agendas.size(); i++) {
+			if (!pacientes.contains(agendas.get(i).getPaciente()))
+				pacientes.add(agendas.get(i).getPaciente());
 		}
 
 		pacientes = (ArrayList<Paciente>) pacientes.stream().distinct().collect(Collectors.toList());
@@ -174,8 +174,8 @@ public class PodologoController {
 	@RequestMapping(value = "/podologo/detallePresupesto", method = RequestMethod.GET)
 	public String detallePresupuesto(@ModelAttribute("paciente") Paciente paciente,
 			@ModelAttribute("podologo") Podologo podologo, @ModelAttribute("atencion") Atencion atencion, Model model) {
-		model.addAttribute("detallePresupuesto", atencion.getPresupuesto().getDetallepresupuestos());
-		model.addAttribute("presupuesto", atencion.getPresupuesto());
+		model.addAttribute("detallePresupuesto", atencion.getAgenda().getPresupuesto().getDetallepresupuestos());
+		model.addAttribute("presupuesto", atencion.getAgenda().getPresupuesto());
 		model.addAttribute("atencion", atencion);
 		model.addAttribute("paciente", paciente);
 		model.addAttribute("podologo", podologo);
@@ -247,49 +247,36 @@ public class PodologoController {
 		System.out.println(respuesta);
 		if (respuesta.equalsIgnoreCase(Constantes.RESPUESTA_SOLICITUD_ATENCION_SI)) {
 			parametro = parametroService.findOne(Parametros.ESTADO_SOLICITUD_ACEPTADA);
-			//accepta
+			// accepta
 			solicitudAtencion.setParamEstadoSolicitudAtencion(parametro);
+			// se crea agenda
 			Agenda agenda = new Agenda();
-			Atencion atencion = new Atencion();
-			atencion.setUbicacion(solicitudAtencion.getPaciente().getUbicacion());
-			atencion.setPatologia(solicitudAtencion.getPatologia());
-			atencion.setPodologo(podologo);
-			atencion.setPresupuesto(solicitudAtencion.getPresupuesto());
-			agenda.setFotoPiePath(solicitudAtencion.getFotoPiePath());
-			agenda.setPaciente(solicitudAtencion.getPaciente());
 			agenda.setHorario(solicitudAtencion.getHorario());
 			agenda.setPaciente(solicitudAtencion.getPaciente());
-			agenda.setComentario(comentario);
-			agenda.setParamEstadoAgenda(parametroService.findOne(Parametros.ESTADO_AGENDA_ACEPTADA));
-			atencion.setAgenda(agenda);
+			agenda.setPodologo(solicitudAtencion.getPodologo());
+			agenda.setParamEstadoAgenda(parametroService.findOne(Parametros.ESTADO_AGENDA_PENDIENTE));
+			agenda.setFotoPiePath(solicitudAtencion.getFotoPiePath());
+			agenda.setPatologia(solicitudAtencion.getPatologia());
+			agenda.setPresupuesto(solicitudAtencion.getPresupuesto());
+			agenda.setFechaAgenda(DateUtil.getFechaHoyString());
+			agenda.setFotoViajePath(solicitudAtencion.getFotoViajePath());
+			// se crea agenda
+
 			solicitudAtencionService.save(solicitudAtencion);
 			agendaService.save(agenda);
-			atencionService.save(atencion);
+
 			model.addAttribute("mensaje", "Solicitud Aceptada con Éxito");
-			//accepta
+			// accepta
 		} else {
 			if (respuesta.equalsIgnoreCase(Constantes.RESPUESTA_SOLICITUD_ATENCION_NO)) {
 				parametro = parametroService.findOne(Parametros.ESTADO_SOLICITUD_RECHAZADA);
-				//rechaza
+				// rechaza
 				solicitudAtencion.setParamEstadoSolicitudAtencion(parametro);
-				Agenda agenda = new Agenda();
-				Atencion atencion = new Atencion();
-				atencion.setUbicacion(solicitudAtencion.getPaciente().getUbicacion());
-				atencion.setPatologia(solicitudAtencion.getPatologia());
-				atencion.setPodologo(podologo);
-				atencion.setPresupuesto(solicitudAtencion.getPresupuesto());
-				agenda.setFotoPiePath(solicitudAtencion.getFotoPiePath());
-				agenda.setPaciente(solicitudAtencion.getPaciente());
-				agenda.setHorario(solicitudAtencion.getHorario());
-				agenda.setPaciente(solicitudAtencion.getPaciente());
-				agenda.setComentario(comentario);
-				agenda.setParamEstadoAgenda(parametroService.findOne(Parametros.ESTADO_AGENDA_ACEPTADA));
-				atencion.setAgenda(agenda);
+
 				solicitudAtencionService.save(solicitudAtencion);
-				agendaService.save(agenda);
-				atencionService.save(atencion);
-				//rechaza
-				
+
+				// rechaza
+
 				model.addAttribute("mensaje", "Solicitud Rechazada con Éxito");
 			} else {
 				model.addAttribute("mensaje", "Respuesta de solicitud Incorrecta");
@@ -313,11 +300,11 @@ public class PodologoController {
 	}
 
 	@RequestMapping(value = "/podologo/modificardatos", method = RequestMethod.GET)
-	public String modificar(Model model,@ModelAttribute("podologo") Podologo podologo) {
+	public String modificar(Model model, @ModelAttribute("podologo") Podologo podologo) {
 		podologo.getUsuario().setPassword("");
 		podologo.getUsuario().setPasswordConfirm("");
 		model.addAttribute("podologoForm", podologo);
-		
+
 		model.addAttribute("ubicacion", podologo.getUbicacion().getNombre());
 		model.addAttribute("comuna", podologo.getUbicacion().getComuna().getNombre());
 		model.addAttribute("paramSexo", podologo.getParamSexo());
@@ -328,28 +315,30 @@ public class PodologoController {
 	}
 
 	@RequestMapping(value = "/podologo/modificardatos", method = RequestMethod.POST)
-	public String modificarpost(@ModelAttribute("podologoForm") Podologo podologoForm,@ModelAttribute("podologo") Podologo podologo, BindingResult bindingResult,
-			Model model,@RequestParam("archivo") MultipartFile archivo) {
+	public String modificarpost(@ModelAttribute("podologoForm") Podologo podologoForm,
+			@ModelAttribute("podologo") Podologo podologo, BindingResult bindingResult, Model model,
+			@RequestParam("archivo") MultipartFile archivo) {
 		if (bindingResult.hasErrors()) {
 
 		} else {
-			FileManagerUtil fileManagerUtil =new FileManagerUtil();
-			if(podologo.getUsuario().getPassword().equals(podologoForm.getUsuario().getPassword()) && podologo.getUsuario().getPasswordConfirm().equals(podologoForm.getUsuario().getPasswordConfirm())) {
+			FileManagerUtil fileManagerUtil = new FileManagerUtil();
+			if (podologo.getUsuario().getPassword().equals(podologoForm.getUsuario().getPassword()) && podologo
+					.getUsuario().getPasswordConfirm().equals(podologoForm.getUsuario().getPasswordConfirm())) {
 				podologo.getUbicacion().setLatitud(podologoForm.getUbicacion().getLatitud());
 				podologo.getUbicacion().setNombre(podologoForm.getUbicacion().getNombre());
 				podologo.getUbicacion().setLongitud(podologoForm.getUbicacion().getLongitud());
 				podologo.getUbicacion().getComuna().setId(podologoForm.getUbicacion().getComuna().getId());
 				podologo.setFono(podologoForm.getFono());
-				if(!archivo.isEmpty()) {
+				if (!archivo.isEmpty()) {
 					String file = fileManagerUtil.getBase64FromFoto(archivo);
 					podologo.setFoto(file);
 				}
 				podologoService.save(podologo);
 				model.addAttribute("mensaje", "Sus datos fueron guardados con éxito");
-			}else {
+			} else {
 				model.addAttribute("mensajeError", "Contraseña Incorrecta");
 			}
- 
+
 		}
 		model.addAttribute("podologo", podologo);
 		return "podologo/podologo";
@@ -456,9 +445,7 @@ public class PodologoController {
 		Solicitudatencion solicitudAtencion = solicitudAtencionService.findById(solicitudId);
 		Agenda agenda = new Agenda();
 		Atencion atencion = new Atencion();
-		atencion.setUbicacion(solicitudAtencion.getPaciente().getUbicacion());
-		atencion.setPodologo(podologo);
-		atencion.setPatologia(solicitudAtencion.getPatologia());
+		// no se ocupa este metodo
 		agenda.setFotoPiePath(solicitudAtencion.getFotoPiePath());
 		agenda.setPaciente(solicitudAtencion.getPaciente());
 		return "podologo/atenciones";
@@ -466,7 +453,7 @@ public class PodologoController {
 
 	@RequestMapping(value = "/podologo/atencionesPendientes", method = RequestMethod.GET)
 	public String atencionesPendientes(Model model, @ModelAttribute("podologo") Podologo podologo) {
-		List<Atencion> atencionesAux = atencionService.findByPodologo(podologo);
+		List<Atencion> atencionesAux = null;
 		ArrayList<Atencion> atenciones = new ArrayList();
 		for (int i = 0; i < atencionesAux.size(); i++) {
 			if (atencionesAux.get(i).getAgenda().getParamEstadoAgenda().getValor().equals("Pendiente")) {

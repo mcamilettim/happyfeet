@@ -80,6 +80,7 @@
 	<div id="wrapper">
 
 		<!-- Navigation -->
+<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
@@ -88,7 +89,7 @@
 					<span class="sr-only">Navegación</span> <span class="icon-bar"></span>
 					<span class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="${contextPath}/paciente/index"><img
+				<a class="navbar-brand" href="${contextPath}/podologo/index"><img
 					src="${contextPath}/resources/img/logo1.png" class="img-responsive"
 					style="width: 120px;"></a>
 			</div>
@@ -100,27 +101,24 @@
 						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-messages">
-						<li><a href="#">
-								<div>
-									<strong></strong> <span class="pull-right text-muted"> <em>Ahora</em>
-									</span>
-								</div>
-								<div>Sin mensajes nuevos.</div>
+						<li><a href="#"> <strong></strong> <span
+								class="pull-right text-muted"> <em>Ahora</em>
+							</span> Sin mensajes nuevos.
 						</a></li>
 						<li class="divider"></li>
 						<li><a class="text-center"
-							href="${contextPath}/paciente/vermensajes"> <strong>Ver
+							href="${contextPath}/podologo/vermensajes"> <strong>Ver
 									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
 					</ul> <!-- /.dropdown-messages --></li>
-				</li>
+
 				<!-- /.dropdown -->
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
 						<i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-user">
-						<li><a href="${contextPath}/paciente/modificardatos"><i
+						<li><a href="${contextPath}/podologo/modificardatos"><i
 								class="fa fa-gear fa-fw"></i>Mis Datos</a></li>
 						<li class="divider"></li>
 						<li><a href="<c:url value="/logout" />"><i
@@ -135,24 +133,35 @@
 					<ul class="nav" id="side-menu">
 						<li class="sidebar-search">
 							<div class="input-group custom-search-form">
-								<img src="${contextPath}/resources/img/sinfoto.jpg"
-									class="img-responsive" style="width: 200px;"> <br>
+								<c:choose>
+									<c:when test="${empty paciente.foto}">
+										<img src="${contextPath}/resources/img/sinfoto.jpg"
+											class="img-responsive" style="width: 200px;">
+									</c:when>
+									<c:otherwise>
+										<img src="data:image/png;base64,${paciente.foto}"
+											class="img-responsive" style="width: 200px;">
+									</c:otherwise>
+								</c:choose>
+								<br>
 								<div align="center">
 									<span class="text-info text-center"><b>${paciente.nombres}
 											${paciente.apellidos}</b></span> <span class="text-info">Paciente</span>
 								</div>
 							</div> <!-- /input-group -->
 						</li>
-						<li><a href="${contextPath}/paciente/index"><i
+						<li><a href="${contextPath}/podologo/index"><i
 								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
-						<li><a href="${contextPath}/paciente/solicitud"><i
-								class="fa fa-edit fa-fw"></i> Pedir hora!</a></li>
-						<li><a href="${contextPath}/paciente/modificardatos"><i
+						<li><a href="${contextPath}/podologo/index"><i
+								class="fa fa-edit fa-fw"></i> Agendar Horario</a></li>
+						<li><a href="${contextPath}/podologo/modificardatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
-						<li><a href="${contextPath}/paciente/misatenciones"><i
-								class="fa fa-table fa-fw"></i> Mis atenciones</a></li>
-						<li><a href="${contextPath}/paciente/califica"><i
-								class="fa fa-edit fa-fw"></i> Calificar a profesional</a></li>
+						<li><a href="${contextPath}/podologo/index"><i
+								class="fa fa-table fa-fw"></i> Historial de atenciones</a></li>
+						<li><a href="${contextPath}/podologo/index"><i
+								class="fa fa-edit fa-fw"></i> Solicitudes nuevas</a></li>
+						<li><a href="${contextPath}/podologo/pacientes"><i
+								class="fa fa-table fa-fw"></i> Lista de Pacientes</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
@@ -292,7 +301,7 @@
 			</div>
 		</div>
 
-
+</div>
 
 		<!-- jQuery -->
 		<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>

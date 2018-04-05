@@ -123,12 +123,26 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                     	<li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <img src="${contextPath}/resources/img/sinfoto.jpg" class="img-responsive" style="width: 200px;">
-                                 <br>
-                                <center><span class="text-info text-center"><b>${podologo.nombres} ${podologo.apellidos}</b></span></center>
-                                <center><span class="text-info">Podólogo</span></center>
-                            </div>
+                           <div class="input-group custom-search-form">
+								<c:choose>
+									<c:when test="${empty podologo.foto}">
+										<img src="${contextPath}/resources/img/sinfoto.jpg"
+											class="img-responsive" style="width: 200px;">
+									</c:when>
+									<c:otherwise>
+										<img src="data:image/png;base64,${podologo.foto}"
+											class="img-responsive" style="width: 200px;">
+									</c:otherwise>
+								</c:choose><br>
+								<div align="center">
+									<span class="text-info text-center"><b>${podologo.nombres}
+											${podologo.apellidos}</b></span>
+								</div>
+
+								<div align="center">
+									<span class="text-info">Podólogo</span>
+								</div>
+							</div>
                             <!-- /input-group -->
                         </li>
                         <li>

@@ -40,22 +40,19 @@ public class AtencionServiceImpl implements AtencionService{
 		atencionRepository.delete(atencion);
 	}
 
-	@Override
-	public List<Atencion> findByPodologo(Podologo podologo) {
-		return atencionRepository.findByPodologo(podologo);
-	}
+	 
 
 	@Override
 	public List<Atencion> findByAgenda(Paciente paciente,Podologo podologo) {
 		ArrayList<Atencion> atencions=new ArrayList();
-		ArrayList<Agenda> agendas=(ArrayList<Agenda>) agendaService.findByPaciente(paciente);
-		for (int i = 0; i < podologo.getAtencions().size(); i++) {
-			for (int j = 0; j < agendas.size(); j++) {
-				if(podologo.getAtencions().get(i).getAgenda().getId()==agendas.get(j).getId()){
-					atencions.add(podologo.getAtencions().get(i));
-				}
-			}
-		}
+//		ArrayList<Agenda> agendas=(ArrayList<Agenda>) agendaService.findByPaciente(paciente);
+//		for (int i = 0; i < podologo.getAgendas().size(); i++) {
+//			for (int j = 0; j < agendas.size(); j++) {
+//				if(podologo.getAtencions().get(i).getAgenda().getId()==agendas.get(j).getId()){
+//					atencions.add(podologo.getAtencions().get(i));
+//				}
+//			}
+//		}
 		return atencions;
 	}
 

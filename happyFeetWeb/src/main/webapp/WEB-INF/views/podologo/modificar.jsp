@@ -119,14 +119,17 @@
 											class="img-responsive" style="width: 200px;">
 									</c:when>
 									<c:otherwise>
-										<img src="${contextPath}/resources/imagenes/${podologo.foto}"
+										<img src="data:image/png;base64,${podologo.foto}"
 											class="img-responsive" style="width: 200px;">
 									</c:otherwise>
-								</c:choose>
-								<br>
+								</c:choose><br>
 								<div align="center">
 									<span class="text-info text-center"><b>${podologo.nombres}
-											${podologo.apellidos}</b></span> <span class="text-info">Paciente</span>
+											${podologo.apellidos}</b></span>
+								</div>
+
+								<div align="center">
+									<span class="text-info">Podólogo</span>
 								</div>
 							</div> <!-- /input-group -->
 						</li>

@@ -150,7 +150,7 @@
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/podologo/index"><i
-								class=" active fa fa-dashboard fa-fw active"></i> Inicio</a></li>
+								class=" active fa fa-dashboard fa-fw"></i> Inicio</a></li>
 						<li><a href="${contextPath}/podologo/miAgenda"><i
 								class="fa fa-dashboard fa-fw"></i> Mi Agenda</a></li>
 						<li><a href="${contextPath}/podologo/miAgenda"><i
@@ -176,9 +176,21 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h2 class="page-header">
-							Bienvenid
-							<c:if test="${podologo.paramSexo.id==6}">o</c:if>
-							<c:if test="${podologo.paramSexo.id==7}">a</c:if>
+							<c:if test="${mensaje != null}">
+								<div class="alert alert-success alert-dismissable">
+									<button type="button" class="close" data-dismiss="alert"
+										aria-hidden="true">×</button>
+									${mensaje}
+								</div>
+							</c:if>
+							<c:if test="${mensajeError != null}">
+								<div class="alert alert-danger alert-dismissable">
+									<button type="button" class="close" data-dismiss="alert"
+										aria-hidden="true">×</button>
+									${mensajeError}
+								</div>
+							</c:if>
+							Bienvenid<c:if test="${podologo.paramSexo.id==6}">o</c:if><c:if test="${podologo.paramSexo.id==7}">a</c:if>
 						</h2>
 					</div>
 					<!-- /.col-lg-12 -->

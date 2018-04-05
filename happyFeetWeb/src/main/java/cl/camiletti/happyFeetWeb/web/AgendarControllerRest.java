@@ -67,7 +67,7 @@ public class AgendarControllerRest {
 		for (Ubicacion ubicacion : ubicaciones) {
 			for (Podologo podologo : ubicacion.getPodologos()) {
 				PodologoCustom podoAux = new PodologoCustom();
-			     podoAux.setFoto( podologo.getFoto());
+			     podoAux.setFoto(podologo.getFoto());
 				 
 				podoAux.setNombres(podologo.getNombres());
 				podoAux.setApellidos(podologo.getApellidos());

@@ -144,21 +144,26 @@
 					<ul class="nav" id="side-menu">
 						<li class="sidebar-search">
 							<div class="input-group custom-search-form">
+								<div class="input-group custom-search-form">
 								<c:choose>
 									<c:when test="${empty podologo.foto}">
 										<img src="${contextPath}/resources/img/sinfoto.jpg"
 											class="img-responsive" style="width: 200px;">
 									</c:when>
 									<c:otherwise>
-										<img src="${contextPath}/resources/imagenes/${podologo.foto}"
+										<img src="data:image/png;base64,${podologo.foto}"
 											class="img-responsive" style="width: 200px;">
 									</c:otherwise>
-								</c:choose>
-								<br>
+								</c:choose><br>
 								<div align="center">
 									<span class="text-info text-center"><b>${podologo.nombres}
-											${podologo.apellidos}</b></span> <span class="text-info">Paciente</span>
+											${podologo.apellidos}</b></span>
 								</div>
+
+								<div align="center">
+									<span class="text-info">Podólogo</span>
+								</div>
+							</div>
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/podologo/index"><i

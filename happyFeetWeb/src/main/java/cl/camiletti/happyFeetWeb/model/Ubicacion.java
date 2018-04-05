@@ -26,10 +26,7 @@ public class Ubicacion implements Serializable {
 	
 	private String pathFoto;
 
-	//bi-directional many-to-one association to Atencion
-	@OneToMany(mappedBy="ubicacion", fetch=FetchType.EAGER)
-	private List<Atencion> atencions;
-
+	 
 	//bi-directional many-to-one association to Paciente
 	@OneToMany(mappedBy="ubicacion", fetch=FetchType.EAGER)
 	private List<Paciente> pacientes;
@@ -89,27 +86,8 @@ public class Ubicacion implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public List<Atencion> getAtencions() {
-		return this.atencions;
-	}
-
-	public void setAtencions(List<Atencion> atencions) {
-		this.atencions = atencions;
-	}
-
-	public Atencion addAtencion(Atencion atencion) {
-		getAtencions().add(atencion);
-		atencion.setUbicacion(this);
-
-		return atencion;
-	}
-
-	public Atencion removeAtencion(Atencion atencion) {
-		getAtencions().remove(atencion);
-		atencion.setUbicacion(null);
-
-		return atencion;
-	}
+	 
+	 
 
 	public List<Paciente> getPacientes() {
 		return this.pacientes;

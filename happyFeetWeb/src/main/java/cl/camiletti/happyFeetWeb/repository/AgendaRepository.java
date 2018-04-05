@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import cl.camiletti.happyFeetWeb.model.Paciente;
+import cl.camiletti.happyFeetWeb.model.Podologo;
 
 public interface AgendaRepository extends JpaRepository<Agenda, Long> {
 	  <S extends Agenda> S save(Agenda agenda);
@@ -13,5 +14,6 @@ public interface AgendaRepository extends JpaRepository<Agenda, Long> {
 	  List<Agenda> findAll();	 	
 	  void delete(Agenda agenda);	 
 	  List<Agenda> findByPaciente(Paciente paciente);
+	  List<Agenda> findByPodologo(Podologo podologo);
 }
 

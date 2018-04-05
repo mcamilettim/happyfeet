@@ -139,7 +139,7 @@
 											class="img-responsive" style="width: 200px;">
 									</c:when>
 									<c:otherwise>
-										<img src="${contextPath}/resources/imagenes/${paciente.foto}"
+										<img src="data:image/png;base64,${paciente.foto}"
 											class="img-responsive" style="width: 200px;">
 									</c:otherwise>
 								</c:choose>
@@ -184,7 +184,7 @@
 									<td><strong>${patologia.nombre}</strong></td>
 									<td><img class="img-responsive"
 										style="width: 110px; height: 110px;"
-										src="${contextPath}/resources/imagenes/${patologia.foto}" /></td>
+										src="data:image/png;base64,${patologia.foto}" /></td>
 								</tr>
 								<tr>
 									<td colspan="2"><strong>Descripción: </strong>
