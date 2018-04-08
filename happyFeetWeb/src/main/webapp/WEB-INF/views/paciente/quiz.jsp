@@ -80,7 +80,7 @@
 	<div id="wrapper">
 
 		<!-- Navigation -->
-		<nav class="navbar navbar-default navbar-static-top" role="navigation"
+			<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -95,6 +95,10 @@
 			<!-- /.navbar-header -->
 
 			<ul class="nav navbar-top-links navbar-right">
+				<li class="dropdown" style="padding-left: 10px;"> 
+				<Strong>Bienvenid<c:if test="${paciente.paramSexo.id==6}">o</c:if><c:if test="${paciente.paramSexo.id==7}">a</c:if>
+							${paciente.nombres}</Strong>
+					 </li>
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i
 						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
@@ -117,7 +121,7 @@
 						<i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-user">
-						<li><a href="${contextPath}/paciente/modificardatos"><i
+						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i>Mis Datos</a></li>
 						<li class="divider"></li>
 						<li><a href="<c:url value="/logout" />"><i
@@ -150,15 +154,19 @@
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
-								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
-						<li><a href="${contextPath}/paciente/solicitud" class="active"><i
-								class="fa fa-edit fa-fw"></i> Pedir hora!</a></li>
+								class="fa fa-home fa-fw"></i>Inicio</a></li>
+						<li><a href="${contextPath}/paciente/quizPatologia"><i
+								class="fa fa-edit fa-fw"></i><Strong>Solicitar Atención</Strong></a></li>
+						<li><a href="${contextPath}/paciente/misSolicitudes"><i
+								class="fa fa-comments fa-fw"></i> Solicitudes de Atención</a></li>
+						<li><a href="${contextPath}/paciente/misAtenciones"><i
+								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
+						<li><a href="${contextPath}/paciente/modificarDatos"><i
+								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
+						<li><a href="${contextPath}/paciente/calificar"><i
+								class="fa fa-star-half-o fa-fw"></i> Calificar a profesional</a></li>
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
-						<li><a href="${contextPath}/paciente/misatenciones"><i
-								class="fa fa-table fa-fw"></i> Mis atenciones</a></li>
-						<li><a href="${contextPath}/paciente/califica"><i
-								class="fa fa-edit fa-fw"></i> Calificar a profesional</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->

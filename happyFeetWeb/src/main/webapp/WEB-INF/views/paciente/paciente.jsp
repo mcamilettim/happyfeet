@@ -95,6 +95,10 @@
 			<!-- /.navbar-header -->
 
 			<ul class="nav navbar-top-links navbar-right">
+				<li class="dropdown" style="padding-left: 10px;"> 
+				<Strong>Bienvenid<c:if test="${paciente.paramSexo.id==6}">o</c:if><c:if test="${paciente.paramSexo.id==7}">a</c:if>
+							${paciente.nombres}</Strong>
+					 </li>
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i
 						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
@@ -117,7 +121,7 @@
 						<i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-user">
-						<li><a href="${contextPath}/paciente/modificardatos"><i
+						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i>Mis Datos</a></li>
 						<li class="divider"></li>
 						<li><a href="<c:url value="/logout" />"><i
@@ -150,15 +154,19 @@
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
-								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
+								class="fa fa-home fa-fw"></i> <Strong>Inicio</Strong></a></li>
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
-								class="fa fa-edit fa-fw"></i> Pedir hora!</a></li>
+								class="fa fa-edit fa-fw"></i>Solicitar Atención</a></li>
+						<li><a href="${contextPath}/paciente/misSolicitudes"><i
+								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes de Atención</a></li>
+						<li><a href="${contextPath}/paciente/misAtenciones"><i
+								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
+						<li><a href="${contextPath}/paciente/misMensajes"><i
+								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
+						<li><a href="${contextPath}/paciente/calificar"><i
+								class="fa fa-star-half-o fa-fw"></i> Calificar a profesional</a></li>
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
-						<li><a href="${contextPath}/paciente/misatenciones"><i
-								class="fa fa-table fa-fw"></i> Mis atenciones</a></li>
-						<li><a href="${contextPath}/paciente/califica"><i
-								class="fa fa-edit fa-fw"></i> Calificar a profesional</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
@@ -186,7 +194,7 @@
 									${mensajeError}
 								</div>
 							</c:if>
-							Bienvenid<c:if test="${paciente.paramSexo.id==6}">o</c:if><c:if test="${paciente.paramSexo.id==7}">a</c:if>
+							
 						</h2>
 					</div>
 					<!-- /.col-lg-12 -->
@@ -194,23 +202,25 @@
 				<!-- /.row -->
 			</div>
 
-			<div class="col-lg-3 col-md-6">
+			<div class="col-lg-4 col-md-6">
 				<a href="${contextPath}/paciente/quizPatologia">
-					<div class="panel panel-primary">
+					<div class="panel panel-info">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-3">
 									<i class="fa fa-edit fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge">Pedir Hora!</div>
+									<div class="huge" style="font-size: 25px;">
+										<Strong>Solicitar Atención</Strong>
+									</div>
 									<div></div>
 								</div>
 							</div>
 						</div>
 						<div class="panel-footer">
-							<span class="pull-left">Solicita una hora con un
-								especialista</span> <span class="pull-right"><i
+							<span class="pull-left"><Strong>Solicitar hora
+									a con un Profesional</Strong></span> <span class="pull-right"><i
 								class="fa fa-arrow-circle-right"></i></span>
 							<div class="clearfix"></div>
 						</div>
@@ -218,48 +228,103 @@
 					</div>
 				</a>
 			</div>
-
-			<div class="col-lg-3 col-md-6">
-				<a href="${contextPath}/paciente/modificarDatos">
-					<div class="panel panel-green">
+			<div class="col-lg-4 col-md-6">
+				<a href="${contextPath}/paciente/verSolicitudes">
+					<div class="panel panel-info">
 						<div class="panel-heading">
 							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-gear fa-5x"></i>
+								<div class="col-lg-3 col-xs-3">
+									<i class="fa fa-calendar-plus-o fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge">Mis datos</div>
+									<div class="huge" style="font-size: 25px;">
+										<Strong>Solicitudes de Atención</Strong>
+									</div>
 									<div></div>
 								</div>
 							</div>
 						</div>
 						<div class="panel-footer">
-							<span class="pull-left">Modifica tus datos</span> <span
-								class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+							<span class="pull-left"><Strong>Revisar el estado
+									de mis solicitudes</Strong></span> <span class="pull-right"><i
+								class="fa fa-arrow-circle-right"></i></span>
 							<div class="clearfix"></div>
 						</div>
 
 					</div>
 				</a>
 			</div>
-
-			<div class="col-lg-3 col-md-6">
+			<div class="col-lg-4 col-md-6">
 				<a href="${contextPath}/paciente/misatenciones">
-					<div class="panel panel-red">
+					<div class="panel panel-info">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-3">
-									<i class="fa fa-gear fa-5x"></i>
+									<i class="fa fa-user-md fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge">Atenciones</div>
+									<div class="huge" style="font-size: 25px;">
+										<Strong>Mis Atenciones</Strong>
+									</div>
 									<div></div>
 								</div>
 							</div>
 						</div>
 						<div class="panel-footer">
-							<span class="pull-left">Revisa el historial de tus
-								atenciones</span> <span class="pull-right"><i
+							<span class="pull-left"><Strong>Revisar el
+									historial de mis atenciones</Strong></span> <span class="pull-right"><i
+								class="fa fa-arrow-circle-right"></i></span>
+							<div class="clearfix"></div>
+						</div>
+
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-4 col-md-6">
+				<a href="${contextPath}/podologo/index">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-3">
+									<i class="fa fa-star-half-o fa-5x"></i>
+								</div>
+								<div class="col-xs-9 text-right">
+									<div class="huge" style="font-size: 25px;">
+										<Strong>Evaluar</Strong>
+									</div>
+									<div></div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer">
+							<span class="pull-left"><Strong>Evaluar
+									Profesional</Strong></span> <span class="pull-right"><i
+								class="fa fa-arrow-circle-right"></i></span>
+							<div class="clearfix"></div>
+						</div>
+
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-4 col-md-6">
+				<a href="${contextPath}/podologo/index">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-3">
+									<i class="fa fa-comments fa-5x"></i>
+								</div>
+								<div class="col-xs-9 text-right">
+									<div class="huge" style="font-size: 25px;">
+										<Strong>Mensajes</Strong>
+									</div>
+									<div></div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer">
+							<span class="pull-left"><Strong>Ver mis mensajes</Strong></span>
+							<span class="pull-right"><i
 								class="fa fa-arrow-circle-right"></i></span>
 							<div class="clearfix"></div>
 						</div>
@@ -268,6 +333,35 @@
 				</a>
 			</div>
 
+			<div class="col-lg-4 col-md-6">
+				<a href="${contextPath}/paciente/modificarDatos">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-3">
+									<i class="fa fa-gear fa-5x"></i>
+								</div>
+								<div class="col-xs-9 text-right">
+									<div class="huge" style="font-size: 25px;">
+										<Strong>Mis datos Personales</Strong>
+									</div>
+									<div></div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer">
+							<span class="pull-left"><Strong>Modifica tus
+									datos</Strong></span> <span class="pull-right"><i
+								class="fa fa-arrow-circle-right"></i></span>
+							<div class="clearfix"></div>
+						</div>
+
+					</div>
+				</a>
+			</div>
+
+
+			<br> <br> <br> <br>
 			<!-- /.container-fluid -->
 		</div>
 		<!-- /#page-wrapper -->

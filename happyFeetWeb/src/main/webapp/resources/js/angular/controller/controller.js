@@ -166,7 +166,7 @@ $scope.obtenerDatosPaciente = function(){
 								var url = new URL(url_string);
 								var id = url.searchParams.get("id");
 								$scope.obtenerPresupuesto(id,currentMarker.zIndex,total);
-								document.getElementById('detalleKilometros').innerHTML = total;
+								//document.getElementById('detalleKilometros').innerHTML = total;
 							} else{
 								alert('Error: '+status);
 							}

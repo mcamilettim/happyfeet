@@ -80,8 +80,8 @@
 
 	<div id="wrapper">
 
-		<!-- Navigation -->
-		<nav class="navbar navbar-default navbar-static-top" role="navigation"
+			<!-- Navigation -->
+			<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -96,6 +96,10 @@
 			<!-- /.navbar-header -->
 
 			<ul class="nav navbar-top-links navbar-right">
+				<li class="dropdown" style="padding-left: 10px;"> 
+				<Strong>Bienvenid<c:if test="${paciente.paramSexo.id==6}">o</c:if><c:if test="${paciente.paramSexo.id==7}">a</c:if>
+							${paciente.nombres}</Strong>
+					 </li>
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i
 						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
@@ -118,7 +122,7 @@
 						<i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-user">
-						<li><a href="${contextPath}/paciente/modificardatos"><i
+						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i>Mis Datos</a></li>
 						<li class="divider"></li>
 						<li><a href="<c:url value="/logout" />"><i
@@ -151,22 +155,25 @@
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
-								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
-						<li><a href="${contextPath}/paciente/solicitud"
-							class="active"><i class="fa fa-edit fa-fw"></i> Pedir hora!</a></li>
+								class="fa fa-home fa-fw"></i>Inicio</a></li>
+						<li><a href="${contextPath}/paciente/quizPatologia"><i
+								class="fa fa-edit fa-fw"></i><Strong>Solicitar Atención</Strong></a></li>
+						<li><a href="${contextPath}/paciente/misSolicitudes"><i
+								class="fa fa-comments fa-fw"></i> Solicitudes de Atención</a></li>
+						<li><a href="${contextPath}/paciente/misAtenciones"><i
+								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
+						<li><a href="${contextPath}/paciente/modificarDatos"><i
+								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
+						<li><a href="${contextPath}/paciente/calificar"><i
+								class="fa fa-star-half-o fa-fw"></i> Calificar a profesional</a></li>
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
-						<li><a href="${contextPath}/paciente/misatenciones"><i
-								class="fa fa-table fa-fw"></i> Mis atenciones</a></li>
-						<li><a href="${contextPath}/paciente/califica"><i
-								class="fa fa-edit fa-fw"></i> Calificar a profesional</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
 			</div>
 			<!-- /.navbar-static-side -->
 		</nav>
-
 		<!-- Page Content -->
 		<div id="page-wrapper">
 			<br>
@@ -176,15 +183,15 @@
 						<div class="panel panel-default">
 							<table class="table table-hover">
 								<tr>
-									<th style="background-color: #F5F5F5"><div align="left">Patologia</div></th>
+									<th style="background-color: #F5F5F5"><div align="center">Patologia</div></th>
 									<th style="background-color: #F5F5F5"><div align="center">Foto</div></th>
 								</tr>
 
 								<tr>
 									<td><strong>${patologia.nombre}</strong></td>
-									<td><img class="img-responsive"
+									<td><div align="center"><img class="img-responsive"
 										style="width: 110px; height: 110px;"
-										src="data:image/png;base64,${patologia.foto}" /></td>
+										src="data:image/png;base64,${patologia.foto}" /></div></td>
 								</tr>
 								<tr>
 									<td colspan="2"><strong>Descripción: </strong>
@@ -210,51 +217,43 @@
 							<div class="panel-heading">
 								<strong>Seleccion de Podologo</strong>
 							</div>
-							<div align="center">
+							<div align="center" >
 								<p
 									style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">
 									De acuerdo a la distancia del podólogo seleccionado y usted se
-									obtendrá el monto del viaje.<br>
+									obtendrá el monto del viaje a domicilio, el cual se sumará al monto de la Patología<br>
 								</p>
 
 							</div>
-
-							<table class="table">
+						<div class="table-responsive" align="center">
+							<table class="table table-bordered">
 								<thead>
 									<tr>
-										<th scope="col">Kms</th>
-										<th scope="col">Viaje</th>
-										<th scope="col">Patología</th>
-										<th scope="col">TOTAL</th>
+										<th  style="background: #FAFAFA;"><p align="center">VIAJE</p></th>
+										<th   style="background: #FAFAFA;"><p align="center">PATOLOGÍA</p></th>
+										<th   style="background: #FAFAFA;"><p align="center">TOTAL</p></th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr class="bg-info">
-
-										<td><strong id="detalleKilometros">?</strong></td>
-
-										<td><strong ng-if="presupuesto.montoKilometros">{{presupuesto.montoKilometros
-												| number}}</strong> <strong ng-if="!presupuesto.montoKilometros">
-												?</strong></td>
-										<td><strong><fmt:formatNumber
-													value="${patologia.costo}" type="currency" pattern="#,##0" />
-										</strong></td>
-										<td><strong ng-if="presupuesto.total">{{presupuesto.total
-												| number}}</strong><strong ng-if="!presupuesto.total">?</strong></td>
-
-									</tr>
 									<tr>
-										<td></td>
-
-										<td colspan="2" align="center"><button
-												ng-click="confirmarPresupuesto()" ng-if="presupuesto.total"
-												type="button" class="btn btn-success">Continuar</button></td>
+										<td><p align="center"><strong ng-if="presupuesto.montoKilometros">{{presupuesto.montoKilometros
+												| number}}</strong> <strong ng-if="!presupuesto.montoKilometros">
+												?</strong></p></td>
+										<td><p align="center"><strong><fmt:formatNumber
+													value="${patologia.costo}" type="currency" pattern="#,##0" />
+										</strong></p></td>
+										<td><p align="center"><strong ng-if="presupuesto.total">{{presupuesto.total
+												| number}}</strong><strong ng-if="!presupuesto.total">?</strong></p></td>
 									</tr>
-
+									<tr ng-if="presupuesto.total">	 
+										<td colspan="3"><p align="center">  <button ng-click="confirmarPresupuesto()" ng-if="presupuesto.total"
+												type="button" class="btn btn-info">Continuar</button></p> </td>
+									</tr>
 								</tbody>
 							</table>
-
-							<br>
+							
+ </div>
+							 
 							<div class="table-responsive">
 								<div id="mapa2" class="col-lg-12" style="height: 550px"></div>
 							</div>
@@ -414,7 +413,7 @@
 										<tr>
 											<th scope="col" colspan="2">Foto de sus Pies <input
 												type="file" class="form-control" name="fotoPiePaciente"
-												value="Subir Carnet" required="required"></input></th>
+												value="Subir Carnet" required="required"  accept="image/x-png,image/gif,image/jpeg" ></input></th>
 										</tr>
 										<tr>
 											<th scope="col" colspan="2">Comentario para el Podólogo
