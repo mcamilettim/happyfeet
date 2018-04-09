@@ -1,6 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
@@ -95,10 +96,10 @@
 			<!-- /.navbar-header -->
 
 			<ul class="nav navbar-top-links navbar-right">
-				<li class="dropdown" style="padding-left: 10px;"> 
-				<Strong>Bienvenid<c:if test="${paciente.paramSexo.id==6}">o</c:if><c:if test="${paciente.paramSexo.id==7}">a</c:if>
-							${paciente.nombres}</Strong>
-					 </li>
+				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
+							test="${paciente.paramSexo.id==6}">o</c:if><c:if
+							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
+				</Strong></li>
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i
 						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
@@ -154,11 +155,12 @@
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
-								class="fa fa-home fa-fw"></i> <Strong>Inicio</Strong></a></li>
+								class="fa fa-home fa-fw"></i> Inicio</a></li>
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
 								class="fa fa-edit fa-fw"></i>Solicitar Atención</a></li>
 						<li><a href="${contextPath}/paciente/misSolicitudes"><i
-								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes de Atención</a></li>
+								class="fa fa-calendar-plus-o fa-fw"></i><Strong>Solicitudes
+									de Atención</Strong></a></li>
 						<li><a href="${contextPath}/paciente/misAtenciones"><i
 								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
 						<li><a href="${contextPath}/paciente/misMensajes"><i
@@ -176,198 +178,172 @@
 
 		<!-- Page Content -->
 		<div id="page-wrapper">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-lg-12">
-						<h2 class="page-header">
-							<c:if test="${mensaje != null}">
-								<div class="alert alert-success alert-dismissable">
-									<button type="button" class="close" data-dismiss="alert"
-										aria-hidden="true">×</button>
-									${mensaje}
-								</div>
-							</c:if>
-							<c:if test="${mensajeError != null}">
-								<div class="alert alert-danger alert-dismissable">
-									<button type="button" class="close" data-dismiss="alert"
-										aria-hidden="true">×</button>
-									${mensajeError}
-								</div>
-							</c:if>
-							
-						</h2>
-					</div>
-					<!-- /.col-lg-12 -->
+			<br>
+			<div class="row">
+				<div class="col-lg-12">
+
+					<c:if test="${mensaje != null}">
+						<div class="alert alert-success alert-dismissable">
+							<button type="button" class="close" data-dismiss="alert"
+								aria-hidden="true">×</button>
+							${mensaje}
+						</div>
+					</c:if>
+					<c:if test="${mensajeError != null}">
+						<div class="alert alert-danger alert-dismissable">
+							<button type="button" class="close" data-dismiss="alert"
+								aria-hidden="true">×</button>
+							${mensajeError}
+						</div>
+					</c:if>
 				</div>
-				<!-- /.row -->
 			</div>
 
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/paciente/quizPatologia">
-					<div class="panel panel-info">
+			<div class="row">
+				<div class="col-lg-12">
+
+					<div class="panel panel-default">
 						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-edit fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 25px;">
-										<Strong>Solicitar Atención</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Solicitar hora
-									a con un Profesional</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
+							<strong>Detalle de Solicitud
+								${solicitudAtencion.fechaSolicitud}</strong>
 						</div>
 
+
+						<table class="table">
+							<thead>
+								<tr>
+									<th style="background: #FAFAFA;"><div align="center">Foto
+											Enviada por Paciente</div></th>
+									<th style="background: #FAFAFA;"><div align="center">Foto
+											referencial Patología ${solicitudAtencion.patologia.nombre}</div></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><div align="center">
+											<img class="img-responsive"
+												src="data:image/png;base64,${solicitudAtencion.fotoPiePath}"
+												style="width: 200px; height: 200px;">
+										</div></td>
+									<td><div align="center">
+											<img class="img-responsive"
+												src="data:image/png;base64,${solicitudAtencion.patologia.foto}"
+												style="width: 200px; height: 200px;">
+										</div></td>
+								</tr>
+							</tbody>
+						</table>
+
+						<table class="table">
+							<thead>
+								<tr>
+									<th colspan="2" style="background: #FAFAFA;"><div
+											align="center">
+											Ruta Recomendada <img class="img-responsive"
+												src="${contextPath}/resources/img/googleMaps.png"
+												style="width: 25px; height: 25px;">
+										</div></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td colspan="2"><div align="center">
+											<c:choose>
+												<c:when test="${empty solicitudAtencion.fotoViajePath}">
+													<img src="${contextPath}/resources/img/working.png"
+														class="img-responsive" style="width: 200px; height: 200px;">
+												</c:when>
+												<c:otherwise>
+													<img
+														src="data:image/png;base64,${solicitudAtencion.fotoViajePath}"
+														class="img-responsive" style="width: 500px; height: 300px;">
+
+												</c:otherwise>
+											</c:choose>
+										</div></td>
+
+								</tr>
+							</tbody>
+						</table>
+						<br>
+					 
+							<table class="table">
+							<tr>
+									<th class="bg-info">Estado</th>
+									<td style="background: #FAFAFA;">${solicitudAtencion.paramEstadoSolicitudAtencion.valor}</td>
+								</tr>
+								<tr>
+									<th class="bg-info">Horario Solicitado</th>
+									<td style="background: #FAFAFA;">${solicitudAtencion.horario.fecha}
+										${solicitudAtencion.horario.hora} -
+										${solicitudAtencion.horario.horaFin}</td>
+								</tr>
+								<tr>
+									<th class="bg-info">Diagnóstico</th>
+									<td style="background: #FAFAFA;">${solicitudAtencion.patologia.nombre}</td>
+								</tr>
+								<tr>
+									<th class="bg-info">Nombre Podólogo</th>
+									<td style="background: #FAFAFA;">${solicitudAtencion.podologo.nombres}
+										${solicitudAtencion.podologo.apellidos}</td>
+								</tr>
+								<tr>
+									<th class="bg-info">Diabético</th>
+									<c:if test="${not empty solicitudAtencion.paciente.diabetico}">
+										<td style="background: #FAFAFA;">SI</td>
+									</c:if>
+									<c:if test="${empty solicitudAtencion.paciente.diabetico}">
+										<td style="background: #FAFAFA;">NO</td>
+									</c:if>
+
+								</tr>
+								<tr>
+									<th class="bg-info">Ubicación</th>
+									<td style="background: #FAFAFA;">${solicitudAtencion.paciente.ubicacion.nombre}</td>
+								</tr>
+								<tr>
+									<th class="bg-info">Tarifa por Kilómetro</th>
+									<td style="background: #FAFAFA;">$<fmt:formatNumber
+											value="${solicitudAtencion.presupuesto.tarifaKM}"
+											type="currency" pattern="#,##0" /></td>
+								</tr>
+								<tr>
+									<th class="bg-info">Cantidad de Kilómetro</th>
+									<td style="background: #FAFAFA;">${solicitudAtencion.presupuesto.cantidadKM}</td>
+								</tr>
+								<tr>
+									<th class="bg-info">Monto Viaje</th>
+									<td style="background: #FAFAFA;">$<fmt:formatNumber
+											value="${solicitudAtencion.presupuesto.viajePodologo}"
+											type="currency" pattern="#,##0" /></td>
+								</tr>
+								<tr>
+									<th class="bg-info">Monto Patología</th>
+									<td style="background: #FAFAFA;">$<fmt:formatNumber
+											value="${solicitudAtencion.patologia.costo}" type="currency"
+											pattern="#,##0" /></td>
+								</tr>
+								<tr>
+									<th class="bg-success" colspan="2">Total por la Atención:
+										$<fmt:formatNumber
+											value="${solicitudAtencion.presupuesto.total}"
+											type="currency" pattern="#,##0" />
+									</th>
+
+								</tr>								 
+							</table>
+ 
 					</div>
-				</a>
+
+				</div>
+
+				<div>
+
+					<div></div>
+				</div>
 			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/paciente/misSolicitudes">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-lg-3 col-xs-3">
-									<i class="fa fa-calendar-plus-o fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 25px;">
-										<Strong>Solicitudes de Atención</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Revisar el estado
-									de mis solicitudes</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/paciente/misatenciones">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-user-md fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 25px;">
-										<Strong>Mis Atenciones</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Revisar el
-									historial de mis atenciones</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/podologo/index">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-star-half-o fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 25px;">
-										<Strong>Evaluar</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Evaluar
-									Profesional</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/podologo/index">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-comments fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 25px;">
-										<Strong>Mensajes</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Ver mis mensajes</Strong></span>
-							<span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/paciente/modificarDatos">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-gear fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 25px;">
-										<Strong>Mis datos Personales</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Modifica tus
-									datos</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-
-
-			<br> <br> <br> <br><br> <br>  
-			<!-- /.container-fluid -->
 		</div>
-		<!-- /#page-wrapper -->
-
 	</div>
-	<!-- /#wrapper -->
 
 	<!-- jQuery -->
 	<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
@@ -382,7 +358,6 @@
 
 	<!-- Custom Theme JavaScript -->
 	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
-
 </body>
 
 </html>

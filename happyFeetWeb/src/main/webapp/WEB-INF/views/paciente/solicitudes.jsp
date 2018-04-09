@@ -154,11 +154,11 @@
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
-								class="fa fa-home fa-fw"></i> <Strong>Inicio</Strong></a></li>
+								class="fa fa-home fa-fw"></i> Inicio</a></li>
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
 								class="fa fa-edit fa-fw"></i>Solicitar Atención</a></li>
 						<li><a href="${contextPath}/paciente/misSolicitudes"><i
-								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes de Atención</a></li>
+								class="fa fa-calendar-plus-o fa-fw"></i><Strong>Solicitudes de Atención</Strong></a></li>
 						<li><a href="${contextPath}/paciente/misAtenciones"><i
 								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
 						<li><a href="${contextPath}/paciente/misMensajes"><i
@@ -174,215 +174,68 @@
 			<!-- /.navbar-static-side -->
 		</nav>
 
+
 		<!-- Page Content -->
 		<div id="page-wrapper">
-			<div class="container-fluid">
+			 
+				<br>
 				<div class="row">
 					<div class="col-lg-12">
-						<h2 class="page-header">
-							<c:if test="${mensaje != null}">
-								<div class="alert alert-success alert-dismissable">
-									<button type="button" class="close" data-dismiss="alert"
-										aria-hidden="true">×</button>
-									${mensaje}
-								</div>
-							</c:if>
-							<c:if test="${mensajeError != null}">
-								<div class="alert alert-danger alert-dismissable">
-									<button type="button" class="close" data-dismiss="alert"
-										aria-hidden="true">×</button>
-									${mensajeError}
-								</div>
-							</c:if>
-							
-						</h2>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<strong>Mis atenciones Realizadas</strong>
+							</div>
+							<br>
+							<div align="center">
+								<p style="text-align: justify; padding-left: 10px; padding-right: 10px;">A continuación se detallan todas las solicitudes de atencion que ha solicitado.</p>
+								<br>
+							</div>
+						 <div  class="table-responsive">
+									<table class="table table-bordered">
+										<tr>
+											<th><div align="center">Podologo tratante</div></th>
+											<th><div align="center">Patologia</div></th>
+											<th><div align="center">Fecha</div></th>
+											<th><div align="center">Estado</div></th>
+											<th><div align="center">Detalle</div></th>
+										</tr>
+										<c:forEach items="${solicitudes}" var="solicitud">
+											<tr>
+												<td align="center">${solicitud.podologo.nombres}</td>
+												<td align="center">${solicitud.patologia.nombre}</td>
+												<td align="center">${solicitud.horario.fecha}</td>
+												<td align="center">${solicitud.paramEstadoSolicitudAtencion.valor}</td>
+												<td align="center"><button onclick="location.href='${contextPath}/paciente/detalleSolicitud?id=${solicitud.id}'"
+										type="submit" class="btn btn-primary">Ver</button></td>
+											</tr>
+										</c:forEach>
+									</table>
+								 
+							</div>
+							<br> <br>
+						</div>
 					</div>
-					<!-- /.col-lg-12 -->
+					<!-- /.row -->
 				</div>
-				<!-- /.row -->
 			</div>
-
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/paciente/quizPatologia">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-edit fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 25px;">
-										<Strong>Solicitar Atención</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Solicitar hora
-									a con un Profesional</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/paciente/misSolicitudes">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-lg-3 col-xs-3">
-									<i class="fa fa-calendar-plus-o fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 25px;">
-										<Strong>Solicitudes de Atención</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Revisar el estado
-									de mis solicitudes</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/paciente/misatenciones">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-user-md fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 25px;">
-										<Strong>Mis Atenciones</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Revisar el
-									historial de mis atenciones</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/podologo/index">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-star-half-o fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 25px;">
-										<Strong>Evaluar</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Evaluar
-									Profesional</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/podologo/index">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-comments fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 25px;">
-										<Strong>Mensajes</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Ver mis mensajes</Strong></span>
-							<span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/paciente/modificarDatos">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-gear fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 25px;">
-										<Strong>Mis datos Personales</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Modifica tus
-									datos</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-
-
-			<br> <br> <br> <br><br> <br>  
-			<!-- /.container-fluid -->
 		</div>
-		<!-- /#page-wrapper -->
+		 
 
-	</div>
-	<!-- /#wrapper -->
 
-	<!-- jQuery -->
-	<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 
-	<!-- Bootstrap Core JavaScript -->
-	<script
-		src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+		<!-- jQuery -->
+		<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 
-	<!-- Metis Menu Plugin JavaScript -->
-	<script
-		src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
+		<!-- Bootstrap Core JavaScript -->
+		<script
+			src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 
-	<!-- Custom Theme JavaScript -->
-	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+		<!-- Metis Menu Plugin JavaScript -->
+		<script
+			src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
 
+		<!-- Custom Theme JavaScript -->
+		<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
 </body>
 
 </html>

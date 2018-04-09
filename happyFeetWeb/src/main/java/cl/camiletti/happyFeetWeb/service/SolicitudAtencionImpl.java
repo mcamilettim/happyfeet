@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cl.camiletti.happyFeetWeb.model.Horario;
+import cl.camiletti.happyFeetWeb.model.Paciente;
 import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Podologo;
 import cl.camiletti.happyFeetWeb.model.Solicitudatencion;
@@ -49,5 +50,10 @@ public class SolicitudAtencionImpl implements SolicitudAtencionService{
 	@Override
 	public Solicitudatencion findByHorario(Horario horario) {
 		return solicitudAtencionRepository.findByHorario(horario);
+	}
+
+	@Override
+	public List<Solicitudatencion> findByPaciente(Paciente paciente) {
+		return solicitudAtencionRepository.findByPaciente(paciente);
 	}
 }

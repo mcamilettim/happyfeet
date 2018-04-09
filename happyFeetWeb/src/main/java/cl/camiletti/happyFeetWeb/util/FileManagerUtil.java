@@ -106,13 +106,16 @@ public class FileManagerUtil {
 
 	public String getPathImageFromUrl(String link, String rutPaciente, String rutPodologo, String seccion,
 			double cantidad_kilometros) {
+		String base64="";
 		try {
 			if (1 > cantidad_kilometros)
 				link.replace("$zoomParam", "16");
 			else
 				link.replace("$zoomParam", "14");
+			
+			String pathImg=ROOT_PATH + File.separator + DIR_SINGLE + File.separator + seccion + File.separator;
 
-			File dir = new File(ROOT_PATH + File.separator + DIR_SINGLE + File.separator + seccion + File.separator);
+			File dir = new File(pathImg);
 			if (!dir.exists())
 				dir.mkdirs();
 			String ext = ".jpg";
@@ -121,14 +124,17 @@ public class FileManagerUtil {
 
 			InputStream in = new BufferedInputStream(url.openStream());
 			OutputStream out = new BufferedOutputStream(new FileOutputStream(
-					ROOT_PATH + File.separator + DIR_SINGLE + File.separator + seccion + File.separator + nameFile));
+					pathImg + nameFile));
 
 			for (int i; (i = in.read()) != -1;) {
 				out.write(i);
 			}
 			in.close();
 			out.close();
-			return DIR_SINGLE + File.separator + seccion + File.separator + nameFile;
+			File foto=new File(pathImg + nameFile);
+			base64 = encodeFileToBase64Binary(pathImg + nameFile);
+			foto.delete();
+			return base64;
 		} catch (Exception e) {
 			return null;
 		}

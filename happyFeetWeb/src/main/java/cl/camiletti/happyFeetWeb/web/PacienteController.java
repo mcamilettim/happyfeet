@@ -197,8 +197,8 @@ public class PacienteController {
 		return "paciente/paciente";
 	} 
 
-	@RequestMapping(value = "/paciente/misatenciones", method = RequestMethod.GET)
-	public String misatenciones(Model model) {
+	@RequestMapping(value = "/paciente/misAtenciones", method = RequestMethod.GET)
+	public String misAtenciones(Model model) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Paciente paciente = pacienteService.findByEmail(user.getUsername());
 		List<Agenda> agendas = agendaService.findByPaciente(paciente);
@@ -213,7 +213,20 @@ public class PacienteController {
 		model.addAttribute("paciente", paciente);
 		return "paciente/atenciones";
 	}
-
+	@RequestMapping(value = "/paciente/misSolicitudes", method = RequestMethod.GET)
+	public String misSolicitudes(Model model,@ModelAttribute("paciente") Paciente paciente) {
+		List<Solicitudatencion> solicitudes = solicitudAtencionService.findByPaciente(paciente);
+		model.addAttribute("solicitudes", solicitudes);
+		model.addAttribute("paciente", paciente);
+		return "paciente/solicitudes";
+	}
+	@RequestMapping(value = "/paciente/detalleSolicitud", method = RequestMethod.GET)
+	public String detalleSolicitud(Model model,@ModelAttribute("paciente") Paciente paciente, @RequestParam("id") int id) {
+		 Solicitudatencion  solicitud = solicitudAtencionService.findById(id);
+		model.addAttribute("solicitudAtencion", solicitud);
+		model.addAttribute("paciente", paciente);
+		return "paciente/detalleSolicitud";
+	}
 	@RequestMapping(value = "/paciente/detalleAtencion", method = RequestMethod.GET)
 	public String detalleAtencion(Model model, @RequestParam("id") int id) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
