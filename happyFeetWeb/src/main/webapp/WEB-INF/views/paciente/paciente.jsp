@@ -211,7 +211,7 @@
 									<i class="fa fa-edit fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 25px;">
+									<div class="huge" style="font-size: 20px;">
 										<Strong>Solicitar Atención</Strong>
 									</div>
 									<div></div>
@@ -237,7 +237,7 @@
 									<i class="fa fa-calendar-plus-o fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 25px;">
+									<div class="huge" style="font-size: 20px;">
 										<Strong>Solicitudes de Atención</Strong>
 									</div>
 									<div></div>
@@ -263,7 +263,7 @@
 									<i class="fa fa-user-md fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 25px;">
+									<div class="huge" style="font-size: 20px;">
 										<Strong>Mis Atenciones</Strong>
 									</div>
 									<div></div>
@@ -271,8 +271,7 @@
 							</div>
 						</div>
 						<div class="panel-footer">
-							<span class="pull-left"><Strong>Revisar el
-									historial de mis atenciones</Strong></span> <span class="pull-right"><i
+							<span class="pull-left"><Strong>Hitorial de mis atenciones</Strong></span> <span class="pull-right"><i
 								class="fa fa-arrow-circle-right"></i></span>
 							<div class="clearfix"></div>
 						</div>
@@ -289,7 +288,7 @@
 									<i class="fa fa-star-half-o fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 25px;">
+									<div class="huge" style="font-size: 20px;">
 										<Strong>Evaluar</Strong>
 									</div>
 									<div></div>
@@ -315,7 +314,7 @@
 									<i class="fa fa-comments fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 25px;">
+									<div class="huge" style="font-size: 20px;">
 										<Strong>Mensajes</Strong>
 									</div>
 									<div></div>
@@ -342,7 +341,7 @@
 									<i class="fa fa-gear fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 25px;">
+									<div class="huge" style="font-size: 20px;">
 										<Strong>Mis datos Personales</Strong>
 									</div>
 									<div></div>

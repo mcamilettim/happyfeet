@@ -97,8 +97,9 @@
 
 			<ul class="nav navbar-top-links navbar-right">
 				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
-							test="${paciente.paramSexo.id==6}">o</c:if><c:if
-							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
+							test="${paciente.paramSexo.id==6}">o</c:if>
+						<c:if test="${paciente.paramSexo.id==7}">a</c:if>
+						${paciente.nombres}
 				</Strong></li>
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i
@@ -251,12 +252,14 @@
 											<c:choose>
 												<c:when test="${empty solicitudAtencion.fotoViajePath}">
 													<img src="${contextPath}/resources/img/working.png"
-														class="img-responsive" style="width: 200px; height: 200px;">
+														class="img-responsive"
+														style="width: 200px; height: 200px;">
 												</c:when>
 												<c:otherwise>
 													<img
 														src="data:image/png;base64,${solicitudAtencion.fotoViajePath}"
-														class="img-responsive" style="width: 500px; height: 300px;">
+														class="img-responsive"
+														style="width: 500px; height: 300px;">
 
 												</c:otherwise>
 											</c:choose>
@@ -266,73 +269,79 @@
 							</tbody>
 						</table>
 						<br>
-					 
-							<table class="table">
+
+						<table class="table">
 							<tr>
-									<th class="bg-info">Estado</th>
-									<td style="background: #FAFAFA;">${solicitudAtencion.paramEstadoSolicitudAtencion.valor}</td>
-								</tr>
-								<tr>
-									<th class="bg-info">Horario Solicitado</th>
-									<td style="background: #FAFAFA;">${solicitudAtencion.horario.fecha}
-										${solicitudAtencion.horario.hora} -
-										${solicitudAtencion.horario.horaFin}</td>
-								</tr>
-								<tr>
-									<th class="bg-info">Diagnóstico</th>
-									<td style="background: #FAFAFA;">${solicitudAtencion.patologia.nombre}</td>
-								</tr>
-								<tr>
-									<th class="bg-info">Nombre Podólogo</th>
-									<td style="background: #FAFAFA;">${solicitudAtencion.podologo.nombres}
-										${solicitudAtencion.podologo.apellidos}</td>
-								</tr>
-								<tr>
-									<th class="bg-info">Diabético</th>
-									<c:if test="${not empty solicitudAtencion.paciente.diabetico}">
-										<td style="background: #FAFAFA;">SI</td>
-									</c:if>
-									<c:if test="${empty solicitudAtencion.paciente.diabetico}">
-										<td style="background: #FAFAFA;">NO</td>
-									</c:if>
+								<th class="bg-info">Estado</th>
+								<td style="background: #FAFAFA;">${solicitudAtencion.paramEstadoSolicitudAtencion.valor}</td>
+							</tr>
+							<tr>
+								<th class="bg-info">Horario Solicitado</th>
+								<td style="background: #FAFAFA;">${solicitudAtencion.horario.fecha}
+									${solicitudAtencion.horario.hora} -
+									${solicitudAtencion.horario.horaFin}</td>
+							</tr>
+							<tr>
+								<th class="bg-info">Diagnóstico</th>
+								<td style="background: #FAFAFA;">${solicitudAtencion.patologia.nombre}</td>
+							</tr>
+							<tr>
+								<th class="bg-info">Nombre Podólogo</th>
+								<td style="background: #FAFAFA;">${solicitudAtencion.podologo.nombres}
+									${solicitudAtencion.podologo.apellidos}</td>
+							</tr>
+							<tr>
+								<th class="bg-info">Diabético</th>
+								<c:if test="${not empty solicitudAtencion.paciente.diabetico}">
+									<td style="background: #FAFAFA;">SI</td>
+								</c:if>
+								<c:if test="${empty solicitudAtencion.paciente.diabetico}">
+									<td style="background: #FAFAFA;">NO</td>
+								</c:if>
 
-								</tr>
-								<tr>
-									<th class="bg-info">Ubicación</th>
-									<td style="background: #FAFAFA;">${solicitudAtencion.paciente.ubicacion.nombre}</td>
-								</tr>
-								<tr>
-									<th class="bg-info">Tarifa por Kilómetro</th>
-									<td style="background: #FAFAFA;">$<fmt:formatNumber
-											value="${solicitudAtencion.presupuesto.tarifaKM}"
-											type="currency" pattern="#,##0" /></td>
-								</tr>
-								<tr>
-									<th class="bg-info">Cantidad de Kilómetro</th>
-									<td style="background: #FAFAFA;">${solicitudAtencion.presupuesto.cantidadKM}</td>
-								</tr>
-								<tr>
-									<th class="bg-info">Monto Viaje</th>
-									<td style="background: #FAFAFA;">$<fmt:formatNumber
-											value="${solicitudAtencion.presupuesto.viajePodologo}"
-											type="currency" pattern="#,##0" /></td>
-								</tr>
-								<tr>
-									<th class="bg-info">Monto Patología</th>
-									<td style="background: #FAFAFA;">$<fmt:formatNumber
-											value="${solicitudAtencion.patologia.costo}" type="currency"
-											pattern="#,##0" /></td>
-								</tr>
-								<tr>
-									<th class="bg-success" colspan="2">Total por la Atención:
-										$<fmt:formatNumber
-											value="${solicitudAtencion.presupuesto.total}"
-											type="currency" pattern="#,##0" />
-									</th>
+							</tr>
+							<tr>
+								<th class="bg-info">Ubicación</th>
+								<td style="background: #FAFAFA;">${solicitudAtencion.paciente.ubicacion.nombre}</td>
+							</tr>
+							<tr>
+								<th class="bg-info">Tarifa por Kilómetro</th>
+								<td style="background: #FAFAFA;">$<fmt:formatNumber
+										value="${solicitudAtencion.presupuesto.tarifaKM}"
+										type="currency" pattern="#,##0" /></td>
+							</tr>
+							<tr>
+								<th class="bg-info">Cantidad de Kilómetro</th>
+								<td style="background: #FAFAFA;">${solicitudAtencion.presupuesto.cantidadKM}</td>
+							</tr>
+							<tr>
+								<th class="bg-info">Monto Viaje</th>
+								<td style="background: #FAFAFA;">$<fmt:formatNumber
+										value="${solicitudAtencion.presupuesto.viajePodologo}"
+										type="currency" pattern="#,##0" /></td>
+							</tr>
+							<tr>
+								<th class="bg-info">Monto Patología</th>
+								<td style="background: #FAFAFA;">$<fmt:formatNumber
+										value="${solicitudAtencion.patologia.costo}" type="currency"
+										pattern="#,##0" /></td>
+							</tr>
+							<c:if test="${solicitudAtencion.comentario != null}">
+							<tr>
+								<td style="background: #FAFAFA;"><strong>
+										Respuesta</strong></td>
+								<td style="background: #FAFAFA;" align="left"><textarea
+										class="form-control" readonly="readonly">${solicitudAtencion.comentario}</textarea></td>
+							</tr>
+							</c:if>
+							<tr>
+								<th class="bg-success" colspan="2">Total por la Atención: $<fmt:formatNumber
+										value="${solicitudAtencion.presupuesto.total}" type="currency"
+										pattern="#,##0" />
+								</th>
+							</tr>
+						</table>
 
-								</tr>								 
-							</table>
- 
 					</div>
 
 				</div>
