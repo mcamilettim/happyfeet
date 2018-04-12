@@ -77,7 +77,7 @@
 
 <body>
 
-	<div id="wrapper">
+		<div id="wrapper">
 
 		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
@@ -95,6 +95,10 @@
 			<!-- /.navbar-header -->
 
 			<ul class="nav navbar-top-links navbar-right">
+				<li class="dropdown" style="padding-left: 10px;"> 
+				<Strong>Bienvenid<c:if test="${podologo.paramSexo.id==6}">o</c:if><c:if test="${podologo.paramSexo.id==7}">a</c:if>
+							${podologo.nombres}</Strong>
+					 </li>
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i
 						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
@@ -106,7 +110,7 @@
 						</a></li>
 						<li class="divider"></li>
 						<li><a class="text-center"
-							href="${contextPath}/podologo/vermensajes"> <strong>Ver
+							href="${contextPath}/podologo/verMensajes"> <strong>Ver
 									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
 					</ul> <!-- /.dropdown-messages --></li>
@@ -117,7 +121,7 @@
 						<i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-user">
-						<li><a href="${contextPath}/podologo/modificardatos"><i
+						<li><a href="${contextPath}/podologo/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i>Mis Datos</a></li>
 						<li class="divider"></li>
 						<li><a href="<c:url value="/logout" />"><i
@@ -145,24 +149,24 @@
 								<br>
 								<div align="center">
 									<span class="text-info text-center"><b>${podologo.nombres}
-											${podologo.apellidos}</b></span> <span class="text-info">Paciente</span>
+											${podologo.apellidos}</b></span> <span class="text-info">Podólog<c:if test="${podologo.paramSexo.id==6}">o</c:if><c:if test="${podologo.paramSexo.id==7}">a</c:if></span>
 								</div>
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/podologo/index"><i
-								class=" active fa fa-dashboard fa-fw"></i> Inicio</a></li>
+								class="fa fa-home fa-fw"></i> <Strong>Inicio</Strong></a></li>
 						<li><a href="${contextPath}/podologo/miAgenda"><i
-								class="fa fa-dashboard fa-fw"></i> Mi Agenda</a></li>
-						<li><a href="${contextPath}/podologo/miAgenda"><i
-								class="fa fa-edit fa-fw"></i> Agendar Horario</a></li>
-						<li><a href="${contextPath}/podologo/modificardatos"><i
-								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
+								class="fa fa-edit fa-fw"></i>Mi Horario</a></li>
 						<li><a href="${contextPath}/podologo/verSolicitudes"><i
-								class="fa fa-edit fa-fw"></i> Solicitudes nuevas</a></li>
-						<li><a href="${contextPath}/podologo/pacientes"><i
-								class="fa fa-table fa-fw"></i> Lista de Pacientes</a></li>
-						<li><a href="${contextPath}/podologo/atencionesPendientes"><i
-								class="fa fa-table fa-fw"></i> Atenciones Pendientes</a></li>
+								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes de Atención</a></li>
+						<li><a href="${contextPath}/podologo/misAtenciones"><i
+								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
+						<li><a href="${contextPath}/podologo/misMensajes"><i
+								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
+						<li><a href="${contextPath}/podologo/calificar"><i
+								class="fa fa-star-half-o fa-fw"></i> Calificar a paciente</a></li>
+						<li><a href="${contextPath}/podologo/modificarDatos"><i
+								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
@@ -190,7 +194,7 @@
 									${mensajeError}
 								</div>
 							</c:if>
-							Bienvenid<c:if test="${podologo.paramSexo.id==6}">o</c:if><c:if test="${podologo.paramSexo.id==7}">a</c:if>
+							
 						</h2>
 					</div>
 					<!-- /.col-lg-12 -->
@@ -198,119 +202,126 @@
 				<!-- /.row -->
 			</div>
 
-			<div class="col-lg-3 col-md-6">
-				<a href="${contextPath}/podologo/verSolicitudes">
-					<div class="panel panel-primary">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-warning fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge">Solicitudes</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left">Solicitudes nuevas</span> <span
-								class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-
-			<div class="col-lg-3 col-md-6">
-				<a href="${contextPath}/podologo/index">
-					<div class="panel panel-green">
+			<div class="col-lg-4 col-md-6">
+				<a href="${contextPath}/podologo/miAgenda">
+					<div class="panel panel-info">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-3">
 									<i class="fa fa-edit fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge">Agendar</div>
+									<div class="huge" style="font-size: 20px;">
+										<Strong>Mi Horario</Strong>
+									</div>
 									<div></div>
 								</div>
 							</div>
 						</div>
 						<div class="panel-footer">
-							<span class="pull-left">Disponibilidad horarios de
-								atención</span> <span class="pull-right"><i
+							<span class="pull-left"><Strong>Control de mi Agenda</Strong></span> <span class="pull-right"><i
 								class="fa fa-arrow-circle-right"></i></span>
 							<div class="clearfix"></div>
 						</div>
+
 					</div>
 				</a>
 			</div>
+			<div class="col-lg-4 col-md-6">
+				<a href="${contextPath}/podologo/misSolicitudes">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-lg-3 col-xs-3">
+									<i class="fa fa-calendar-plus-o fa-5x"></i>
+								</div>
+								<div class="col-xs-9 text-right">
+									<div class="huge" style="font-size: 20px;">
+										<Strong>Solicitudes de Atención</Strong>
+									</div>
+									<div></div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer">
+							<span class="pull-left"><Strong>Revisar solicitudes de atención</Strong></span> <span class="pull-right"><i
+								class="fa fa-arrow-circle-right"></i></span>
+							<div class="clearfix"></div>
+						</div>
 
-			<div class="col-lg-3 col-md-6">
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-4 col-md-6">
+				<a href="${contextPath}/podologo/misAtenciones">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-3">
+									<i class="fa fa-user-md fa-5x"></i>
+								</div>
+								<div class="col-xs-9 text-right">
+									<div class="huge" style="font-size: 20px;">
+										<Strong>Mis Atenciones</Strong>
+									</div>
+									<div></div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer">
+							<span class="pull-left"><Strong>Hitorial de mis atenciones</Strong></span> <span class="pull-right"><i
+								class="fa fa-arrow-circle-right"></i></span>
+							<div class="clearfix"></div>
+						</div>
+
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-4 col-md-6">
 				<a href="${contextPath}/podologo/index">
-					<div class="panel panel-red">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-3">
+									<i class="fa fa-star-half-o fa-5x"></i>
+								</div>
+								<div class="col-xs-9 text-right">
+									<div class="huge" style="font-size: 20px;">
+										<Strong>Evaluar</Strong>
+									</div>
+									<div></div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer">
+							<span class="pull-left"><Strong>Evaluar
+									Paciente</Strong></span> <span class="pull-right"><i
+								class="fa fa-arrow-circle-right"></i></span>
+							<div class="clearfix"></div>
+						</div>
+
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-4 col-md-6">
+				<a href="${contextPath}/podologo/index">
+					<div class="panel panel-info">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-3">
 									<i class="fa fa-comments fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge">Mensajes</div>
+									<div class="huge" style="font-size: 20px;">
+										<Strong>Mensajes</Strong>
+									</div>
 									<div></div>
 								</div>
 							</div>
 						</div>
 						<div class="panel-footer">
-							<span class="pull-left">Nuevo mensajes!</span> <span
-								class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-
-			<div class="col-lg-3 col-md-6">
-				<a href="${contextPath}/podologo/pacientes">
-					<div class="panel panel-primary">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-users fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge">Pacientes</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left">Lista de pacientes</span> <span
-								class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-
-			<div class="col-lg-3 col-md-6">
-				<a href="${contextPath}/podologo/index">
-					<div class="panel panel-yellow">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-table fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge">Atenciones</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left">Revisa el historial de tus
-								atenciones</span> <span class="pull-right"><i
+							<span class="pull-left"><Strong>Ver mis mensajes</Strong></span>
+							<span class="pull-right"><i
 								class="fa fa-arrow-circle-right"></i></span>
 							<div class="clearfix"></div>
 						</div>
@@ -319,23 +330,26 @@
 				</a>
 			</div>
 
-			<div class="col-lg-3 col-md-6">
-				<a href="${contextPath}/podologo/modificardatos">
-					<div class="panel panel-red">
+			<div class="col-lg-4 col-md-6">
+				<a href="${contextPath}/podologo/modificarDatos">
+					<div class="panel panel-info">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-3">
 									<i class="fa fa-gear fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge">Mis Datos</div>
+									<div class="huge" style="font-size: 20px;">
+										<Strong>Mis datos Personales</Strong>
+									</div>
 									<div></div>
 								</div>
 							</div>
 						</div>
 						<div class="panel-footer">
-							<span class="pull-left">Modificar mis datos</span> <span
-								class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+							<span class="pull-left"><Strong>Modifica tus
+									datos</Strong></span> <span class="pull-right"><i
+								class="fa fa-arrow-circle-right"></i></span>
 							<div class="clearfix"></div>
 						</div>
 
@@ -344,13 +358,15 @@
 			</div>
 
 
-
+			<br> <br> <br> <br><br> <br>  
 			<!-- /.container-fluid -->
 		</div>
 		<!-- /#page-wrapper -->
 
 	</div>
 	<!-- /#wrapper -->
+
+	 
 
 	<!-- jQuery -->
 	<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>

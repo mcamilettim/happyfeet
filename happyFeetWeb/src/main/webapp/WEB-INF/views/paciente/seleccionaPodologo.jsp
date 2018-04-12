@@ -417,7 +417,7 @@
 										</tr>
 										<tr>
 											<th scope="col" colspan="2">Comentario para el Podólogo
-												<textarea class="form-control" rows="3" name="comentario"></textarea>
+												<textarea class="form-control" rows="3" name="comentarioPaciente"></textarea>
 											</th>
 										</tr>
 

@@ -66,6 +66,9 @@
 		    0% { transform: rotate(0deg); }
 		    100% { transform: rotate(360deg); }
 		}
+		body {
+	    background: url(../resources/img/bg-banner.jpg) no-repeat fixed;
+}
 	</style>
 	<script type="text/javascript">
 	function ingresar() {
@@ -90,7 +93,7 @@
                     <div class="panel-body">
                          <form method="POST" action="${contextPath}/login" name="loginForm" id="loginform">
                          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <div align="center" class="loader" style="display: none;" id="loader"></div>
+                       <center> <div align="center" class="loader" style="display: none;" id="loader"></div></center>
                          <div class="form-group ${error != null ? 'has-error' : ''}" id="formbody">
                             <fieldset>
                             

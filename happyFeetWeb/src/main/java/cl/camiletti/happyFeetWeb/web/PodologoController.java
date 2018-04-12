@@ -244,7 +244,6 @@ public class PodologoController {
 			@ModelAttribute("solicitudAtencion") Solicitudatencion solicitudAtencion, Model model,
 			@RequestParam("respuesta") String respuesta) {
 		Parametro parametro = null;
-		System.out.println(respuesta);
 		if (respuesta.equalsIgnoreCase(Constantes.RESPUESTA_SOLICITUD_ATENCION_SI)) {
 			parametro = parametroService.findOne(Parametros.ESTADO_SOLICITUD_ACEPTADA);
 			// accepta
@@ -299,7 +298,7 @@ public class PodologoController {
 		return "podologo/podologo";
 	}
 
-	@RequestMapping(value = "/podologo/modificardatos", method = RequestMethod.GET)
+	@RequestMapping(value = "/podologo/modificarDatos", method = RequestMethod.GET)
 	public String modificar(Model model, @ModelAttribute("podologo") Podologo podologo) {
 		podologo.getUsuario().setPassword("");
 		podologo.getUsuario().setPasswordConfirm("");
@@ -314,7 +313,7 @@ public class PodologoController {
 		return "podologo/modificar";
 	}
 
-	@RequestMapping(value = "/podologo/modificardatos", method = RequestMethod.POST)
+	@RequestMapping(value = "/podologo/modificarDatos", method = RequestMethod.POST)
 	public String modificarpost(@ModelAttribute("podologoForm") Podologo podologoForm,
 			@ModelAttribute("podologo") Podologo podologo, BindingResult bindingResult, Model model,
 			@RequestParam("archivo") MultipartFile archivo) {

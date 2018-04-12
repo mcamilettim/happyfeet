@@ -17,7 +17,8 @@ public class Agenda implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	private String comentario;
+	private String comentarioPaciente;
+	private String comentarioPodologo;
 
 	private String fotoPiePath;
 	
@@ -96,12 +97,20 @@ public class Agenda implements Serializable {
 		this.id = id;
 	}
 
-	public String getComentario() {
-		return this.comentario;
+	public String getComentarioPaciente() {
+		return comentarioPaciente;
 	}
 
-	public void setComentario(String comentario) {
-		this.comentario = comentario;
+	public void setComentarioPaciente(String comentarioPaciente) {
+		this.comentarioPaciente = comentarioPaciente;
+	}
+
+	public String getComentarioPodologo() {
+		return comentarioPodologo;
+	}
+
+	public void setComentarioPodologo(String comentarioPodologo) {
+		this.comentarioPodologo = comentarioPodologo;
 	}
 
 	public String getFotoPiePath() {

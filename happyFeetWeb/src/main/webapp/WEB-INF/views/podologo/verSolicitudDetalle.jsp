@@ -274,7 +274,7 @@
 								<tr>
 									<td colspan="2"><div align="center">
 											<img class="img-responsive"
-												src="${contextPath}/resources/imagenes/${solicitudAtencion.fotoViajePath}"
+												src="data:image/png;base64,${solicitudAtencion.fotoViajePath}"
 												style="width: 600px; height: 400px;">
 										</div></td>
 									 
@@ -342,11 +342,15 @@
 										pattern="#,##0" /></th>
 
 							</tr>
+								<tr>
+								<td style="background: #FAFAFA;"><strong>Comentario Paciente</strong></td>
+								<td style="background: #FAFAFA;" align="left"><textarea
+										class="form-control" name="comentarioPaciente"	readonly="readonly">${solicitudAtencion.comentarioPaciente}</textarea></td>
+							</tr>
 							<tr>
 								<td style="background: #FAFAFA;"><strong> Respuesta</strong></td>
 								<td style="background: #FAFAFA;" align="left"><textarea
-										class="form-control" name="comentario"
-										placeholder="Agregar Comentario"></textarea></td>
+										class="form-control" name="comentarioPodologo"	placeholder="Agregar Comentario"></textarea></td>
 							</tr>
 							<tr>
 									<td  align="right"><button
