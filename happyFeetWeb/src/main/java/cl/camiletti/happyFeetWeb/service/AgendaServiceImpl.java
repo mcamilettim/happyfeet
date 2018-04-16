@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import cl.camiletti.happyFeetWeb.model.Agenda;
 import cl.camiletti.happyFeetWeb.model.Paciente;
+import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Podologo;
 import cl.camiletti.happyFeetWeb.repository.AgendaRepository;
 
@@ -43,5 +44,10 @@ public class AgendaServiceImpl implements AgendaService{
 	@Override
 	public List<Agenda> findByPodologo(Podologo podologo) {
 		return agendaRepository.findByPodologo(podologo);
+	}
+
+	@Override
+	public List<Agenda> findByPodologoAndParamEstadoAgenda(Podologo podologo, Parametro parametro) {
+		return agendaRepository.findByPodologoAndParamEstadoAgenda(podologo, parametro);
 	}
 }

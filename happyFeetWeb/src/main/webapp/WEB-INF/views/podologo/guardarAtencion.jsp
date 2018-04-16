@@ -105,8 +105,9 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-</head>
 
+<link href="${contextPath}/resources/css/evaluacion/css/style.css"
+	rel="stylesheet">
 <body>
 
 	<div id="wrapper">
@@ -183,8 +184,7 @@
 								<div align="center">
 									<span class="text-info">Podólogo</span>
 								</div>
-							</div>
-							<!-- /input-group -->
+							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/podologo/index"><i
 								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
@@ -235,8 +235,10 @@
 
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<strong>Detalle de Solicitud
-								${solicitudAtencion.fechaSolicitud}</strong>
+							<strong>Detalle de Atención Fecha
+								${atencionForm.agenda.horario.fecha}
+								${atencionForm.agenda.horario.hora} -
+								${atencionForm.agenda.horario.horaFin}</strong>
 						</div>
 
 
@@ -246,19 +248,19 @@
 									<th style="background: #FAFAFA;"><div align="center">Foto
 											Enviada por Paciente</div></th>
 									<th style="background: #FAFAFA;"><div align="center">Foto
-											referencial Patología ${solicitudAtencion.patologia.nombre}</div></th>
+											referencial Patología ${atencionForm.agenda.patologia.nombre}</div></th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
 									<td><div align="center">
 											<img class="img-responsive"
-												src="data:image/png;base64,${solicitudAtencion.fotoPiePath}"
+												src="data:image/png;base64,${atencionForm.agenda.fotoPiePath}"
 												style="width: 200px; height: 200px;">
 										</div></td>
 									<td><div align="center">
 											<img class="img-responsive"
-												src="data:image/png;base64,${solicitudAtencion.patologia.foto}"
+												src="data:image/png;base64,${atencionForm.agenda.patologia.foto}"
 												style="width: 200px; height: 200px;">
 										</div></td>
 								</tr>
@@ -280,7 +282,7 @@
 								<tr>
 									<td colspan="2"><div align="center">
 											<img class="img-responsive"
-												src="data:image/png;base64,${solicitudAtencion.fotoViajePath}"
+												src="data:image/png;base64,${atencionForm.agenda.fotoViajePath}"
 												style="width: 600px; height: 400px;">
 										</div></td>
 
@@ -288,22 +290,18 @@
 							</tbody>
 						</table>
 						<br>
-						<form action="${contextPath}/podologo/modificarSolicitud"
-							method="POST">
+	 
+							<form action="${contextPath}/podologo/guardarAtencion"
+							method="POST" enctype="multipart/form-data">
 							<table class="table">
+
 								<tr>
-									<th class="bg-info">Horario Solicitado</th>
-									<td style="background: #FAFAFA;">${solicitudAtencion.horario.fecha}
-										${solicitudAtencion.horario.hora} -
-										${solicitudAtencion.horario.horaFin}</td>
-								</tr>
-								<tr>
-									<th class="bg-info">Diagnóstico</th>
-									<td style="background: #FAFAFA;">${solicitudAtencion.patologia.nombre}</td>
+									<th class="bg-info">Patología tratada</th>
+									<td style="background: #FAFAFA;">${atencionForm.agenda.patologia.nombre}</td>
 								</tr>
 								<tr>
 									<th class="bg-info">Nombre Paciente</th>
-									<td style="background: #FAFAFA;">${solicitudAtencion.paciente.nombres}
+									<td style="background: #FAFAFA;">${atencionForm.agenda.paciente.nombres}
 										${solicitudAtencion.paciente.apellidos}</td>
 								</tr>
 								<tr>
@@ -318,61 +316,72 @@
 								</tr>
 								<tr>
 									<th class="bg-info">Ubicación</th>
-									<td style="background: #FAFAFA;">${solicitudAtencion.paciente.ubicacion.nombre}</td>
+									<td style="background: #FAFAFA;">${atencionForm.agenda.paciente.ubicacion.nombre}</td>
+								</tr>
+
+								<tr>
+									<th class="bg-success" colspan="2"><div>
+											Total por la Atención: $
+											<fmt:formatNumber
+												value="${atencionForm.agenda.presupuesto.total}"
+												type="currency" pattern="#,##0" />
+										</div></th>
+
 								</tr>
 								<tr>
-									<th class="bg-info">Tarifa por Kilómetro</th>
-									<td style="background: #FAFAFA;">$<fmt:formatNumber
-											value="${solicitudAtencion.presupuesto.tarifaKM}"
-											type="currency" pattern="#,##0" /></td>
+									<th>Diagnóstico y/o Procedimiento</th>
+									<td style="background: #FAFAFA;"><textarea
+											class="form-control" name="diagnostico"></textarea></td>
 								</tr>
 								<tr>
-									<th class="bg-info">Cantidad de Kilómetro</th>
-									<td style="background: #FAFAFA;">${solicitudAtencion.presupuesto.cantidadKM}</td>
+									<th>Indicaciones</th>
+									<td style="background: #FAFAFA;"><textarea
+											class="form-control" name="indicaciones"></textarea></td>
 								</tr>
 								<tr>
-									<th class="bg-info">Monto Viaje</th>
-									<td style="background: #FAFAFA;">$<fmt:formatNumber
-											value="${solicitudAtencion.presupuesto.viajePodologo}"
-											type="currency" pattern="#,##0" /></td>
+									<th>Foto después de la Atención</th>
+									<td style="background: #FAFAFA;"><input type="file"
+										class="form-control" name="archivo"
+										value="${pacienteForm.foto}" accept=".png, .jpg, .jpeg"></input></td>
 								</tr>
+
 								<tr>
-									<th class="bg-info">Monto Patología</th>
-									<td style="background: #FAFAFA;">$<fmt:formatNumber
-											value="${solicitudAtencion.patologia.costo}" type="currency"
-											pattern="#,##0" /></td>
-								</tr>
-								<tr>
-									<th class="bg-success" colspan="2">Total por la Atención:
-										$<fmt:formatNumber
-											value="${solicitudAtencion.presupuesto.total}"
-											type="currency" pattern="#,##0" />
-									</th>
+									<td style="background: #FAFAFA;"><strong>Evaluación
+											Paciente</strong></td>
+									<td align="left"><span class="rating"> <input
+											type="radio" class="rating-input" id="evaluacionStar-5"
+											name="evaluacionStar" value="5"> <label for="evaluacionStar-5"
+											class="rating-star"></label> <input type="radio" value="4"
+											class="rating-input" id="evaluacionStar-4" name="evaluacionStar">
+											<label for="evaluacionStar-4" class="rating-star"></label> <input
+											type="radio" class="rating-input" value="3" id="evaluacionStar-3"
+											name="evaluacionStar"> <label for="evaluacionStar-3"
+											class="rating-star"></label> <input type="radio"
+											class="rating-input"  value="2" id="evaluacionStar-2" name="evaluacionStar">
+											<label for="evaluacionStar-2" class="rating-star"></label> <input
+											type="radio" class="rating-input" id="evaluacionStar-1"
+											name="evaluacionStar" value="1"> <label for="evaluacionStar-1"
+											class="rating-star"></label>
+									</span></td>
 
 								</tr>
 								<tr>
 									<td style="background: #FAFAFA;"><strong>Comentario
-											Paciente</strong></td>
+											de la Atención </strong></td>
 									<td style="background: #FAFAFA;" align="left"><textarea
-											class="form-control" name="comentarioPaciente"
-											readonly="readonly">${solicitudAtencion.comentarioPaciente}</textarea></td>
+											class="form-control" name="comentarioPaciente">${atencionForm.agenda.comentarioPodologo}</textarea></td>
 								</tr>
+
 								<tr>
-									<td style="background: #FAFAFA;"><strong>
-											Respuesta</strong></td>
-									<td style="background: #FAFAFA;" align="left"><textarea
-											class="form-control" name="comentarioPodologo"
-											placeholder="Agregar Comentario"></textarea></td>
-								</tr>
-								<tr>
-									<td align="right"><button type="button"
+									<td align="right" colspan="2"><button type="button"
 											class="btn btn-primary" data-toggle="modal"
-											data-target="#exampleModal">Aceptar Atención</button></td>
-									<td align="left"><button type="button"
-											class="btn btn-danger" data-toggle="modal"
-											data-target="#exampleModalRechazo">Rechazar Atención</button></td>
+											data-target="#exampleModal">Guardar Atención</button></td>
+
 								</tr>
+
 							</table>
+
+
 
 							<!-- Modal Aceptar-->
 							<div class="modal fade" id="exampleModal" tabindex="-1"
@@ -382,7 +391,7 @@
 									<div class="modal-content">
 										<div class="modal-header">
 											<h4 class="modal-title" id="exampleModalLabel">
-												<strong>Confirmación de Atención Podológica</strong>
+												<strong>Confirmación de datos de Atención</strong>
 											</h4>
 											<button type="button" class="close" data-dismiss="modal"
 												aria-label="Close">
@@ -391,59 +400,22 @@
 										</div>
 										<div class="modal-body">
 											<p style="text-align: justify;">
-												<b> <span style="color: red;">*</span> Horario Atención:
-													${solicitudAtencion.horario.fecha}
-													${solicitudAtencion.horario.hora} -
-													${solicitudAtencion.horario.horaFin}
-												</b>
+												<b>Esta seguro que desea Guardar los datos de la
+													Atención </b>
 											</p>
-											<p style="text-align: justify;">
-												<b><span style="color: red;">*</span> Total Atención: $<fmt:formatNumber
-														value="${solicitudAtencion.presupuesto.total}"
-														type="currency" pattern="#,##0" /> </b>
-											</p>
+
 
 										</div>
 										<div class="modal-footer" align="left">
 											<button type="button" class="btn btn-secondary"
 												data-dismiss="modal">Cancelar</button>
 											<button type="submit" class="btn btn-primary"
-												name="respuesta" value="si">Si, estoy de acuerdo</button>
+												name="respuesta" value="si">Si, estoy seguro</button>
 										</div>
 									</div>
 								</div>
 							</div>
 							<!-- Modal Aceptar-->
-							<!-- Modal Rechazar-->
-							<div class="modal fade" id="exampleModalRechazo" tabindex="-1"
-								role="dialog" aria-labelledby="exampleModalLabel"
-								aria-hidden="true">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h4 class="modal-title" id="exampleModalLabel">
-												<strong>Usted está rechazando esta de Atención
-													Podológica</strong>
-											</h4>
-											<button type="button" class="close" data-dismiss="modal"
-												aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										<div class="modal-body">
-											<p style="text-align: justify;">
-												<strong> ¿ Está seguro ?</strong>
-											</p>
-										</div>
-										<div class="modal-footer" align="left">
-											<button type="button" class="btn btn-secondary"
-												data-dismiss="modal">Cancelar</button>
-											<button type="submit" name="respuesta" value="no"
-												class="btn btn-danger">Si, rechazar</button>
-										</div>
-									</div>
-								</div>
-							</div>
 						</form>
 					</div>
 
@@ -480,6 +452,15 @@
 
 	<!-- Custom Theme JavaScript -->
 	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+
+	<script>
+		var logID = 'log', log = $('<div id="'+logID+'"></div>');
+		$('body').append(log);
+		$('[type*="radio"]').change(function() {
+			var me = $(this);
+			log.html(me.attr('value'));
+		});
+	</script>
 
 
 </body>

@@ -97,9 +97,8 @@
 
 			<ul class="nav navbar-top-links navbar-right">
 				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
-							test="${paciente.paramSexo.id==6}">o</c:if>
-						<c:if test="${paciente.paramSexo.id==7}">a</c:if>
-						${paciente.nombres}
+							test="${paciente.paramSexo.id==6}">o</c:if> <c:if
+							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
 				</Strong></li>
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i
@@ -273,7 +272,22 @@
 						<table class="table">
 							<tr>
 								<th class="bg-info">Estado</th>
-								<td style="background: #FAFAFA;">${solicitudAtencion.paramEstadoSolicitudAtencion.valor}</td>
+								<c:if
+									test="${solicitudAtencion.paramEstadoSolicitudAtencion.valor eq 'Pendiente'}">
+									<td style="background: #FAFAFA;"><button type="button"
+											class="btn btn-warning">PENDIENTE</button></td>
+								</c:if>
+								<c:if
+									test="${solicitudAtencion.paramEstadoSolicitudAtencion.valor eq 'Rechazada'}">
+									<td style="background: #FAFAFA;"><button type="button"
+											class="btn btn-danger">RECHAZADA</button></td>
+								</c:if>
+								<c:if
+									test="${solicitudAtencion.paramEstadoSolicitudAtencion.valor eq 'Aceptada'}">
+									<td style="background: #FAFAFA;"><button type="button"
+											class="btn btn-success">ACEPTADA</button></td>
+								</c:if>
+
 							</tr>
 							<tr>
 								<th class="bg-info">Horario Solicitado</th>
@@ -326,24 +340,46 @@
 										value="${solicitudAtencion.patologia.costo}" type="currency"
 										pattern="#,##0" /></td>
 							</tr>
-							<c:if test="${solicitudAtencion.comentario != null}">
+
 							<tr>
-								<td style="background: #FAFAFA;"><strong>
-										Respuesta</strong></td>
+								<td style="background: #FAFAFA;"><strong> Mi
+										Comentario</strong></td>
 								<td style="background: #FAFAFA;" align="left"><textarea
-										class="form-control" readonly="readonly">${solicitudAtencion.comentario}</textarea></td>
+										class="form-control" readonly="readonly">${solicitudAtencion.comentarioPaciente}</textarea></td>
 							</tr>
+							<c:if test="${solicitudAtencion.comentarioPodologo != null}">
+								<tr>
+									<td style="background: #FAFAFA;"><strong>
+											Comentario Podólogo</strong></td>
+									<td style="background: #FAFAFA;" align="left"><textarea
+											class="form-control" readonly="readonly">${solicitudAtencion.comentarioPodologo}</textarea></td>
+								</tr>
 							</c:if>
 							<tr>
-								<th class="bg-success" colspan="2">Total por la Atención: $<fmt:formatNumber
-										value="${solicitudAtencion.presupuesto.total}" type="currency"
-										pattern="#,##0" />
-								</th>
+								<th class="bg-success" colspan="2"><div align="center">
+										Total por la Atención: $
+										<fmt:formatNumber
+											value="${solicitudAtencion.presupuesto.total}"
+											type="currency" pattern="#,##0" />
+									</div></th>
 							</tr>
+							<c:if
+								test="${solicitudAtencion.paramEstadoSolicitudAtencion.valor eq 'Pendiente'}">
+								<tr>
+									<th colspan="2">No te preocupes, el profesional responderá
+										tu solicitud en breve, sólo ten un poco más de paciecia.</th>
+								</tr>
+							</c:if>
+							<c:if
+								test="${solicitudAtencion.paramEstadoSolicitudAtencion.valor eq 'Rechazada'}">
+								<tr>
+									<th colspan="2">El profesional ha rechazado tu solicitud, sus motivos están en el comentario.</th>
+								</tr>
+							</c:if>
 						</table>
 
 					</div>
-
+					<br>
 				</div>
 
 				<div>

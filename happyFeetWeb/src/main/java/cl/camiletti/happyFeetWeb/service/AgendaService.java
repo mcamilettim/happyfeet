@@ -4,6 +4,7 @@ import java.util.List;
 
 import cl.camiletti.happyFeetWeb.model.Agenda;
 import cl.camiletti.happyFeetWeb.model.Paciente;
+import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Podologo;
 
 public interface AgendaService {
@@ -13,4 +14,5 @@ public interface AgendaService {
 	void deleteById(Agenda agenda);
 	List<Agenda> findByPaciente(Paciente paciente);
 	List<Agenda> findByPodologo(Podologo podologo);
+	List<Agenda> findByPodologoAndParamEstadoAgenda(Podologo podologo, Parametro parametro);
 }

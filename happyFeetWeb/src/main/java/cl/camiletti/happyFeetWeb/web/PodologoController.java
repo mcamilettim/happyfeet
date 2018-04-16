@@ -45,7 +45,7 @@ import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 import cl.camiletti.happyFeetWeb.util.Parametros;
 
 @Controller
-@SessionAttributes(value = { "podologo", "paciente", "atencion", "pacientes", "solicitudes", "solicitudAtencion" })
+@SessionAttributes(value = { "podologo", "paciente", "atencion", "pacientes", "solicitudes", "agendaParaFinalizar","solicitudAtencion" })
 public class PodologoController {
 	@Autowired
 	private PodologoService podologoService;
@@ -239,8 +239,7 @@ public class PodologoController {
 	}
 
 	@RequestMapping(value = "/podologo/modificarSolicitud", method = RequestMethod.POST)
-	public String modificarSolicitud(@RequestParam("comentario") String comentario,
-			@ModelAttribute("podologo") Podologo podologo,
+	public String modificarSolicitud(@ModelAttribute("podologo") Podologo podologo,
 			@ModelAttribute("solicitudAtencion") Solicitudatencion solicitudAtencion, Model model,
 			@RequestParam("respuesta") String respuesta) {
 		Parametro parametro = null;
@@ -271,10 +270,11 @@ public class PodologoController {
 				parametro = parametroService.findOne(Parametros.ESTADO_SOLICITUD_RECHAZADA);
 				// rechaza
 				solicitudAtencion.setParamEstadoSolicitudAtencion(parametro);
-
 				solicitudAtencionService.save(solicitudAtencion);
-
 				// rechaza
+				parametro = parametroService.findOne(Parametros.ESTADO_HORARIO_DISPONIBLE);
+				Horario horario=solicitudAtencion.getHorario();
+				horarioService.save(horario);
 
 				model.addAttribute("mensaje", "Solicitud Rechazada con Éxito");
 			} else {
@@ -462,5 +462,41 @@ public class PodologoController {
 		model.addAttribute("atenciones", atenciones);
 		return "podologo/atenciones";
 	}
-
+	@RequestMapping(value = "/podologo/misAtenciones", method = RequestMethod.GET)
+	public String misAtenciones(Model model, @ModelAttribute("podologo") Podologo podologo) {
+		Parametro parametro = parametroService.findOne(Parametros.ESTADO_AGENDA_PENDIENTE);
+		List<Agenda> atencionesPendientes =agendaService.findByPodologoAndParamEstadoAgenda(podologo, parametro);
+		parametro = parametroService.findOne(Parametros.ESTADO_AGENDA_ACEPTADA);
+		List<Agenda> atencionesRealizadas =agendaService.findByPodologoAndParamEstadoAgenda(podologo, parametro);
+	 
+		model.addAttribute("atencionesPendientes", atencionesPendientes);
+		model.addAttribute("atencionesRealizadas", atencionesRealizadas);
+		return "podologo/atenciones";
+	}
+	@RequestMapping(value = "/podologo/ingresarAtencion", method = RequestMethod.GET)
+	public String ingresarAtencion(Model model, @ModelAttribute("podologo") Podologo podologo,
+			@RequestParam("id") int id) {
+		Agenda agenda = agendaService.findById(id);
+		Atencion atencion =new Atencion();
+		atencion.setAgenda(agenda);
+		model.addAttribute("atencionForm",atencion);
+		model.addAttribute("agendaParaFinalizar",agenda);
+		return "podologo/guardarAtencion";
+	}
+	@RequestMapping(value = "/podologo/guardarAtencion", method = RequestMethod.POST)
+	public String guardarAtencion(Model model, @ModelAttribute("atencionForm") Atencion atencion,
+			@RequestParam("archivo") MultipartFile archivo, @RequestParam("evaluacionStar") String evaluacionStar,@ModelAttribute("agendaParaFinalizar") Agenda agenda ) {
+		FileManagerUtil fileManagerUtil = new FileManagerUtil();
+		if (!archivo.isEmpty()) {
+			String file = fileManagerUtil.getBase64FromFoto(archivo);
+			atencion.setFoto(file);
+		}
+		Parametro parametro = parametroService.findOne(Parametros.ESTADO_AGENDA_ACEPTADA);
+		agenda.setParamEstadoAgenda(parametro);
+		agendaService.save(agenda);
+		atencion.setAgenda(agenda);
+		atencionService.save(atencion);
+		model.addAttribute("mensaje", "Atención Finalizada con Éxito");
+		return "podologo/podologo";
+	}
 }

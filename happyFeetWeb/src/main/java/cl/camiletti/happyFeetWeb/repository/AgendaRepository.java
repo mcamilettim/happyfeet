@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import cl.camiletti.happyFeetWeb.model.Paciente;
+import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Podologo;
 
 public interface AgendaRepository extends JpaRepository<Agenda, Long> {
@@ -15,5 +16,6 @@ public interface AgendaRepository extends JpaRepository<Agenda, Long> {
 	  void delete(Agenda agenda);	 
 	  List<Agenda> findByPaciente(Paciente paciente);
 	  List<Agenda> findByPodologo(Podologo podologo);
+	  List<Agenda> findByPodologoAndParamEstadoAgenda(Podologo podologo, Parametro parametro);
 }
 
