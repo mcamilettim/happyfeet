@@ -1,8 +1,8 @@
+
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
@@ -96,7 +96,8 @@
 	href="${contextPath}/resources/vendor/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
 <link href="${contextPath}/resources/css/jquery-ui.css" rel="stylesheet">
-
+<link href="${contextPath}/resources/js/bootstrap-datepicker.min.css"
+	rel="stylesheet">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -104,8 +105,9 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-</head>
 
+<link href="${contextPath}/resources/css/evaluacion/css/style.css"
+	rel="stylesheet">
 <body>
 
 	<div id="wrapper">
@@ -126,10 +128,6 @@
 			<!-- /.navbar-header -->
 
 			<ul class="nav navbar-top-links navbar-right">
-				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
-							test="${podologo.paramSexo.id==6}">o</c:if> <c:if
-							test="${podologo.paramSexo.id==7}">a</c:if> ${podologo.nombres}
-				</Strong></li>
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i
 						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
@@ -141,7 +139,7 @@
 						</a></li>
 						<li class="divider"></li>
 						<li><a class="text-center"
-							href="${contextPath}/podologo/verMensajes"> <strong>Ver
+							href="${contextPath}/podologo/vermensajes"> <strong>Ver
 									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
 					</ul> <!-- /.dropdown-messages --></li>
@@ -152,7 +150,7 @@
 						<i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-user">
-						<li><a href="${contextPath}/podologo/modificarDatos"><i
+						<li><a href="${contextPath}/podologo/modificardatos"><i
 								class="fa fa-gear fa-fw"></i>Mis Datos</a></li>
 						<li class="divider"></li>
 						<li><a href="<c:url value="/logout" />"><i
@@ -180,26 +178,28 @@
 								<br>
 								<div align="center">
 									<span class="text-info text-center"><b>${podologo.nombres}
-											${podologo.apellidos}</b></span> <span class="text-info">Podólog<c:if
-											test="${podologo.paramSexo.id==6}">o</c:if> <c:if
-											test="${podologo.paramSexo.id==7}">a</c:if></span>
+											${podologo.apellidos}</b></span>
+								</div>
+
+								<div align="center">
+									<span class="text-info">Podólogo</span>
 								</div>
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/podologo/index"><i
-								class="fa fa-home fa-fw"></i>Inicio</a></li>
+								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
 						<li><a href="${contextPath}/podologo/miAgenda"><i
-								class="fa fa-edit fa-fw"></i> Mi Horario</a></li>
-						<li><a href="${contextPath}/podologo/verSolicitudes"><i
-								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes de Atención</a></li>
-						<li><a href="${contextPath}/podologo/misAtenciones"><i
-								class="fa fa-user-md fa-fw"></i><Strong> Mis atenciones</Strong></a></li>
-						<li><a href="${contextPath}/podologo/misMensajes"><i
-								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
-						<li><a href="${contextPath}/podologo/calificar"><i
-								class="fa fa-star-half-o fa-fw"></i> Calificar a paciente</a></li>
-						<li><a href="${contextPath}/podologo/modificarDatos"><i
+								class="fa fa-dashboard fa-fw"></i> Mi Agenda</a></li>
+						<li><a href="${contextPath}/podologo/index"><i
+								class="fa fa-edit fa-fw"></i> Agendar Horario</a></li>
+						<li><a href="${contextPath}/podologo/modificardatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
+						<li><a href="${contextPath}/podologo/verSolicitudes"><i
+								class="fa fa-edit fa-fw"></i> Solicitudes nuevas</a></li>
+						<li><a href="${contextPath}/podologo/pacientes"><i
+								class="fa fa-table fa-fw"></i> Lista de Pacientes</a></li>
+						<li><a href="${contextPath}/podologo/atencionesPendientes"><i
+								class="fa fa-table fa-fw"></i> Atenciones Pendientes</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
@@ -229,107 +229,180 @@
 					</c:if>
 				</div>
 			</div>
-			<c:if test="${not empty atencionesPendientes}">
-				<div class="row">
-					<div class="col-lg-12">
 
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<strong>Atenciones Pendientes <span class="badge">${atencionesPendientes.size()}</span>
-								</strong>
-							</div>
-							<div align="left">
-								<p
-									style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">
-									A continuación se listan las atenciones que están pendientes de
-									diagnóstico.<br>
-								</p>
-							</div>
-							<br>
+			<div class="row">
+				<div class="col-lg-12">
+
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<strong>Detalle de Atención Fecha
+								${atencion.agenda.horario.fecha} ${atencion.agenda.horario.hora}
+								- ${atencion.agenda.horario.horaFin}</strong>
+						</div>
+
+
+						<table class="table">
+							<thead>
+								<tr>
+									<th style="background: #FAFAFA;"><div align="center">ANTES</div></th>
+									<th style="background: #FAFAFA;"><div align="center">DESPUES</div></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><div align="center">
+											<img class="img-responsive"
+												src="data:image/png;base64,${atencion.agenda.fotoPiePath}"
+												style="width: 200px; height: 200px;">
+										</div></td>
+									<td><div align="center">
+											<img class="img-responsive"
+												src="data:image/png;base64,${atencion.foto}"
+												style="width: 200px; height: 200px;">
+										</div></td>
+								</tr>
+							</tbody>
+						</table>
+
+						<table class="table">
+							<thead>
+								<tr>
+									<th colspan="2" style="background: #FAFAFA;"><div
+											align="center">
+											Ruta Recomendada <img class="img-responsive"
+												src="${contextPath}/resources/img/googleMaps.png"
+												style="width: 25px; height: 25px;">
+										</div></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td colspan="2"><div align="center">
+											<img class="img-responsive"
+												src="data:image/png;base64,${atencion.agenda.fotoViajePath}"
+												style="width: 600px; height: 400px;">
+										</div></td>
+
+								</tr>
+							</tbody>
+						</table>
+						<br>
+ 
 							<table class="table">
 
-								<thead>
-									<tr>
-									<tr>
-										<th>Atención</th>
-										<th>Comuna</th>
-										<th>Monto</th>
-										<th>Dar Diagnóstico</th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach items="${atencionesPendientes}"
-										var="agendaPendiente">
-										<tr>
-											<td>${agendaPendiente.horario.fecha}</td>
-											<td>${agendaPendiente.paciente.ubicacion.comuna.nombre}</td>
-											<td><fmt:formatNumber
-													value="${agendaPendiente.presupuesto.total}"
-													type="currency" pattern="#,##0" /></td>
-											<td><a
-												href="${contextPath}/podologo/ingresarAtencion?id=${agendaPendiente.id}">Finalizar
-													Atención</a></td>
-										</tr>
-									</c:forEach>
-								</tbody>
+								<tr>
+									<th class="bg-info">Patología tratada</th>
+									<td style="background: #FAFAFA;">${atencion.agenda.patologia.nombre}</td>
+								</tr>
+								<tr>
+									<th class="bg-info">Nombre Paciente</th>
+									<td style="background: #FAFAFA;">${atencion.agenda.paciente.nombres}
+										${solicitudAtencion.paciente.apellidos}</td>
+								</tr>
+								<tr>
+									<th class="bg-info">Diabético</th>
+									<c:if test="${not empty atencion.agenda.paciente.diabetico}">
+										<td style="background: #FAFAFA;">SI</td>
+									</c:if>
+									<c:if test="${empty atencion.agenda.paciente.diabetico}">
+										<td style="background: #FAFAFA;">NO</td>
+									</c:if>
+
+								</tr>
+								<tr>
+									<th class="bg-info">Ubicación</th>
+									<td style="background: #FAFAFA;">${atencion.agenda.paciente.ubicacion.nombre}</td>
+								</tr>
+								<tr>
+									<th class="bg-info">Tarifa por Kilómetro</th>
+									<td style="background: #FAFAFA;">$<fmt:formatNumber
+											value="${atencion.agenda.presupuesto.tarifaKM}"
+											type="currency" pattern="#,##0" /></td>
+								</tr>
+								<tr>
+									<th class="bg-info">Cantidad de Kilómetro</th>
+									<td style="background: #FAFAFA;">${atencion.agenda.presupuesto.cantidadKM}</td>
+								</tr>
+								<tr>
+									<th class="bg-info">Monto Viaje</th>
+									<td style="background: #FAFAFA;">$<fmt:formatNumber
+											value="${atencion.agenda.presupuesto.viajePodologo}"
+											type="currency" pattern="#,##0" /></td>
+								</tr>
+								<tr>
+									<th class="bg-info">Monto Patología</th>
+									<td style="background: #FAFAFA;">$<fmt:formatNumber
+											value="${atencion.agenda.patologia.costo}" type="currency"
+											pattern="#,##0" /></td>
+								</tr>
+								<tr>
+									<th class="bg-success" colspan="2"><div>
+											Total por la Atención: $
+											<fmt:formatNumber
+												value="${atencion.agenda.presupuesto.total}" type="currency"
+												pattern="#,##0" />
+										</div></th>
+
+								</tr>
+								<tr>
+									<th>Diagnóstico y/o Procedimiento</th>
+									<td style="background: #FAFAFA;"><textarea
+											class="form-control" name="diagnostico">${atencion.diagnostico}</textarea></td>
+								</tr>
+								<tr>
+									<th>Indicaciones</th>
+									<td style="background: #FAFAFA;"><textarea
+											class="form-control" name="indicaciones">${atencion.indicaciones}</textarea></td>
+								</tr>
+
+								<tr>
+									<td style="background: #FAFAFA;"><strong>Evaluación
+											Paciente</strong></td>
+									<td align="left"><span class="rating"> <input
+											type="radio" class="rating-input" id="evaluacionStar-5"
+											name="evaluacionStar" value="5"> <label
+											for="evaluacionStar-5" class="rating-star"></label> <input
+											type="radio" value="4" class="rating-input"
+											id="evaluacionStar-4" name="evaluacionStar"> <label
+											for="evaluacionStar-4" class="rating-star"></label> <input
+											type="radio" class="rating-input" value="3"
+											id="evaluacionStar-3" name="evaluacionStar"> <label
+											for="evaluacionStar-3" class="rating-star"></label> <input
+											type="radio" class="rating-input" value="2"
+											id="evaluacionStar-2" name="evaluacionStar"> <label
+											for="evaluacionStar-2" class="rating-star"></label> <input
+											type="radio" class="rating-input" id="evaluacionStar-1"
+											name="evaluacionStar" value="1"> <label
+											for="evaluacionStar-1" class="rating-star"></label>
+									</span></td>
+
+								</tr>
+								<tr>
+									<td style="background: #FAFAFA;"><strong>Comentario
+											de la Atención </strong></td>
+									<td style="background: #FAFAFA;" align="left"><textarea
+											class="form-control" name="comentarioPaciente">${atencionForm.agenda.comentarioPodologo}</textarea></td>
+								</tr>
+ 			 
 
 							</table>
-						</div>
+
+
+
+				
 					</div>
+
 				</div>
-			</c:if>
-			<c:if test="${not empty atencionesRealizadas}">
-				<div class="row">
-					<div class="col-lg-12">
 
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<strong>Atenciones Realizadas <span class="badge">${atencionesRealizadas.size()}</span>
-								</strong>
-							</div>
-							<div align="left">
-								<p
-									style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">
-									A continuación se listan las atenciones efectuadas con
-									diagnóstico.<br>
-								</p>
-							</div>
-							<br>
-							<table class="table">
+				<div>
 
-
-								<thead>
-									<tr>
-										<th>Atención</th>
-										<th>Comuna</th>
-										<th>Monto</th>
-										<th>Detalle</th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach items="${atencionesRealizadas}"
-										var="AgendaRealizada">
-										<tr>
-											<td>${AgendaRealizada.horario.fecha}</td>
-											<td>${AgendaRealizada.paciente.ubicacion.comuna.nombre}</td>
-											<td>${AgendaRealizada.presupuesto.total}</td>
-											<td><a
-												href="${contextPath}/podologo/verAtencion?id=${AgendaRealizada.id}">Ver</a></td>
-										</tr>
-									</c:forEach>
-								</tbody>
-
-							</table>
-						</div>
-					</div>
+					<div></div>
 				</div>
-			</c:if>
-			<c:if test="${fn:length(atencionesRealizadas) == 0 && fn:length(atencionesPendientes) == 0}">
-				<div class="alert alert-info" align="center"><Strong>Usted no posee Atenciones</Strong></div>
-			</c:if>
-
+			</div>
 		</div>
 	</div>
+
+
 	<!-- /.row -->
 
 
@@ -347,43 +420,22 @@
 	<!-- Metis Menu Plugin JavaScript -->
 	<script
 		src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
-	<script src="${contextPath}/resources/js/bootstrap-datepicker.js"></script>
+
 	<script src="${contextPath}/resources/js/jquery-ui.min.js"></script>
 
 	<!-- Custom Theme JavaScript -->
 	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
 
-	<script type="text/javascript">
-		$.datepicker.regional['es'] = {
-			closeText : 'Cerrar',
-			prevText : '<Ant',
-					 nextText: 'Sig>',
-			currentText : 'Hoy',
-			monthNames : [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
-					'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre',
-					'Noviembre', 'Diciembre' ],
-			monthNamesShort : [ 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-					'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic' ],
-			dayNames : [ 'Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves',
-					'Viernes', 'Sabado' ],
-			dayNamesShort : [ 'Dom', 'Lun', 'Mar', 'Mie', 'Juv', 'Vie', 'Sab' ],
-			dayNamesMin : [ 'Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa' ],
-			weekHeader : 'Sm',
-			dateFormat : 'dd/mm/yy',
-			firstDay : 1,
-			isRTL : false,
-			showMonthAfterYear : false,
-			yearSuffix : '',
-		//beforeShow: function(i) { if ($('dp1').attr('readonly')) { return false; } }
-		};
-		$.datepicker.setDefaults($.datepicker.regional['es']);
-
-		$("#datePicker").datepicker({
-			//dateFormat: 'dd/mm/yy',
-			inline : true
-		//beforeShow: function(i) { if ($(i).attr('readonly')) { return false; } }
+	<script>
+		var logID = 'log', log = $('<div id="'+logID+'"></div>');
+		$('body').append(log);
+		$('[type*="radio"]').change(function() {
+			var me = $(this);
+			log.html(me.attr('value'));
 		});
 	</script>
+
+
 </body>
 
 </html>

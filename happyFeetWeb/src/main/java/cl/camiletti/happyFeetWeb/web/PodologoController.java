@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cl.camiletti.happyFeetWeb.model.Agenda;
 import cl.camiletti.happyFeetWeb.model.Atencion;
+import cl.camiletti.happyFeetWeb.model.Evaluacion;
 import cl.camiletti.happyFeetWeb.model.Horario;
 import cl.camiletti.happyFeetWeb.model.Mensaje;
 import cl.camiletti.happyFeetWeb.model.Paciente;
@@ -483,18 +484,32 @@ public class PodologoController {
 		model.addAttribute("agendaParaFinalizar",agenda);
 		return "podologo/guardarAtencion";
 	}
+	@RequestMapping(value = "/podologo/verAtencion", method = RequestMethod.GET)
+	public String verAtencion(Model model, @ModelAttribute("podologo") Podologo podologo,
+			@RequestParam("id") int id) {
+		Agenda agenda = agendaService.findById(id);
+		Atencion atencion=atencionService.findByAgenda(agenda);
+		model.addAttribute("atencion",atencion);
+		return "podologo/verAtencion";
+	}
 	@RequestMapping(value = "/podologo/guardarAtencion", method = RequestMethod.POST)
 	public String guardarAtencion(Model model, @ModelAttribute("atencionForm") Atencion atencion,
-			@RequestParam("archivo") MultipartFile archivo, @RequestParam("evaluacionStar") String evaluacionStar,@ModelAttribute("agendaParaFinalizar") Agenda agenda ) {
+			@RequestParam("archivo") MultipartFile archivo, @RequestParam("evaluacionStar") String evaluacionStar,@ModelAttribute("agendaParaFinalizar") Agenda agenda,@RequestParam("comentario") String comentario ) {
 		FileManagerUtil fileManagerUtil = new FileManagerUtil();
 		if (!archivo.isEmpty()) {
 			String file = fileManagerUtil.getBase64FromFoto(archivo);
 			atencion.setFoto(file);
 		}
+		
 		Parametro parametro = parametroService.findOne(Parametros.ESTADO_AGENDA_ACEPTADA);
 		agenda.setParamEstadoAgenda(parametro);
 		agendaService.save(agenda);
 		atencion.setAgenda(agenda);
+		atencion.setEvaluacionPaciente(new Evaluacion());
+		atencion.getEvaluacionPaciente().setRutEmisor(atencion.getAgenda().getPodologo().getRut());
+		atencion.getEvaluacionPaciente().setRutReceptor(atencion.getAgenda().getPaciente().getRut());
+		atencion.getEvaluacionPaciente().setValor(Integer.parseInt(evaluacionStar));
+		atencion.getEvaluacionPaciente().setComentario(comentario);
 		atencionService.save(atencion);
 		model.addAttribute("mensaje", "Atención Finalizada con Éxito");
 		return "podologo/podologo";

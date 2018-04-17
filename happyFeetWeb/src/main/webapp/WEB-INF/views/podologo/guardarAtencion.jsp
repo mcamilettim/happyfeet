@@ -369,7 +369,7 @@
 									<td style="background: #FAFAFA;"><strong>Comentario
 											de la Atención </strong></td>
 									<td style="background: #FAFAFA;" align="left"><textarea
-											class="form-control" name="comentarioPaciente">${atencionForm.agenda.comentarioPodologo}</textarea></td>
+											class="form-control" name="comentario">${atencionForm.agenda.comentarioPodologo}</textarea></td>
 								</tr>
 
 								<tr>
