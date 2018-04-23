@@ -78,7 +78,7 @@ public class AgendarControllerRest {
 				ubicacionAux.setLongitud(ubicacion.getLongitud());
 
 				podoAux.setUbicacion(ubicacionAux);
-				podoAux.setEvaluacion(getEvaluacion(podoAux.getRut()));
+				podoAux.setEvaluacion(getEvaluacion(podologo));
 
 				for (Horario horario : podologo.getHorarios()) {
 					if (horario.getParamEstadoHorario().getId() == 2) {
@@ -144,17 +144,17 @@ public class AgendarControllerRest {
 		presupuestoCustom.setPatologia_nombre(patologia.getNombre());
 		presupuestoCustom.setPatologia_monto(patologia.getCosto());
 		presupuestoCustom.setNombrePodologo(podologo.getNombres() + " " + podologo.getApellidos());
-		presupuestoCustom.setEvaluacion(getEvaluacion(podologo.getRut()));
+		presupuestoCustom.setEvaluacion(getEvaluacion(podologo));
 		presupuestoCustom.setMontoKilometros((int) (Double.parseDouble(kilometros) * 1125));
 		presupuestoCustom.setPatologia_id(idPatologia);
 		presupuestoCustom.setTotal(presupuestoCustom.getMontoKilometros() + presupuestoCustom.getPatologia_monto());
 		return presupuestoCustom;
 	}
-	public Double getEvaluacion(String rut) {
-		List<Evaluacion> evaluaciones = evaluacionService.findByRutReceptor(rut);
+	public Double getEvaluacion(Podologo podologo) {
+		List<Evaluacion> evaluaciones = evaluacionService.findByPodologo(podologo);
 		double valoracionTotal = 0;
 		for (Evaluacion evaluacion : evaluaciones) {
-			valoracionTotal = valoracionTotal + evaluacion.getValor();
+			valoracionTotal = valoracionTotal + evaluacion.getValorPodologo();
 		}
 		if (evaluaciones != null && evaluaciones.size() > 0) {
 			return valoracionTotal / evaluaciones.size();

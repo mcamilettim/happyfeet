@@ -32,6 +32,7 @@ import cl.camiletti.happyFeetWeb.repository.MensajeRepository;
 import cl.camiletti.happyFeetWeb.service.AgendaService;
 import cl.camiletti.happyFeetWeb.service.AtencionService;
 import cl.camiletti.happyFeetWeb.service.ComunaService;
+import cl.camiletti.happyFeetWeb.service.EvaluacionService;
 import cl.camiletti.happyFeetWeb.service.HorarioService;
 import cl.camiletti.happyFeetWeb.service.MensajeService;
 import cl.camiletti.happyFeetWeb.service.PacienteService;
@@ -50,6 +51,9 @@ import cl.camiletti.happyFeetWeb.util.Parametros;
 public class PodologoController {
 	@Autowired
 	private PodologoService podologoService;
+	@Autowired
+	private EvaluacionService evaluacionService;
+
 
 	@Autowired
 	private ParametroService parametroService;
@@ -505,11 +509,15 @@ public class PodologoController {
 		agenda.setParamEstadoAgenda(parametro);
 		agendaService.save(agenda);
 		atencion.setAgenda(agenda);
-		atencion.setEvaluacionPaciente(new Evaluacion());
-		atencion.getEvaluacionPaciente().setRutEmisor(atencion.getAgenda().getPodologo().getRut());
-		atencion.getEvaluacionPaciente().setRutReceptor(atencion.getAgenda().getPaciente().getRut());
-		atencion.getEvaluacionPaciente().setValor(Integer.parseInt(evaluacionStar));
-		atencion.getEvaluacionPaciente().setComentario(comentario);
+		Evaluacion evaluacion =new Evaluacion();
+		evaluacion.setPodologo(atencion.getAgenda().getPodologo());
+		evaluacion.setPaciente(atencion.getAgenda().getPaciente());
+		evaluacion.setComentarioPodologo(comentario);
+		evaluacion.setValorPaciente(Integer.parseInt(evaluacionStar));
+	 
+		 
+		atencion.setEvaluacion(evaluacion);
+  
 		atencionService.save(atencion);
 		model.addAttribute("mensaje", "Atención Finalizada con Éxito");
 		return "podologo/podologo";

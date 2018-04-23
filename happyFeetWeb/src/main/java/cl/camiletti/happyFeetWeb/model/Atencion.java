@@ -30,12 +30,9 @@ public class Atencion implements Serializable {
 	private Agenda agenda;
 
 	//bi-directional many-to-one association to Evaluacion
-	@ManyToOne
-	private Evaluacion evaluacionPaciente;
+	@ManyToOne(cascade = CascadeType.ALL)
+	private Evaluacion evaluacion;
 	
-	//bi-directional many-to-one association to Evaluacion
-	@ManyToOne
-	private Evaluacion evaluacionPodologo;
 
 	public Atencion() {
 	}
@@ -81,22 +78,15 @@ public class Atencion implements Serializable {
 		this.agenda = agenda;
 	}
 
-	public Evaluacion getEvaluacionPaciente() {
-		return evaluacionPaciente;
+	public Evaluacion getEvaluacion() {
+		return evaluacion;
 	}
 
-	public void setEvaluacionPaciente(Evaluacion evaluacionPaciente) {
-		this.evaluacionPaciente = evaluacionPaciente;
+	public void setEvaluacion(Evaluacion evaluacion) {
+		this.evaluacion = evaluacion;
 	}
 
-	public Evaluacion getEvaluacionPodologo() {
-		return evaluacionPodologo;
-	}
-
-	public void setEvaluacionPodologo(Evaluacion evaluacionPodologo) {
-		this.evaluacionPodologo = evaluacionPodologo;
-	}
-
+ 
  
  
 }

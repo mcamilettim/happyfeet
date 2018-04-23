@@ -246,11 +246,11 @@
 												src="${contextPath}/resources/imagenes/${atencion.agenda.fotoPiePath} "
 												width="130" height="80"></td>
 											<td><fieldset class="starability-basic">
-													<c:forEach begin="1" end="${atencion.evaluacion.valor}"
+													<c:forEach begin="1" end="${atencion.evaluacion.valorPaciente}"
 														varStatus="loop">
 														<input type="radio" id="rate" name="rating" value="loop" />
 														<label for="loop"
-															title="${atencion.evaluacion.comentario}"></label>
+															title="${atencion.evaluacion.comentarioPodologo}"></label>
 													</c:forEach>
 												</fieldset></td>
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cl.camiletti.happyFeetWeb.model.Evaluacion;
+import cl.camiletti.happyFeetWeb.model.Podologo;
 import cl.camiletti.happyFeetWeb.repository.EvaluacionRepository;
 @Service
 public class EvaluacionServiceImpl implements EvaluacionService{
@@ -14,7 +15,7 @@ public class EvaluacionServiceImpl implements EvaluacionService{
 
 	@Override
 	public void save(Evaluacion evaluacion) {
-		// TODO Auto-generated method stub
+		evaluacionRepository.save(evaluacion);
 		
 	}
 
@@ -25,8 +26,8 @@ public class EvaluacionServiceImpl implements EvaluacionService{
 	}
 
 	@Override
-	public List<Evaluacion>  findByRutReceptor(String rutReceptor) {
-		return evaluacionRepository.findByRutReceptor(rutReceptor);
+	public List<Evaluacion>  findByPodologo(Podologo podologo) {
+		return evaluacionRepository.findByPodologo(podologo);
 	}
 
 	@Override

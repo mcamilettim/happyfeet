@@ -1,8 +1,13 @@
 package cl.camiletti.happyFeetWeb.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 /**
  * The persistent class for the evaluacion database table.
@@ -17,13 +22,17 @@ public class Evaluacion implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	private String comentario;
+	private String comentarioPaciente;
+	private String comentarioPodologo;
+	private int valorPodologo;
+	private int valorPaciente;
+	
+	@ManyToOne
+	private Paciente paciente;
 
-	private int valor;
-
-	private String rutEmisor;
-
-	private String rutReceptor;
+	// bi-directional many-to-one association to Paciente
+	@ManyToOne
+	private Podologo podologo;
 
 	public Evaluacion() {
 	}
@@ -35,37 +44,57 @@ public class Evaluacion implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
+ 
 
-	public String getComentario() {
-		return this.comentario;
+	public String getComentarioPaciente() {
+		return comentarioPaciente;
 	}
 
-	public void setComentario(String comentario) {
-		this.comentario = comentario;
+	public void setComentarioPaciente(String comentarioPaciente) {
+		this.comentarioPaciente = comentarioPaciente;
 	}
 
-	public int getValor() {
-		return this.valor;
+	public String getComentarioPodologo() {
+		return comentarioPodologo;
 	}
 
-	public void setValor(int valor) {
-		this.valor = valor;
+	public void setComentarioPodologo(String comentarioPodologo) {
+		this.comentarioPodologo = comentarioPodologo;
 	}
 
-	public String getRutEmisor() {
-		return rutEmisor;
+ 
+
+	public int getValorPodologo() {
+		return valorPodologo;
 	}
 
-	public void setRutEmisor(String rutEmisor) {
-		this.rutEmisor = rutEmisor;
+	public void setValorPodologo(int valorPodologo) {
+		this.valorPodologo = valorPodologo;
 	}
 
-	public String getRutReceptor() {
-		return rutReceptor;
+	public int getValorPaciente() {
+		return valorPaciente;
 	}
 
-	public void setRutReceptor(String rutReceptor) {
-		this.rutReceptor = rutReceptor;
+	public void setValorPaciente(int valorPaciente) {
+		this.valorPaciente = valorPaciente;
 	}
 
+	public Paciente getPaciente() {
+		return paciente;
+	}
+
+	public void setPaciente(Paciente paciente) {
+		this.paciente = paciente;
+	}
+
+	public Podologo getPodologo() {
+		return podologo;
+	}
+
+	public void setPodologo(Podologo podologo) {
+		this.podologo = podologo;
+	}
+
+ 
 }

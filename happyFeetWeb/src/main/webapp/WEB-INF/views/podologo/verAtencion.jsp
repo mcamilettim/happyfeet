@@ -347,41 +347,29 @@
 								<tr>
 									<th>Diagnóstico y/o Procedimiento</th>
 									<td style="background: #FAFAFA;"><textarea
-											class="form-control" name="diagnostico">${atencion.diagnostico}</textarea></td>
+											class="form-control" name="diagnostico" readonly="readonly">${atencion.diagnostico}</textarea></td>
 								</tr>
 								<tr>
 									<th>Indicaciones</th>
 									<td style="background: #FAFAFA;"><textarea
-											class="form-control" name="indicaciones">${atencion.indicaciones}</textarea></td>
+											class="form-control" name="indicaciones" readonly="readonly">${atencion.indicaciones}</textarea></td>
 								</tr>
 
 								<tr>
 									<td style="background: #FAFAFA;"><strong>Evaluación
 											Paciente</strong></td>
-									<td align="left"><span class="rating"> <input
-											type="radio" class="rating-input" id="evaluacionStar-5"
-											name="evaluacionStar" value="5"> <label
-											for="evaluacionStar-5" class="rating-star"></label> <input
-											type="radio" value="4" class="rating-input"
-											id="evaluacionStar-4" name="evaluacionStar"> <label
-											for="evaluacionStar-4" class="rating-star"></label> <input
-											type="radio" class="rating-input" value="3"
-											id="evaluacionStar-3" name="evaluacionStar"> <label
-											for="evaluacionStar-3" class="rating-star"></label> <input
-											type="radio" class="rating-input" value="2"
-											id="evaluacionStar-2" name="evaluacionStar"> <label
-											for="evaluacionStar-2" class="rating-star"></label> <input
-											type="radio" class="rating-input" id="evaluacionStar-1"
-											name="evaluacionStar" value="1"> <label
-											for="evaluacionStar-1" class="rating-star"></label>
-									</span></td>
+									<td align="left"> ${atencion.evaluacion.valorPaciente} <img
+												align="left"  
+												style="height: 15px; width: 15px;" class="img-responsive"
+												src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/96/star-icon.png" />
+									</td>
 
 								</tr>
 								<tr>
 									<td style="background: #FAFAFA;"><strong>Comentario
 											de la Atención </strong></td>
 									<td style="background: #FAFAFA;" align="left"><textarea
-											class="form-control" name="comentarioPaciente">${atencionForm.agenda.comentarioPodologo}</textarea></td>
+											class="form-control" name="comentarioPaciente" readonly="readonly">${atencion.evaluacion.comentarioPodologo}</textarea></td>
 								</tr>
  			 
 
