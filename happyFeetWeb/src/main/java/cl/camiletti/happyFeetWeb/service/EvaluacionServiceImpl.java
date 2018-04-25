@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cl.camiletti.happyFeetWeb.model.Evaluacion;
+import cl.camiletti.happyFeetWeb.model.Paciente;
 import cl.camiletti.happyFeetWeb.model.Podologo;
 import cl.camiletti.happyFeetWeb.repository.EvaluacionRepository;
 @Service
@@ -21,8 +22,7 @@ public class EvaluacionServiceImpl implements EvaluacionService{
 
 	@Override
 	public Evaluacion findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return evaluacionRepository.findById(id);
 	}
 
 	@Override
@@ -40,6 +40,12 @@ public class EvaluacionServiceImpl implements EvaluacionService{
 	public void deleteById(Evaluacion evaluacion) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<Evaluacion> findByPacienteAndValorPodologo(Paciente paciente, int valorPodologo) {
+		// TODO Auto-generated method stub
+		return evaluacionRepository.findByPacienteAndValorPodologo(paciente, valorPodologo);
 	}
 
  

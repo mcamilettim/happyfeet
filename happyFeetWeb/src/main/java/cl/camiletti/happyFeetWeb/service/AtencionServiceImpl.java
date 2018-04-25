@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import cl.camiletti.happyFeetWeb.model.Agenda;
 import cl.camiletti.happyFeetWeb.model.Atencion;
+import cl.camiletti.happyFeetWeb.model.Evaluacion;
 import cl.camiletti.happyFeetWeb.model.Paciente;
 import cl.camiletti.happyFeetWeb.model.Podologo;
 import cl.camiletti.happyFeetWeb.repository.AtencionRepository;
@@ -59,6 +60,11 @@ public class AtencionServiceImpl implements AtencionService{
 	@Override
 	public Atencion findByAgenda(Agenda agenda) {
 		return atencionRepository.findByAgenda(agenda);
+	}
+
+	@Override
+	public Atencion findByEvaluacion(Evaluacion evaluacion) {
+		return atencionRepository.findByEvaluacion(evaluacion);
 	}
 
  

@@ -371,13 +371,8 @@
 									<td style="background: #FAFAFA;" align="left"><textarea
 											class="form-control" name="comentarioPaciente" readonly="readonly">${atencion.evaluacion.comentarioPodologo}</textarea></td>
 								</tr>
- 			 
 
-							</table>
-
-
-
-				
+							</table>			
 					</div>
 
 				</div>

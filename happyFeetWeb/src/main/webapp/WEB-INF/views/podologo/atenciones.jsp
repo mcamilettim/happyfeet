@@ -130,19 +130,30 @@
 							test="${podologo.paramSexo.id==6}">o</c:if> <c:if
 							test="${podologo.paramSexo.id==7}">a</c:if> ${podologo.nombres}
 				</Strong></li>
-				<li class="dropdown"><a class="dropdown-toggle"
-					data-toggle="dropdown" href="#"> <i
-						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-				</a>
+						<li class="dropdown"><c:if test="${empty notificaciones}">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+						</a>
+					</c:if> <c:if test="${not empty notificaciones}">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i><span
+							class="badge">${notificaciones.size()}</span>
+						</a>
+					</c:if>
 					<ul class="dropdown-menu dropdown-messages">
-						<li><a href="#"> <strong></strong> <span
-								class="pull-right text-muted"> <em>Ahora</em>
-							</span> Sin mensajes nuevos.
-						</a></li>
-						<li class="divider"></li>
+						<c:if test="${not empty notificaciones}">
+							<c:forEach items="${notificaciones}" var="notificacion">
+								<li><a
+									href="${notificacion.url}?idNotificacion=${notificacion.id}">
+										<strong></strong> <span class="pull-right text-muted"><em>${notificacion.fecha}</em>
+									</span> ${notificacion.titulo}
+								</a></li>
+							</c:forEach>
+						</c:if>
+						 
 						<li><a class="text-center"
-							href="${contextPath}/podologo/verMensajes"> <strong>Ver
-									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
+							href="${contextPath}/paciente/vermensajes"> <strong>Ver
+									todas las notificaciones</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
 					</ul> <!-- /.dropdown-messages --></li>
 

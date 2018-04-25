@@ -63,8 +63,20 @@ public class Paciente implements Serializable {
 	//bi-directional many-to-one association to Solicitudatencion
 	@OneToMany(mappedBy="paciente", fetch=FetchType.EAGER)
 	private List<Solicitudatencion> solicitudatencions;
+	
+	//bi-directional many-to-one association to Solicitudatencion
+	@OneToMany(mappedBy="paciente", fetch=FetchType.EAGER)
+	private List<Notificacionpaciente> notificacion;
 
 	public Paciente() {
+	}
+
+	public List<Notificacionpaciente> getNotificacion() {
+		return notificacion;
+	}
+
+	public void setNotificacion(List<Notificacionpaciente> notificacion) {
+		this.notificacion = notificacion;
 	}
 
 	public String getRut() {

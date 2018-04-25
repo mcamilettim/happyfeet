@@ -24,6 +24,7 @@ import cl.camiletti.happyFeetWeb.model.Atencion;
 import cl.camiletti.happyFeetWeb.model.Evaluacion;
 import cl.camiletti.happyFeetWeb.model.Horario;
 import cl.camiletti.happyFeetWeb.model.Mensaje;
+import cl.camiletti.happyFeetWeb.model.Notificacionpaciente;
 import cl.camiletti.happyFeetWeb.model.Paciente;
 import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Podologo;
@@ -35,6 +36,7 @@ import cl.camiletti.happyFeetWeb.service.ComunaService;
 import cl.camiletti.happyFeetWeb.service.EvaluacionService;
 import cl.camiletti.happyFeetWeb.service.HorarioService;
 import cl.camiletti.happyFeetWeb.service.MensajeService;
+import cl.camiletti.happyFeetWeb.service.NotificacionpacienteService;
 import cl.camiletti.happyFeetWeb.service.PacienteService;
 import cl.camiletti.happyFeetWeb.service.ParametroService;
 import cl.camiletti.happyFeetWeb.service.PodologoService;
@@ -44,16 +46,17 @@ import cl.camiletti.happyFeetWeb.service.UsuarioService;
 import cl.camiletti.happyFeetWeb.util.Constantes;
 import cl.camiletti.happyFeetWeb.util.DateUtil;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
+import cl.camiletti.happyFeetWeb.util.NotificacionPacienteConstantes;
 import cl.camiletti.happyFeetWeb.util.Parametros;
 
 @Controller
-@SessionAttributes(value = { "podologo", "paciente", "atencion", "pacientes", "solicitudes", "agendaParaFinalizar","solicitudAtencion" })
+@SessionAttributes(value = { "podologo", "paciente", "atencion", "pacientes", "solicitudes", "agendaParaFinalizar",
+		"solicitudAtencion" })
 public class PodologoController {
 	@Autowired
 	private PodologoService podologoService;
 	@Autowired
 	private EvaluacionService evaluacionService;
-
 
 	@Autowired
 	private ParametroService parametroService;
@@ -96,6 +99,8 @@ public class PodologoController {
 
 	@Autowired
 	private AgendaService agendaService;
+	@Autowired
+	private NotificacionpacienteService notificacionpacienteService;
 
 	@RequestMapping(value = "/podologo/pacientes", method = RequestMethod.GET)
 	public String cargarPacientes(Model model, @ModelAttribute("podologo") Podologo podologo) {
@@ -278,7 +283,7 @@ public class PodologoController {
 				solicitudAtencionService.save(solicitudAtencion);
 				// rechaza
 				parametro = parametroService.findOne(Parametros.ESTADO_HORARIO_DISPONIBLE);
-				Horario horario=solicitudAtencion.getHorario();
+				Horario horario = solicitudAtencion.getHorario();
 				horarioService.save(horario);
 
 				model.addAttribute("mensaje", "Solicitud Rechazada con Éxito");
@@ -467,58 +472,72 @@ public class PodologoController {
 		model.addAttribute("atenciones", atenciones);
 		return "podologo/atenciones";
 	}
+
 	@RequestMapping(value = "/podologo/misAtenciones", method = RequestMethod.GET)
 	public String misAtenciones(Model model, @ModelAttribute("podologo") Podologo podologo) {
 		Parametro parametro = parametroService.findOne(Parametros.ESTADO_AGENDA_PENDIENTE);
-		List<Agenda> atencionesPendientes =agendaService.findByPodologoAndParamEstadoAgenda(podologo, parametro);
+		List<Agenda> atencionesPendientes = agendaService.findByPodologoAndParamEstadoAgenda(podologo, parametro);
 		parametro = parametroService.findOne(Parametros.ESTADO_AGENDA_ACEPTADA);
-		List<Agenda> atencionesRealizadas =agendaService.findByPodologoAndParamEstadoAgenda(podologo, parametro);
-	 
+		List<Agenda> atencionesRealizadas = agendaService.findByPodologoAndParamEstadoAgenda(podologo, parametro);
+
 		model.addAttribute("atencionesPendientes", atencionesPendientes);
 		model.addAttribute("atencionesRealizadas", atencionesRealizadas);
 		return "podologo/atenciones";
 	}
+
 	@RequestMapping(value = "/podologo/ingresarAtencion", method = RequestMethod.GET)
 	public String ingresarAtencion(Model model, @ModelAttribute("podologo") Podologo podologo,
 			@RequestParam("id") int id) {
 		Agenda agenda = agendaService.findById(id);
-		Atencion atencion =new Atencion();
+		Atencion atencion = new Atencion();
 		atencion.setAgenda(agenda);
-		model.addAttribute("atencionForm",atencion);
-		model.addAttribute("agendaParaFinalizar",agenda);
+		model.addAttribute("atencionForm", atencion);
+		model.addAttribute("agendaParaFinalizar", agenda);
 		return "podologo/guardarAtencion";
 	}
+
 	@RequestMapping(value = "/podologo/verAtencion", method = RequestMethod.GET)
-	public String verAtencion(Model model, @ModelAttribute("podologo") Podologo podologo,
-			@RequestParam("id") int id) {
+	public String verAtencion(Model model, @ModelAttribute("podologo") Podologo podologo, @RequestParam("id") int id) {
 		Agenda agenda = agendaService.findById(id);
-		Atencion atencion=atencionService.findByAgenda(agenda);
-		model.addAttribute("atencion",atencion);
+		Atencion atencion = atencionService.findByAgenda(agenda);
+		model.addAttribute("atencion", atencion);
 		return "podologo/verAtencion";
 	}
+
 	@RequestMapping(value = "/podologo/guardarAtencion", method = RequestMethod.POST)
 	public String guardarAtencion(Model model, @ModelAttribute("atencionForm") Atencion atencion,
-			@RequestParam("archivo") MultipartFile archivo, @RequestParam("evaluacionStar") String evaluacionStar,@ModelAttribute("agendaParaFinalizar") Agenda agenda,@RequestParam("comentario") String comentario ) {
+			@RequestParam("archivo") MultipartFile archivo, @RequestParam("evaluacionStar") String evaluacionStar,
+			@ModelAttribute("agendaParaFinalizar") Agenda agenda, @RequestParam("comentario") String comentario) {
 		FileManagerUtil fileManagerUtil = new FileManagerUtil();
 		if (!archivo.isEmpty()) {
 			String file = fileManagerUtil.getBase64FromFoto(archivo);
 			atencion.setFoto(file);
 		}
-		
+
 		Parametro parametro = parametroService.findOne(Parametros.ESTADO_AGENDA_ACEPTADA);
 		agenda.setParamEstadoAgenda(parametro);
 		agendaService.save(agenda);
 		atencion.setAgenda(agenda);
-		Evaluacion evaluacion =new Evaluacion();
+		Evaluacion evaluacion = new Evaluacion();
 		evaluacion.setPodologo(atencion.getAgenda().getPodologo());
 		evaluacion.setPaciente(atencion.getAgenda().getPaciente());
 		evaluacion.setComentarioPodologo(comentario);
 		evaluacion.setValorPaciente(Integer.parseInt(evaluacionStar));
-	 
-		 
+
 		atencion.setEvaluacion(evaluacion);
-  
+
 		atencionService.save(atencion);
+
+		parametro = parametroService.findOne(Parametros.ESTADO_MENSAJE_NO_VISTO);
+		Notificacionpaciente notificacionpaciente = new Notificacionpaciente();
+		notificacionpaciente.setPaciente(atencion.getAgenda().getPaciente());
+		notificacionpaciente.setParamEstadoNotificacion(parametro);
+		notificacionpaciente.setUrl(NotificacionPacienteConstantes.EVALUAR_PROFESIONAL);
+		notificacionpaciente.setMensaje(NotificacionPacienteConstantes.MSG_EVALUAR_PROFESIONAL+ atencion.getAgenda().getPodologo().getNombres());
+		notificacionpaciente.setFecha(DateUtil.getFechaHoyString());
+		notificacionpaciente.setHora(DateUtil.getHourSystem());
+		notificacionpacienteService.save(notificacionpaciente);
+		
 		model.addAttribute("mensaje", "Atención Finalizada con Éxito");
 		return "podologo/podologo";
 	}

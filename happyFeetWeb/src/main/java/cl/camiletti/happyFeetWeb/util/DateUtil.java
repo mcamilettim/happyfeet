@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 
 import cl.camiletti.happyFeetWeb.model.Paciente;
@@ -28,6 +29,15 @@ public class DateUtil {
 			paciente.setEdad(this.getAge(paciente.getFechaNacimiento()));
 		}
 		return pacientes;
+	}
+
+	public static String getHourSystem() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		int hours = calendar.get(Calendar.HOUR_OF_DAY);
+		int minutes = calendar.get(Calendar.MINUTE);
+		//int seconds = calendar.get(Calendar.SECOND);
+		return hours + ":" + minutes;
 	}
 
 	public String formatearFecha(String date) {

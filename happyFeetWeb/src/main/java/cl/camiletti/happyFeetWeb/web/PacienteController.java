@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import cl.camiletti.happyFeetWeb.model.Agenda;
 import cl.camiletti.happyFeetWeb.model.Atencion;
 import cl.camiletti.happyFeetWeb.model.Comuna;
+import cl.camiletti.happyFeetWeb.model.Evaluacion;
 import cl.camiletti.happyFeetWeb.model.Horario;
 import cl.camiletti.happyFeetWeb.model.Paciente;
 import cl.camiletti.happyFeetWeb.model.Parametro;
@@ -32,7 +33,9 @@ import cl.camiletti.happyFeetWeb.model.Usuario;
 import cl.camiletti.happyFeetWeb.service.AgendaService;
 import cl.camiletti.happyFeetWeb.service.AtencionService;
 import cl.camiletti.happyFeetWeb.service.ComunaService;
+import cl.camiletti.happyFeetWeb.service.EvaluacionService;
 import cl.camiletti.happyFeetWeb.service.HorarioService;
+import cl.camiletti.happyFeetWeb.service.NotificacionpacienteService;
 import cl.camiletti.happyFeetWeb.service.PacienteService;
 import cl.camiletti.happyFeetWeb.service.ParametroService;
 import cl.camiletti.happyFeetWeb.service.PatologiaService;
@@ -45,11 +48,12 @@ import cl.camiletti.happyFeetWeb.util.Constantes;
 import cl.camiletti.happyFeetWeb.util.DateUtil;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 import cl.camiletti.happyFeetWeb.util.Mail;
+import cl.camiletti.happyFeetWeb.util.NotificacionUtil;
 import cl.camiletti.happyFeetWeb.util.Parametros;
 import cl.camiletti.happyFeetWeb.util.Seccion;
 
 @Controller
-@SessionAttributes(value = { "sessionUser", "paciente","pacienteSession" })
+@SessionAttributes(value = { "sessionUser", "paciente","notificaciones" })
 public class PacienteController {
 	@Autowired
 	PodologoService podologoService;
@@ -86,10 +90,14 @@ public class PacienteController {
 
 	@Autowired
 	private Environment env;
- 
+	
+	@Autowired
+	private NotificacionpacienteService notificacionpacienteService;
 	
 	@Autowired
 	private PatologiaService patologiaService;
+	@Autowired
+	private EvaluacionService evaluacionService;
 
 	@RequestMapping(value = "/registrarPaciente", method = RequestMethod.GET)
 	public String registration(Model model) {
@@ -149,6 +157,7 @@ public class PacienteController {
 	public String redirect(Model model) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Paciente paciente = pacienteService.findByEmail(user.getUsername()); 
+		NotificacionUtil.cargaNotificacionesPaciente(model, paciente, notificacionpacienteService, parametroService);
 		model.addAttribute("paciente", paciente);
 		return "paciente/paciente";
 	}
@@ -237,14 +246,24 @@ public class PacienteController {
 		return "paciente/detalleAtencion";
 	}
 
-	@RequestMapping(value = "/paciente/califica", method = RequestMethod.GET)
-	public String calificar(Model model) {
+	@RequestMapping(value = "/paciente/evaluar", method = RequestMethod.GET)
+	public String evaluar(Model model,@RequestParam("idNotificacion") int id) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Paciente paciente = pacienteService.findByEmail(user.getUsername());
+		NotificacionUtil.cambiaEstadoNotificacionPaciente(model, paciente, notificacionpacienteService, parametroService, id);
 		model.addAttribute("paciente", paciente);
-		return "paciente/paciente";
+		List<Evaluacion> evaluacionesPendientes =evaluacionService.findByPacienteAndValorPodologo(paciente, 0);
+		model.addAttribute("evaluacionesPendientes", evaluacionesPendientes);
+		return "paciente/evaluaciones";
 	}
-
+	@RequestMapping(value = "/paciente/verAtencionParaEvaluar", method = RequestMethod.GET)
+	public String verAtencionParaEvaluar(Model model,@RequestParam("idEvaluacion") int id) {
+		Evaluacion evaluacion=evaluacionService.findById(id);
+		Atencion atencion=atencionService.findByEvaluacion(evaluacion);
+		model.addAttribute("atencionForm", atencion);
+		return "paciente/guardarAtencion";
+	}
+	
 	@RequestMapping(value = "/paciente/quizPatologia", method = RequestMethod.GET)
 	public String solicitud(Model model) {
 		List<Patologia> patologias = patologiaService.findAll();

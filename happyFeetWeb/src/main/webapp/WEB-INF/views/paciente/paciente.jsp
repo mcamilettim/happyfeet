@@ -1,7 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
@@ -95,23 +95,34 @@
 			<!-- /.navbar-header -->
 
 			<ul class="nav navbar-top-links navbar-right">
-				<li class="dropdown" style="padding-left: 10px;"> 
-				<Strong>Bienvenid<c:if test="${paciente.paramSexo.id==6}">o</c:if><c:if test="${paciente.paramSexo.id==7}">a</c:if>
-							${paciente.nombres}</Strong>
-					 </li>
-				<li class="dropdown"><a class="dropdown-toggle"
-					data-toggle="dropdown" href="#"> <i
-						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-				</a>
+				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
+							test="${paciente.paramSexo.id==6}">o</c:if> <c:if
+							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
+				</Strong></li>
+				<li class="dropdown"><c:if test="${empty notificaciones}">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+						</a>
+					</c:if> <c:if test="${not empty notificaciones}">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i><span
+							class="badge">${notificaciones.size()}</span>
+						</a>
+					</c:if>
 					<ul class="dropdown-menu dropdown-messages">
-						<li><a href="#"> <strong></strong> <span
-								class="pull-right text-muted"> <em>Ahora</em>
-							</span> Sin mensajes nuevos.
-						</a></li>
-						<li class="divider"></li>
+						<c:if test="${not empty notificaciones}">
+							<c:forEach items="${notificaciones}" var="notificacion">
+								<li><a
+									href="${notificacion.url}?idNotificacion=${notificacion.id}">
+										<strong></strong> <span class="pull-right text-muted"><em>${notificacion.fecha}</em>
+									</span> ${notificacion.titulo}
+								</a></li>
+							</c:forEach>
+						</c:if>
+						 
 						<li><a class="text-center"
 							href="${contextPath}/paciente/vermensajes"> <strong>Ver
-									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
+									todas las notificaciones</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
 					</ul> <!-- /.dropdown-messages --></li>
 
@@ -163,8 +174,9 @@
 								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
 						<li><a href="${contextPath}/paciente/misMensajes"><i
 								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
-						<li><a href="${contextPath}/paciente/calificar"><i
-								class="fa fa-star-half-o fa-fw"></i> Calificar a profesional</a></li>
+						<li><a href="${contextPath}/paciente/evaluaciones"><i
+								class="fa fa-star-half-o fa-fw"></i> Evaluaciones a
+								Profesionales</a></li>
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
 					</ul>
@@ -194,7 +206,7 @@
 									${mensajeError}
 								</div>
 							</c:if>
-							
+
 						</h2>
 					</div>
 					<!-- /.col-lg-12 -->
@@ -219,8 +231,8 @@
 							</div>
 						</div>
 						<div class="panel-footer">
-							<span class="pull-left"><Strong>Solicitar hora
-									a con un Profesional</Strong></span> <span class="pull-right"><i
+							<span class="pull-left"><Strong>Solicitar hora a
+									con un Profesional</Strong></span> <span class="pull-right"><i
 								class="fa fa-arrow-circle-right"></i></span>
 							<div class="clearfix"></div>
 						</div>
@@ -271,7 +283,8 @@
 							</div>
 						</div>
 						<div class="panel-footer">
-							<span class="pull-left"><Strong>Hitorial de mis atenciones</Strong></span> <span class="pull-right"><i
+							<span class="pull-left"><Strong>Hitorial de mis
+									atenciones</Strong></span> <span class="pull-right"><i
 								class="fa fa-arrow-circle-right"></i></span>
 							<div class="clearfix"></div>
 						</div>
@@ -360,7 +373,7 @@
 			</div>
 
 
-			<br> <br> <br> <br><br> <br>  
+			<br> <br> <br> <br> <br> <br>
 			<!-- /.container-fluid -->
 		</div>
 		<!-- /#page-wrapper -->

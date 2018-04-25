@@ -1,7 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
@@ -72,7 +72,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
- 
+
 </head>
 
 <body>
@@ -80,7 +80,8 @@
 	<div id="wrapper">
 
 		<!-- Navigation -->
-			<nav class="navbar navbar-default navbar-static-top" role="navigation"
+		<!-- Navigation -->
+		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -95,11 +96,11 @@
 			<!-- /.navbar-header -->
 
 			<ul class="nav navbar-top-links navbar-right">
-				<li class="dropdown" style="padding-left: 10px;"> 
-				<Strong>Bienvenid<c:if test="${paciente.paramSexo.id==6}">o</c:if><c:if test="${paciente.paramSexo.id==7}">a</c:if>
-							${paciente.nombres}</Strong>
-					 </li>
-			<li class="dropdown"><c:if test="${empty notificaciones}">
+				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
+							test="${paciente.paramSexo.id==6}">o</c:if> <c:if
+							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
+				</Strong></li>
+				<li class="dropdown"><c:if test="${empty notificaciones}">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
 						</a>
@@ -119,7 +120,7 @@
 								</a></li>
 							</c:forEach>
 						</c:if>
-						 
+
 						<li><a class="text-center"
 							href="${contextPath}/paciente/vermensajes"> <strong>Ver
 									todas las notificaciones</strong> <i class="fa fa-angle-right"></i>
@@ -165,94 +166,120 @@
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
-								class="fa fa-home fa-fw"></i>Inicio</a></li>
+								class="fa fa-home fa-fw"></i> Inicio</a></li>
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
-								class="fa fa-edit fa-fw"></i><Strong>Solicitar Atención</Strong></a></li>
+								class="fa fa-edit fa-fw"></i>Solicitar Atención</a></li>
 						<li><a href="${contextPath}/paciente/misSolicitudes"><i
-								class="fa fa-comments fa-fw"></i> Solicitudes de Atención</a></li>
+								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes de Atención</a></li>
 						<li><a href="${contextPath}/paciente/misAtenciones"><i
 								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
-						<li><a href="${contextPath}/paciente/modificarDatos"><i
+						<li><a href="${contextPath}/paciente/misMensajes"><i
 								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
 						<li><a href="${contextPath}/paciente/evaluaciones"><i
-								class="fa fa-star-half-o fa-fw"></i> Evaluaciones a Profesionales</a></li>
+								class="fa fa-star-half-o fa-fw"></i> <Strong> Evaluaciones a
+								Profesionales</Strong></a></li>
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
-								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
+								class="fa fa-gear fa-fw"></i>Modificar mis
+									datos</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
 			</div>
 			<!-- /.navbar-static-side -->
 		</nav>
-
 		<!-- Page Content -->
 		<div id="page-wrapper">
-			<div class="container-fluid">
-				<br>
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<strong>Quiz Patología</strong>
-							</div>
-							<br>
-							<div align="center">
-								<p
-									style="text-align: justify; padding-left: 10px; padding-right: 10px">Estimado
-									Paciente, antes de que solicite una hora, necesitamos saber
-									cual es tu problema, por favor, seleccione una de estas
-									alternativas presionando el Botón...</p>
-								<button type="button" class="btn btn-warning">Esto Tengo</button>		 
-							</div>
-						 
+
+			<br>
+			<c:if test="${fn:length(evaluacionesPendientes) == 0}">
+				<div class="alert alert-info" align="center">
+					<Strong>Usted no posee evaluaciones pendientes</Strong>
+				</div>
+			</c:if>
+			<div class="row">
+				<div class="col-lg-12">
+
+					<c:if test="${mensaje != null}">
+						<div class="alert alert-success alert-dismissable">
+							<button type="button" class="close" data-dismiss="alert"
+								aria-hidden="true">×</button>
+							${mensaje}
 						</div>
-					</div></div>
-					</div>
-					<div class="container-fluid">
-					<div class="row">
-					<div class="col-sm-12" >
-					<div class="panel panel-default">
-								<table class="table table-hover">
-									<tr>
-										<th style="background-color: #F5F5F5"><div align="left">Patologia</div></th>
-										<th style="background-color: #F5F5F5"><div align="center">Click
-												en la Foto</div></th>
-									</tr>
-									<c:forEach items="${patologias}" var="patologia">
-										<tr>
-											<td><div>
-													<strong>${patologia.nombre}:</strong>
-													<p	style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">${patologia.descripcion}</p>
-												</div></td>
-											<td><img class="img-responsive"
-												style="width: 110px; height: 110px; padding-top: 10px;"
-												src="data:image/png;base64,${patologia.foto}" />
-												<button
-													onclick="location.href='${contextPath}/paciente/selectPodologo?id=${patologia.id}'"
-													type="button" class="btn btn-warning">Esto Tengo</button></td>
-										</tr>
-									</c:forEach>
-								</table>
-							</div></div>
+					</c:if>
+					<c:if test="${mensajeError != null}">
+						<div class="alert alert-danger alert-dismissable">
+							<button type="button" class="close" data-dismiss="alert"
+								aria-hidden="true">×</button>
+							${mensajeError}
+						</div>
+					</c:if>
 				</div>
 			</div>
+			<c:if test="${not empty evaluacionesPendientes}">
+				<div class="row">
+					<div class="col-lg-12">
+
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<strong>Evaluaciones Pendientes <span class="badge">${evaluacionesPendientes.size()}</span>
+								</strong>
+							</div>
+							<div align="left">
+								<p
+									style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">
+									A continuación se listan las evaluaciones de Profesionales que
+									están pendientes<br>
+								</p>
+							</div>
+							<br>
+							<table class="table">
+
+								<thead>
+
+									<tr>
+										<th>Profesional</th>
+										<th>Evaluar</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${evaluacionesPendientes}"
+										var="evaluacionPendiente">
+										<tr>
+											<td>${evaluacionPendiente.podologo.nombres} ${evaluacionPendiente.podologo.apellidos}</td>
+											<td><a
+												href="${contextPath}/paciente/verAtencionParaEvaluar?idEvaluacion=${evaluacionPendiente.id}">Ver Atención
+													Atención</a></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+
+							</table>
+						</div>
+					</div>
+				</div>
+			</c:if>
 		</div>
-	 </div>
+
+		<!-- /#page-wrapper -->
 
 
-	<!-- jQuery -->
-	<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+		<!-- /#wrapper -->
 
-	<!-- Bootstrap Core JavaScript -->
-	<script
-		src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+		<!-- jQuery -->
+		<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 
-	<!-- Metis Menu Plugin JavaScript -->
-	<script
-		src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
+		<!-- Bootstrap Core JavaScript -->
+		<script
+			src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 
-	<!-- Custom Theme JavaScript -->
-	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+		<!-- Metis Menu Plugin JavaScript -->
+		<script
+			src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
+
+		<script src="${contextPath}/resources/js/jquery-ui.min.js"></script>
+
+		<!-- Custom Theme JavaScript -->
+		<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
 </body>
 
 </html>

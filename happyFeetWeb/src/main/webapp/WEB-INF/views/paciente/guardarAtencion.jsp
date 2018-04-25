@@ -1,8 +1,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
@@ -66,6 +66,8 @@
 <link
 	href="${contextPath}/resources/vendor/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
+	<link href="${contextPath}/resources/css/evaluacion/css/style.css"
+	rel="stylesheet">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -79,7 +81,7 @@
 <body>
 
 	<div id="wrapper">
-
+ 
 		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
@@ -100,7 +102,7 @@
 							test="${paciente.paramSexo.id==6}">o</c:if> <c:if
 							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
 				</Strong></li>
-			<li class="dropdown"><c:if test="${empty notificaciones}">
+				<li class="dropdown"><c:if test="${empty notificaciones}">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
 						</a>
@@ -120,7 +122,7 @@
 								</a></li>
 							</c:forEach>
 						</c:if>
-						 
+
 						<li><a class="text-center"
 							href="${contextPath}/paciente/vermensajes"> <strong>Ver
 									todas las notificaciones</strong> <i class="fa fa-angle-right"></i>
@@ -170,75 +172,53 @@
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
 								class="fa fa-edit fa-fw"></i>Solicitar Atención</a></li>
 						<li><a href="${contextPath}/paciente/misSolicitudes"><i
-								class="fa fa-calendar-plus-o fa-fw"></i><Strong>Solicitudes
-									de Atención</Strong></a></li>
+								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes de Atención</a></li>
 						<li><a href="${contextPath}/paciente/misAtenciones"><i
 								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
 						<li><a href="${contextPath}/paciente/misMensajes"><i
 								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
 						<li><a href="${contextPath}/paciente/evaluaciones"><i
-								class="fa fa-star-half-o fa-fw"></i> Evaluaciones a Profesionales</a></li>
+								class="fa fa-star-half-o fa-fw"></i> <Strong>
+									Evaluaciones a Profesionales</Strong></a></li>
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
-								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
+								class="fa fa-gear fa-fw"></i>Modificar mis datos</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
 			</div>
 			<!-- /.navbar-static-side -->
 		</nav>
-
 		<!-- Page Content -->
 		<div id="page-wrapper">
 			<br>
-			<div class="row">
-				<div class="col-lg-12">
-
-					<c:if test="${mensaje != null}">
-						<div class="alert alert-success alert-dismissable">
-							<button type="button" class="close" data-dismiss="alert"
-								aria-hidden="true">×</button>
-							${mensaje}
-						</div>
-					</c:if>
-					<c:if test="${mensajeError != null}">
-						<div class="alert alert-danger alert-dismissable">
-							<button type="button" class="close" data-dismiss="alert"
-								aria-hidden="true">×</button>
-							${mensajeError}
-						</div>
-					</c:if>
-				</div>
-			</div>
-
-			<div class="row">
+				<div class="row">
 				<div class="col-lg-12">
 
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<strong>Detalle de Solicitud
-								${solicitudAtencion.fechaSolicitud}</strong>
+							<strong>Detalle de Atención Fecha
+								${atencionForm.agenda.horario.fecha} ${atencionForm.agenda.horario.hora}
+								- ${atencionForm.agenda.horario.horaFin}</strong>
 						</div>
 
 
 						<table class="table">
 							<thead>
 								<tr>
-									<th style="background: #FAFAFA;"><div align="center">Foto
-											Enviada por Paciente</div></th>
-									<th style="background: #FAFAFA;"><div align="center">Foto
-											referencial Patología ${solicitudAtencion.patologia.nombre}</div></th>
+									<th style="background: #FAFAFA;"><div align="center">ANTES</div></th>
+									<th style="background: #FAFAFA;"><div align="center">DESPUES</div></th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
 									<td><div align="center">
 											<img class="img-responsive"
-												src="data:image/png;base64,${solicitudAtencion.fotoPiePath}"
+												src="data:image/png;base64,${atencionForm.agenda.fotoPiePath}"
 												style="width: 200px; height: 200px;">
 										</div></td>
 									<td><div align="center">
 											<img class="img-responsive"
-												src="data:image/png;base64,${solicitudAtencion.patologia.foto}"
+												src="data:image/png;base64,${atencionForm.foto}"
 												style="width: 200px; height: 200px;">
 										</div></td>
 								</tr>
@@ -259,161 +239,182 @@
 							<tbody>
 								<tr>
 									<td colspan="2"><div align="center">
-											<c:choose>
-												<c:when test="${empty solicitudAtencion.fotoViajePath}">
-													<img src="${contextPath}/resources/img/working.png"
-														class="img-responsive"
-														style="width: 200px; height: 200px;">
-												</c:when>
-												<c:otherwise>
-													<img
-														src="data:image/png;base64,${solicitudAtencion.fotoViajePath}"
-														class="img-responsive"
-														style="width: 500px; height: 300px;">
-
-												</c:otherwise>
-											</c:choose>
+											<img class="img-responsive"
+												src="data:image/png;base64,${atencionForm.agenda.fotoViajePath}"
+												style="width: 600px; height: 400px;">
 										</div></td>
 
 								</tr>
 							</tbody>
 						</table>
 						<br>
+ 
+							<table class="table">
 
-						<table class="table">
-							<tr>
-								<th class="bg-info">Estado</th>
-								<c:if
-									test="${solicitudAtencion.paramEstadoSolicitudAtencion.valor eq 'Pendiente'}">
-									<td style="background: #FAFAFA;"><button type="button"
-											class="btn btn-warning">PENDIENTE</button></td>
-								</c:if>
-								<c:if
-									test="${solicitudAtencion.paramEstadoSolicitudAtencion.valor eq 'Rechazada'}">
-									<td style="background: #FAFAFA;"><button type="button"
-											class="btn btn-danger">RECHAZADA</button></td>
-								</c:if>
-								<c:if
-									test="${solicitudAtencion.paramEstadoSolicitudAtencion.valor eq 'Aceptada'}">
-									<td style="background: #FAFAFA;"><button type="button"
-											class="btn btn-success">ACEPTADA</button></td>
-								</c:if>
-
-							</tr>
-							<tr>
-								<th class="bg-info">Horario Solicitado</th>
-								<td style="background: #FAFAFA;">${solicitudAtencion.horario.fecha}
-									${solicitudAtencion.horario.hora} -
-									${solicitudAtencion.horario.horaFin}</td>
-							</tr>
-							<tr>
-								<th class="bg-info">Diagnóstico</th>
-								<td style="background: #FAFAFA;">${solicitudAtencion.patologia.nombre}</td>
-							</tr>
-							<tr>
-								<th class="bg-info">Nombre Podólogo</th>
-								<td style="background: #FAFAFA;">${solicitudAtencion.podologo.nombres}
-									${solicitudAtencion.podologo.apellidos}</td>
-							</tr>
-							<tr>
-								<th class="bg-info">Diabético</th>
-								<c:if test="${not empty solicitudAtencion.paciente.diabetico}">
-									<td style="background: #FAFAFA;">SI</td>
-								</c:if>
-								<c:if test="${empty solicitudAtencion.paciente.diabetico}">
-									<td style="background: #FAFAFA;">NO</td>
-								</c:if>
-
-							</tr>
-							<tr>
-								<th class="bg-info">Ubicación</th>
-								<td style="background: #FAFAFA;">${solicitudAtencion.paciente.ubicacion.nombre}</td>
-							</tr>
-							<tr>
-								<th class="bg-info">Tarifa por Kilómetro</th>
-								<td style="background: #FAFAFA;">$<fmt:formatNumber
-										value="${solicitudAtencion.presupuesto.tarifaKM}"
-										type="currency" pattern="#,##0" /></td>
-							</tr>
-							<tr>
-								<th class="bg-info">Cantidad de Kilómetro</th>
-								<td style="background: #FAFAFA;">${solicitudAtencion.presupuesto.cantidadKM}</td>
-							</tr>
-							<tr>
-								<th class="bg-info">Monto Viaje</th>
-								<td style="background: #FAFAFA;">$<fmt:formatNumber
-										value="${solicitudAtencion.presupuesto.viajePodologo}"
-										type="currency" pattern="#,##0" /></td>
-							</tr>
-							<tr>
-								<th class="bg-info">Monto Patología</th>
-								<td style="background: #FAFAFA;">$<fmt:formatNumber
-										value="${solicitudAtencion.patologia.costo}" type="currency"
-										pattern="#,##0" /></td>
-							</tr>
-
-							<tr>
-								<td style="background: #FAFAFA;"><strong> Mi
-										Comentario</strong></td>
-								<td style="background: #FAFAFA;" align="left"><textarea
-										class="form-control" readonly="readonly">${solicitudAtencion.comentarioPaciente}</textarea></td>
-							</tr>
-							<c:if test="${solicitudAtencion.comentarioPodologo != null}">
 								<tr>
-									<td style="background: #FAFAFA;"><strong>
-											Comentario Podólogo</strong></td>
+									<th class="bg-info">Patología tratada</th>
+									<td style="background: #FAFAFA;">${atencionForm.agenda.patologia.nombre}</td>
+								</tr>
+								<tr>
+									<th class="bg-info">Nombre Paciente</th>
+									<td style="background: #FAFAFA;">${atencionForm.agenda.paciente.nombres}
+										${solicitudAtencion.paciente.apellidos}</td>
+								</tr>
+								<tr>
+									<th class="bg-info">Diabético</th>
+									<c:if test="${not empty atencion.agenda.paciente.diabetico}">
+										<td style="background: #FAFAFA;">SI</td>
+									</c:if>
+									<c:if test="${empty atencion.agenda.paciente.diabetico}">
+										<td style="background: #FAFAFA;">NO</td>
+									</c:if>
+
+								</tr>
+								<tr>
+									<th class="bg-info">Ubicación</th>
+									<td style="background: #FAFAFA;">${atencionForm.agenda.paciente.ubicacion.nombre}</td>
+								</tr>
+								<tr>
+									<th class="bg-info">Tarifa por Kilómetro</th>
+									<td style="background: #FAFAFA;">$<fmt:formatNumber
+											value="${atencionForm.agenda.presupuesto.tarifaKM}"
+											type="currency" pattern="#,##0" /></td>
+								</tr>
+								<tr>
+									<th class="bg-info">Cantidad de Kilómetro</th>
+									<td style="background: #FAFAFA;">${atencionForm.agenda.presupuesto.cantidadKM}</td>
+								</tr>
+								<tr>
+									<th class="bg-info">Monto Viaje</th>
+									<td style="background: #FAFAFA;">$<fmt:formatNumber
+											value="${atencionForm.agenda.presupuesto.viajePodologo}"
+											type="currency" pattern="#,##0" /></td>
+								</tr>
+								<tr>
+									<th class="bg-info">Monto Patología</th>
+									<td style="background: #FAFAFA;">$<fmt:formatNumber
+											value="${atencionForm.agenda.patologia.costo}" type="currency"
+											pattern="#,##0" /></td>
+								</tr>
+								<tr>
+									<th class="bg-success" colspan="2"><div>
+											Total por la Atención: $
+											<fmt:formatNumber
+												value="${atencionForm.agenda.presupuesto.total}" type="currency"
+												pattern="#,##0" />
+										</div></th>
+
+								</tr>
+								<tr>
+									<th>Diagnóstico y/o Procedimiento</th>
+									<td style="background: #FAFAFA;"><textarea
+											class="form-control" name="diagnostico" readonly="readonly">${atencionForm.diagnostico}</textarea></td>
+								</tr>
+								<tr>
+									<th>Indicaciones</th>
+									<td style="background: #FAFAFA;"><textarea
+											class="form-control" name="indicaciones" readonly="readonly">${atencionForm.indicaciones}</textarea></td>
+								</tr>
+								<tr>
+									<td style="background: #FAFAFA;"><strong>Evaluación
+											Paciente</strong></td>
+									<td align="left"><span class="rating"> <input
+											type="radio" class="rating-input" id="evaluacionStar-5"
+											name="evaluacionStar" value="5"> <label
+											for="evaluacionStar-5" class="rating-star"></label> <input
+											type="radio" value="4" class="rating-input"
+											id="evaluacionStar-4" name="evaluacionStar"> <label
+											for="evaluacionStar-4" class="rating-star"></label> <input
+											type="radio" class="rating-input" value="3"
+											id="evaluacionStar-3" name="evaluacionStar"> <label
+											for="evaluacionStar-3" class="rating-star"></label> <input
+											type="radio" class="rating-input" value="2"
+											id="evaluacionStar-2" name="evaluacionStar"> <label
+											for="evaluacionStar-2" class="rating-star"></label> <input
+											type="radio" class="rating-input" id="evaluacionStar-1"
+											name="evaluacionStar" value="1"> <label
+											for="evaluacionStar-1" class="rating-star"></label>
+									</span></td>
+
+								</tr>
+								<tr>
+									<td style="background: #FAFAFA;"><strong>Comentario
+											de la Atención </strong></td>
 									<td style="background: #FAFAFA;" align="left"><textarea
-											class="form-control" readonly="readonly">${solicitudAtencion.comentarioPodologo}</textarea></td>
+											class="form-control" name="comentario">${atencionForm.agenda.comentarioPodologo}</textarea></td>
 								</tr>
-							</c:if>
-							<tr>
-								<th class="bg-success" colspan="2"><div align="center">
-										Total por la Atención: $
-										<fmt:formatNumber
-											value="${solicitudAtencion.presupuesto.total}"
-											type="currency" pattern="#,##0" />
-									</div></th>
-							</tr>
-							<c:if
-								test="${solicitudAtencion.paramEstadoSolicitudAtencion.valor eq 'Pendiente'}">
-								<tr>
-									<th colspan="2">No te preocupes, el profesional responderá
-										tu solicitud en breve, sólo ten un poco más de paciecia.</th>
-								</tr>
-							</c:if>
-							<c:if
-								test="${solicitudAtencion.paramEstadoSolicitudAtencion.valor eq 'Rechazada'}">
-								<tr>
-									<th colspan="2">El profesional ha rechazado tu solicitud, sus motivos están en el comentario.</th>
-								</tr>
-							</c:if>
-						</table>
 
+								<tr>
+									<td align="right" colspan="2"><button type="button"
+											class="btn btn-primary" data-toggle="modal"
+											data-target="#exampleModal">Guardar Atención</button></td>
+
+								</tr>
+
+							</table>
+
+
+
+							<!-- Modal Aceptar-->
+							<div class="modal fade" id="exampleModal" tabindex="-1"
+								role="dialog" aria-labelledby="exampleModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h4 class="modal-title" id="exampleModalLabel">
+												<strong>Confirmación de datos de Atención</strong>
+											</h4>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<p style="text-align: justify;">
+												<b>Esta seguro que desea guardar la evaluaciòn del profesional?</b>
+											</p>
+
+
+										</div>
+										<div class="modal-footer" align="left">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Cancelar</button>
+											<button type="submit" class="btn btn-primary"
+												name="respuesta" value="si">Si, estoy seguro</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- Modal Aceptar-->
+						 
 					</div>
-					<br>
-				</div>
 
-				<div>
+				</div>	</div>	</div>
+</div>
 
-					<div></div>
-				</div>
-			</div>
-		</div>
-	</div>
+ 
 
-	<!-- jQuery -->
-	<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+				<!-- /#page-wrapper -->
 
-	<!-- Bootstrap Core JavaScript -->
-	<script
-		src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 
-	<!-- Metis Menu Plugin JavaScript -->
-	<script
-		src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
+				<!-- /#wrapper -->
 
-	<!-- Custom Theme JavaScript -->
-	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+				<!-- jQuery -->
+				<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+
+				<!-- Bootstrap Core JavaScript -->
+				<script
+					src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+				<!-- Metis Menu Plugin JavaScript -->
+				<script
+					src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
+
+				<script src="${contextPath}/resources/js/jquery-ui.min.js"></script>
+
+				<!-- Custom Theme JavaScript -->
+				<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
 </body>
 
 </html>
