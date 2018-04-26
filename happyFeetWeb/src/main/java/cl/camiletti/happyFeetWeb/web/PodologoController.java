@@ -193,37 +193,26 @@ public class PodologoController {
 	}
 
 	@RequestMapping(value = "/podologo/enviarMensaje", method = RequestMethod.GET)
-	public String verMensajes(@ModelAttribute("paciente") Paciente paciente,
-			@ModelAttribute("podologo") Podologo podologo, Model model,
-			@ModelAttribute("pacientes") List<Paciente> pacientes, @RequestParam("rut") String rutPaciente) {
-		podologo = podologoService.findByEmail(podologo.getEmail());
-		paciente = pacienteService.find(rutPaciente);
+	public String verMensajes(@ModelAttribute("podologo") Podologo podologo, Model model, @RequestParam("rutPaciente") String rutPaciente) {
+		Paciente paciente = pacienteService.find(rutPaciente);
 		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacion(podologo, paciente);
 		model.addAttribute("conversacion", conversacion);
-		model.addAttribute("pacientes", pacientes);
 		model.addAttribute("paciente", paciente);
-		model.addAttribute("podologo", podologo);
-
 		model.addAttribute("mensajeForm", new Mensaje());
 		return "podologo/enviarMensaje";
 	}
 
 	@RequestMapping(value = "/podologo/enviarMensaje", method = RequestMethod.POST)
-	public String enviarMensaje(@ModelAttribute("mensajeForm") Mensaje mensaje, BindingResult bindingResult,
-			@ModelAttribute("paciente") Paciente paciente, @ModelAttribute("podologo") Podologo podologo, Model model,
-			@ModelAttribute("pacientes") List<Paciente> pacientes) {
-		podologo = podologoService.findByEmail(podologo.getEmail());
-		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacion(podologo, paciente);
+	public String enviarMensaje(@ModelAttribute("mensajeForm") Mensaje mensaje,
+			@ModelAttribute("paciente") Paciente paciente, @ModelAttribute("podologo") Podologo podologo, Model model) {
+		
 		mensaje.setEmisorRut(podologo.getRut());
 		mensaje.setReceptorRut(paciente.getRut());
 		mensajeRepository.save(mensaje);
-		mensaje.setCuerpo("Yo: " + mensaje.getCuerpo());
-		conversacion.add(mensaje);
-		mensaje = null;
+		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacion(podologo, paciente);
 		model.addAttribute("conversacion", conversacion);
-		model.addAttribute("pacientes", pacientes);
-		model.addAttribute("paciente", paciente);
-		model.addAttribute("podologo", podologo);
+		model.addAttribute("mensajeForm", new Mensaje());
+;
 		return "podologo/enviarMensaje";
 	}
 

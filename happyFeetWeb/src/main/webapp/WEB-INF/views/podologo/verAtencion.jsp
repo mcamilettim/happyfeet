@@ -297,7 +297,7 @@
 								<tr>
 									<th class="bg-info">Nombre Paciente</th>
 									<td style="background: #FAFAFA;">${atencion.agenda.paciente.nombres}
-										${solicitudAtencion.paciente.apellidos}</td>
+										${solicitudAtencion.paciente.apellidos} &nbsp; &nbsp; &nbsp;<a class="btn btn-info" href="enviarMensaje?rutPaciente=${atencion.agenda.paciente.rut}" role="button">Enviar Mensaje</a></td>
 								</tr>
 								<tr>
 									<th class="bg-info">Diabético</th>

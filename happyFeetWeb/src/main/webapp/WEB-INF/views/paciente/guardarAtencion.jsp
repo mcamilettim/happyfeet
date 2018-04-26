@@ -66,7 +66,7 @@
 <link
 	href="${contextPath}/resources/vendor/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
-	<link href="${contextPath}/resources/css/evaluacion/css/style.css"
+<link href="${contextPath}/resources/css/evaluacion/css/style.css"
 	rel="stylesheet">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -81,7 +81,7 @@
 <body>
 
 	<div id="wrapper">
- 
+
 		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
@@ -191,14 +191,15 @@
 		<!-- Page Content -->
 		<div id="page-wrapper">
 			<br>
-				<div class="row">
+			<div class="row">
 				<div class="col-lg-12">
 
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<strong>Detalle de Atención Fecha
-								${atencionForm.agenda.horario.fecha} ${atencionForm.agenda.horario.hora}
-								- ${atencionForm.agenda.horario.horaFin}</strong>
+								${atencionForm.agenda.horario.fecha}
+								${atencionForm.agenda.horario.hora} -
+								${atencionForm.agenda.horario.horaFin}</strong>
 						</div>
 
 
@@ -248,7 +249,7 @@
 							</tbody>
 						</table>
 						<br>
- 
+						<form action="guardarAtencionParaEvaluar" method="post">
 							<table class="table">
 
 								<tr>
@@ -293,15 +294,15 @@
 								<tr>
 									<th class="bg-info">Monto Patología</th>
 									<td style="background: #FAFAFA;">$<fmt:formatNumber
-											value="${atencionForm.agenda.patologia.costo}" type="currency"
-											pattern="#,##0" /></td>
+											value="${atencionForm.agenda.patologia.costo}"
+											type="currency" pattern="#,##0" /></td>
 								</tr>
 								<tr>
 									<th class="bg-success" colspan="2"><div>
 											Total por la Atención: $
 											<fmt:formatNumber
-												value="${atencionForm.agenda.presupuesto.total}" type="currency"
-												pattern="#,##0" />
+												value="${atencionForm.agenda.presupuesto.total}"
+												type="currency" pattern="#,##0" />
 										</div></th>
 
 								</tr>
@@ -372,7 +373,8 @@
 										</div>
 										<div class="modal-body">
 											<p style="text-align: justify;">
-												<b>Esta seguro que desea guardar la evaluaciòn del profesional?</b>
+												<b>Esta seguro que desea guardar la evaluaciòn del
+													profesional?</b>
 											</p>
 
 
@@ -387,34 +389,36 @@
 								</div>
 							</div>
 							<!-- Modal Aceptar-->
-						 
+						</form>
 					</div>
 
-				</div>	</div>	</div>
-</div>
-
- 
-
-				<!-- /#page-wrapper -->
+				</div>
+			</div>
+		</div>
+	</div>
 
 
-				<!-- /#wrapper -->
 
-				<!-- jQuery -->
-				<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+	<!-- /#page-wrapper -->
 
-				<!-- Bootstrap Core JavaScript -->
-				<script
-					src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 
-				<!-- Metis Menu Plugin JavaScript -->
-				<script
-					src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
+	<!-- /#wrapper -->
 
-				<script src="${contextPath}/resources/js/jquery-ui.min.js"></script>
+	<!-- jQuery -->
+	<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 
-				<!-- Custom Theme JavaScript -->
-				<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+	<!-- Bootstrap Core JavaScript -->
+	<script
+		src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+	<!-- Metis Menu Plugin JavaScript -->
+	<script
+		src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
+
+	<script src="${contextPath}/resources/js/jquery-ui.min.js"></script>
+
+	<!-- Custom Theme JavaScript -->
+	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
 </body>
 
 </html>

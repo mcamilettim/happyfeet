@@ -50,4 +50,10 @@ public class AgendaServiceImpl implements AgendaService{
 	public List<Agenda> findByPodologoAndParamEstadoAgenda(Podologo podologo, Parametro parametro) {
 		return agendaRepository.findByPodologoAndParamEstadoAgenda(podologo, parametro);
 	}
+
+	@Override
+	public List<Agenda> findByPacienteAndParamEstadoAgenda(Paciente paciente, Parametro parametro) {
+		 
+		return agendaRepository.findByPacienteAndParamEstadoAgenda(paciente, parametro);
+	}
 }

@@ -1,7 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
@@ -168,49 +168,76 @@
 
 		<!-- Page Content -->
 		<div id="page-wrapper">
-			<div class="container-fluid">
 				<br>
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<strong>Mis atenciones Realizadas</strong>
-							</div>
-							<br>
-							<div align="center">
-								<p style="text-align: justify; padding-left: 10px; padding-right: 10px;">A continuación se detallan todas las atenciones
-									efectuadas en la aplicación, no se contemplan las horas
-									agendadas que no se llevaron a cabo.</p>
-								<br>
-							</div>
-							<div class="container-fluid">
-								<div class="table-responsive">
-									<table class="table table-hover">
-										<tr>
-											<th><div align="center">Podologo tratante</div></th>
-											<th><div align="center">Patologia</div></th>
-											<th><div align="center">Fecha</div></th>
-											<th><div align="center">Detalle</div></th>
-										</tr>
-										<c:forEach items="${atenciones}" var="atencion">
-											<tr>
-												<td align="center">${atencion.podologo.nombres}
-													${atencion.podologo.apellidos}</td>
-												<td align="center">${atencion.patologia.nombre}</td>
-												<td align="center">${atencion.agenda.horario.fecha}</td>
-												<td align="center"><button onclick="location.href='${contextPath}/paciente/detalleAtencion?id=${atencion.id}'"
-										type="submit" class="btn btn-primary">Ver</button></td>
-											</tr>
-										</c:forEach>
-									</table>
-								</div>
-							</div>
-							<br> <br>
+			<div class="row">
+				<div class="col-lg-12">
+
+					<c:if test="${mensaje != null}">
+						<div class="alert alert-success alert-dismissable">
+							<button type="button" class="close" data-dismiss="alert"
+								aria-hidden="true">×</button>
+							${mensaje}
 						</div>
-					</div>
-					<!-- /.row -->
+					</c:if>
+					<c:if test="${mensajeError != null}">
+						<div class="alert alert-danger alert-dismissable">
+							<button type="button" class="close" data-dismiss="alert"
+								aria-hidden="true">×</button>
+							${mensajeError}
+						</div>
+					</c:if>
 				</div>
 			</div>
+			<c:if test="${not empty atencionesRealizadas}">
+				<div class="row">
+					<div class="col-lg-12">
+
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<strong>Atenciones Realizadas <span class="badge">${atencionesRealizadas.size()}</span>
+								</strong>
+							</div>
+							<div align="left">
+								<p
+									style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">
+									A continuación se listan las atenciones efectuadas con
+									diagnóstico.<br>
+								</p>
+							</div>
+							<br>
+							<table class="table">
+
+
+								<thead>
+									<tr>
+										<th>Atención</th>
+										<th>Comuna</th>
+										<th>Monto</th>
+										<th>Detalle</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${atencionesRealizadas}"
+										var="AgendaRealizada">
+										<tr>
+											<td>${AgendaRealizada.horario.fecha}</td>
+											<td>${AgendaRealizada.paciente.ubicacion.comuna.nombre}</td>
+											<td>${AgendaRealizada.presupuesto.total}</td>
+											<td><a
+												href="${contextPath}/paciente/verAtencion?id=${AgendaRealizada.id}">Ver</a></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+
+							</table>
+						</div>
+					</div>
+				</div>
+			</c:if>
+			<c:if test="${fn:length(atencionesRealizadas) == 0}">
+				<div class="alert alert-info" align="center"><Strong>Usted no posee Atenciones</Strong></div>
+			</c:if>
+
 		</div>
 		</div>
 

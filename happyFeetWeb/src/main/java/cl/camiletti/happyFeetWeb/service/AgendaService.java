@@ -13,6 +13,7 @@ public interface AgendaService {
 	List<Agenda> findAll();
 	void deleteById(Agenda agenda);
 	List<Agenda> findByPaciente(Paciente paciente);
+	List<Agenda> findByPacienteAndParamEstadoAgenda(Paciente paciente,Parametro parametro);
 	List<Agenda> findByPodologo(Podologo podologo);
 	List<Agenda> findByPodologoAndParamEstadoAgenda(Podologo podologo, Parametro parametro);
 }

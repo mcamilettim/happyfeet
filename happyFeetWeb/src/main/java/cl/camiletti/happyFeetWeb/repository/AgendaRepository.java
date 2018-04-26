@@ -15,6 +15,7 @@ public interface AgendaRepository extends JpaRepository<Agenda, Long> {
 	  List<Agenda> findAll();	 	
 	  void delete(Agenda agenda);	 
 	  List<Agenda> findByPaciente(Paciente paciente);
+	  List<Agenda> findByPacienteAndParamEstadoAgenda(Paciente paciente,Parametro parametro);
 	  List<Agenda> findByPodologo(Podologo podologo);
 	  List<Agenda> findByPodologoAndParamEstadoAgenda(Podologo podologo, Parametro parametro);
 }

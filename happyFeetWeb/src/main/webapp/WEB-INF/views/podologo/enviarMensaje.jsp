@@ -207,7 +207,7 @@
 								<div align="center">
 									<img class="img-responsive"
 										style="width: 300px; height: 300px;"
-										src="${contextPath}/resources/imagenes/${paciente.foto}">
+										src="data:image/png;base64,${paciente.foto}">
 								</div>
 							</div>
 							<br>
@@ -222,7 +222,7 @@
 												<span class="glyphicon glyphicon-chevron-down"></span>
 											</button>
 											<ul class="dropdown-menu slidedown">
-												<li><a href="${contextPath}/podologo/enviarMensaje?rut=${paciente.rut}"><span
+												<li><a href="${contextPath}/podologo/enviarMensaje?rutPaciente=${paciente.rut}"><span
 														class="glyphicon glyphicon-refresh"> </span>Refresh</a></li>
 												 
 											</ul>
@@ -273,7 +273,7 @@
 									</div>
 									<div class="panel-footer">
 										<form:form method="POST" modelAttribute="mensajeForm"
-											action="${contextPath}/podologo/enviarMensaje?rut=${paciente.rut}">
+											action="${contextPath}/podologo/enviarMensaje?rutPaciente=${paciente.rut}">
 											<div class="input-group">
 
 												<spring:bind path="cuerpo">
@@ -296,10 +296,6 @@
 								</div>
 							</div>
 						</div>
-
-						<button
-							onclick="location.href='${contextPath}/podologo/historialPaciente?rut=${paciente.rut}'"
-							type="button" class="btn">Volver</button>
 					</div>
 
 					<!-- /.table-responsive -->
