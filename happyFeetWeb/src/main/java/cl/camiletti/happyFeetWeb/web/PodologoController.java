@@ -518,6 +518,7 @@ public class PodologoController {
 		notificacionpaciente.setPaciente(atencion.getAgenda().getPaciente());
 		notificacionpaciente.setParamEstadoNotificacion(parametro);
 		notificacionpaciente.setUrl(NotificacionPacienteConstantes.EVALUAR_PROFESIONAL);
+		notificacionpaciente.setTitulo(NotificacionPacienteConstantes.TITULO_EVALUAR_PROFESIONAL);
 		notificacionpaciente.setMensaje(NotificacionPacienteConstantes.MSG_EVALUAR_PROFESIONAL+ atencion.getAgenda().getPodologo().getNombres());
 		notificacionpaciente.setFecha(DateUtil.getFechaHoyString());
 		notificacionpaciente.setHora(DateUtil.getHourSystem());
