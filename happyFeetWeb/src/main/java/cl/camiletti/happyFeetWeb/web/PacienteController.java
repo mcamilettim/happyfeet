@@ -22,6 +22,7 @@ import cl.camiletti.happyFeetWeb.model.Atencion;
 import cl.camiletti.happyFeetWeb.model.Comuna;
 import cl.camiletti.happyFeetWeb.model.Evaluacion;
 import cl.camiletti.happyFeetWeb.model.Horario;
+import cl.camiletti.happyFeetWeb.model.Mensaje;
 import cl.camiletti.happyFeetWeb.model.Paciente;
 import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Patologia;
@@ -35,6 +36,7 @@ import cl.camiletti.happyFeetWeb.service.AtencionService;
 import cl.camiletti.happyFeetWeb.service.ComunaService;
 import cl.camiletti.happyFeetWeb.service.EvaluacionService;
 import cl.camiletti.happyFeetWeb.service.HorarioService;
+import cl.camiletti.happyFeetWeb.service.MensajeService;
 import cl.camiletti.happyFeetWeb.service.NotificacionpacienteService;
 import cl.camiletti.happyFeetWeb.service.PacienteService;
 import cl.camiletti.happyFeetWeb.service.ParametroService;
@@ -53,7 +55,7 @@ import cl.camiletti.happyFeetWeb.util.Parametros;
 import cl.camiletti.happyFeetWeb.util.Seccion;
 
 @Controller
-@SessionAttributes(value = { "sessionUser", "paciente", "notificaciones", "atencionParaFinalizar"})
+@SessionAttributes(value = { "sessionUser", "paciente", "notificaciones", "atencionParaFinalizar","podologo"})
 public class PacienteController {
 	@Autowired
 	PodologoService podologoService;
@@ -75,7 +77,8 @@ public class PacienteController {
 	HorarioService horarioService;
 	@Autowired
 	private SecurityService securityService;
-
+	@Autowired
+	private MensajeService mensajeService;
 	@Autowired
 	private UsuarioService usuarioService;
 
@@ -111,7 +114,28 @@ public class PacienteController {
 
 		return "paciente/registrar";
 	}
+	@RequestMapping(value = "/paciente/enviarMensaje", method = RequestMethod.GET)
+	public String verMensajes(@ModelAttribute("paciente") Paciente paciente, Model model, @RequestParam("rutPodologo") String rutPodologo) {
+		Podologo podologo = podologoService.find(rutPodologo);
+		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacionPaciente(paciente,podologo);
+		model.addAttribute("conversacion", conversacion);
+		model.addAttribute("podologo", podologo);
+		model.addAttribute("mensajeForm", new Mensaje());
+		return "paciente/enviarMensaje";
+	}
 
+	@RequestMapping(value = "/paciente/enviarMensaje", method = RequestMethod.POST)
+	public String enviarMensaje(@ModelAttribute("mensajeForm") Mensaje mensaje,
+			@ModelAttribute("paciente") Paciente paciente, @ModelAttribute("podologo") Podologo podologo, Model model) {
+		
+		mensaje.setReceptorRut(podologo.getRut());
+		mensaje.setEmisorRut(paciente.getRut());
+		mensajeService.save(mensaje);
+		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacion(podologo, paciente);
+		model.addAttribute("conversacion", conversacion);
+		model.addAttribute("mensajeForm", new Mensaje());
+		return "paciente/enviarMensaje";
+	}
 	@RequestMapping(value = "/registrarPaciente", method = RequestMethod.POST)
 	public String registration(@ModelAttribute("pacienteForm") Paciente pacienteForm, BindingResult bindingResult,
 			Model model, @RequestParam("fotoPerfil") MultipartFile fotoPerfilPath) {
@@ -266,6 +290,14 @@ public class PacienteController {
 		model.addAttribute("atencionParaFinalizar", atencion);
 		return "paciente/guardarAtencion";
 	}
+	@RequestMapping(value = "/paciente/verAtencion", method = RequestMethod.GET)
+	public String verAtencion(Model model, @RequestParam("id") int id) {
+		Agenda agenda = agendaService.findById(id);
+		Atencion atencion = atencionService.findByAgenda(agenda);
+		model.addAttribute("atencion", atencion);
+		model.addAttribute("podologo",agenda.getPodologo());
+		return "paciente/verAtencion";
+	}
 
 	@RequestMapping(value = "/paciente/guardarAtencionParaEvaluar", method = RequestMethod.POST)
 	public String guardarAtencionParaEvaluar(Model model, @ModelAttribute("atencionParaFinalizar") Atencion atencionParaFinalizar,
@@ -275,7 +307,7 @@ public class PacienteController {
 		atencionService.save(atencionParaFinalizar);
 		model.addAttribute("mensaje",
 				"Evaluación guardada con éxito");
-		return "paciente/index";
+		return "paciente/paciente";
 	}
 
 	@RequestMapping(value = "/paciente/quizPatologia", method = RequestMethod.GET)

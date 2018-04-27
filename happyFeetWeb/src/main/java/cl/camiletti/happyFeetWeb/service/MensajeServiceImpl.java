@@ -79,4 +79,31 @@ public class MensajeServiceImpl implements MensajeService{
 		conversacion.sort(comparadorMensajeUtil);
 		return conversacion;
 	}
+
+	@Override
+	public List<Mensaje> cargarConversacionPaciente(Paciente paciente, Podologo podologo) {
+		List<Mensaje> mensajesEmisorPodologo=mensajeRepository.findByEmisorRut(podologo.getRut());
+		List<Mensaje> mensajesEmisorPaciente=mensajeRepository.findByEmisorRut(paciente.getRut());
+
+		ArrayList<Mensaje> iterator=new ArrayList();
+		ArrayList<Mensaje> conversacion=new ArrayList();
+		iterator.addAll(mensajesEmisorPodologo);
+		iterator.addAll(mensajesEmisorPaciente);
+	
+			
+		for (Mensaje mensaje : iterator) {
+			if(mensaje.getEmisorRut().equals(paciente.getRut())&&mensaje.getReceptorRut().equals(podologo.getRut())){
+				conversacion.add(mensaje);
+			}
+			else{
+				if(mensaje.getEmisorRut().equals(podologo.getRut())&&mensaje.getReceptorRut().equals(paciente.getRut())){
+					conversacion.add(mensaje);
+				}
+				
+			}
+		}
+		
+		conversacion.sort(comparadorMensajeUtil);
+		return conversacion;
+	}
 }

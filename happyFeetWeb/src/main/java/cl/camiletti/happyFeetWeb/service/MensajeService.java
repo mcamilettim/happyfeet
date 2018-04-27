@@ -14,4 +14,5 @@ public interface MensajeService {
 	List<Mensaje> findByRutEmisor(String rutEmisor);
     List<Mensaje> findByRutReceptor(String rutReceptor);
     List<Mensaje> cargarConversacion(Podologo podologo, Paciente paciente);
+    List<Mensaje> cargarConversacionPaciente(Paciente paciente,Podologo podologo);
 }

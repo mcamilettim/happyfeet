@@ -96,19 +96,34 @@
 			<!-- /.navbar-header -->
 
 			<ul class="nav navbar-top-links navbar-right">
-				<li class="dropdown"><a class="dropdown-toggle"
-					data-toggle="dropdown" href="#"> <i
-						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-				</a>
+				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
+							test="${podologo.paramSexo.id==6}">o</c:if> <c:if
+							test="${podologo.paramSexo.id==7}">a</c:if> ${podologo.nombres}
+				</Strong></li>
+				<li class="dropdown"><c:if test="${empty notificaciones}">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+						</a>
+					</c:if> <c:if test="${not empty notificaciones}">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i><span
+							class="badge">${notificaciones.size()}</span>
+						</a>
+					</c:if>
 					<ul class="dropdown-menu dropdown-messages">
-						<li><a href="#"> <strong></strong> <span
-								class="pull-right text-muted"> <em>Ahora</em>
-							</span> Sin mensajes nuevos.
-						</a></li>
-						<li class="divider"></li>
+						<c:if test="${not empty notificaciones}">
+							<c:forEach items="${notificaciones}" var="notificacion">
+								<li><a
+									href="${notificacion.url}?idNotificacion=${notificacion.id}">
+										<strong></strong> <span class="pull-right text-muted"><em>${notificacion.fecha}</em>
+									</span> ${notificacion.titulo}
+								</a></li>
+							</c:forEach>
+						</c:if>
+
 						<li><a class="text-center"
-							href="${contextPath}/podologo/vermensajes"> <strong>Ver
-									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
+							href="${contextPath}/paciente/vermensajes"> <strong>Ver
+									todas las notificaciones</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
 					</ul> <!-- /.dropdown-messages --></li>
 
@@ -118,7 +133,7 @@
 						<i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-user">
-						<li><a href="${contextPath}/podologo/modificardatos"><i
+						<li><a href="${contextPath}/podologo/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i>Mis Datos</a></li>
 						<li class="divider"></li>
 						<li><a href="<c:url value="/logout" />"><i
@@ -142,36 +157,36 @@
 										<img src="data:image/png;base64,${podologo.foto}"
 											class="img-responsive" style="width: 200px;">
 									</c:otherwise>
-								</c:choose><br>
+								</c:choose>
+								<br>
 								<div align="center">
 									<span class="text-info text-center"><b>${podologo.nombres}
-											${podologo.apellidos}</b></span>
-								</div>
-
-								<div align="center">
-									<span class="text-info">Podólogo</span>
+											${podologo.apellidos}</b></span> <span class="text-info">Podólog<c:if
+											test="${podologo.paramSexo.id==6}">o</c:if> <c:if
+											test="${podologo.paramSexo.id==7}">a</c:if></span>
 								</div>
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/podologo/index"><i
-								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
-						<li><a href="${contextPath}/podologo/index"><i
-								class="fa fa-edit fa-fw"></i> Agendar Horario</a></li>
-						<li><a href="${contextPath}/podologo/modificardatos"><i
+								class="fa fa-home fa-fw"></i>Inicio</a></li>
+						<li><a href="${contextPath}/podologo/miAgenda"><i
+								class="fa fa-edit fa-fw"></i> Mi Horario</a></li>
+						<li><a href="${contextPath}/podologo/verSolicitudes"><i
+								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes de Atención</a></li>
+						<li><a href="${contextPath}/podologo/misAtenciones"><i
+								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
+						<li><a href="${contextPath}/podologo/misMensajes"><i
+								class="fa fa-comments fa-fw"></i><Strong> Mensajes</Strong></a></li>
+						<li><a href="${contextPath}/podologo/calificar"><i
+								class="fa fa-star-half-o fa-fw"></i> Calificar a paciente</a></li>
+						<li><a href="${contextPath}/podologo/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
-						<li><a href="${contextPath}/podologo/index"><i
-								class="fa fa-table fa-fw"></i> Historial de atenciones</a></li>
-						<li><a href="${contextPath}/podologo/index"><i
-								class="fa fa-edit fa-fw"></i> Solicitudes nuevas</a></li>
-						<li><a href="${contextPath}/podologo/pacientes"><i
-								class="fa fa-table fa-fw"></i> Lista de Pacientes</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
 			</div>
 			<!-- /.navbar-static-side -->
 		</nav>
-		<!-- Navigation -->
 
 
 		<!-- Page Content -->
@@ -203,7 +218,9 @@
 						<!-- /.panel-heading -->
 						<br>
 						<div class="row">
-							<div class="col-md-3">
+						<div class="col-md-2">
+						</div>
+							<div class="col-md-3" style="padding-top: 31px;">
 								<div align="center">
 									<img class="img-responsive"
 										style="width: 300px; height: 300px;"
@@ -222,9 +239,10 @@
 												<span class="glyphicon glyphicon-chevron-down"></span>
 											</button>
 											<ul class="dropdown-menu slidedown">
-												<li><a href="${contextPath}/podologo/enviarMensaje?rutPaciente=${paciente.rut}"><span
+												<li><a
+													href="${contextPath}/podologo/enviarMensaje?rutPaciente=${paciente.rut}"><span
 														class="glyphicon glyphicon-refresh"> </span>Refresh</a></li>
-												 
+
 											</ul>
 										</div>
 									</div>
@@ -262,9 +280,9 @@
 																		class="pull-right primary-font">${paciente.nombres}
 																		${paciente.apellidos}</strong>
 																</div>
-																 
-																	<p>${mensaje.cuerpo}</p>
-															 
+
+																<p>${mensaje.cuerpo}</p>
+
 															</div></li>
 													</c:otherwise>
 												</c:choose>

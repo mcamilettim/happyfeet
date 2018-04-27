@@ -78,10 +78,7 @@ public class PodologoController {
 
 	@Autowired
 	private SolicitudAtencionService solicitudAtencionService;
-
-	@Autowired
-	MensajeRepository mensajeRepository;
-
+ 
 	@Autowired
 	private Environment env;
 
@@ -208,11 +205,10 @@ public class PodologoController {
 		
 		mensaje.setEmisorRut(podologo.getRut());
 		mensaje.setReceptorRut(paciente.getRut());
-		mensajeRepository.save(mensaje);
+		mensajeService.save(mensaje);
 		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacion(podologo, paciente);
 		model.addAttribute("conversacion", conversacion);
 		model.addAttribute("mensajeForm", new Mensaje());
-;
 		return "podologo/enviarMensaje";
 	}
 

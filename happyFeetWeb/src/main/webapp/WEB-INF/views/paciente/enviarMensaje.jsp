@@ -194,17 +194,19 @@
 				<div class="col-lg-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							Chat con Paciente: <strong>${paciente.nombres}
-								${paciente.apellidos}</strong>
+							Chat con Paciente: <strong>${podologo.nombres}
+								${podologo.apellidos}</strong>
 						</div>
 						<!-- /.panel-heading -->
 						<br>
 						<div class="row">
-							<div class="col-md-3">
+						<div class="col-md-2">
+						</div>
+							<div class="col-md-3" style="padding-top: 31px;">
 								<div align="center">
 									<img class="img-responsive"
 										style="width: 300px; height: 300px;"
-										src="${contextPath}/resources/imagenes/${paciente.pathFotoPerfil}">
+										src="data:image/png;base64,${podologo.foto}">
 								</div>
 							</div>
 							<br>
@@ -219,9 +221,10 @@
 												<span class="glyphicon glyphicon-chevron-down"></span>
 											</button>
 											<ul class="dropdown-menu slidedown">
-												<li><a href="${contextPath}/podologo/enviarMensaje?rut=${paciente.rut}"><span
+												<li><a
+													href="${contextPath}/paciente/enviarMensaje?rutPodologo=${podologo.rut}"><span
 														class="glyphicon glyphicon-refresh"> </span>Refresh</a></li>
-												 
+
 											</ul>
 										</div>
 									</div>
@@ -230,7 +233,7 @@
 										<ul class="chat">
 											<c:forEach items="${conversacion}" var="mensaje">
 												<c:choose>
-													<c:when test="${mensaje.emisorRut eq rut_podologo}">
+													<c:when test="${mensaje.emisorRut eq paciente.rut}">
 														<li class="left clearfix"><span
 															class="chat-img pull-left"> <img
 																src="http://placehold.it/50/55C1E7/fff&text=Yo"
@@ -238,7 +241,7 @@
 														</span>
 															<div class="chat-body clearfix">
 																<div class="header">
-																	<strong class="primary-font">${podologo.nombres}</strong>
+																	<strong class="primary-font">${paciente.nombres}</strong>
 																	<small class="pull-right text-muted"> <span
 																		class="glyphicon glyphicon-time"></span>12 mins ago
 																	</small>
@@ -256,12 +259,12 @@
 																<div class="header">
 																	<small class=" text-muted"><span
 																		class="glyphicon glyphicon-time"></span>13 mins ago</small> <strong
-																		class="pull-right primary-font">${paciente.nombres}
-																		${paciente.apellidos}</strong>
+																		class="pull-right primary-font">${podologo.nombres}
+																		${podologo.apellidos}</strong>
 																</div>
-																 
-																	<p>${mensaje.cuerpo}</p>
-															 
+
+																<p>${mensaje.cuerpo}</p>
+
 															</div></li>
 													</c:otherwise>
 												</c:choose>
@@ -270,7 +273,7 @@
 									</div>
 									<div class="panel-footer">
 										<form:form method="POST" modelAttribute="mensajeForm"
-											action="${contextPath}/podologo/enviarMensaje?rut=${paciente.rut}">
+											action="${contextPath}/paciente/enviarMensaje?rutPodologo=${podologo.rut}">
 											<div class="input-group">
 
 												<spring:bind path="cuerpo">
@@ -293,10 +296,6 @@
 								</div>
 							</div>
 						</div>
-
-						<button
-							onclick="location.href='${contextPath}/podologo/historialPaciente?rut=${paciente.rut}'"
-							type="button" class="btn">Volver</button>
 					</div>
 
 					<!-- /.table-responsive -->
@@ -306,11 +305,6 @@
 			<!-- /.panel -->
 		</div>
 	</div>
-	<!-- /.col-lg-6 (nested) -->
-
-	<!-- /.row (nested) -->
-
-	<!-- /.panel-body -->
 
 
 	<!-- jQuery -->

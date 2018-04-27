@@ -1,7 +1,8 @@
+
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
@@ -47,7 +48,36 @@
 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">
 <title>Cuido mis pies</title>
-
+<link rel="apple-touch-icon" sizes="57x57"
+	href="${contextPath}/resources/icon/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60"
+	href="${contextPath}/resources/icon/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72"
+	href="${contextPath}/resources/icon/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76"
+	href="${contextPath}/resources/icon/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114"
+	href="${contextPath}/resources/icon/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120"
+	href="${contextPath}/resources/icon/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144"
+	href="${contextPath}/resources/icon/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152"
+	href="${contextPath}/resources/icon/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180"
+	href="${contextPath}/resources/icon/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"
+	href="${contextPath}/resources/icon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32"
+	href="${contextPath}/resources/icon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96"
+	href="${contextPath}/resources/icon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16"
+	href="${contextPath}/resources/icon/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
 <!-- Bootstrap Core CSS -->
 <link
 	href="${contextPath}/resources/vendor/bootstrap/css/bootstrap.min.css"
@@ -65,7 +95,9 @@
 <link
 	href="${contextPath}/resources/vendor/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
-
+<link href="${contextPath}/resources/css/jquery-ui.css" rel="stylesheet">
+<link href="${contextPath}/resources/js/bootstrap-datepicker.min.css"
+	rel="stylesheet">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -73,13 +105,14 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-</head>
 
+<link href="${contextPath}/resources/css/evaluacion/css/style.css"
+	rel="stylesheet">
 <body>
 
 	<div id="wrapper">
 
-		<!-- Navigation -->
+			<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
@@ -165,13 +198,13 @@
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
-								class="fa fa-home fa-fw"></i> <Strong>Inicio</Strong></a></li>
+								class="fa fa-home fa-fw"></i> Inicio</a></li>
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
 								class="fa fa-edit fa-fw"></i>Solicitar Atención</a></li>
 						<li><a href="${contextPath}/paciente/misSolicitudes"><i
 								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes de Atención</a></li>
 						<li><a href="${contextPath}/paciente/misAtenciones"><i
-								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
+								class="fa fa-user-md fa-fw"></i> <Strong>Mis atenciones</Strong></a></li>
 						<li><a href="${contextPath}/paciente/misMensajes"><i
 								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
 						<li><a href="${contextPath}/paciente/evaluaciones"><i
@@ -188,197 +221,188 @@
 
 		<!-- Page Content -->
 		<div id="page-wrapper">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-lg-12">
-						<h2 class="page-header">
-							<c:if test="${mensaje != null}">
-								<div class="alert alert-success alert-dismissable">
-									<button type="button" class="close" data-dismiss="alert"
-										aria-hidden="true">×</button>
-									${mensaje}
-								</div>
-							</c:if>
-							<c:if test="${mensajeError != null}">
-								<div class="alert alert-danger alert-dismissable">
-									<button type="button" class="close" data-dismiss="alert"
-										aria-hidden="true">×</button>
-									${mensajeError}
-								</div>
-							</c:if>
+			<br>
+			<div class="row">
+				<div class="col-lg-12">
 
-						</h2>
-					</div>
-					<!-- /.col-lg-12 -->
+					<c:if test="${mensaje != null}">
+						<div class="alert alert-success alert-dismissable">
+							<button type="button" class="close" data-dismiss="alert"
+								aria-hidden="true">×</button>
+							${mensaje}
+						</div>
+					</c:if>
+					<c:if test="${mensajeError != null}">
+						<div class="alert alert-danger alert-dismissable">
+							<button type="button" class="close" data-dismiss="alert"
+								aria-hidden="true">×</button>
+							${mensajeError}
+						</div>
+					</c:if>
 				</div>
-				<!-- /.row -->
 			</div>
 
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/paciente/quizPatologia">
-					<div class="panel panel-info">
+			<div class="row">
+				<div class="col-lg-12">
+
+					<div class="panel panel-default">
 						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-edit fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 20px;">
-										<Strong>Solicitar Atención</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Solicitar hora a
-									con un Profesional</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
+							<strong>Detalle de Atención Fecha
+								${atencion.agenda.horario.fecha} ${atencion.agenda.horario.hora}
+								- ${atencion.agenda.horario.horaFin}</strong>
 						</div>
 
+
+						<table class="table">
+							<thead>
+								<tr>
+									<th style="background: #FAFAFA;"><div align="center">ANTES</div></th>
+									<th style="background: #FAFAFA;"><div align="center">DESPUES</div></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><div align="center">
+											<img class="img-responsive"
+												src="data:image/png;base64,${atencion.agenda.fotoPiePath}"
+												style="width: 200px; height: 200px;">
+										</div></td>
+									<td><div align="center">
+											<img class="img-responsive"
+												src="data:image/png;base64,${atencion.foto}"
+												style="width: 200px; height: 200px;">
+										</div></td>
+								</tr>
+							</tbody>
+						</table>
+
+						<table class="table">
+							<thead>
+								<tr>
+									<th colspan="2" style="background: #FAFAFA;"><div
+											align="center">
+											Ruta Recomendada <img class="img-responsive"
+												src="${contextPath}/resources/img/googleMaps.png"
+												style="width: 25px; height: 25px;">
+										</div></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td colspan="2"><div align="center">
+											<img class="img-responsive"
+												src="data:image/png;base64,${atencion.agenda.fotoViajePath}"
+												style="width: 600px; height: 400px;">
+										</div></td>
+
+								</tr>
+							</tbody>
+						</table>
+						<br>
+ 
+							<table class="table">
+
+								<tr>
+									<th class="bg-info">Patología tratada</th>
+									<td style="background: #FAFAFA;">${atencion.agenda.patologia.nombre}</td>
+								</tr>
+								<tr>
+									<th class="bg-info">Nombre Podólogo</th>
+									<td style="background: #FAFAFA;">${atencion.agenda.podologo.nombres}
+										${solicitudAtencion.paciente.apellidos} &nbsp; &nbsp; &nbsp;<a class="btn btn-info" href="enviarMensaje?rutPodologo=${atencion.agenda.podologo.rut}" role="button">Enviar Mensaje</a></td>
+								</tr>
+								<tr>
+									<th class="bg-info">Diabético</th>
+									<c:if test="${not empty atencion.agenda.paciente.diabetico}">
+										<td style="background: #FAFAFA;">SI</td>
+									</c:if>
+									<c:if test="${empty atencion.agenda.paciente.diabetico}">
+										<td style="background: #FAFAFA;">NO</td>
+									</c:if>
+
+								</tr>
+								<tr>
+									<th class="bg-info">Ubicación</th>
+									<td style="background: #FAFAFA;">${atencion.agenda.paciente.ubicacion.nombre}</td>
+								</tr>
+								<tr>
+									<th class="bg-info">Tarifa por Kilómetro</th>
+									<td style="background: #FAFAFA;">$<fmt:formatNumber
+											value="${atencion.agenda.presupuesto.tarifaKM}"
+											type="currency" pattern="#,##0" /></td>
+								</tr>
+								<tr>
+									<th class="bg-info">Cantidad de Kilómetro</th>
+									<td style="background: #FAFAFA;">${atencion.agenda.presupuesto.cantidadKM}</td>
+								</tr>
+								<tr>
+									<th class="bg-info">Monto Viaje</th>
+									<td style="background: #FAFAFA;">$<fmt:formatNumber
+											value="${atencion.agenda.presupuesto.viajePodologo}"
+											type="currency" pattern="#,##0" /></td>
+								</tr>
+								<tr>
+									<th class="bg-info">Monto Patología</th>
+									<td style="background: #FAFAFA;">$<fmt:formatNumber
+											value="${atencion.agenda.patologia.costo}" type="currency"
+											pattern="#,##0" /></td>
+								</tr>
+								<tr>
+									<th class="bg-success" colspan="2"><div>
+											Total por la Atención: $
+											<fmt:formatNumber
+												value="${atencion.agenda.presupuesto.total}" type="currency"
+												pattern="#,##0" />
+										</div></th>
+
+								</tr>
+								<tr>
+									<th>Diagnóstico y/o Procedimiento</th>
+									<td style="background: #FAFAFA;"><textarea
+											class="form-control" name="diagnostico" readonly="readonly">${atencion.diagnostico}</textarea></td>
+								</tr>
+								<tr>
+									<th>Indicaciones</th>
+									<td style="background: #FAFAFA;"><textarea
+											class="form-control" name="indicaciones" readonly="readonly">${atencion.indicaciones}</textarea></td>
+								</tr>
+
+								<tr>
+									<td style="background: #FAFAFA;"><strong>Evaluación
+											Paciente</strong></td>
+									<td align="left"> ${atencion.evaluacion.valorPodologo} <img
+												align="left"  
+												style="height: 15px; width: 15px;" class="img-responsive"
+												src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/96/star-icon.png" />
+									</td>
+
+								</tr>
+								<tr>
+									<td style="background: #FAFAFA;"><strong>Mi comentario
+											de la Atención </strong></td>
+									<td style="background: #FAFAFA;" align="left"><textarea
+											class="form-control"  readonly="readonly">${atencion.evaluacion.comentarioPaciente}</textarea></td>
+								</tr>
+
+							</table>			
 					</div>
-				</a>
+
+				</div>
+
+				<div>
+
+					<div></div>
+				</div>
 			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/paciente/misSolicitudes">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-lg-3 col-xs-3">
-									<i class="fa fa-calendar-plus-o fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 20px;">
-										<Strong>Solicitudes de Atención</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Revisar el estado
-									de mis solicitudes</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/paciente/misAtenciones">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-user-md fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 20px;">
-										<Strong>Mis Atenciones</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Hitorial de mis
-									atenciones</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/podologo/index">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-star-half-o fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 20px;">
-										<Strong>Evaluar</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Evaluar
-									Profesional</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/podologo/index">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-comments fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 20px;">
-										<Strong>Mensajes</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Ver mis mensajes</Strong></span>
-							<span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/paciente/modificarDatos">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-gear fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 20px;">
-										<Strong>Mis datos Personales</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Modifica tus
-									datos</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-
-
-			<br> <br> <br> <br> <br> <br>
-			<!-- /.container-fluid -->
 		</div>
-		<!-- /#page-wrapper -->
-
 	</div>
+
+
+	<!-- /.row -->
+
+
+	<!-- /.container-fluid -->
+
 	<!-- /#wrapper -->
 
 	<!-- jQuery -->
@@ -392,8 +416,20 @@
 	<script
 		src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
 
+	<script src="${contextPath}/resources/js/jquery-ui.min.js"></script>
+
 	<!-- Custom Theme JavaScript -->
 	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+
+	<script>
+		var logID = 'log', log = $('<div id="'+logID+'"></div>');
+		$('body').append(log);
+		$('[type*="radio"]').change(function() {
+			var me = $(this);
+			log.html(me.attr('value'));
+		});
+	</script>
+
 
 </body>
 
