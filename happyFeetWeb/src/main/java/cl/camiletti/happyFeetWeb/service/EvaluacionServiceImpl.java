@@ -17,7 +17,6 @@ public class EvaluacionServiceImpl implements EvaluacionService{
 	@Override
 	public void save(Evaluacion evaluacion) {
 		evaluacionRepository.save(evaluacion);
-		
 	}
 
 	@Override
@@ -46,6 +45,12 @@ public class EvaluacionServiceImpl implements EvaluacionService{
 	public List<Evaluacion> findByPacienteAndValorPodologo(Paciente paciente, int valorPodologo) {
 		// TODO Auto-generated method stub
 		return evaluacionRepository.findByPacienteAndValorPodologo(paciente, valorPodologo);
+	}
+
+	@Override
+	public List<Evaluacion> findByPaciente(Paciente paciente) {
+		// TODO Auto-generated method stub
+		return evaluacionRepository.findByPaciente(paciente);
 	}
 
  

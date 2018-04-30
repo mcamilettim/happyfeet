@@ -132,13 +132,39 @@
 							test="${paciente.paramSexo.id==6}">o</c:if> <c:if
 							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
 				</Strong></li>
-				<li class="dropdown"><c:if test="${empty notificaciones}">
+				<li class="dropdown"><c:if test="${empty mensajesNuevos}">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
 						</a>
-					</c:if> <c:if test="${not empty notificaciones}">
+					</c:if> <c:if test="${not empty mensajesNuevos}">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i><span
+							class="badge">${mensajesNuevos.size()}</span>
+						</a>
+					</c:if>
+					<ul class="dropdown-menu dropdown-messages">
+						<c:if test="${not empty mensajesNuevos}">
+							<c:forEach items="${mensajesNuevos}" var="mensajeNuevo">
+								<li><a
+									href="${contextPath}/paciente/enviarMensaje?rutPodologo=${mensajeNuevo.emisorRut}">
+										<strong></strong> <span class="pull-right text-muted"><em>${mensajeNuevo.fecha}</em>
+									</span>${mensajeNuevo.cuerpo}
+								</a></li>
+							</c:forEach>
+						</c:if>
+						 
+						<li><a class="text-center"
+							href="${contextPath}/paciente/misMensajes"> <strong>Ver
+									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
+						</a></li>
+					</ul> </li>
+					<li class="dropdown"><c:if test="${empty notificaciones}">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+						</a>
+					</c:if> <c:if test="${not empty notificaciones}">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i><span
 							class="badge">${notificaciones.size()}</span>
 						</a>
 					</c:if>
@@ -154,7 +180,7 @@
 						</c:if>
 						 
 						<li><a class="text-center"
-							href="${contextPath}/paciente/vermensajes"> <strong>Ver
+							href="${contextPath}/paciente/misNotificaciones"> <strong>Ver
 									todas las notificaciones</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
 					</ul> <!-- /.dropdown-messages --></li>
@@ -207,7 +233,7 @@
 								class="fa fa-user-md fa-fw"></i> <Strong>Mis atenciones</Strong></a></li>
 						<li><a href="${contextPath}/paciente/misMensajes"><i
 								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
-						<li><a href="${contextPath}/paciente/evaluaciones"><i
+						<li><a href="${contextPath}/paciente/misEvaluaciones"><i
 								class="fa fa-star-half-o fa-fw"></i> Evaluaciones a
 								Profesionales</a></li>
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
@@ -218,7 +244,6 @@
 			</div>
 			<!-- /.navbar-static-side -->
 		</nav>
-
 		<!-- Page Content -->
 		<div id="page-wrapper">
 			<br>

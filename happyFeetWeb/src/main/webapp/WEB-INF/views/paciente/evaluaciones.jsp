@@ -79,8 +79,7 @@
 
 	<div id="wrapper">
 
-		<!-- Navigation -->
-		<!-- Navigation -->
+			<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
@@ -100,13 +99,39 @@
 							test="${paciente.paramSexo.id==6}">o</c:if> <c:if
 							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
 				</Strong></li>
-				<li class="dropdown"><c:if test="${empty notificaciones}">
+				<li class="dropdown"><c:if test="${empty mensajesNuevos}">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
 						</a>
-					</c:if> <c:if test="${not empty notificaciones}">
+					</c:if> <c:if test="${not empty mensajesNuevos}">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i><span
+							class="badge">${mensajesNuevos.size()}</span>
+						</a>
+					</c:if>
+					<ul class="dropdown-menu dropdown-messages">
+						<c:if test="${not empty mensajesNuevos}">
+							<c:forEach items="${mensajesNuevos}" var="mensajeNuevo">
+								<li><a
+									href="${contextPath}/paciente/enviarMensaje?rutPodologo=${mensajeNuevo.emisorRut}">
+										<strong></strong> <span class="pull-right text-muted"><em>${mensajeNuevo.fecha}</em>
+									</span>${mensajeNuevo.cuerpo}
+								</a></li>
+							</c:forEach>
+						</c:if>
+						 
+						<li><a class="text-center"
+							href="${contextPath}/paciente/misMensajes"> <strong>Ver
+									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
+						</a></li>
+					</ul> </li>
+					<li class="dropdown"><c:if test="${empty notificaciones}">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+						</a>
+					</c:if> <c:if test="${not empty notificaciones}">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i><span
 							class="badge">${notificaciones.size()}</span>
 						</a>
 					</c:if>
@@ -120,9 +145,9 @@
 								</a></li>
 							</c:forEach>
 						</c:if>
-
+						 
 						<li><a class="text-center"
-							href="${contextPath}/paciente/vermensajes"> <strong>Ver
+							href="${contextPath}/paciente/misNotificaciones"> <strong>Ver
 									todas las notificaciones</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
 					</ul> <!-- /.dropdown-messages --></li>
@@ -166,7 +191,7 @@
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
-								class="fa fa-home fa-fw"></i> Inicio</a></li>
+								class="fa fa-home fa-fw"></i>Inicio</a></li>
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
 								class="fa fa-edit fa-fw"></i>Solicitar Atención</a></li>
 						<li><a href="${contextPath}/paciente/misSolicitudes"><i
@@ -175,12 +200,11 @@
 								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
 						<li><a href="${contextPath}/paciente/misMensajes"><i
 								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
-						<li><a href="${contextPath}/paciente/evaluaciones"><i
+						<li><a href="${contextPath}/paciente/misEvaluaciones"><i
 								class="fa fa-star-half-o fa-fw"></i> <Strong> Evaluaciones a
 								Profesionales</Strong></a></li>
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
-								class="fa fa-gear fa-fw"></i>Modificar mis
-									datos</a></li>
+								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
@@ -189,97 +213,121 @@
 		</nav>
 		<!-- Page Content -->
 		<div id="page-wrapper">
-
 			<br>
-			<c:if test="${fn:length(evaluacionesPendientes) == 0}">
-				<div class="alert alert-info" align="center">
-					<Strong>Usted no posee evaluaciones pendientes</Strong>
+			<c:if test="${empty evaluaciones && empty evaluacionesPendientes}">
+				<div class="alert alert-warning" align="center">
+					<Strong>Usted no posee evaluaciones en el sistema</Strong>
 				</div>
 			</c:if>
-			<div class="row">
-				<div class="col-lg-12">
-
-					<c:if test="${mensaje != null}">
-						<div class="alert alert-success alert-dismissable">
-							<button type="button" class="close" data-dismiss="alert"
-								aria-hidden="true">×</button>
-							${mensaje}
-						</div>
-					</c:if>
-					<c:if test="${mensajeError != null}">
-						<div class="alert alert-danger alert-dismissable">
-							<button type="button" class="close" data-dismiss="alert"
-								aria-hidden="true">×</button>
-							${mensajeError}
-						</div>
-					</c:if>
-				</div>
-			</div>
 			<c:if test="${not empty evaluacionesPendientes}">
 				<div class="row">
 					<div class="col-lg-12">
-
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<strong>Evaluaciones Pendientes <span class="badge">${evaluacionesPendientes.size()}</span>
 								</strong>
 							</div>
-							<div align="left">
+							<br>
+							<div align="center">
 								<p
 									style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">
-									A continuación se listan las evaluaciones de Profesionales que
-									están pendientes<br>
+									A continuación se listan las evaluaciones de Profesionales<br>
 								</p>
+								<br>
 							</div>
-							<br>
-							<table class="table">
-
-								<thead>
-
+							<div class="table-responsive">
+								<table class="table table-bordered">
 									<tr>
-										<th>Profesional</th>
-										<th>Evaluar</th>
+										<th><div align="center">Profesional</div></th>
+										<th><div align="center">Nota</div></th>
+										<th><div align="center">Evaluación</div></th>
 									</tr>
-								</thead>
-								<tbody>
-									<c:forEach items="${evaluacionesPendientes}"
-										var="evaluacionPendiente">
+									<c:forEach items="${evaluacionesPendientes}" var="evaluacion">
 										<tr>
-											<td>${evaluacionPendiente.podologo.nombres} ${evaluacionPendiente.podologo.apellidos}</td>
-											<td><a
-												href="${contextPath}/paciente/verAtencionParaEvaluar?idEvaluacion=${evaluacionPendiente.id}">Ver Atención
-													Atención</a></td>
+											<td align="center">${evaluacion.podologo.nombres}
+												${evaluacion.podologo.apellidos}</td>
+											<td align="center">${evaluacion.valorPodologo} <img
+												align="left" style="height: 15px; width: 15px;"
+												class="img-responsive"
+												src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/96/star-icon.png" /></td>
+											<td align="center"><button
+													onclick="location.href='${contextPath}/paciente/verAtencionParaEvaluar?idEvaluacion=${evaluacion.id}'"
+													type="submit" class="btn btn-primary">Ver</button></td>
 										</tr>
 									</c:forEach>
-								</tbody>
+								</table>
+							</div>
 
-							</table>
+						</div>
+					</div>
+				</div>
+			</c:if>
+			<c:if test="${not empty evaluaciones}">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<strong>Evaluaciones <span class="badge">${evaluaciones.size()}</span>
+								</strong>
+							</div>
+							<br>
+							<div align="center">
+								<p
+									style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">
+									A continuación se listan las evaluaciones de Profesionales<br>
+								</p>
+								<br>
+							</div>
+							<div class="table-responsive">
+								<table class="table table-bordered">
+									<tr>
+										<th><div align="center">Profesional</div></th>
+										<th><div align="center">Nota</div></th>
+										<th><div align="center">Evaluación</div></th>
+									</tr>
+									<c:forEach items="${evaluaciones}" var="evaluacion">
+										<tr>
+											<td align="center">${evaluacion.podologo.nombres}
+												${evaluacion.podologo.apellidos}</td>
+											<td align="center">${evaluacion.valorPodologo} <img
+												align="left" style="height: 15px; width: 15px;"
+												class="img-responsive"
+												src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/96/star-icon.png" /></td>
+											<td align="center"><button
+													onclick="location.href='${contextPath}/paciente/verAtencionParaEvaluar?idEvaluacion=${evaluacion.id}'"
+													type="submit" class="btn btn-primary">Ver</button></td>
+										</tr>
+									</c:forEach>
+								</table>
+							</div>
+
 						</div>
 					</div>
 				</div>
 			</c:if>
 		</div>
+	</div>
 
-		<!-- /#page-wrapper -->
+	<!-- /#page-wrapper -->
 
 
-		<!-- /#wrapper -->
+	<!-- /#wrapper -->
 
-		<!-- jQuery -->
-		<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+	<!-- jQuery -->
+	<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 
-		<!-- Bootstrap Core JavaScript -->
-		<script
-			src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Bootstrap Core JavaScript -->
+	<script
+		src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 
-		<!-- Metis Menu Plugin JavaScript -->
-		<script
-			src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
+	<!-- Metis Menu Plugin JavaScript -->
+	<script
+		src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
 
-		<script src="${contextPath}/resources/js/jquery-ui.min.js"></script>
+	<script src="${contextPath}/resources/js/jquery-ui.min.js"></script>
 
-		<!-- Custom Theme JavaScript -->
-		<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+	<!-- Custom Theme JavaScript -->
+	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
 </body>
 
 </html>

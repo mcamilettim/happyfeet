@@ -228,7 +228,7 @@
 				</a>
 			</div>
 			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/podologo/misSolicitudes">
+				<a href="${contextPath}/podologo/verSolicitudes">
 					<div class="panel panel-info">
 						<div class="panel-heading">
 							<div class="row">

@@ -31,6 +31,7 @@ import cl.camiletti.happyFeetWeb.model.Presupuesto;
 import cl.camiletti.happyFeetWeb.model.Solicitudatencion;
 import cl.camiletti.happyFeetWeb.model.Ubicacion;
 import cl.camiletti.happyFeetWeb.model.Usuario;
+import cl.camiletti.happyFeetWeb.model.custom.MensajeCustomPaciente;
 import cl.camiletti.happyFeetWeb.service.AgendaService;
 import cl.camiletti.happyFeetWeb.service.AtencionService;
 import cl.camiletti.happyFeetWeb.service.ComunaService;
@@ -50,12 +51,13 @@ import cl.camiletti.happyFeetWeb.util.Constantes;
 import cl.camiletti.happyFeetWeb.util.DateUtil;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 import cl.camiletti.happyFeetWeb.util.Mail;
+import cl.camiletti.happyFeetWeb.util.MensajesNuevosUtil;
 import cl.camiletti.happyFeetWeb.util.NotificacionUtil;
 import cl.camiletti.happyFeetWeb.util.Parametros;
 import cl.camiletti.happyFeetWeb.util.Seccion;
 
 @Controller
-@SessionAttributes(value = { "sessionUser", "paciente", "notificaciones", "atencionParaFinalizar","podologo"})
+@SessionAttributes(value = { "sessionUser", "paciente", "notificaciones", "atencionParaFinalizar", "podologo" })
 public class PacienteController {
 	@Autowired
 	PodologoService podologoService;
@@ -102,6 +104,103 @@ public class PacienteController {
 	@Autowired
 	private EvaluacionService evaluacionService;
 
+	@RequestMapping(value = "/paciente/index", method = RequestMethod.GET)
+	public String redirect(Model model) {
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Paciente paciente = pacienteService.findByEmail(user.getUsername());
+		NotificacionUtil.cargaNotificacionesPaciente(model, paciente, notificacionpacienteService, parametroService);
+		MensajesNuevosUtil.cargaMensajesNuevosPaciente(model, paciente, mensajeService, parametroService);
+		model.addAttribute("paciente", paciente);
+		return "paciente/paciente";
+	}
+
+	@RequestMapping(value = "/paciente/modificarDatos", method = RequestMethod.GET)
+	public String modificardatos(Model model, @ModelAttribute("paciente") Paciente paciente) {
+		NotificacionUtil.cargaNotificacionesPaciente(model, paciente, notificacionpacienteService, parametroService);
+		paciente.getUsuario().setPassword("");
+		paciente.getUsuario().setPasswordConfirm("");
+		model.addAttribute("pacienteForm", paciente);
+		model.addAttribute("comunas", comunaService.findAll());
+
+		return "paciente/modificar";
+	}
+
+	@RequestMapping(value = "/paciente/misAtenciones", method = RequestMethod.GET)
+	public String misAtenciones(Model model, @ModelAttribute("paciente") Paciente paciente) {
+		NotificacionUtil.cargaNotificacionesPaciente(model, paciente, notificacionpacienteService, parametroService);
+		MensajesNuevosUtil.cargaMensajesNuevosPaciente(model, paciente, mensajeService, parametroService);
+		Parametro parametro = parametroService.findOne(Parametros.ESTADO_AGENDA_ACEPTADA);// pendiente
+		List<Agenda> agendas = agendaService.findByPacienteAndParamEstadoAgenda(paciente, parametro);
+		model.addAttribute("atencionesRealizadas", agendas);
+		return "paciente/atenciones";
+	}
+
+	@RequestMapping(value = "/paciente/misSolicitudes", method = RequestMethod.GET)
+	public String misSolicitudes(Model model, @ModelAttribute("paciente") Paciente paciente) {
+		NotificacionUtil.cargaNotificacionesPaciente(model, paciente, notificacionpacienteService, parametroService);
+		MensajesNuevosUtil.cargaMensajesNuevosPaciente(model, paciente, mensajeService, parametroService);
+		List<Solicitudatencion> solicitudes = solicitudAtencionService.findByPaciente(paciente);
+		model.addAttribute("solicitudes", solicitudes);
+		model.addAttribute("paciente", paciente);
+		return "paciente/solicitudes";
+	}
+
+	@RequestMapping(value = "/paciente/misEvaluaciones", method = RequestMethod.GET)
+	public String misEvaluaciones(Model model, @ModelAttribute("paciente") Paciente paciente) {
+		NotificacionUtil.cargaNotificacionesPaciente(model, paciente, notificacionpacienteService, parametroService);
+		MensajesNuevosUtil.cargaMensajesNuevosPaciente(model, paciente, mensajeService, parametroService);
+		List<Evaluacion> evaluaciones = evaluacionService.findByPaciente(paciente);
+		model.addAttribute("evaluaciones", evaluaciones);
+		List<Evaluacion> evaluacionesPendientes = evaluacionService.findByPacienteAndValorPodologo(paciente, 0);
+		model.addAttribute("evaluacionesPendientes", evaluacionesPendientes);
+		return "paciente/evaluaciones";
+	}
+
+	@RequestMapping(value = "/paciente/evaluar", method = RequestMethod.GET)
+	public String evaluar(@ModelAttribute("paciente") Paciente paciente, Model model,
+			@RequestParam("idNotificacion") int id) {
+		NotificacionUtil.cambiaEstadoNotificacionPaciente(model, paciente, notificacionpacienteService,
+				parametroService, id);
+		List<Evaluacion> evaluacionesPendientes = evaluacionService.findByPacienteAndValorPodologo(paciente, 0);
+		model.addAttribute("evaluacionesPendientes", evaluacionesPendientes);
+		List<Evaluacion> evaluaciones = evaluacionService.findByPaciente(paciente);
+		model.addAttribute("evaluaciones", evaluaciones);
+		return "paciente/evaluaciones";
+	}
+
+	@RequestMapping(value = "/paciente/misMensajes", method = RequestMethod.GET)
+	public String misMensajes(Model model, @ModelAttribute("paciente") Paciente paciente) {
+		NotificacionUtil.cargaNotificacionesPaciente(model, paciente, notificacionpacienteService, parametroService);
+		MensajesNuevosUtil.cargaMensajesNuevosPaciente(model, paciente, mensajeService, parametroService);
+		Parametro parametro = parametroService.findOne(Parametros.ESTADO_MENSAJE_NO_VISTO);
+		List<Mensaje> mensajesNoVistos = mensajeService.findByReceptorRutAndParamEstadoMensaje(paciente.getRut(),
+				parametro);
+		model.addAttribute("mensajesSinVer",
+				MensajeCustomPaciente.cargarMensajesNoVistos(mensajesNoVistos, pacienteService, podologoService));
+		parametro = parametroService.findOne(Parametros.ESTADO_MENSAJE_VISTO);
+		List<Mensaje> mensajesVistos = mensajeService.findByReceptorRutAndParamEstadoMensaje(paciente.getRut(),
+				parametro);
+		model.addAttribute("mensajesVistos", MensajeCustomPaciente.cargarMensajesVistos(mensajesNoVistos,
+				pacienteService, podologoService, mensajesVistos));
+		return "paciente/mensajes";
+	}
+
+	@RequestMapping(value = "/paciente/enviarMensaje", method = RequestMethod.GET)
+	public String verMensajes(@ModelAttribute("paciente") Paciente paciente, Model model,
+			@RequestParam("rutPodologo") String rutPodologo) {
+		Podologo podologo = podologoService.find(rutPodologo);
+		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacionPaciente(paciente,
+				podologo);
+		model.addAttribute("conversacion", conversacion);
+		model.addAttribute("podologo", podologo);
+		model.addAttribute("mensajeForm", new Mensaje());
+
+		Parametro parametro = parametroService.findOne(Parametros.ESTADO_MENSAJE_VISTO);// pendiente
+		mensajeService.updateEstadoMensajeVisto(conversacion, parametro);
+
+		return "paciente/enviarMensaje";
+	}
+
 	@RequestMapping(value = "/registrarPaciente", method = RequestMethod.GET)
 	public String registration(Model model) {
 		model.addAttribute("pacienteForm", new Paciente());
@@ -114,28 +213,21 @@ public class PacienteController {
 
 		return "paciente/registrar";
 	}
-	@RequestMapping(value = "/paciente/enviarMensaje", method = RequestMethod.GET)
-	public String verMensajes(@ModelAttribute("paciente") Paciente paciente, Model model, @RequestParam("rutPodologo") String rutPodologo) {
-		Podologo podologo = podologoService.find(rutPodologo);
-		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacionPaciente(paciente,podologo);
-		model.addAttribute("conversacion", conversacion);
-		model.addAttribute("podologo", podologo);
-		model.addAttribute("mensajeForm", new Mensaje());
-		return "paciente/enviarMensaje";
-	}
 
 	@RequestMapping(value = "/paciente/enviarMensaje", method = RequestMethod.POST)
 	public String enviarMensaje(@ModelAttribute("mensajeForm") Mensaje mensaje,
 			@ModelAttribute("paciente") Paciente paciente, @ModelAttribute("podologo") Podologo podologo, Model model) {
-		
+
 		mensaje.setReceptorRut(podologo.getRut());
 		mensaje.setEmisorRut(paciente.getRut());
 		mensajeService.save(mensaje);
-		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacion(podologo, paciente);
+		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacionPodologo(podologo,
+				paciente);
 		model.addAttribute("conversacion", conversacion);
 		model.addAttribute("mensajeForm", new Mensaje());
 		return "paciente/enviarMensaje";
 	}
+
 	@RequestMapping(value = "/registrarPaciente", method = RequestMethod.POST)
 	public String registration(@ModelAttribute("pacienteForm") Paciente pacienteForm, BindingResult bindingResult,
 			Model model, @RequestParam("fotoPerfil") MultipartFile fotoPerfilPath) {
@@ -177,27 +269,6 @@ public class PacienteController {
 		return "paciente/registrar";
 	}
 
-	@RequestMapping(value = "/paciente/index", method = RequestMethod.GET)
-	public String redirect(Model model) {
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Paciente paciente = pacienteService.findByEmail(user.getUsername());
-		NotificacionUtil.cargaNotificacionesPaciente(model, paciente, notificacionpacienteService, parametroService);
-		model.addAttribute("paciente", paciente);
-		return "paciente/paciente";
-	}
-
-	@RequestMapping(value = "/paciente/modificarDatos", method = RequestMethod.GET)
-	public String modificardatos(Model model, @ModelAttribute("paciente") Paciente paciente) {
-		if (paciente == null)
-			return "paciente/paciente";
-		paciente.getUsuario().setPassword("");
-		paciente.getUsuario().setPasswordConfirm("");
-		model.addAttribute("pacienteForm", paciente);
-		model.addAttribute("comunas", comunaService.findAll());
-
-		return "paciente/modificar";
-	}
-
 	@RequestMapping(value = "/paciente/modificarDatos", method = RequestMethod.POST)
 	public String modificarpost(@ModelAttribute("pacienteForm") Paciente pacienteForm,
 			@RequestParam("archivo") MultipartFile archivo, BindingResult bindingResult, Model model) {
@@ -231,26 +302,6 @@ public class PacienteController {
 		return "paciente/paciente";
 	}
 
-	@RequestMapping(value = "/paciente/misAtenciones", method = RequestMethod.GET)
-	public String misAtenciones(Model model) {
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Paciente paciente = pacienteService.findByEmail(user.getUsername());
-		Parametro parametro= parametroService.findOne(Parametros.ESTADO_AGENDA_ACEPTADA);// pendiente
-		List<Agenda> agendas = agendaService.findByPacienteAndParamEstadoAgenda(paciente, parametro);
-		 
-		model.addAttribute("atencionesRealizadas", agendas);
-		model.addAttribute("paciente", paciente);
-		return "paciente/atenciones";
-	}
-
-	@RequestMapping(value = "/paciente/misSolicitudes", method = RequestMethod.GET)
-	public String misSolicitudes(Model model, @ModelAttribute("paciente") Paciente paciente) {
-		List<Solicitudatencion> solicitudes = solicitudAtencionService.findByPaciente(paciente);
-		model.addAttribute("solicitudes", solicitudes);
-		model.addAttribute("paciente", paciente);
-		return "paciente/solicitudes";
-	}
-
 	@RequestMapping(value = "/paciente/detalleSolicitud", method = RequestMethod.GET)
 	public String detalleSolicitud(Model model, @ModelAttribute("paciente") Paciente paciente,
 			@RequestParam("id") int id) {
@@ -270,43 +321,38 @@ public class PacienteController {
 		return "paciente/detalleAtencion";
 	}
 
-	@RequestMapping(value = "/paciente/evaluar", method = RequestMethod.GET)
-	public String evaluar(Model model, @RequestParam("idNotificacion") int id) {
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Paciente paciente = pacienteService.findByEmail(user.getUsername());
-		NotificacionUtil.cambiaEstadoNotificacionPaciente(model, paciente, notificacionpacienteService,
-				parametroService, id);
-		model.addAttribute("paciente", paciente);
-		List<Evaluacion> evaluacionesPendientes = evaluacionService.findByPacienteAndValorPodologo(paciente, 0);
-		model.addAttribute("evaluacionesPendientes", evaluacionesPendientes);
-		return "paciente/evaluaciones";
-	}
-
 	@RequestMapping(value = "/paciente/verAtencionParaEvaluar", method = RequestMethod.GET)
 	public String verAtencionParaEvaluar(Model model, @RequestParam("idEvaluacion") int id) {
 		Evaluacion evaluacion = evaluacionService.findById(id);
 		Atencion atencion = atencionService.findByEvaluacion(evaluacion);
-		model.addAttribute("atencionForm", atencion);
-		model.addAttribute("atencionParaFinalizar", atencion);
-		return "paciente/guardarAtencion";
+		if (evaluacion.getValorPodologo() != 0) {
+			model.addAttribute("atencion", atencion);
+			model.addAttribute("podologo", evaluacion.getPodologo());
+			return "paciente/verAtencion";
+		} else {
+			model.addAttribute("atencionForm", atencion);
+			model.addAttribute("atencionParaFinalizar", atencion);
+			return "paciente/guardarAtencion";
+		}
 	}
+
 	@RequestMapping(value = "/paciente/verAtencion", method = RequestMethod.GET)
 	public String verAtencion(Model model, @RequestParam("id") int id) {
 		Agenda agenda = agendaService.findById(id);
 		Atencion atencion = atencionService.findByAgenda(agenda);
 		model.addAttribute("atencion", atencion);
-		model.addAttribute("podologo",agenda.getPodologo());
+		model.addAttribute("podologo", agenda.getPodologo());
 		return "paciente/verAtencion";
 	}
 
 	@RequestMapping(value = "/paciente/guardarAtencionParaEvaluar", method = RequestMethod.POST)
-	public String guardarAtencionParaEvaluar(Model model, @ModelAttribute("atencionParaFinalizar") Atencion atencionParaFinalizar,
+	public String guardarAtencionParaEvaluar(Model model,
+			@ModelAttribute("atencionParaFinalizar") Atencion atencionParaFinalizar,
 			@RequestParam("evaluacionStar") String evaluacionStar, @RequestParam("comentario") String comentario) {
 		atencionParaFinalizar.getEvaluacion().setComentarioPaciente(comentario);
 		atencionParaFinalizar.getEvaluacion().setValorPodologo(Integer.parseInt(evaluacionStar));
 		atencionService.save(atencionParaFinalizar);
-		model.addAttribute("mensaje",
-				"Evaluación guardada con éxito");
+		model.addAttribute("mensaje", "Evaluación guardada con éxito");
 		return "paciente/paciente";
 	}
 
@@ -362,7 +408,6 @@ public class PacienteController {
 			solicitudAtencion.setPodologo(podologo);
 			solicitudAtencion.setHorario(horario);
 			solicitudAtencion.setParamEstadoSolicitudAtencion(parametroPendiente);
-			solicitudAtencion.setFechaSolicitud(DateUtil.getFechaHoyString());
 			solicitudAtencion.setFechaSolicitud(DateUtil.getFechaHoyString());
 			solicitudAtencion.setPresupuesto(presupuesto);
 			solicitudAtencion.setFotoPiePath(fotoPie);

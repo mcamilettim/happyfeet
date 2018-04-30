@@ -16,6 +16,7 @@ public class NotificacionUtil {
 		Parametro parametro = parametroService.findOne(Parametros.ESTADO_MENSAJE_NO_VISTO);
 		List<Notificacionpaciente> notificaciones = notificacionpacienteService
 				.findByPacienteAndParamEstadoNotificacion(paciente, parametro);
+		formatNotificacion(notificaciones);
 		model.addAttribute("notificaciones", notificaciones);
 	}
 
@@ -28,5 +29,13 @@ public class NotificacionUtil {
 			notificacionpacienteService.save(notificacion);
 		}
 		cargaNotificacionesPaciente(model, paciente, notificacionpacienteService, parametroService);
+	}
+
+	private static void formatNotificacion(List<Notificacionpaciente> notificaciones) {
+		for (Notificacionpaciente notificacionpaciente : notificaciones) {
+			if (notificacionpaciente.getTitulo().length() > 25) {
+				notificacionpaciente.setTitulo(notificacionpaciente.getTitulo().substring(0, 24) + "...");
+			}
+		}
 	}
 }

@@ -192,7 +192,7 @@ public class PodologoController {
 	@RequestMapping(value = "/podologo/enviarMensaje", method = RequestMethod.GET)
 	public String verMensajes(@ModelAttribute("podologo") Podologo podologo, Model model, @RequestParam("rutPaciente") String rutPaciente) {
 		Paciente paciente = pacienteService.find(rutPaciente);
-		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacion(podologo, paciente);
+		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacionPodologo(podologo, paciente);
 		model.addAttribute("conversacion", conversacion);
 		model.addAttribute("paciente", paciente);
 		model.addAttribute("mensajeForm", new Mensaje());
@@ -206,7 +206,7 @@ public class PodologoController {
 		mensaje.setEmisorRut(podologo.getRut());
 		mensaje.setReceptorRut(paciente.getRut());
 		mensajeService.save(mensaje);
-		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacion(podologo, paciente);
+		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacionPodologo(podologo, paciente);
 		model.addAttribute("conversacion", conversacion);
 		model.addAttribute("mensajeForm", new Mensaje());
 		return "podologo/enviarMensaje";

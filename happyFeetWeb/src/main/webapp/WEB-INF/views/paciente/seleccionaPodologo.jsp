@@ -79,9 +79,8 @@
 <body data-ng-controller="UserCtrl">
 
 	<div id="wrapper">
-
-			<!-- Navigation -->
-			<nav class="navbar navbar-default navbar-static-top" role="navigation"
+	<!-- Navigation -->
+		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -96,17 +95,43 @@
 			<!-- /.navbar-header -->
 
 			<ul class="nav navbar-top-links navbar-right">
-				<li class="dropdown" style="padding-left: 10px;"> 
-				<Strong>Bienvenid<c:if test="${paciente.paramSexo.id==6}">o</c:if><c:if test="${paciente.paramSexo.id==7}">a</c:if>
-							${paciente.nombres}</Strong>
-					 </li>
-		<li class="dropdown"><c:if test="${empty notificaciones}">
+				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
+							test="${paciente.paramSexo.id==6}">o</c:if> <c:if
+							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
+				</Strong></li>
+				<li class="dropdown"><c:if test="${empty mensajesNuevos}">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
 						</a>
-					</c:if> <c:if test="${not empty notificaciones}">
+					</c:if> <c:if test="${not empty mensajesNuevos}">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i><span
+							class="badge">${mensajesNuevos.size()}</span>
+						</a>
+					</c:if>
+					<ul class="dropdown-menu dropdown-messages">
+						<c:if test="${not empty mensajesNuevos}">
+							<c:forEach items="${mensajesNuevos}" var="mensajeNuevo">
+								<li><a
+									href="${contextPath}/paciente/enviarMensaje?rutPodologo=${mensajeNuevo.emisorRut}">
+										<strong></strong> <span class="pull-right text-muted"><em>${mensajeNuevo.fecha}</em>
+									</span>${mensajeNuevo.cuerpo}
+								</a></li>
+							</c:forEach>
+						</c:if>
+						 
+						<li><a class="text-center"
+							href="${contextPath}/paciente/misMensajes"> <strong>Ver
+									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
+						</a></li>
+					</ul> </li>
+					<li class="dropdown"><c:if test="${empty notificaciones}">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+						</a>
+					</c:if> <c:if test="${not empty notificaciones}">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i><span
 							class="badge">${notificaciones.size()}</span>
 						</a>
 					</c:if>
@@ -122,7 +147,7 @@
 						</c:if>
 						 
 						<li><a class="text-center"
-							href="${contextPath}/paciente/vermensajes"> <strong>Ver
+							href="${contextPath}/paciente/misNotificaciones"> <strong>Ver
 									todas las notificaciones</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
 					</ul> <!-- /.dropdown-messages --></li>
@@ -166,17 +191,18 @@
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
-								class="fa fa-home fa-fw"></i>Inicio</a></li>
+								class="fa fa-home fa-fw"></i> Inicio</a></li>
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
 								class="fa fa-edit fa-fw"></i><Strong>Solicitar Atención</Strong></a></li>
 						<li><a href="${contextPath}/paciente/misSolicitudes"><i
-								class="fa fa-comments fa-fw"></i> Solicitudes de Atención</a></li>
+								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes de Atención</a></li>
 						<li><a href="${contextPath}/paciente/misAtenciones"><i
 								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
-						<li><a href="${contextPath}/paciente/modificarDatos"><i
+						<li><a href="${contextPath}/paciente/misMensajes"><i
 								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
-					<li><a href="${contextPath}/paciente/evaluaciones"><i
-								class="fa fa-star-half-o fa-fw"></i> Evaluaciones a Profesionales</a></li>
+						<li><a href="${contextPath}/paciente/misEvaluaciones"><i
+								class="fa fa-star-half-o fa-fw"></i> Evaluaciones a
+								Profesionales</a></li>
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
 					</ul>

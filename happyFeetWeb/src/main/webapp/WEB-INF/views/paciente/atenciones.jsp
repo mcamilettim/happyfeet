@@ -79,7 +79,7 @@
 
 	<div id="wrapper">
 
-				<!-- Navigation -->
+			<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
@@ -95,19 +95,60 @@
 			<!-- /.navbar-header -->
 
 			<ul class="nav navbar-top-links navbar-right">
-				<li class="dropdown"><a class="dropdown-toggle"
-					data-toggle="dropdown" href="#"> <i
-						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-				</a>
+				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
+							test="${paciente.paramSexo.id==6}">o</c:if> <c:if
+							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
+				</Strong></li>
+				<li class="dropdown"><c:if test="${empty mensajesNuevos}">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+						</a>
+					</c:if> <c:if test="${not empty mensajesNuevos}">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i><span
+							class="badge">${mensajesNuevos.size()}</span>
+						</a>
+					</c:if>
 					<ul class="dropdown-menu dropdown-messages">
-						<li><a href="#"> <strong></strong> <span
-								class="pull-right text-muted"> <em>Ahora</em>
-							</span> Sin mensajes nuevos.
-						</a></li>
-						<li class="divider"></li>
+						<c:if test="${not empty mensajesNuevos}">
+							<c:forEach items="${mensajesNuevos}" var="mensajeNuevo">
+								<li><a
+									href="${contextPath}/paciente/enviarMensaje?rutPodologo=${mensajeNuevo.emisorRut}">
+										<strong></strong> <span class="pull-right text-muted"><em>${mensajeNuevo.fecha}</em>
+									</span>${mensajeNuevo.cuerpo}
+								</a></li>
+							</c:forEach>
+						</c:if>
+						 
 						<li><a class="text-center"
-							href="${contextPath}/paciente/vermensajes"> <strong>Ver
+							href="${contextPath}/paciente/misMensajes"> <strong>Ver
 									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
+						</a></li>
+					</ul> </li>
+					<li class="dropdown"><c:if test="${empty notificaciones}">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+						</a>
+					</c:if> <c:if test="${not empty notificaciones}">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i><span
+							class="badge">${notificaciones.size()}</span>
+						</a>
+					</c:if>
+					<ul class="dropdown-menu dropdown-messages">
+						<c:if test="${not empty notificaciones}">
+							<c:forEach items="${notificaciones}" var="notificacion">
+								<li><a
+									href="${notificacion.url}?idNotificacion=${notificacion.id}">
+										<strong></strong> <span class="pull-right text-muted"><em>${notificacion.fecha}</em>
+									</span> ${notificacion.titulo}
+								</a></li>
+							</c:forEach>
+						</c:if>
+						 
+						<li><a class="text-center"
+							href="${contextPath}/paciente/misNotificaciones"> <strong>Ver
+									todas las notificaciones</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
 					</ul> <!-- /.dropdown-messages --></li>
 
@@ -117,7 +158,7 @@
 						<i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-user">
-						<li><a href="${contextPath}/paciente/modificardatos"><i
+						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i>Mis Datos</a></li>
 						<li class="divider"></li>
 						<li><a href="<c:url value="/logout" />"><i
@@ -147,18 +188,23 @@
 									<span class="text-info text-center"><b>${paciente.nombres}
 											${paciente.apellidos}</b></span> <span class="text-info">Paciente</span>
 								</div>
-							</div><!-- /input-group -->
+							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
-								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
+								class="fa fa-home fa-fw"></i>Inicio</a></li>
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
-								class="fa fa-edit fa-fw"></i> Pedir hora!</a></li>
+								class="fa fa-edit fa-fw"></i>Solicitar Atención</a></li>
+						<li><a href="${contextPath}/paciente/misSolicitudes"><i
+								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes de Atención</a></li>
+						<li><a href="${contextPath}/paciente/misAtenciones"><i
+								class="fa fa-user-md fa-fw"></i> <Strong> Mis atenciones</Strong></a></li>
+						<li><a href="${contextPath}/paciente/misMensajes"><i
+								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
+						<li><a href="${contextPath}/paciente/misEvaluaciones"><i
+								class="fa fa-star-half-o fa-fw"></i> Evaluaciones a
+								Profesionales</a></li>
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
-						<li><a href="${contextPath}/paciente/misatenciones"><i
-								class="fa fa-table fa-fw"></i> Mis atenciones</a></li>
-						<li><a href="${contextPath}/paciente/califica"><i
-								class="fa fa-edit fa-fw"></i> Calificar a profesional</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
@@ -168,94 +214,73 @@
 
 		<!-- Page Content -->
 		<div id="page-wrapper">
-				<br>
-			<div class="row">
-				<div class="col-lg-12">
-
-					<c:if test="${mensaje != null}">
-						<div class="alert alert-success alert-dismissable">
-							<button type="button" class="close" data-dismiss="alert"
-								aria-hidden="true">×</button>
-							${mensaje}
-						</div>
-					</c:if>
-					<c:if test="${mensajeError != null}">
-						<div class="alert alert-danger alert-dismissable">
-							<button type="button" class="close" data-dismiss="alert"
-								aria-hidden="true">×</button>
-							${mensajeError}
-						</div>
-					</c:if>
+			<c:if test="${fn:length(atencionesRealizadas) == 0}">
+				<div class="alert alert-info" align="center">
+					<Strong>Usted no posee Atenciones</Strong>
 				</div>
-			</div>
+			</c:if>
+			<br>
 			<c:if test="${not empty atencionesRealizadas}">
 				<div class="row">
 					<div class="col-lg-12">
-
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<strong>Atenciones Realizadas <span class="badge">${atencionesRealizadas.size()}</span>
 								</strong>
 							</div>
-							<div align="left">
+							<br>
+							<div align="center">
 								<p
 									style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">
 									A continuación se listan las atenciones efectuadas con
 									diagnóstico.<br>
 								</p>
+								<br>
 							</div>
-							<br>
-							<table class="table">
-
-
-								<thead>
+							<div class="table-responsive">
+								<table class="table table-bordered">
 									<tr>
-										<th>Atención</th>
-										<th>Comuna</th>
-										<th>Monto</th>
-										<th>Detalle</th>
+										<th><div align="center">Atención</div></th>
+										<th><div align="center">Comuna</div></th>
+										<th><div align="center">Monto</div></th>
+										<th><div align="center">Detalle</div></th>
 									</tr>
-								</thead>
-								<tbody>
 									<c:forEach items="${atencionesRealizadas}"
-										var="AgendaRealizada">
+										var="agendaRealizada">
 										<tr>
-											<td>${AgendaRealizada.horario.fecha}</td>
-											<td>${AgendaRealizada.paciente.ubicacion.comuna.nombre}</td>
-											<td>${AgendaRealizada.presupuesto.total}</td>
-											<td><a
-												href="${contextPath}/paciente/verAtencion?id=${AgendaRealizada.id}">Ver</a></td>
+											<td align="center">${agendaRealizada.horario.fecha}</td>
+											<td align="center">${agendaRealizada.paciente.ubicacion.comuna.nombre}</td>
+											<td align="center">${agendaRealizada.presupuesto.total}</td>
+											<td align="center"><button
+													onclick="location.href='${contextPath}/paciente/verAtencion?id=${AgendaRealizada.id}'"
+													type="submit" class="btn btn-primary">Ver</button></td>
 										</tr>
 									</c:forEach>
-								</tbody>
+								</table>
+							</div>
 
-							</table>
 						</div>
 					</div>
 				</div>
 			</c:if>
-			<c:if test="${fn:length(atencionesRealizadas) == 0}">
-				<div class="alert alert-info" align="center"><Strong>Usted no posee Atenciones</Strong></div>
-			</c:if>
-
 		</div>
-		</div>
+	</div>
 
 
 
-		<!-- jQuery -->
-		<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+	<!-- jQuery -->
+	<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 
-		<!-- Bootstrap Core JavaScript -->
-		<script
-			src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Bootstrap Core JavaScript -->
+	<script
+		src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 
-		<!-- Metis Menu Plugin JavaScript -->
-		<script
-			src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
+	<!-- Metis Menu Plugin JavaScript -->
+	<script
+		src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
 
-		<!-- Custom Theme JavaScript -->
-		<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+	<!-- Custom Theme JavaScript -->
+	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
 </body>
 
 </html>

@@ -18,14 +18,43 @@ public class Mensaje implements Serializable {
 	private int id;
 
 	private String cuerpo;
-
+	private String fecha;
+	private String hora;
 	@Column(name="emisor_rut")
 	private String emisorRut;
 
 	@Column(name="receptor_rut")
 	private String receptorRut;
 
+	@ManyToOne
+	@JoinColumn(name = "paramEstadoMensaje_id")
+	private Parametro paramEstadoMensaje;
+	
 	public Mensaje() {
+	}
+
+	public Parametro getParamEstadoMensaje() {
+		return paramEstadoMensaje;
+	}
+
+	public void setParamEstadoMensaje(Parametro paramEstadoMensaje) {
+		this.paramEstadoMensaje = paramEstadoMensaje;
+	}
+
+	public String getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
+	}
+
+	public String getHora() {
+		return hora;
+	}
+
+	public void setHora(String hora) {
+		this.hora = hora;
 	}
 
 	public int getId() {
