@@ -214,12 +214,13 @@
 
 		<!-- Page Content -->
 		<div id="page-wrapper">
+		<br>
 			<c:if test="${fn:length(atencionesRealizadas) == 0}">
-				<div class="alert alert-info" align="center">
-					<Strong>Usted no posee Atenciones</Strong>
+				<div class="alert alert-warning" align="center">
+					<Strong>Usted no posee atenciones en el sistema</Strong>
 				</div>
 			</c:if>
-			<br>
+			
 			<c:if test="${not empty atencionesRealizadas}">
 				<div class="row">
 					<div class="col-lg-12">

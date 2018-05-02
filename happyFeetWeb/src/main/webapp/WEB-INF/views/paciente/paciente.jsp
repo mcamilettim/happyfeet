@@ -139,7 +139,7 @@
 						<c:if test="${not empty notificaciones}">
 							<c:forEach items="${notificaciones}" var="notificacion">
 								<li><a
-									href="${notificacion.url}?idNotificacion=${notificacion.id}">
+									href="${notificacion.url}&idNotificacion=${notificacion.id}">
 										<strong></strong> <span class="pull-right text-muted"><em>${notificacion.fecha}</em>
 									</span> ${notificacion.titulo}
 								</a></li>

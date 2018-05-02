@@ -78,7 +78,7 @@ public class PodologoController {
 
 	@Autowired
 	private SolicitudAtencionService solicitudAtencionService;
- 
+
 	@Autowired
 	private Environment env;
 
@@ -190,9 +190,11 @@ public class PodologoController {
 	}
 
 	@RequestMapping(value = "/podologo/enviarMensaje", method = RequestMethod.GET)
-	public String verMensajes(@ModelAttribute("podologo") Podologo podologo, Model model, @RequestParam("rutPaciente") String rutPaciente) {
+	public String verMensajes(@ModelAttribute("podologo") Podologo podologo, Model model,
+			@RequestParam("rutPaciente") String rutPaciente) {
 		Paciente paciente = pacienteService.find(rutPaciente);
-		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacionPodologo(podologo, paciente);
+		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacionPodologo(podologo,
+				paciente);
 		model.addAttribute("conversacion", conversacion);
 		model.addAttribute("paciente", paciente);
 		model.addAttribute("mensajeForm", new Mensaje());
@@ -202,11 +204,12 @@ public class PodologoController {
 	@RequestMapping(value = "/podologo/enviarMensaje", method = RequestMethod.POST)
 	public String enviarMensaje(@ModelAttribute("mensajeForm") Mensaje mensaje,
 			@ModelAttribute("paciente") Paciente paciente, @ModelAttribute("podologo") Podologo podologo, Model model) {
-		
+
 		mensaje.setEmisorRut(podologo.getRut());
 		mensaje.setReceptorRut(paciente.getRut());
 		mensajeService.save(mensaje);
-		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacionPodologo(podologo, paciente);
+		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacionPodologo(podologo,
+				paciente);
 		model.addAttribute("conversacion", conversacion);
 		model.addAttribute("mensajeForm", new Mensaje());
 		return "podologo/enviarMensaje";
@@ -254,24 +257,49 @@ public class PodologoController {
 			agenda.setFechaAgenda(DateUtil.getFechaHoyString());
 			agenda.setFotoViajePath(solicitudAtencion.getFotoViajePath());
 			// se crea agenda
-
 			solicitudAtencionService.save(solicitudAtencion);
 			agendaService.save(agenda);
-
 			model.addAttribute("mensaje", "Solicitud Aceptada con Éxito");
+
+			parametro = parametroService.findOne(Parametros.ESTADO_MENSAJE_NO_VISTO);
+			Notificacionpaciente notificacionpaciente = new Notificacionpaciente();
+			notificacionpaciente.setPaciente(solicitudAtencion.getPaciente());
+			notificacionpaciente.setParamEstadoNotificacion(parametro);
+			notificacionpaciente.setUrl(NotificacionPacienteConstantes.SOLICITUD_ATENCION + solicitudAtencion.getId());
+			notificacionpaciente.setTitulo(NotificacionPacienteConstantes.TITULO_SOLICITUD_ATENCION_ACEPTADA);
+			notificacionpaciente.setMensaje(solicitudAtencion.getPodologo().getNombres()
+					+ NotificacionPacienteConstantes.MSG_SOLICITUD_ATENCION);
+			notificacionpaciente.setFecha(DateUtil.getFechaHoyString());
+			notificacionpaciente.setHora(DateUtil.getHourSystem());
+			notificacionpacienteService.save(notificacionpaciente);
+
 			// accepta
 		} else {
 			if (respuesta.equalsIgnoreCase(Constantes.RESPUESTA_SOLICITUD_ATENCION_NO)) {
 				parametro = parametroService.findOne(Parametros.ESTADO_SOLICITUD_RECHAZADA);
-				// rechaza
 				solicitudAtencion.setParamEstadoSolicitudAtencion(parametro);
 				solicitudAtencionService.save(solicitudAtencion);
-				// rechaza
+
 				parametro = parametroService.findOne(Parametros.ESTADO_HORARIO_DISPONIBLE);
 				Horario horario = solicitudAtencion.getHorario();
+				horario.setParamEstadoHorario(parametro);
 				horarioService.save(horario);
 
 				model.addAttribute("mensaje", "Solicitud Rechazada con Éxito");
+
+				parametro = parametroService.findOne(Parametros.ESTADO_MENSAJE_NO_VISTO);
+				Notificacionpaciente notificacionpaciente = new Notificacionpaciente();
+				notificacionpaciente.setPaciente(solicitudAtencion.getPaciente());
+				notificacionpaciente.setParamEstadoNotificacion(parametro);
+				notificacionpaciente
+						.setUrl(NotificacionPacienteConstantes.SOLICITUD_ATENCION + solicitudAtencion.getId());
+				notificacionpaciente.setTitulo(NotificacionPacienteConstantes.TITULO_SOLICITUD_ATENCION_RECHAZADA);
+				notificacionpaciente.setMensaje(solicitudAtencion.getPodologo().getNombres()
+						+ NotificacionPacienteConstantes.MSG_SOLICITUD_ATENCION);
+				notificacionpaciente.setFecha(DateUtil.getFechaHoyString());
+				notificacionpaciente.setHora(DateUtil.getHourSystem());
+				notificacionpacienteService.save(notificacionpaciente);
+
 			} else {
 				model.addAttribute("mensaje", "Respuesta de solicitud Incorrecta");
 			}
@@ -502,28 +530,31 @@ public class PodologoController {
 		Parametro parametro = parametroService.findOne(Parametros.ESTADO_AGENDA_ACEPTADA);
 		agenda.setParamEstadoAgenda(parametro);
 		agendaService.save(agenda);
+		
 		atencion.setAgenda(agenda);
 		Evaluacion evaluacion = new Evaluacion();
 		evaluacion.setPodologo(atencion.getAgenda().getPodologo());
 		evaluacion.setPaciente(atencion.getAgenda().getPaciente());
 		evaluacion.setComentarioPodologo(comentario);
 		evaluacion.setValorPaciente(Integer.parseInt(evaluacionStar));
-
 		atencion.setEvaluacion(evaluacion);
-
 		atencionService.save(atencion);
-
+		
+		atencion = atencionService.findByAgenda(agenda);
+		
 		parametro = parametroService.findOne(Parametros.ESTADO_MENSAJE_NO_VISTO);
 		Notificacionpaciente notificacionpaciente = new Notificacionpaciente();
 		notificacionpaciente.setPaciente(atencion.getAgenda().getPaciente());
 		notificacionpaciente.setParamEstadoNotificacion(parametro);
-		notificacionpaciente.setUrl(NotificacionPacienteConstantes.EVALUAR_PROFESIONAL);
+		notificacionpaciente
+				.setUrl(NotificacionPacienteConstantes.EVALUAR_PROFESIONAL + atencion.getEvaluacion().getId());
 		notificacionpaciente.setTitulo(NotificacionPacienteConstantes.TITULO_EVALUAR_PROFESIONAL);
-		notificacionpaciente.setMensaje(NotificacionPacienteConstantes.MSG_EVALUAR_PROFESIONAL+ atencion.getAgenda().getPodologo().getNombres());
+		notificacionpaciente.setMensaje(NotificacionPacienteConstantes.MSG_EVALUAR_PROFESIONAL
+				+ atencion.getAgenda().getPodologo().getNombres());
 		notificacionpaciente.setFecha(DateUtil.getFechaHoyString());
 		notificacionpaciente.setHora(DateUtil.getHourSystem());
 		notificacionpacienteService.save(notificacionpaciente);
-		
+
 		model.addAttribute("mensaje", "Atención Finalizada con Éxito");
 		return "podologo/podologo";
 	}

@@ -395,12 +395,6 @@
 										</tr>
 										<tr style="display: none;">
 											<th scope="row" colspan="2"><input
-												ng-model="presupuesto.patologia_id" type="text"
-												class="form-control" name="patologia.id" required="required"
-												readonly="readonly" /></th>
-										</tr>
-										<tr style="display: none;">
-											<th scope="row" colspan="2"><input
 												ng-model="presupuesto.kilometros" type="text"
 												class="form-control" name="kilometros" required="required"
 												readonly="readonly" /></th>

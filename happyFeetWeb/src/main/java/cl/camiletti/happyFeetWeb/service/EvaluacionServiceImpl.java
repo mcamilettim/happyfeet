@@ -52,6 +52,6 @@ public class EvaluacionServiceImpl implements EvaluacionService{
 		// TODO Auto-generated method stub
 		return evaluacionRepository.findByPaciente(paciente);
 	}
-
+ 
  
 }

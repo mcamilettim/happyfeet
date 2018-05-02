@@ -12,6 +12,7 @@ public interface EvaluacionService {
 	List<Evaluacion>  findByPodologo(Podologo podologo);
 	List<Evaluacion>  findByPaciente(Paciente paciente);
 	List<Evaluacion>  findByPacienteAndValorPodologo(Paciente paciente, int valorPodologo);
+ 
 	List<Evaluacion> findAll();
 	void deleteById(Evaluacion evaluacion);
 }

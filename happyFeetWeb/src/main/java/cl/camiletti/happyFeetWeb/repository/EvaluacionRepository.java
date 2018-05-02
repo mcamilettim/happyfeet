@@ -12,7 +12,7 @@ public interface EvaluacionRepository extends JpaRepository<Evaluacion, Long> {
 	<S extends Evaluacion> S save(Evaluacion evaluacion);
 
 	Evaluacion findById(int id);
-
+	
 	List<Evaluacion> findByPodologo(Podologo podologo);
 
 	List<Evaluacion> findByPaciente(Paciente paciente);

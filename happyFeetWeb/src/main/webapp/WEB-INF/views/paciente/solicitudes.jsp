@@ -1,7 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
@@ -79,7 +79,7 @@
 
 	<div id="wrapper">
 
-			<!-- Navigation -->
+		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
@@ -119,14 +119,14 @@
 								</a></li>
 							</c:forEach>
 						</c:if>
-						 
+
 						<li><a class="text-center"
 							href="${contextPath}/paciente/misMensajes"> <strong>Ver
 									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
-					</ul> </li>
-					<li class="dropdown"><c:if test="${empty notificaciones}">
-							<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+					</ul></li>
+				<li class="dropdown"><c:if test="${empty notificaciones}">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
 						</a>
 					</c:if> <c:if test="${not empty notificaciones}">
@@ -145,7 +145,7 @@
 								</a></li>
 							</c:forEach>
 						</c:if>
-						 
+
 						<li><a class="text-center"
 							href="${contextPath}/paciente/misNotificaciones"> <strong>Ver
 									todas las notificaciones</strong> <i class="fa fa-angle-right"></i>
@@ -195,7 +195,8 @@
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
 								class="fa fa-edit fa-fw"></i>Solicitar Atención</a></li>
 						<li><a href="${contextPath}/paciente/misSolicitudes"><i
-								class="fa fa-calendar-plus-o fa-fw"></i> <Strong>Solicitudes de Atención</Strong></a></li>
+								class="fa fa-calendar-plus-o fa-fw"></i> <Strong>Solicitudes
+									de Atención</Strong></a></li>
 						<li><a href="${contextPath}/paciente/misAtenciones"><i
 								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
 						<li><a href="${contextPath}/paciente/misMensajes"><i
@@ -214,7 +215,15 @@
 
 		<!-- Page Content -->
 		<div id="page-wrapper">
-				<br>
+			<br>
+			<c:if test="${fn:length(solicitudes) == 0}">
+				<div class="alert alert-warning" align="center">
+					<Strong>Usted no posee solicitudes de atención en el
+						sistema</Strong>
+				</div>
+			</c:if>
+
+			<c:if test="${not empty solicitudes}">
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="panel panel-default">
@@ -223,53 +232,67 @@
 							</div>
 							<br>
 							<div align="center">
-								<p style="text-align: justify; padding-left: 10px; padding-right: 10px;">A continuación se detallan todas las solicitudes de atencion que ha solicitado.</p>
+								<p
+									style="text-align: justify; padding-left: 10px; padding-right: 10px;">A
+									continuación se detallan todas las solicitudes de atencion que
+									ha solicitado.</p>
 								<br>
 							</div>
-						 <div  class="table-responsive">
-									<table class="table table-bordered">
+							<div class="table-responsive">
+								<table class="table table-bordered">
+									<tr>
+										<th><div align="center">Podologo tratante</div></th>
+										<th><div align="center">Patologia</div></th>
+										<th><div align="center">Fecha</div></th>
+										<th><div align="center">Hora</div></th>
+										<th><div align="center">Estado</div></th>
+				 
+									</tr>
+									<c:forEach items="${solicitudes}" var="solicitud">
 										<tr>
-											<th><div align="center">Podologo tratante</div></th>
-											<th><div align="center">Patologia</div></th>
-											<th><div align="center">Fecha</div></th>
-											<th><div align="center">Estado</div></th>
-											<th><div align="center">Detalle</div></th>
+											<td align="center">${solicitud.podologo.nombres}</td>
+											<td align="center">${solicitud.patologia.nombre}</td>
+											<td align="center">${solicitud.horario.fecha}</td>
+											<td align="center">${solicitud.horario.hora}</td>
+											<td align="center"><c:if
+													test="${solicitud.paramEstadoSolicitudAtencion.valor eq 'Pendiente'}">
+													<button type="button"  onclick="location.href='${contextPath}/paciente/detalleSolicitud?id=${solicitud.id}'" class="btn btn-warning">PENDIENTE</button>
+												</c:if> <c:if
+													test="${solicitud.paramEstadoSolicitudAtencion.valor eq 'Rechazada'}">
+													<button type="button" onclick="location.href='${contextPath}/paciente/detalleSolicitud?id=${solicitud.id}'"  class="btn btn-danger">RECHAZADA</button>
+												</c:if> <c:if
+													test="${solicitud.paramEstadoSolicitudAtencion.valor eq 'Aceptada'}">
+													<button type="button"  onclick="location.href='${contextPath}/paciente/detalleSolicitud?id=${solicitud.id}'" class="btn btn-success">ACEPTADA</button>
+												</c:if></td>
+											 
 										</tr>
-										<c:forEach items="${solicitudes}" var="solicitud">
-											<tr>
-												<td align="center">${solicitud.podologo.nombres}</td>
-												<td align="center">${solicitud.patologia.nombre}</td>
-												<td align="center">${solicitud.horario.fecha}</td>
-												<td align="center">${solicitud.paramEstadoSolicitudAtencion.valor}</td>
-												<td align="center"><button onclick="location.href='${contextPath}/paciente/detalleSolicitud?id=${solicitud.id}'"
-										type="submit" class="btn btn-primary">Ver</button></td>
-											</tr>
-										</c:forEach>
-									</table>
+									</c:forEach>
+								</table>
 							</div>
-							
+
 						</div>
 					</div>
 				</div>
-			</div>
+			</c:if>
 		</div>
-		 
+	</div>
 
 
 
-		<!-- jQuery -->
-		<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 
-		<!-- Bootstrap Core JavaScript -->
-		<script
-			src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!-- jQuery -->
+	<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 
-		<!-- Metis Menu Plugin JavaScript -->
-		<script
-			src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
+	<!-- Bootstrap Core JavaScript -->
+	<script
+		src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 
-		<!-- Custom Theme JavaScript -->
-		<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+	<!-- Metis Menu Plugin JavaScript -->
+	<script
+		src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
+
+	<!-- Custom Theme JavaScript -->
+	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
 </body>
 
 </html>
