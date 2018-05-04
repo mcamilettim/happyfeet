@@ -96,7 +96,7 @@
 
 			<ul class="nav navbar-top-links navbar-right">
 				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
-							test="${paciente.paramSexo.id==6}">o</c:if> <c:if
+							test="${paciente.paramSexo.id==6}">o</c:if><c:if
 							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
 				</Strong></li>
 				<li class="dropdown"><c:if test="${empty mensajesNuevos}">
@@ -126,7 +126,7 @@
 						</a></li>
 					</ul> </li>
 					<li class="dropdown"><c:if test="${empty notificaciones}">
-							<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
 						</a>
 					</c:if> <c:if test="${not empty notificaciones}">
@@ -145,12 +145,12 @@
 								</a></li>
 							</c:forEach>
 						</c:if>
-						 
+
 						<li><a class="text-center"
 							href="${contextPath}/paciente/misNotificaciones"> <strong>Ver
 									todas las notificaciones</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
-					</ul> <!-- /.dropdown-messages --></li>
+					</ul></li>
 
 				<!-- /.dropdown -->
 				<li class="dropdown"><a class="dropdown-toggle"

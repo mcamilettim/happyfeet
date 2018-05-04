@@ -1,10 +1,9 @@
-
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<c:set var="rut_podologo" scope="session" value="${podologo.rut}" />
+
 <!DOCTYPE html>
 
 <html lang="es">
@@ -79,7 +78,8 @@
 <body>
 
 	<div id="wrapper">
-	<!-- Navigation -->
+
+		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
@@ -195,11 +195,12 @@
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
 								class="fa fa-edit fa-fw"></i>Solicitar Atención</a></li>
 						<li><a href="${contextPath}/paciente/misSolicitudes"><i
-								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes de Atención</a></li>
+								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes
+									de Atención</a></li>
 						<li><a href="${contextPath}/paciente/misAtenciones"><i
 								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
 						<li><a href="${contextPath}/paciente/misMensajes"><i
-								class="fa fa-comments fa-fw"></i> <Strong> Mensajes</Strong></a></li>
+								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
 						<li><a href="${contextPath}/paciente/misEvaluaciones"><i
 								class="fa fa-star-half-o fa-fw"></i> Evaluaciones a
 								Profesionales</a></li>
@@ -213,123 +214,98 @@
 		</nav>
 
 		<!-- Page Content -->
-		<div id="page-wrapper">
-
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							Chat con Paciente: <strong>${podologo.nombres}
-								${podologo.apellidos}</strong>
-						</div>
-						<!-- /.panel-heading -->
-						<br>
-						<div class="row">
-						<div class="col-md-2">
-						</div>
-							<div class="col-md-3" style="padding-top: 31px;">
-								<div align="center">
-									<img class="img-responsive"
-										style="width: 300px; height: 300px;"
-										src="data:image/png;base64,${podologo.foto}">
-								</div>
+			<div id="page-wrapper">
+			<br>
+			<c:if test="${empty notificacionesVistas && empty notificacionesPendientes}">
+				<div class="alert alert-warning" align="center">
+					<Strong>Usted no posee Notificaciones en el sistema</Strong>
+				</div>
+			</c:if>
+			
+			<c:if test="${not empty notificacionesPendientes}">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<strong>Notificaciones nuevas <span class="badge">${notificacionesPendientes.size()}</span>
+								</strong>
 							</div>
 							<br>
-							<div class="col-md-5">
-								<div class="panel panel-primary">
-									<div class="panel-heading">
-										<span class="glyphicon glyphicon-comment"></span> Chat
-										<div class="btn-group pull-right">
-											<button type="button"
-												class="btn btn-default btn-xs dropdown-toggle"
-												data-toggle="dropdown">
-												<span class="glyphicon glyphicon-chevron-down"></span>
-											</button>
-											<ul class="dropdown-menu slidedown">
-												<li><a
-													href="${contextPath}/paciente/enviarMensaje?rutPodologo=${podologo.rut}"><span
-														class="glyphicon glyphicon-refresh"> </span>Refresh</a></li>
-
-											</ul>
-										</div>
-									</div>
-									<div class="panel-body"
-										style="width: 100%; overflow-y: scroll; height: 250px;">
-										<ul class="chat">
-											<c:forEach items="${conversacion}" var="mensaje">
-												<c:choose>
-													<c:when test="${mensaje.emisorRut eq paciente.rut}">
-														<li class="left clearfix"><span
-															class="chat-img pull-left"> <img
-																src="http://placehold.it/50/55C1E7/fff&text=Yo"
-																alt="User Avatar" class="img-circle" />
-														</span>
-															<div class="chat-body clearfix">
-																<div class="header">
-																	<strong class="primary-font">${paciente.nombres}</strong>
-																	<small class="pull-right text-muted"> <span
-																		class="glyphicon glyphicon-time"></span>12 mins ago
-																	</small>
-																</div>
-																<p>${mensaje.cuerpo}</p>
-															</div></li>
-													</c:when>
-													<c:otherwise>
-														<li class="right clearfix"><span
-															class="chat-img pull-right"> <img
-																src="http://placehold.it/50/FA6F57/fff&text=P"
-																alt="User Avatar" class="img-circle" />
-														</span>
-															<div class="chat-body clearfix">
-																<div class="header">
-																	<small class=" text-muted"><span
-																		class="glyphicon glyphicon-time"></span>13 mins ago</small> <strong
-																		class="pull-right primary-font">${podologo.nombres}
-																		${podologo.apellidos}</strong>
-																</div>
-
-																<p>${mensaje.cuerpo}</p>
-
-															</div></li>
-													</c:otherwise>
-												</c:choose>
-											</c:forEach>
-										</ul>
-									</div>
-									<div class="panel-footer">
-										<form:form method="POST" modelAttribute="mensajeForm"
-											action="${contextPath}/paciente/enviarMensaje?rutPodologo=${podologo.rut}">
-											<div class="input-group">
-
-												<spring:bind path="cuerpo">
-													<div class="form-group ${status.error ? 'has-error' : ''}">
-														<form:input type="text" class="form-control input-sm"
-															placeholder="Escriba su mensaje ..." path="cuerpo"></form:input>
-														<form:errors path="cuerpo"></form:errors>
-													</div>
-												</spring:bind>
-
-												<span class="input-group-btn">
-													<button type="submit" class="btn btn-warning btn-sm"
-														id="btn-chat">Enviar</button>
-												</span>
-											</div>
-										</form:form>
-
-
-									</div>
-								</div>
+							<div align="center">
+								<p
+									style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">
+									A continuación se listan las notificaciones de Profesionales<br>
+								</p>
+								<br>
 							</div>
+							<div class="table-responsive">
+								<table class="table table-bordered">
+									<tr>
+										<th><div align="center">Titulo</div></th>
+										<th><div align="center">Hora</div></th>
+										<th><div align="center">Fecha</div></th>
+										<th><div align="center">Detalle</div></th>
+									</tr>
+									<c:forEach items="${notificacionesPendientes}" var="notificacion">
+										<tr>
+											<td align="center">${notificacion.titulo}</td>
+											<td align="center">${notificacion.hora}</td>
+											<td align="center">${notificacion.fecha}</td>
+											<td align="center"><button
+													onclick="location.href='${notificacion.url}&idNotificacion=${notificacion.id}'"
+													type="submit" class="btn btn-primary">Ver</button></td>
+										</tr>
+									</c:forEach>
+								</table>
+							</div>
+
 						</div>
 					</div>
-
-					<!-- /.table-responsive -->
 				</div>
-				<!-- /.panel-body -->
-			</div>
-			<!-- /.panel -->
-		</div>
-	</div>
+			</c:if>
+			<c:if test="${not empty notificacionesVistas}">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<strong>Todas las notificaciones <span class="badge">${notificacionesVistas.size()}</span>
+								</strong>
+							</div>
+							<br>
+							<div align="center">
+								<p
+									style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">
+									A continuación se listan las evaluaciones de Profesionales<br>
+								</p>
+								<br>
+							</div>
+							<div class="table-responsive">
+								<table class="table table-bordered">
+									<tr>
+										<th><div align="center">Titulo</div></th>
+										<th><div align="center">Hora</div></th>
+										<th><div align="center">Fecha</div></th>
+										<th><div align="center">Detalle</div></th>
+									</tr>
+									<c:forEach items="${notificacionesVistas}" var="notificacion">
+										<tr>
+											<td align="center">${notificacion.titulo}</td>
+											<td align="center">${notificacion.hora}</td>
+											<td align="center">${notificacion.fecha}</td>
+											<td align="center"><button
+													onclick="location.href='${notificacion.url}&idNotificacion=${notificacion.id}'"
+													type="submit" class="btn btn-primary">Ver</button></td>
+										</tr>
+									</c:forEach>
+								</table>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</c:if>
+		</div></div>
+
 
 
 	<!-- jQuery -->
@@ -345,7 +321,6 @@
 
 	<!-- Custom Theme JavaScript -->
 	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
-
 </body>
 
 </html>

@@ -32,7 +32,6 @@ import cl.camiletti.happyFeetWeb.service.PacienteService;
 import cl.camiletti.happyFeetWeb.service.PatologiaService;
 import cl.camiletti.happyFeetWeb.service.PodologoService;
 import cl.camiletti.happyFeetWeb.util.Constantes;
-import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 
 @RestController
 @RequestMapping("/servicesAgendar")

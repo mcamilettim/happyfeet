@@ -96,7 +96,7 @@
 
 			<ul class="nav navbar-top-links navbar-right">
 				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
-							test="${paciente.paramSexo.id==6}">o</c:if> <c:if
+							test="${paciente.paramSexo.id==6}">o</c:if><c:if
 							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
 				</Strong></li>
 				<li class="dropdown"><c:if test="${empty mensajesNuevos}">
@@ -126,7 +126,7 @@
 						</a></li>
 					</ul> </li>
 					<li class="dropdown"><c:if test="${empty notificaciones}">
-							<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
 						</a>
 					</c:if> <c:if test="${not empty notificaciones}">
@@ -139,18 +139,18 @@
 						<c:if test="${not empty notificaciones}">
 							<c:forEach items="${notificaciones}" var="notificacion">
 								<li><a
-									href="${notificacion.url}?idNotificacion=${notificacion.id}">
+									href="${notificacion.url}&idNotificacion=${notificacion.id}">
 										<strong></strong> <span class="pull-right text-muted"><em>${notificacion.fecha}</em>
 									</span> ${notificacion.titulo}
 								</a></li>
 							</c:forEach>
 						</c:if>
-						 
+
 						<li><a class="text-center"
 							href="${contextPath}/paciente/misNotificaciones"> <strong>Ver
 									todas las notificaciones</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
-					</ul> <!-- /.dropdown-messages --></li>
+					</ul></li>
 
 				<!-- /.dropdown -->
 				<li class="dropdown"><a class="dropdown-toggle"
@@ -219,12 +219,12 @@
 					<Strong>Usted no posee evaluaciones en el sistema</Strong>
 				</div>
 			</c:if>
-			<c:if test="${not empty evaluacionesPendientes}">
+			<c:if test="${not empty notificacionesPendientes}">
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<strong>Evaluaciones Pendientes <span class="badge">${evaluacionesPendientes.size()}</span>
+								<strong>Evaluaciones Pendientes <span class="badge">${notificacionesPendientes.size()}</span>
 								</strong>
 							</div>
 							<br>
@@ -238,11 +238,12 @@
 							<div class="table-responsive">
 								<table class="table table-bordered">
 									<tr>
-										<th><div align="center">Profesional</div></th>
-										<th><div align="center">Nota</div></th>
-										<th><div align="center">Evaluación</div></th>
+										<th><div align="center">Titulo</div></th>
+										<th><div align="center">Hora</div></th>
+										<th><div align="center">Fecha</div></th>
+										<th><div align="center">Detalle</div></th>
 									</tr>
-									<c:forEach items="${evaluacionesPendientes}" var="evaluacion">
+									<c:forEach items="${notificacionesPendientes}" var="notificacion">
 										<tr>
 											<td align="center">${evaluacion.podologo.nombres}
 												${evaluacion.podologo.apellidos}</td>

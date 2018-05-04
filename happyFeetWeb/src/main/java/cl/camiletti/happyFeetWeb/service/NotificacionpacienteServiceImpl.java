@@ -1,5 +1,6 @@
 package cl.camiletti.happyFeetWeb.service;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +33,19 @@ public class NotificacionpacienteServiceImpl implements NotificacionpacienteServ
 
 	@Override
 	public List<Notificacionpaciente> findByPacienteAndParamEstadoNotificacion(Paciente paciente, Parametro parametro) {
-		return notificacionpacienteRepository.findByPacienteAndParamEstadoNotificacion(paciente, parametro);
+		return notificacionpacienteRepository.findByPacienteAndParamEstadoNotificacionOrderByIdDesc(paciente, parametro);
 	}
 
 	@Override
 	public Notificacionpaciente findByIdAndPaciente(int id, Paciente paciente) {
 		return notificacionpacienteRepository.findByIdAndPaciente(id, paciente);
 	}
- 
+
+	@Override
+	public List<Notificacionpaciente> findByPacienteAndParamEstadoNotificacionNotIn(Paciente paciente,List<Parametro> parametros) {
+		return notificacionpacienteRepository.findByPacienteAndParamEstadoNotificacionNotInOrderByIdDesc(paciente,parametros);
+	}
+
+	 
 
 }

@@ -96,7 +96,7 @@
 
 			<ul class="nav navbar-top-links navbar-right">
 				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
-							test="${paciente.paramSexo.id==6}">o</c:if> <c:if
+							test="${paciente.paramSexo.id==6}">o</c:if><c:if
 							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
 				</Strong></li>
 				<li class="dropdown"><c:if test="${empty mensajesNuevos}">
@@ -126,7 +126,7 @@
 						</a></li>
 					</ul> </li>
 					<li class="dropdown"><c:if test="${empty notificaciones}">
-							<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
 						</a>
 					</c:if> <c:if test="${not empty notificaciones}">
@@ -139,18 +139,18 @@
 						<c:if test="${not empty notificaciones}">
 							<c:forEach items="${notificaciones}" var="notificacion">
 								<li><a
-									href="${notificacion.url}?idNotificacion=${notificacion.id}">
+									href="${notificacion.url}&idNotificacion=${notificacion.id}">
 										<strong></strong> <span class="pull-right text-muted"><em>${notificacion.fecha}</em>
 									</span> ${notificacion.titulo}
 								</a></li>
 							</c:forEach>
 						</c:if>
-						 
+
 						<li><a class="text-center"
 							href="${contextPath}/paciente/misNotificaciones"> <strong>Ver
 									todas las notificaciones</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
-					</ul> <!-- /.dropdown-messages --></li>
+					</ul></li>
 
 				<!-- /.dropdown -->
 				<li class="dropdown"><a class="dropdown-toggle"
@@ -253,7 +253,7 @@
 											<td align="center">${agendaRealizada.paciente.ubicacion.comuna.nombre}</td>
 											<td align="center">${agendaRealizada.presupuesto.total}</td>
 											<td align="center"><button
-													onclick="location.href='${contextPath}/paciente/verAtencion?id=${AgendaRealizada.id}'"
+													onclick="location.href='${contextPath}/paciente/verAtencion?id=${agendaRealizada.id}'"
 													type="submit" class="btn btn-primary">Ver</button></td>
 										</tr>
 									</c:forEach>

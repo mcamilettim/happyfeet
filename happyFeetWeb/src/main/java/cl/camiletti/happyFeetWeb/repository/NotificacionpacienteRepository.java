@@ -13,5 +13,7 @@ public interface NotificacionpacienteRepository extends JpaRepository<Notificaci
 	  List<Notificacionpaciente> findAll();	 
 	  Notificacionpaciente findByIdAndPaciente(int id,Paciente paciente);	
 	  List<Notificacionpaciente> findByPaciente(Paciente paciente);	 
-	  List<Notificacionpaciente> findByPacienteAndParamEstadoNotificacion(Paciente paciente,Parametro parametro);	
+	  List<Notificacionpaciente> findByPacienteAndParamEstadoNotificacionOrderByIdDesc(Paciente paciente,Parametro parametro);	
+	//  @Query("Select c from Notificacionpaciente c where c.paramEstadoNotificacion_id like %:place%")
+	  List<Notificacionpaciente> findByPacienteAndParamEstadoNotificacionNotInOrderByIdDesc(Paciente paciente,List<Parametro> parametros);	
 }

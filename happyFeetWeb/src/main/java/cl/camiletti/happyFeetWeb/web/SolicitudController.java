@@ -24,7 +24,6 @@ import cl.camiletti.happyFeetWeb.service.SolicitudService;
 import cl.camiletti.happyFeetWeb.service.UbicacionService;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 import cl.camiletti.happyFeetWeb.util.Mail;
-import cl.camiletti.happyFeetWeb.util.Seccion;
 
 @Controller
 public class SolicitudController {
