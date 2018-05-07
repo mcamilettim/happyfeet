@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
@@ -251,7 +252,9 @@
 										<tr>
 											<td align="center">${agendaRealizada.horario.fecha}</td>
 											<td align="center">${agendaRealizada.paciente.ubicacion.comuna.nombre}</td>
-											<td align="center">${agendaRealizada.presupuesto.total}</td>
+											<td align="center">$<fmt:formatNumber
+											value="${agendaRealizada.presupuesto.total}"
+											type="currency" pattern="#,##0" /></td>
 											<td align="center"><button
 													onclick="location.href='${contextPath}/paciente/verAtencion?id=${agendaRealizada.id}'"
 													type="submit" class="btn btn-primary">Ver</button></td>

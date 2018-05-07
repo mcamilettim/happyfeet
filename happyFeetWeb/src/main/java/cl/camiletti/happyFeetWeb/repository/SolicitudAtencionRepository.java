@@ -11,13 +11,22 @@ import cl.camiletti.happyFeetWeb.model.Podologo;
 import cl.camiletti.happyFeetWeb.model.Solicitudatencion;
 
 public interface SolicitudAtencionRepository extends JpaRepository<Solicitudatencion, Long> {
-	  <S extends Solicitudatencion> S save(Solicitudatencion solicitudAtencion);
-	  Solicitudatencion findById(int id);
-	  Solicitudatencion findByHorario(Horario horario);
-	  List<Solicitudatencion> findAll();	
-	  List<Solicitudatencion> findByPaciente(Paciente paciente);
-	  void delete(Solicitudatencion solicitudAtencion);	
-	  List<Solicitudatencion> findByPodologo(Podologo podologo);
-	  List<Solicitudatencion> findByParamEstadoSolicitudAtencionAndPodologo(Parametro parametro, Podologo podologo);
-}
+	<S extends Solicitudatencion> S save(Solicitudatencion solicitudAtencion);
 
+	Solicitudatencion findById(int id);
+
+	Solicitudatencion findByHorario(Horario horario);
+
+	List<Solicitudatencion> findAll();
+
+	List<Solicitudatencion> findByPaciente(Paciente paciente);
+
+	void delete(Solicitudatencion solicitudAtencion);
+
+	List<Solicitudatencion> findByPodologo(Podologo podologo);
+
+	List<Solicitudatencion> findByParamEstadoSolicitudAtencionAndPodologoOrderByIdDesc(Parametro parametro, Podologo podologo);
+
+	List<Solicitudatencion> findByPodologoAndParamEstadoSolicitudAtencionNotInOrderByIdDesc(Podologo podologo,
+			List<Parametro> parametros);
+}

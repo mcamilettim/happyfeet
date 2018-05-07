@@ -2,7 +2,6 @@ package cl.camiletti.happyFeetWeb.web;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -25,10 +24,12 @@ import cl.camiletti.happyFeetWeb.model.Evaluacion;
 import cl.camiletti.happyFeetWeb.model.Horario;
 import cl.camiletti.happyFeetWeb.model.Mensaje;
 import cl.camiletti.happyFeetWeb.model.Notificacionpaciente;
+import cl.camiletti.happyFeetWeb.model.Notificacionpodologo;
 import cl.camiletti.happyFeetWeb.model.Paciente;
 import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Podologo;
 import cl.camiletti.happyFeetWeb.model.Solicitudatencion;
+import cl.camiletti.happyFeetWeb.model.custom.MensajeCustom;
 import cl.camiletti.happyFeetWeb.service.AgendaService;
 import cl.camiletti.happyFeetWeb.service.AtencionService;
 import cl.camiletti.happyFeetWeb.service.ComunaService;
@@ -36,6 +37,7 @@ import cl.camiletti.happyFeetWeb.service.EvaluacionService;
 import cl.camiletti.happyFeetWeb.service.HorarioService;
 import cl.camiletti.happyFeetWeb.service.MensajeService;
 import cl.camiletti.happyFeetWeb.service.NotificacionpacienteService;
+import cl.camiletti.happyFeetWeb.service.NotificacionpodologoService;
 import cl.camiletti.happyFeetWeb.service.PacienteService;
 import cl.camiletti.happyFeetWeb.service.ParametroService;
 import cl.camiletti.happyFeetWeb.service.PodologoService;
@@ -45,12 +47,14 @@ import cl.camiletti.happyFeetWeb.service.UsuarioService;
 import cl.camiletti.happyFeetWeb.util.Constantes;
 import cl.camiletti.happyFeetWeb.util.DateUtil;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
+import cl.camiletti.happyFeetWeb.util.MensajesNuevosUtil;
 import cl.camiletti.happyFeetWeb.util.NotificacionPacienteConstantes;
+import cl.camiletti.happyFeetWeb.util.NotificacionUtil;
 import cl.camiletti.happyFeetWeb.util.Parametros;
 
 @Controller
 @SessionAttributes(value = { "podologo", "paciente", "atencion", "pacientes", "solicitudes", "agendaParaFinalizar",
-		"solicitudAtencion" })
+		"solicitudAtencion", "mensajesNuevos", "notificaciones" })
 public class PodologoController {
 	@Autowired
 	private PodologoService podologoService;
@@ -95,64 +99,175 @@ public class PodologoController {
 
 	@Autowired
 	private AgendaService agendaService;
+
+	@Autowired
+	private NotificacionpodologoService notificacionpodologoService;
 	@Autowired
 	private NotificacionpacienteService notificacionpacienteService;
 
-	@RequestMapping(value = "/podologo/pacientes", method = RequestMethod.GET)
-	public String cargarPacientes(Model model, @ModelAttribute("podologo") Podologo podologo) {
-		List<Agenda> agendas = agendaService.findByPodologo(podologo);
-		ArrayList<Paciente> pacientes = new ArrayList<>();
-		for (int i = 0; i < agendas.size(); i++) {
-			if (!pacientes.contains(agendas.get(i).getPaciente()))
-				pacientes.add(agendas.get(i).getPaciente());
-		}
-
-		pacientes = (ArrayList<Paciente>) pacientes.stream().distinct().collect(Collectors.toList());
-		utilDate.setEdad(pacientes);
-		model.addAttribute("pacientes", pacientes);
+	@RequestMapping(value = "/podologo/index", method = RequestMethod.GET)
+	public String redirect(Model model) {
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Podologo podologo = podologoService.findByEmail(user.getUsername());
+		NotificacionUtil.cargaNotificacionesPodologo(model, podologo, notificacionpodologoService, parametroService);
+		MensajesNuevosUtil.cargaMensajesNuevosPodologo(model, podologo, mensajeService, parametroService);
 		model.addAttribute("podologo", podologo);
-		return "podologo/pacientes";
+		return "podologo/podologo";
 	}
 
-	@RequestMapping(value = "/podologo/buscarPacientes", method = RequestMethod.POST)
-	public String buscarPaciente(@ModelAttribute("podologo") Podologo podologo, Model model,
-			@RequestParam("selectBuscar") String criterioBusqueda, @RequestParam("textBuscar") String textBuscar) {
-
-		ArrayList<Paciente> pacientes = new ArrayList();
-		String mensaje = "";
-		if (criterioBusqueda.equals("Nombre")) {
-			pacientes = (ArrayList<Paciente>) pacienteService.findByNombre(textBuscar);
-		} else {
-			if (criterioBusqueda.equals("Rut")) {
-				pacientes.add(pacienteService.find(textBuscar));
-				pacientes = (ArrayList<Paciente>) pacientes.stream().distinct().collect(Collectors.toList());
-			}
-		}
-		if (pacientes.size() == 0) {
-			mensaje = "No se encontraron resultados";
-		}
-		utilDate.setEdad(pacientes);
-		model.addAttribute("mensaje", mensaje);
-		model.addAttribute("pacientes", pacientes);
-		model.addAttribute("podologo", podologo);
-
-		return "podologo/pacientes";
+	@RequestMapping(value = "/podologo/solicitudAtencionNotificacion", method = RequestMethod.GET)
+	public String solicitudAtencionNotificacion(@ModelAttribute("podologo") Podologo podologo, Model model,
+			@RequestParam("idNotificacion") int idNotificacion, @RequestParam("id") int id) {
+		NotificacionUtil.cambiaEstadoNotificacionPodologo(model, podologo, notificacionpodologoService,
+				parametroService, idNotificacion);
+		MensajesNuevosUtil.cargaMensajesNuevosPodologo(model, podologo, mensajeService, parametroService);
+		Solicitudatencion solicitud = solicitudAtencionService.findById(id);
+		model.addAttribute("solicitudAtencion", solicitud);
+		return "podologo/detalleSolicitud";
 	}
 
-	@RequestMapping(value = "/podologo/historialPaciente", method = RequestMethod.GET)
-	public String cargarHistorialPaciente(@ModelAttribute("podologo") Podologo podologo, Model model,
-			@RequestParam("rut") String rutPaciente, @ModelAttribute("pacientes") List<Paciente> pacientes) {
-		Paciente paciente = pacienteService.find(rutPaciente);
-		List<Atencion> atenciones = atencionService.findByAgenda(paciente, podologo);
-		podologo = podologoService.findByEmail(podologo.getEmail());
-		model.addAttribute("atenciones", atenciones);
-		model.addAttribute("paciente", paciente);
-		model.addAttribute("podologo", podologo);
-		model.addAttribute("pacientes", pacientes);
-
-		return "podologo/historialPaciente";
+	@RequestMapping(value = "/podologo/miAgenda", method = RequestMethod.GET)
+	public String ingresarHora(Model model, @ModelAttribute("podologo") Podologo podologo) {
+		NotificacionUtil.cargaNotificacionesPodologo(model, podologo, notificacionpodologoService, parametroService);
+		MensajesNuevosUtil.cargaMensajesNuevosPodologo(model, podologo, mensajeService, parametroService);
+		model.addAttribute("horarios", horarioService.findByPodologo(podologo));
+		model.addAttribute("estadosHorario", parametroService.findByNumero(Parametros.ESTADO_HORARIO));
+		return "podologo/miAgenda";
 	}
 
+	@RequestMapping(value = "/podologo/misSolicitudes", method = RequestMethod.GET)
+	public String verSolicitudes(@ModelAttribute("podologo") Podologo podologo, Model model) {
+		NotificacionUtil.cargaNotificacionesPodologo(model, podologo, notificacionpodologoService, parametroService);
+		MensajesNuevosUtil.cargaMensajesNuevosPodologo(model, podologo, mensajeService, parametroService);
+		Parametro parametro = parametroService.findOne(Parametros.ESTADO_SOLICITUD_PENDIENTE);
+		List<Parametro> parametros = new ArrayList<Parametro>();
+		parametros.add(parametro);
+		List<Solicitudatencion> solicitudes = solicitudAtencionService.findByParamEstadoSolicitudAtencion(parametro,
+				podologo);
+		model.addAttribute("solicitudesPendientes", solicitudes);
+		solicitudes = solicitudAtencionService.findByPodologoAndParamEstadoSolicitudAtencionNotIn(podologo, parametros);
+		model.addAttribute("solicitudes", solicitudes);
+		return "podologo/solicitudes";
+	}
+
+	@RequestMapping(value = "/podologo/misAtenciones", method = RequestMethod.GET)
+	public String misAtenciones(Model model, @ModelAttribute("podologo") Podologo podologo) {
+		NotificacionUtil.cargaNotificacionesPodologo(model, podologo, notificacionpodologoService, parametroService);
+		MensajesNuevosUtil.cargaMensajesNuevosPodologo(model, podologo, mensajeService, parametroService);
+		Parametro parametro = parametroService.findOne(Parametros.ESTADO_AGENDA_PENDIENTE);
+		List<Agenda> atencionesPendientes = agendaService.findByPodologoAndParamEstadoAgenda(podologo, parametro);
+		parametro = parametroService.findOne(Parametros.ESTADO_AGENDA_ACEPTADA);
+		List<Agenda> atencionesRealizadas = agendaService.findByPodologoAndParamEstadoAgenda(podologo, parametro);
+		model.addAttribute("atencionesPendientes", atencionesPendientes);
+		model.addAttribute("atencionesRealizadas", atencionesRealizadas);
+		return "podologo/atenciones";
+	}
+
+	@RequestMapping(value = "/podologo/misEvaluaciones", method = RequestMethod.GET)
+	public String misEvaluaciones(Model model, @ModelAttribute("podologo") Podologo podologo) {
+		NotificacionUtil.cargaNotificacionesPodologo(model, podologo, notificacionpodologoService, parametroService);
+		MensajesNuevosUtil.cargaMensajesNuevosPodologo(model, podologo, mensajeService, parametroService);
+		List<Evaluacion> evaluaciones = evaluacionService.findByPodologo(podologo);
+		model.addAttribute("evaluaciones", evaluaciones);
+		return "podologo/evaluaciones";
+	}
+
+	@RequestMapping(value = "/podologo/verAtencionEvaluada", method = RequestMethod.GET)
+	public String verAtencionEvaluada(Model model, @ModelAttribute("podologo") Podologo podologo,
+			@RequestParam("idEvaluacion") int id) {
+		NotificacionUtil.cargaNotificacionesPodologo(model, podologo, notificacionpodologoService, parametroService);
+		MensajesNuevosUtil.cargaMensajesNuevosPodologo(model, podologo, mensajeService, parametroService);
+		Evaluacion evaluacion = evaluacionService.findById(id);
+		Atencion atencion = atencionService.findByEvaluacion(evaluacion);
+		model.addAttribute("atencion", atencion);
+		return "podologo/verAtencion";
+
+	}
+
+	@RequestMapping(value = "/podologo/misNotificaciones", method = RequestMethod.GET)
+	public String misNotificaciones(Model model, @ModelAttribute("podologo") Podologo podologo) {
+		NotificacionUtil.cargaNotificacionesPodologo(model, podologo, notificacionpodologoService, parametroService);
+		MensajesNuevosUtil.cargaMensajesNuevosPodologo(model, podologo, mensajeService, parametroService);
+		Parametro parametro = parametroService.findOne(Parametros.ESTADO_MENSAJE_VISTO);
+		List<Parametro> parametros = new ArrayList<Parametro>();
+		parametros.add(parametro);
+		List<Notificacionpodologo> notificaciones = notificacionpodologoService
+				.findByPodologoAndParamEstadoNotificacionNotIn(podologo, parametros);
+		model.addAttribute("notificacionesPendientes", notificaciones);
+		parametro = parametroService.findOne(Parametros.ESTADO_MENSAJE_VISTO);
+		notificaciones = notificacionpodologoService.findByPodologoAndParamEstadoNotificacion(podologo, parametro);
+		model.addAttribute("notificacionesVistas", notificaciones);
+		return "podologo/notificaciones";
+	}
+
+	@RequestMapping(value = "/podologo/misMensajes", method = RequestMethod.GET)
+	public String misMensajes(Model model, @ModelAttribute("podologo") Podologo podologo) {
+		NotificacionUtil.cargaNotificacionesPodologo(model, podologo, notificacionpodologoService, parametroService);
+		MensajesNuevosUtil.cargaMensajesNuevosPodologo(model, podologo, mensajeService, parametroService);
+		Parametro parametro = parametroService.findOne(Parametros.ESTADO_MENSAJE_NO_VISTO);
+		List<Mensaje> mensajesNoVistos = mensajeService.findByReceptorRutAndParamEstadoMensaje(podologo.getRut(),
+				parametro);
+		model.addAttribute("mensajesSinVer",
+				MensajeCustom.cargarMensajesNoVistosPodologo(mensajesNoVistos, pacienteService, podologoService));
+		parametro = parametroService.findOne(Parametros.ESTADO_MENSAJE_VISTO);
+		List<Mensaje> mensajesVistos = mensajeService.findByReceptorRutAndParamEstadoMensaje(podologo.getRut(),
+				parametro);
+		model.addAttribute("mensajesVistos", MensajeCustom.cargarMensajesVistosPodologo(mensajesNoVistos,
+				pacienteService, podologoService, mensajesVistos));
+		return "podologo/mensajes";
+	}
+
+	/*
+	 * @RequestMapping(value = "/podologo/pacientes", method = RequestMethod.GET)
+	 * public String cargarPacientes(Model model, @ModelAttribute("podologo")
+	 * Podologo podologo) { List<Agenda> agendas =
+	 * agendaService.findByPodologo(podologo); ArrayList<Paciente> pacientes = new
+	 * ArrayList<>(); for (int i = 0; i < agendas.size(); i++) { if
+	 * (!pacientes.contains(agendas.get(i).getPaciente()))
+	 * pacientes.add(agendas.get(i).getPaciente()); }
+	 * 
+	 * pacientes = (ArrayList<Paciente>)
+	 * pacientes.stream().distinct().collect(Collectors.toList());
+	 * utilDate.setEdad(pacientes); model.addAttribute("pacientes", pacientes);
+	 * model.addAttribute("podologo", podologo); return "podologo/pacientes"; }
+	 * 
+	 * @RequestMapping(value = "/podologo/buscarPacientes", method =
+	 * RequestMethod.POST) public String buscarPaciente(@ModelAttribute("podologo")
+	 * Podologo podologo, Model model,
+	 * 
+	 * @RequestParam("selectBuscar") String
+	 * criterioBusqueda, @RequestParam("textBuscar") String textBuscar) {
+	 * 
+	 * ArrayList<Paciente> pacientes = new ArrayList(); String mensaje = ""; if
+	 * (criterioBusqueda.equals("Nombre")) { pacientes = (ArrayList<Paciente>)
+	 * pacienteService.findByNombre(textBuscar); } else { if
+	 * (criterioBusqueda.equals("Rut")) {
+	 * pacientes.add(pacienteService.find(textBuscar)); pacientes =
+	 * (ArrayList<Paciente>)
+	 * pacientes.stream().distinct().collect(Collectors.toList()); } } if
+	 * (pacientes.size() == 0) { mensaje = "No se encontraron resultados"; }
+	 * utilDate.setEdad(pacientes); model.addAttribute("mensaje", mensaje);
+	 * model.addAttribute("pacientes", pacientes); model.addAttribute("podologo",
+	 * podologo);
+	 * 
+	 * return "podologo/pacientes"; }
+	 * 
+	 * @RequestMapping(value = "/podologo/historialPaciente", method =
+	 * RequestMethod.GET) public String
+	 * cargarHistorialPaciente(@ModelAttribute("podologo") Podologo podologo, Model
+	 * model,
+	 * 
+	 * @RequestParam("rut") String rutPaciente, @ModelAttribute("pacientes")
+	 * List<Paciente> pacientes) { Paciente paciente =
+	 * pacienteService.find(rutPaciente); List<Atencion> atenciones =
+	 * atencionService.findByAgenda(paciente, podologo); podologo =
+	 * podologoService.findByEmail(podologo.getEmail());
+	 * model.addAttribute("atenciones", atenciones); model.addAttribute("paciente",
+	 * paciente); model.addAttribute("podologo", podologo);
+	 * model.addAttribute("pacientes", pacientes);
+	 * 
+	 * return "podologo/historialPaciente"; }
+	 */
 	@RequestMapping(value = "/podologo/detalleAtencion", method = RequestMethod.GET)
 	public String detalleAtencion(@ModelAttribute("paciente") Paciente paciente,
 			@ModelAttribute("podologo") Podologo podologo, Model model, @RequestParam("id") int idAtencion,
@@ -203,9 +318,12 @@ public class PodologoController {
 	@RequestMapping(value = "/podologo/enviarMensaje", method = RequestMethod.POST)
 	public String enviarMensaje(@ModelAttribute("mensajeForm") Mensaje mensaje,
 			@ModelAttribute("paciente") Paciente paciente, @ModelAttribute("podologo") Podologo podologo, Model model) {
-
+		Parametro parametro = parametroService.findOne(Parametros.ESTADO_MENSAJE_NO_VISTO);// hecha
 		mensaje.setEmisorRut(podologo.getRut());
 		mensaje.setReceptorRut(paciente.getRut());
+		mensaje.setParamEstadoMensaje(parametro);
+		mensaje.setHora(DateUtil.getHourSystem());
+		mensaje.setFecha(DateUtil.getFechaHoyString());
 		mensajeService.save(mensaje);
 		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacionPodologo(podologo,
 				paciente);
@@ -214,25 +332,12 @@ public class PodologoController {
 		return "podologo/enviarMensaje";
 	}
 
-	@RequestMapping(value = "/podologo/verSolicitudes", method = RequestMethod.GET)
-	public String verSolicitudes(@ModelAttribute("podologo") Podologo podologo, Model model) {
-		List<Solicitudatencion> solicitudes = solicitudAtencionService
-				.findByParamEstadoSolicitudAtencion(new Parametro(12), podologo);
-		model.addAttribute("solicitudes", solicitudes);
-		if (solicitudes.isEmpty()) {
-			model.addAttribute("mensaje", "No tiene solicitudes pendientes.");
-		}
-		return "podologo/verSolicitudesPendientes";
-	}
-
 	@RequestMapping(value = "/podologo/detalleSolicitud", method = RequestMethod.GET)
 	public String verDetalleSolicitud(@ModelAttribute("podologo") Podologo podologo, Model model,
 			@RequestParam("id") int id) {
-		List<Parametro> estados = parametroService.findByNumero(Parametros.ESTADO_SOLICITUD);
 		Solicitudatencion solicitudAtencion = solicitudAtencionService.findById(id);
 		model.addAttribute("solicitudAtencion", solicitudAtencion);
-		model.addAttribute("estados", estados);
-		return "podologo/verSolicitudDetalle";
+		return "podologo/detalleSolicitud";
 	}
 
 	@RequestMapping(value = "/podologo/modificarSolicitud", method = RequestMethod.POST)
@@ -309,15 +414,7 @@ public class PodologoController {
 		List<Solicitudatencion> solicitudes = solicitudAtencionService
 				.findByParamEstadoSolicitudAtencion(new Parametro(12), podologo);
 		model.addAttribute("solicitudes", solicitudes);
-		return "podologo/verSolicitudesPendientes";
-	}
-
-	@RequestMapping(value = "/podologo/index", method = RequestMethod.GET)
-	public String redirect(Model model) {
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Podologo podologo = podologoService.findByEmail(user.getUsername());
-		model.addAttribute("podologo", podologo);
-		return "podologo/podologo";
+		return "podologo/solicitudes";
 	}
 
 	@RequestMapping(value = "/podologo/modificarDatos", method = RequestMethod.GET)
@@ -384,16 +481,6 @@ public class PodologoController {
 		model.addAttribute("mensaje", mensaje);
 		model.addAttribute("solicitudes", solicitudes);
 		return "podologo/verSolicitudesPendientes";
-	}
-
-	@RequestMapping(value = "/podologo/miAgenda", method = RequestMethod.GET)
-	public String ingresarHora(Model model) {
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Podologo podologo = podologoService.findByEmail(user.getUsername());
-
-		model.addAttribute("horarios", horarioService.findByPodologo(podologo));
-		model.addAttribute("estadosHorario", parametroService.findByNumero(22));
-		return "podologo/miAgenda";
 	}
 
 	@RequestMapping(value = "/podologo/ingresarHora", method = RequestMethod.POST)
@@ -485,18 +572,6 @@ public class PodologoController {
 		return "podologo/atenciones";
 	}
 
-	@RequestMapping(value = "/podologo/misAtenciones", method = RequestMethod.GET)
-	public String misAtenciones(Model model, @ModelAttribute("podologo") Podologo podologo) {
-		Parametro parametro = parametroService.findOne(Parametros.ESTADO_AGENDA_PENDIENTE);
-		List<Agenda> atencionesPendientes = agendaService.findByPodologoAndParamEstadoAgenda(podologo, parametro);
-		parametro = parametroService.findOne(Parametros.ESTADO_AGENDA_ACEPTADA);
-		List<Agenda> atencionesRealizadas = agendaService.findByPodologoAndParamEstadoAgenda(podologo, parametro);
-
-		model.addAttribute("atencionesPendientes", atencionesPendientes);
-		model.addAttribute("atencionesRealizadas", atencionesRealizadas);
-		return "podologo/atenciones";
-	}
-
 	@RequestMapping(value = "/podologo/ingresarAtencion", method = RequestMethod.GET)
 	public String ingresarAtencion(Model model, @ModelAttribute("podologo") Podologo podologo,
 			@RequestParam("id") int id) {
@@ -529,7 +604,7 @@ public class PodologoController {
 		Parametro parametro = parametroService.findOne(Parametros.ESTADO_AGENDA_ACEPTADA);
 		agenda.setParamEstadoAgenda(parametro);
 		agendaService.save(agenda);
-		
+
 		atencion.setAgenda(agenda);
 		Evaluacion evaluacion = new Evaluacion();
 		evaluacion.setPodologo(atencion.getAgenda().getPodologo());
@@ -538,9 +613,9 @@ public class PodologoController {
 		evaluacion.setValorPaciente(Integer.parseInt(evaluacionStar));
 		atencion.setEvaluacion(evaluacion);
 		atencionService.save(atencion);
-		
+
 		atencion = atencionService.findByAgenda(agenda);
-		
+
 		parametro = parametroService.findOne(Parametros.ESTADO_MENSAJE_NO_VISTO);
 		Notificacionpaciente notificacionpaciente = new Notificacionpaciente();
 		notificacionpaciente.setPaciente(atencion.getAgenda().getPaciente());

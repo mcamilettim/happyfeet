@@ -24,6 +24,7 @@ import cl.camiletti.happyFeetWeb.model.Evaluacion;
 import cl.camiletti.happyFeetWeb.model.Horario;
 import cl.camiletti.happyFeetWeb.model.Mensaje;
 import cl.camiletti.happyFeetWeb.model.Notificacionpaciente;
+import cl.camiletti.happyFeetWeb.model.Notificacionpodologo;
 import cl.camiletti.happyFeetWeb.model.Paciente;
 import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Patologia;
@@ -32,7 +33,7 @@ import cl.camiletti.happyFeetWeb.model.Presupuesto;
 import cl.camiletti.happyFeetWeb.model.Solicitudatencion;
 import cl.camiletti.happyFeetWeb.model.Ubicacion;
 import cl.camiletti.happyFeetWeb.model.Usuario;
-import cl.camiletti.happyFeetWeb.model.custom.MensajeCustomPaciente;
+import cl.camiletti.happyFeetWeb.model.custom.MensajeCustom;
 import cl.camiletti.happyFeetWeb.service.AgendaService;
 import cl.camiletti.happyFeetWeb.service.AtencionService;
 import cl.camiletti.happyFeetWeb.service.ComunaService;
@@ -40,6 +41,7 @@ import cl.camiletti.happyFeetWeb.service.EvaluacionService;
 import cl.camiletti.happyFeetWeb.service.HorarioService;
 import cl.camiletti.happyFeetWeb.service.MensajeService;
 import cl.camiletti.happyFeetWeb.service.NotificacionpacienteService;
+import cl.camiletti.happyFeetWeb.service.NotificacionpodologoService;
 import cl.camiletti.happyFeetWeb.service.PacienteService;
 import cl.camiletti.happyFeetWeb.service.ParametroService;
 import cl.camiletti.happyFeetWeb.service.PatologiaService;
@@ -53,6 +55,7 @@ import cl.camiletti.happyFeetWeb.util.DateUtil;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 import cl.camiletti.happyFeetWeb.util.Mail;
 import cl.camiletti.happyFeetWeb.util.MensajesNuevosUtil;
+import cl.camiletti.happyFeetWeb.util.NotificacionPodologoConstantes;
 import cl.camiletti.happyFeetWeb.util.NotificacionUtil;
 import cl.camiletti.happyFeetWeb.util.Parametros;
 import cl.camiletti.happyFeetWeb.util.Seccion;
@@ -100,6 +103,8 @@ public class PacienteController {
 
 	@Autowired
 	private NotificacionpacienteService notificacionpacienteService;
+	@Autowired
+	private NotificacionpodologoService notificacionpodologoService;
 
 	@Autowired
 	private PatologiaService patologiaService;
@@ -168,6 +173,18 @@ public class PacienteController {
 			solicitudAtencionService.save(solicitudAtencion);
 			horario.setParamEstadoHorario(parametroService.findOne(Parametros.ESTADO_HORARIO_TOMADO));
 			horarioService.save(horario);
+		 
+			Notificacionpodologo notificacionpaciente = new Notificacionpodologo();
+			notificacionpaciente.setPodologo(solicitudAtencion.getPodologo());
+			notificacionpaciente.setParamEstadoNotificacion(parametroService.findOne(Parametros.ESTADO_MENSAJE_NO_VISTO));
+			notificacionpaciente.setUrl(NotificacionPodologoConstantes.SOLICITUD_ATENCION + solicitudAtencion.getId());
+			notificacionpaciente.setTitulo(NotificacionPodologoConstantes.TITULO_SOLICITUD_ATENCION);
+			notificacionpaciente.setMensaje(solicitudAtencion.getPodologo().getNombres()
+					+ NotificacionPodologoConstantes.MSG_SOLICITUD_ATENCION);
+			notificacionpaciente.setFecha(DateUtil.getFechaHoyString());
+			notificacionpaciente.setHora(DateUtil.getHourSystem());
+			notificacionpodologoService.save(notificacionpaciente);
+			
 			if (podologo.getParamSexo().getId() == Parametros.ESTADO_SEXO_M)
 				model.addAttribute("mensaje",
 						"Solicitud de Atención ingresada, el Podólogo responderá a la brevedad... ");
@@ -232,9 +249,11 @@ public class PacienteController {
 	public String misEvaluaciones(Model model, @ModelAttribute("paciente") Paciente paciente) {
 		NotificacionUtil.cargaNotificacionesPaciente(model, paciente, notificacionpacienteService, parametroService);
 		MensajesNuevosUtil.cargaMensajesNuevosPaciente(model, paciente, mensajeService, parametroService);
-		List<Evaluacion> evaluaciones = evaluacionService.findByPaciente(paciente);
+		List<Integer> valor=new ArrayList<Integer>();
+		valor.add(0);
+		List<Evaluacion> evaluaciones = evaluacionService.findByPacienteAndValorPodologoNotIn(paciente, valor);
 		model.addAttribute("evaluaciones", evaluaciones);
-		evaluaciones = evaluacionService.findByPacienteAndValorPodologo(paciente, 0);
+		evaluaciones = evaluacionService.findByPacienteAndValorPodologoIn(paciente, valor);
 		model.addAttribute("evaluacionesPendientes", evaluaciones);
 		return "paciente/evaluaciones";
 	}
@@ -282,11 +301,11 @@ public class PacienteController {
 		List<Mensaje> mensajesNoVistos = mensajeService.findByReceptorRutAndParamEstadoMensaje(paciente.getRut(),
 				parametro);
 		model.addAttribute("mensajesSinVer",
-				MensajeCustomPaciente.cargarMensajesNoVistos(mensajesNoVistos, pacienteService, podologoService));
+				MensajeCustom.cargarMensajesNoVistosPaciente(mensajesNoVistos, pacienteService, podologoService));
 		parametro = parametroService.findOne(Parametros.ESTADO_MENSAJE_VISTO);
 		List<Mensaje> mensajesVistos = mensajeService.findByReceptorRutAndParamEstadoMensaje(paciente.getRut(),
 				parametro);
-		model.addAttribute("mensajesVistos", MensajeCustomPaciente.cargarMensajesVistos(mensajesNoVistos,
+		model.addAttribute("mensajesVistos", MensajeCustom.cargarMensajesVistos(mensajesNoVistos,
 				pacienteService, podologoService, mensajesVistos));
 		return "paciente/mensajes";
 	}
@@ -325,6 +344,10 @@ public class PacienteController {
 			@ModelAttribute("paciente") Paciente paciente, @ModelAttribute("podologo") Podologo podologo, Model model) {
 		mensaje.setReceptorRut(podologo.getRut());
 		mensaje.setEmisorRut(paciente.getRut());
+		Parametro parametro = parametroService.findOne(Parametros.ESTADO_MENSAJE_NO_VISTO);// hecha
+		mensaje.setParamEstadoMensaje(parametro);
+		mensaje.setHora(DateUtil.getHourSystem());
+		mensaje.setFecha(DateUtil.getFechaHoyString());
 		mensajeService.save(mensaje);
 		ArrayList<Mensaje> conversacion = (ArrayList<Mensaje>) mensajeService.cargarConversacionPodologo(podologo,
 				paciente);

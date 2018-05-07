@@ -11,8 +11,8 @@ public interface EvaluacionService {
 	Evaluacion findById(int id);
 	List<Evaluacion>  findByPodologo(Podologo podologo);
 	List<Evaluacion>  findByPaciente(Paciente paciente);
-	List<Evaluacion>  findByPacienteAndValorPodologo(Paciente paciente, int valorPodologo);
- 
+	List<Evaluacion>  findByPacienteAndValorPodologoIn(Paciente paciente,List<Integer> valorPodologo);
+	List<Evaluacion>  findByPacienteAndValorPodologoNotIn(Paciente paciente, List<Integer> valorPodologo);
 	List<Evaluacion> findAll();
 	void deleteById(Evaluacion evaluacion);
 }

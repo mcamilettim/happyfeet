@@ -12,5 +12,5 @@ public interface NotificacionpacienteService {
 	  List<Notificacionpaciente> findByPaciente(Paciente paciente);	 
 	  Notificacionpaciente findByIdAndPaciente(int id,Paciente paciente);	 
 	  List<Notificacionpaciente> findByPacienteAndParamEstadoNotificacion(Paciente paciente,Parametro parametro);	
-	  List<Notificacionpaciente> findByPacienteAndParamEstadoNotificacionNotIn(Paciente paciente,List<Parametro> parametros); 
+	  List<Notificacionpaciente> findByPacienteAndParamEstadoNotificacionNotIn(Paciente paciente,List<Parametro> parametros);   
 }

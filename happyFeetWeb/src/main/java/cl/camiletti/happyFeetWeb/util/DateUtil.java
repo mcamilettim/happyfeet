@@ -36,8 +36,15 @@ public class DateUtil {
 		calendar.setTime(new Date());
 		int hours = calendar.get(Calendar.HOUR_OF_DAY);
 		int minutes = calendar.get(Calendar.MINUTE);
-		//int seconds = calendar.get(Calendar.SECOND);
-		return hours + ":" + minutes;
+		String minute = "";
+		if (minutes == 0)
+			minute = "00";
+		else if (10 > minutes)
+			minute = "0" + minutes;
+		else
+			minute = "" + minutes;
+		// int seconds = calendar.get(Calendar.SECOND);
+		return hours + ":" + minute;
 	}
 
 	public String formatearFecha(String date) {

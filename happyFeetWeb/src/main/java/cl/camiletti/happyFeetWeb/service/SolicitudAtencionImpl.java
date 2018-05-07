@@ -44,7 +44,7 @@ public class SolicitudAtencionImpl implements SolicitudAtencionService{
 
 	@Override
 	public List<Solicitudatencion> findByParamEstadoSolicitudAtencion(Parametro parametro, Podologo podologo) {
-		return solicitudAtencionRepository.findByParamEstadoSolicitudAtencionAndPodologo(parametro, podologo);
+		return solicitudAtencionRepository.findByParamEstadoSolicitudAtencionAndPodologoOrderByIdDesc(parametro, podologo);
 	}
 
 	@Override
@@ -55,5 +55,12 @@ public class SolicitudAtencionImpl implements SolicitudAtencionService{
 	@Override
 	public List<Solicitudatencion> findByPaciente(Paciente paciente) {
 		return solicitudAtencionRepository.findByPaciente(paciente);
+	}
+
+	@Override
+	public List<Solicitudatencion> findByPodologoAndParamEstadoSolicitudAtencionNotIn(Podologo podologo,
+			List<Parametro> parametros) {
+		// TODO Auto-generated method stub
+		return solicitudAtencionRepository.findByPodologoAndParamEstadoSolicitudAtencionNotInOrderByIdDesc(podologo, parametros);
 	}
 }

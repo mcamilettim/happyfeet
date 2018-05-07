@@ -42,15 +42,21 @@ public class EvaluacionServiceImpl implements EvaluacionService{
 	}
 
 	@Override
-	public List<Evaluacion> findByPacienteAndValorPodologo(Paciente paciente, int valorPodologo) {
+	public List<Evaluacion>findByPacienteAndValorPodologoNotIn(Paciente paciente, List<Integer> valorPodologo){
 		// TODO Auto-generated method stub
-		return evaluacionRepository.findByPacienteAndValorPodologo(paciente, valorPodologo);
+		return evaluacionRepository.findByPacienteAndValorPodologoNotIn(paciente, valorPodologo);
 	}
 
 	@Override
 	public List<Evaluacion> findByPaciente(Paciente paciente) {
 		// TODO Auto-generated method stub
 		return evaluacionRepository.findByPaciente(paciente);
+	}
+
+	@Override
+	public List<Evaluacion> findByPacienteAndValorPodologoIn(Paciente paciente, List<Integer> valorPodologo) {
+		// TODO Auto-generated method stub
+		return evaluacionRepository.findByPacienteAndValorPodologoIn(paciente, valorPodologo);
 	}
  
  

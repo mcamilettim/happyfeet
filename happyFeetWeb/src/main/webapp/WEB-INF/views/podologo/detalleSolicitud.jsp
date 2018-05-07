@@ -127,21 +127,62 @@
 			<!-- /.navbar-header -->
 
 			<ul class="nav navbar-top-links navbar-right">
-				<li class="dropdown"><a class="dropdown-toggle"
-					data-toggle="dropdown" href="#"> <i
-						class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-				</a>
+				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
+							test="${podologo.paramSexo.id==6}">o</c:if><c:if
+							test="${podologo.paramSexo.id==7}">a</c:if> ${podologo.nombres}
+				</Strong></li>
+				<li class="dropdown"><c:if test="${empty mensajesNuevos}">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+						</a>
+					</c:if> <c:if test="${not empty mensajesNuevos}">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i><span
+							class="badge">${mensajesNuevos.size()}</span>
+						</a>
+					</c:if>
 					<ul class="dropdown-menu dropdown-messages">
-						<li><a href="#"> <strong></strong> <span
-								class="pull-right text-muted"> <em>Ahora</em>
-							</span> Sin mensajes nuevos.
-						</a></li>
-						<li class="divider"></li>
+						<c:if test="${not empty mensajesNuevos}">
+							<c:forEach items="${mensajesNuevos}" var="mensajeNuevo">
+								<li><a
+									href="${contextPath}/podologo/enviarMensaje?rutPaciente=${mensajeNuevo.emisorRut}">
+										<strong></strong> <span class="pull-right text-muted"><em>${mensajeNuevo.fecha}</em>
+									</span>${mensajeNuevo.cuerpo}
+								</a></li>
+							</c:forEach>
+						</c:if>
+						 
 						<li><a class="text-center"
-							href="${contextPath}/podologo/vermensajes"> <strong>Ver
+							href="${contextPath}/podologo/misMensajes"> <strong>Ver
 									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
-					</ul> <!-- /.dropdown-messages --></li>
+					</ul> </li>
+					<li class="dropdown"><c:if test="${empty notificaciones}">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+						</a>
+					</c:if> <c:if test="${not empty notificaciones}">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i><span
+							class="badge">${notificaciones.size()}</span>
+						</a>
+					</c:if>
+					<ul class="dropdown-menu dropdown-messages">
+						<c:if test="${not empty notificaciones}">
+							<c:forEach items="${notificaciones}" var="notificacion">
+								<li><a
+									href="${notificacion.url}&idNotificacion=${notificacion.id}">
+										<strong></strong> <span class="pull-right text-muted"><em>${notificacion.fecha}</em>
+									</span> ${notificacion.titulo}
+								</a></li>
+							</c:forEach>
+						</c:if>
+
+						<li><a class="text-center"
+							href="${contextPath}/podologo/misNotificaciones"> <strong>Ver
+									todas las notificaciones</strong> <i class="fa fa-angle-right"></i>
+						</a></li>
+					</ul></li>
 
 				<!-- /.dropdown -->
 				<li class="dropdown"><a class="dropdown-toggle"
@@ -149,7 +190,7 @@
 						<i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-user">
-						<li><a href="${contextPath}/podologo/modificardatos"><i
+						<li><a href="${contextPath}/podologo/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i>Mis Datos</a></li>
 						<li class="divider"></li>
 						<li><a href="<c:url value="/logout" />"><i
@@ -177,36 +218,33 @@
 								<br>
 								<div align="center">
 									<span class="text-info text-center"><b>${podologo.nombres}
-											${podologo.apellidos}</b></span>
+											${podologo.apellidos}</b></span> <span class="text-info">Podólog<c:if test="${podologo.paramSexo.id==6}">o</c:if><c:if test="${podologo.paramSexo.id==7}">a</c:if></span>
 								</div>
-
-								<div align="center">
-									<span class="text-info">Podólogo</span>
-								</div>
-							</div>
-							<!-- /input-group -->
+							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/podologo/index"><i
-								class="fa fa-dashboard fa-fw"></i> Inicio</a></li>
+								class="fa fa-home fa-fw"></i> Inicio</a></li>
 						<li><a href="${contextPath}/podologo/miAgenda"><i
-								class="fa fa-dashboard fa-fw"></i> Mi Agenda</a></li>
-						<li><a href="${contextPath}/podologo/index"><i
-								class="fa fa-edit fa-fw"></i> Agendar Horario</a></li>
-						<li><a href="${contextPath}/podologo/modificardatos"><i
+								class="fa fa-edit fa-fw"></i>Mi Horario</a></li>
+						<li><a href="${contextPath}/podologo/misSolicitudes"><i
+								class="fa fa-calendar-plus-o fa-fw"></i><Strong>Solicitudes de Atención</Strong></a></li>
+						<li><a href="${contextPath}/podologo/misAtenciones"><i
+								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
+						<li><a href="${contextPath}/podologo/misMensajes"><i
+								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
+						<li><a href="${contextPath}/podologo/misEvaluaciones"><i
+								class="fa fa-star-half-o fa-fw"></i> Evaluaciones a
+								Pacientes</a></li>
+						<li><a href="${contextPath}/podologo/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
-						<li><a href="${contextPath}/podologo/verSolicitudes"><i
-								class="fa fa-edit fa-fw"></i> Solicitudes nuevas</a></li>
-						<li><a href="${contextPath}/podologo/pacientes"><i
-								class="fa fa-table fa-fw"></i> Lista de Pacientes</a></li>
-						<li><a href="${contextPath}/podologo/atencionesPendientes"><i
-								class="fa fa-table fa-fw"></i> Atenciones Pendientes</a></li>
+								<li><a href="${contextPath}/podologo/cuestionarios"><i
+								class="fa fa-question-circle fa-fw"></i> Contestar encuesta</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
 			</div>
 			<!-- /.navbar-static-side -->
 		</nav>
-
 		<!-- Page Content -->
 		<div id="page-wrapper">
 			<br>
@@ -357,94 +395,127 @@
 											class="form-control" name="comentarioPaciente"
 											readonly="readonly">${solicitudAtencion.comentarioPaciente}</textarea></td>
 								</tr>
-								<tr>
-									<td style="background: #FAFAFA;"><strong>
-											Respuesta</strong></td>
-									<td style="background: #FAFAFA;" align="left"><textarea
-											class="form-control" name="comentarioPodologo"
-											placeholder="Agregar Comentario"></textarea></td>
-								</tr>
-								<tr>
-									<td align="right"><button type="button"
-											class="btn btn-primary" data-toggle="modal"
-											data-target="#exampleModal">Aceptar Atención</button></td>
-									<td align="left"><button type="button"
-											class="btn btn-danger" data-toggle="modal"
-											data-target="#exampleModalRechazo">Rechazar Atención</button></td>
-								</tr>
+								<c:if
+									test="${solicitudAtencion.paramEstadoSolicitudAtencion.valor ne 'Pendiente'}">
+									<tr>
+										<td style="background: #FAFAFA;"><strong>
+												Respuesta</strong></td>
+										<td style="background: #FAFAFA;" align="left"><textarea
+												class="form-control" name="comentarioPodologo"
+												readonly="readonly">${solicitudAtencion.comentarioPodologo}</textarea></td>
+									</tr>
+								</c:if>
+								<c:if
+									test="${solicitudAtencion.paramEstadoSolicitudAtencion.valor eq 'Pendiente'}">
+									<tr>
+										<td style="background: #FAFAFA;"><strong>
+												Respuesta</strong></td>
+										<td style="background: #FAFAFA;" align="left"><textarea
+												class="form-control" name="comentarioPodologo"
+												placeholder="Agregar Comentario"></textarea></td>
+									</tr>
+								</c:if>
+								<c:if
+									test="${solicitudAtencion.paramEstadoSolicitudAtencion.valor eq 'Pendiente'}">
+									<tr>
+										<td align="right"><button type="button"
+												class="btn btn-primary" data-toggle="modal"
+												data-target="#exampleModal">Aceptar Atención</button></td>
+										<td align="left"><button type="button"
+												class="btn btn-danger" data-toggle="modal"
+												data-target="#exampleModalRechazo">Rechazar
+												Atención</button></td>
+									</tr>
+								</c:if>
+								<c:if
+									test="${solicitudAtencion.paramEstadoSolicitudAtencion.valor eq 'Rechazada'}">
+									<tr>
+										<th colspan="2">Usted ha Rechazado esta solicitud.</th>
+									</tr>
+								</c:if>
+								<c:if
+									test="${solicitudAtencion.paramEstadoSolicitudAtencion.valor eq 'Aceptada'}">
+									<tr>
+										<th colspan="2">Usted ha Aceptado esta solicitud.</th>
+									</tr>
+								</c:if>
+
 							</table>
+							<c:if
+								test="${solicitudAtencion.paramEstadoSolicitudAtencion.valor eq 'Pendiente'}">
+								<!-- Modal Aceptar-->
+								<div class="modal fade" id="exampleModal" tabindex="-1"
+									role="dialog" aria-labelledby="exampleModalLabel"
+									aria-hidden="true">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h4 class="modal-title" id="exampleModalLabel">
+													<strong>Confirmación de Atención Podológica</strong>
+												</h4>
+												<button type="button" class="close" data-dismiss="modal"
+													aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+											<div class="modal-body">
+												<p style="text-align: justify;">
+													<b> <span style="color: red;">*</span> Horario
+														Atención: ${solicitudAtencion.horario.fecha}
+														${solicitudAtencion.horario.hora} -
+														${solicitudAtencion.horario.horaFin}
+													</b>
+												</p>
+												<p style="text-align: justify;">
+													<b><span style="color: red;">*</span> Total Atención: $<fmt:formatNumber
+															value="${solicitudAtencion.presupuesto.total}"
+															type="currency" pattern="#,##0" /> </b>
+												</p>
 
-							<!-- Modal Aceptar-->
-							<div class="modal fade" id="exampleModal" tabindex="-1"
-								role="dialog" aria-labelledby="exampleModalLabel"
-								aria-hidden="true">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h4 class="modal-title" id="exampleModalLabel">
-												<strong>Confirmación de Atención Podológica</strong>
-											</h4>
-											<button type="button" class="close" data-dismiss="modal"
-												aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										<div class="modal-body">
-											<p style="text-align: justify;">
-												<b> <span style="color: red;">*</span> Horario Atención:
-													${solicitudAtencion.horario.fecha}
-													${solicitudAtencion.horario.hora} -
-													${solicitudAtencion.horario.horaFin}
-												</b>
-											</p>
-											<p style="text-align: justify;">
-												<b><span style="color: red;">*</span> Total Atención: $<fmt:formatNumber
-														value="${solicitudAtencion.presupuesto.total}"
-														type="currency" pattern="#,##0" /> </b>
-											</p>
-
-										</div>
-										<div class="modal-footer" align="left">
-											<button type="button" class="btn btn-secondary"
-												data-dismiss="modal">Cancelar</button>
-											<button type="submit" class="btn btn-primary"
-												name="respuesta" value="si">Si, estoy de acuerdo</button>
+											</div>
+											<div class="modal-footer" align="left">
+												<button type="button" class="btn btn-secondary"
+													data-dismiss="modal">Cancelar</button>
+												<button type="submit" class="btn btn-primary"
+													name="respuesta" value="si">Si, estoy de acuerdo</button>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-							<!-- Modal Aceptar-->
-							<!-- Modal Rechazar-->
-							<div class="modal fade" id="exampleModalRechazo" tabindex="-1"
-								role="dialog" aria-labelledby="exampleModalLabel"
-								aria-hidden="true">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h4 class="modal-title" id="exampleModalLabel">
-												<strong>Usted está rechazando esta de Atención
-													Podológica</strong>
-											</h4>
-											<button type="button" class="close" data-dismiss="modal"
-												aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										<div class="modal-body">
-											<p style="text-align: justify;">
-												<strong> ¿ Está seguro ?</strong>
-											</p>
-										</div>
-										<div class="modal-footer" align="left">
-											<button type="button" class="btn btn-secondary"
-												data-dismiss="modal">Cancelar</button>
-											<button type="submit" name="respuesta" value="no"
-												class="btn btn-danger">Si, rechazar</button>
+								<!-- Modal Aceptar-->
+								<!-- Modal Rechazar-->
+								<div class="modal fade" id="exampleModalRechazo" tabindex="-1"
+									role="dialog" aria-labelledby="exampleModalLabel"
+									aria-hidden="true">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h4 class="modal-title" id="exampleModalLabel">
+													<strong>Usted está rechazando esta de Atención
+														Podológica</strong>
+												</h4>
+												<button type="button" class="close" data-dismiss="modal"
+													aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+											<div class="modal-body">
+												<p style="text-align: justify;">
+													<strong> ¿ Está seguro ?</strong>
+												</p>
+											</div>
+											<div class="modal-footer" align="left">
+												<button type="button" class="btn btn-secondary"
+													data-dismiss="modal">Cancelar</button>
+												<button type="submit" name="respuesta" value="no"
+													class="btn btn-danger">Si, rechazar</button>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
+							</c:if>
 						</form>
+
 					</div>
 
 				</div>

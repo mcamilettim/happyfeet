@@ -16,8 +16,8 @@ public interface EvaluacionRepository extends JpaRepository<Evaluacion, Long> {
 	List<Evaluacion> findByPodologo(Podologo podologo);
 
 	List<Evaluacion> findByPaciente(Paciente paciente);
-
-	List<Evaluacion> findByPacienteAndValorPodologo(Paciente paciente, int valorPodologo);
+	List<Evaluacion>  findByPacienteAndValorPodologoIn(Paciente paciente,List<Integer> valorPodologo);
+	List<Evaluacion> findByPacienteAndValorPodologoNotIn(Paciente paciente, List<Integer> valorPodologo);
 
 	List<Evaluacion> findAll();
 

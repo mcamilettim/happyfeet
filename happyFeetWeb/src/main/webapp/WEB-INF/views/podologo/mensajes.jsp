@@ -72,14 +72,15 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+ 
+<link href="${contextPath}/resources/css/inbox.css"
+	rel="stylesheet">
 </head>
 
 <body>
 
 	<div id="wrapper">
-
-			<!-- Navigation -->
+	<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
@@ -88,7 +89,7 @@
 					<span class="sr-only">Navegación</span> <span class="icon-bar"></span>
 					<span class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="${contextPath}/paciente/index"><img
+				<a class="navbar-brand" href="${contextPath}/podologo/index"><img
 					src="${contextPath}/resources/img/logo1.png" class="img-responsive"
 					style="width: 120px;"></a>
 			</div>
@@ -96,8 +97,8 @@
 
 			<ul class="nav navbar-top-links navbar-right">
 				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
-							test="${paciente.paramSexo.id==6}">o</c:if><c:if
-							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
+							test="${podologo.paramSexo.id==6}">o</c:if><c:if
+							test="${podologo.paramSexo.id==7}">a</c:if> ${podologo.nombres}
 				</Strong></li>
 				<li class="dropdown"><c:if test="${empty mensajesNuevos}">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
@@ -113,7 +114,7 @@
 						<c:if test="${not empty mensajesNuevos}">
 							<c:forEach items="${mensajesNuevos}" var="mensajeNuevo">
 								<li><a
-									href="${contextPath}/paciente/enviarMensaje?rutPodologo=${mensajeNuevo.emisorRut}">
+									href="${contextPath}/podologo/enviarMensaje?rutPaciente=${mensajeNuevo.emisorRut}">
 										<strong></strong> <span class="pull-right text-muted"><em>${mensajeNuevo.fecha}</em>
 									</span>${mensajeNuevo.cuerpo}
 								</a></li>
@@ -121,7 +122,7 @@
 						</c:if>
 						 
 						<li><a class="text-center"
-							href="${contextPath}/paciente/misMensajes"> <strong>Ver
+							href="${contextPath}/podologo/misMensajes"> <strong>Ver
 									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
 					</ul> </li>
@@ -147,7 +148,7 @@
 						</c:if>
 
 						<li><a class="text-center"
-							href="${contextPath}/paciente/misNotificaciones"> <strong>Ver
+							href="${contextPath}/podologo/misNotificaciones"> <strong>Ver
 									todas las notificaciones</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
 					</ul></li>
@@ -158,7 +159,7 @@
 						<i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-user">
-						<li><a href="${contextPath}/paciente/modificarDatos"><i
+						<li><a href="${contextPath}/podologo/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i>Mis Datos</a></li>
 						<li class="divider"></li>
 						<li><a href="<c:url value="/logout" />"><i
@@ -174,144 +175,166 @@
 						<li class="sidebar-search">
 							<div class="input-group custom-search-form">
 								<c:choose>
-									<c:when test="${empty paciente.foto}">
+									<c:when test="${empty podologo.foto}">
 										<img src="${contextPath}/resources/img/sinfoto.jpg"
 											class="img-responsive" style="width: 200px;">
 									</c:when>
 									<c:otherwise>
-										<img src="data:image/png;base64,${paciente.foto}"
+										<img src="data:image/png;base64,${podologo.foto}"
 											class="img-responsive" style="width: 200px;">
 									</c:otherwise>
 								</c:choose>
 								<br>
 								<div align="center">
-									<span class="text-info text-center"><b>${paciente.nombres}
-											${paciente.apellidos}</b></span> <span class="text-info">Paciente</span>
+									<span class="text-info text-center"><b>${podologo.nombres}
+											${podologo.apellidos}</b></span> <span class="text-info">Podólog<c:if test="${podologo.paramSexo.id==6}">o</c:if><c:if test="${podologo.paramSexo.id==7}">a</c:if></span>
 								</div>
 							</div> <!-- /input-group -->
 						</li>
-						<li><a href="${contextPath}/paciente/index"><i
-								class="fa fa-home fa-fw"></i>Inicio</a></li>
-						<li><a href="${contextPath}/paciente/quizPatologia"><i
-								class="fa fa-edit fa-fw"></i>Solicitar Atención</a></li>
-						<li><a href="${contextPath}/paciente/misSolicitudes"><i
+						<li><a href="${contextPath}/podologo/index"><i
+								class="fa fa-home fa-fw"></i> Inicio</a></li>
+						<li><a href="${contextPath}/podologo/miAgenda"><i
+								class="fa fa-edit fa-fw"></i>Mi Horario</a></li>
+						<li><a href="${contextPath}/podologo/misSolicitudes"><i
 								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes de Atención</a></li>
-						<li><a href="${contextPath}/paciente/misAtenciones"><i
+						<li><a href="${contextPath}/podologo/misAtenciones"><i
 								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
-						<li><a href="${contextPath}/paciente/misMensajes"><i
-								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
-						<li><a href="${contextPath}/paciente/misEvaluaciones"><i
-								class="fa fa-star-half-o fa-fw"></i> <Strong> Evaluaciones a
-								Profesionales</Strong></a></li>
-						<li><a href="${contextPath}/paciente/modificarDatos"><i
+						<li><a href="${contextPath}/podologo/misMensajes"><i
+								class="fa fa-comments fa-fw"></i> <Strong>Mensajes</Strong></a></li>
+						<li><a href="${contextPath}/podologo/misEvaluaciones"><i
+								class="fa fa-star-half-o fa-fw"></i> Evaluaciones a
+								Pacientes</a></li>
+						<li><a href="${contextPath}/podologo/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
+								<li><a href="${contextPath}/podologo/cuestionarios"><i
+								class="fa fa-question-circle fa-fw"></i> Contestar encuesta</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
 			</div>
 			<!-- /.navbar-static-side -->
 		</nav>
+
 		<!-- Page Content -->
 		<div id="page-wrapper">
 			<br>
-			<c:if test="${empty evaluaciones && empty evaluacionesPendientes}">
+			<c:if
+				test="${fn:length(mensajesSinVer) == 0 && fn:length(mensajesVistos) == 0}">
 				<div class="alert alert-warning" align="center">
-					<Strong>Usted no posee evaluaciones en el sistema</Strong>
+					<Strong>Usted no posee mensajes</Strong>
 				</div>
 			</c:if>
-			<c:if test="${not empty evaluacionesPendientes}">
+			<c:if test="${not empty mensajesSinVer}">
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<strong>Evaluaciones Pendientes <span class="badge">${evaluacionesPendientes.size()}</span>
+								<strong>Mensajes sin Leer <span class="badge">${mensajesSinVer.size()}</span>
 								</strong>
 							</div>
 							<br>
 							<div align="center">
 								<p
 									style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">
-									A continuación se listan las evaluaciones de Profesionales<br>
+									A continuación se listan los mensajes que aún usted no ha
+									visto. <br>
 								</p>
-								<br>
-							</div>
-							<div class="table-responsive">
-								<table class="table table-bordered">
-									<tr>
-											<th><div align="center">Profesional</div></th>
-										<th><div align="center">Nota</div></th>
-										<th><div align="center">Evaluación</div></th>
-									</tr>
-									<c:forEach items="${evaluacionesPendientes}" var="evaluacion">
-										<tr>
-											<td align="center">${evaluacion.podologo.nombres}
-												${evaluacion.podologo.apellidos}</td>
-										<td align="center">${evaluacion.valorPodologo} <img
-												align="left" style="height: 15px; width: 15px;"
-												class="img-responsive"
-												src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/96/star-icon.png" /></td>
-											<td align="center"><button
-													onclick="location.href='${contextPath}/paciente/verAtencionParaEvaluar?idEvaluacion=${evaluacion.id}'"
-													type="submit" class="btn btn-primary">Ver</button></td>
-										</tr>
-									</c:forEach>
-								</table>
+
 							</div>
 
+							<div class="mail-box table-responsive">
+								<div class="inbox-head">
+									<form action="#" class="pull-right position">
+										<div class="input-append">
+											<input type="text" class="sr-input"
+												placeholder="Buscar Mensaje">
+											<button class="btn sr-btn" type="button">
+												<i class="fa fa-search"></i>
+											</button>
+										</div>
+									</form>
+								</div>
+
+
+								<table class="table table-inbox table-hover">
+									<tbody>
+										<c:forEach items="${mensajesSinVer}" var="mensaje">
+											<tr class="unread">
+												<td class="inbox-small-cells"><i class="fa fa-star"></i></td>
+												<td class="view-message  dont-show">${mensaje.paciente.nombres}</td>
+												<td class="view-message ">${mensaje.titulo}</td>
+												<td class="view-message  text-right">${mensaje.fecha}</td>
+												<td class="view-message  text-right">${mensaje.hora}</td>
+												<td class="view-message  text-right"><button
+														onclick="location.href='${contextPath}/podologo/enviarMensaje?rutPaciente=${mensaje.paciente.rut}'"
+														type="submit" class="btn btn-primary">Ver</button></td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
 			</c:if>
-			<c:if test="${not empty evaluaciones}">
+
+
+		<c:if test="${not empty mensajesVistos}">
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<strong>Evaluaciones <span class="badge">${evaluaciones.size()}</span>
+								<strong>Mensajes Vistos <span class="badge">${mensajesVistos.size()}</span>
 								</strong>
 							</div>
 							<br>
 							<div align="center">
 								<p
 									style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">
-									A continuación se listan las evaluaciones de Profesionales<br>
+									A continuación se listan los mensajes que usted ha visto.<br>
 								</p>
-								<br>
-							</div>
-							<div class="table-responsive">
-								<table class="table table-bordered">
-									<tr>
-										<th><div align="center">Profesional</div></th>
-										<th><div align="center">Nota</div></th>
-										<th><div align="center">Evaluación</div></th>
-									</tr>
-									<c:forEach items="${evaluaciones}" var="evaluacion">
-										<tr>
-											<td align="center">${evaluacion.podologo.nombres}
-												${evaluacion.podologo.apellidos}</td>
-											<td align="center">${evaluacion.valorPodologo} <img
-												align="left" style="height: 15px; width: 15px;"
-												class="img-responsive"
-												src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/96/star-icon.png" /></td>
-											<td align="center"><button
-													onclick="location.href='${contextPath}/paciente/verAtencionParaEvaluar?idEvaluacion=${evaluacion.id}'"
-													type="submit" class="btn btn-primary">Ver</button></td>
-										</tr>
-									</c:forEach>
-								</table>
+
 							</div>
 
+							<div class="mail-box table-responsive">
+								<div class="inbox-head">
+									<form action="#" class="pull-right position">
+										<div class="input-append">
+											<input type="text" class="sr-input"
+												placeholder="Buscar Mensaje">
+											<button class="btn sr-btn" type="button">
+												<i class="fa fa-search"></i>
+											</button>
+										</div>
+									</form>
+								</div>
+
+
+								<table class="table table-inbox table-hover">
+									<tbody>
+										<c:forEach items="${mensajesVistos}" var="mensaje">
+											<tr class="unread">
+												<td class="inbox-small-cells"><i class="fa fa-star"></i></td>
+												<td class="view-message  dont-show">${mensaje.paciente.nombres}</td>
+												<td class="view-message ">${mensaje.titulo}</td>
+												<td class="view-message  text-right">${mensaje.fecha}</td>
+												<td class="view-message  text-right">${mensaje.hora}</td>
+												<td class="view-message  text-right"><button
+														onclick="location.href='${contextPath}/podologo/enviarMensaje?rutPaciente=${mensaje.paciente.rut}'"
+														type="submit" class="btn btn-primary">Ver</button></td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
 			</c:if>
 		</div>
+
 	</div>
 
-	<!-- /#page-wrapper -->
-
-
-	<!-- /#wrapper -->
 
 	<!-- jQuery -->
 	<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
@@ -323,8 +346,6 @@
 	<!-- Metis Menu Plugin JavaScript -->
 	<script
 		src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
-
-	<script src="${contextPath}/resources/js/jquery-ui.min.js"></script>
 
 	<!-- Custom Theme JavaScript -->
 	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>

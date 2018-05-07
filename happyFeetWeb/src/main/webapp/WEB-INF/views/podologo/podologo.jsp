@@ -96,8 +96,8 @@
 
 			<ul class="nav navbar-top-links navbar-right">
 				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
-							test="${paciente.paramSexo.id==6}">o</c:if><c:if
-							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
+							test="${podologo.paramSexo.id==6}">o</c:if><c:if
+							test="${podologo.paramSexo.id==7}">a</c:if> ${podologo.nombres}
 				</Strong></li>
 				<li class="dropdown"><c:if test="${empty mensajesNuevos}">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
@@ -158,7 +158,7 @@
 						<i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-user">
-						<li><a href="${contextPath}/paciente/modificarDatos"><i
+						<li><a href="${contextPath}/podologo/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i>Mis Datos</a></li>
 						<li class="divider"></li>
 						<li><a href="<c:url value="/logout" />"><i
@@ -194,16 +194,19 @@
 								class="fa fa-home fa-fw"></i> <Strong>Inicio</Strong></a></li>
 						<li><a href="${contextPath}/podologo/miAgenda"><i
 								class="fa fa-edit fa-fw"></i>Mi Horario</a></li>
-						<li><a href="${contextPath}/podologo/verSolicitudes"><i
+						<li><a href="${contextPath}/podologo/misSolicitudes"><i
 								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes de Atención</a></li>
 						<li><a href="${contextPath}/podologo/misAtenciones"><i
 								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
 						<li><a href="${contextPath}/podologo/misMensajes"><i
 								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
-						<li><a href="${contextPath}/podologo/calificar"><i
-								class="fa fa-star-half-o fa-fw"></i> Calificar a paciente</a></li>
+						<li><a href="${contextPath}/podologo/misEvaluaciones"><i
+								class="fa fa-star-half-o fa-fw"></i> Evaluaciones a
+								Pacientes</a></li>
 						<li><a href="${contextPath}/podologo/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
+								<li><a href="${contextPath}/podologo/cuestionarios"><i
+								class="fa fa-question-circle fa-fw"></i> Contestar encuesta</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
@@ -265,7 +268,7 @@
 				</a>
 			</div>
 			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/podologo/verSolicitudes">
+				<a href="${contextPath}/podologo/misSolicitudes">
 					<div class="panel panel-info">
 						<div class="panel-heading">
 							<div class="row">
@@ -315,7 +318,7 @@
 				</a>
 			</div>
 			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/podologo/index">
+				<a href="${contextPath}/podologo/misEvaluaciones">
 					<div class="panel panel-info">
 						<div class="panel-heading">
 							<div class="row">
@@ -324,15 +327,14 @@
 								</div>
 								<div class="col-xs-9 text-right">
 									<div class="huge" style="font-size: 20px;">
-										<Strong>Evaluar</Strong>
+										<Strong>Evaluaciones</Strong>
 									</div>
 									<div></div>
 								</div>
 							</div>
 						</div>
 						<div class="panel-footer">
-							<span class="pull-left"><Strong>Evaluar
-									Paciente</Strong></span> <span class="pull-right"><i
+							<span class="pull-left"><Strong>Evaluaciones a Pacientes</Strong></span> <span class="pull-right"><i
 								class="fa fa-arrow-circle-right"></i></span>
 							<div class="clearfix"></div>
 						</div>
