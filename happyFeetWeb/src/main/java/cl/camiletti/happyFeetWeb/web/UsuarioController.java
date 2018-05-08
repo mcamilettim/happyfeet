@@ -21,11 +21,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import cl.camiletti.happyFeetWeb.model.Paciente;
 import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Podologo;
 import cl.camiletti.happyFeetWeb.model.Usuario;
+import cl.camiletti.happyFeetWeb.service.PacienteService;
 import cl.camiletti.happyFeetWeb.service.ParametroService;
 import cl.camiletti.happyFeetWeb.service.PodologoService;
 import cl.camiletti.happyFeetWeb.service.UsuarioService;
@@ -34,6 +37,7 @@ import cl.camiletti.happyFeetWeb.util.StringEncrypt;
 import cl.camiletti.happyFeetWeb.util.VerifyRecaptcha;
 
 @Controller
+@SessionAttributes(value = { "podologo", "paciente"})
 public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
@@ -43,7 +47,8 @@ public class UsuarioController {
 
 	@Autowired
 	private PodologoService podologoService;
-
+	@Autowired
+	private PacienteService pacienteService;
 	@Autowired
 	private Environment env;
 
@@ -85,7 +90,6 @@ public class UsuarioController {
 	public void login(@ModelAttribute("loginForm") Usuario loginForm, BindingResult bindingResult, Model model) {
 		// userValidator.validate(loginForm, bindingResult);
 		Usuario usuario = usuarioService.login(loginForm);
-		List<Podologo> podologos = podologoService.findAll();
 		model.addAttribute("loginForm", usuario);
 	}
 
@@ -99,6 +103,14 @@ public class UsuarioController {
 
 		for (Parametro parametro : parametros) {
 			if (parametro.getValor().equals(rol)) {
+				if(rol.equalsIgnoreCase("podologo")) {
+					Podologo podologo = podologoService.findByEmail(user.getUsername());
+					model.addAttribute("podologo", podologo);
+				}
+				if(rol.equalsIgnoreCase("paciente")) {
+					Paciente paciente = pacienteService.findByEmail(user.getUsername());
+					model.addAttribute("paciente", paciente);
+				}	
 				return new ModelAndView("redirect:" + rol.toLowerCase() + "/index");
 			}
 		}

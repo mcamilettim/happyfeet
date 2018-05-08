@@ -343,7 +343,7 @@
 				</a>
 			</div>
 			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/podologo/index">
+				<a href="${contextPath}/podologo/misMensajes">
 					<div class="panel panel-info">
 						<div class="panel-heading">
 							<div class="row">

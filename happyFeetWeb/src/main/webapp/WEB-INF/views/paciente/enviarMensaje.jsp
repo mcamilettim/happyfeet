@@ -95,8 +95,7 @@
 			<!-- /.navbar-header -->
 
 		<ul class="nav navbar-top-links navbar-right">
-				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
-							test="${paciente.paramSexo.id==6}">o</c:if><c:if
+				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if	test="${paciente.paramSexo.id==6}">o</c:if><c:if
 							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
 				</Strong></li>
 				<li class="dropdown"><c:if test="${empty mensajesNuevos}">
@@ -214,7 +213,7 @@
 
 		<!-- Page Content -->
 		<div id="page-wrapper">
-
+<br>
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default">
@@ -327,6 +326,7 @@
 				</div>
 				<!-- /.panel-body -->
 			</div>
+			<br><br><br>
 			<!-- /.panel -->
 		</div>
 	</div>
@@ -345,6 +345,22 @@
 
 	<!-- Custom Theme JavaScript -->
 	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+	
+	<script>
+	(function(seconds) {
+	    var refresh,       
+	        intvrefresh = function() {
+	            clearInterval(refresh);
+	            refresh = setTimeout(function() {
+	               location.href = location.href;
+	            }, seconds * 1000);
+	        };
+
+	    $(document).on('keypress click', function() { intvrefresh() });
+	    intvrefresh();
+
+	}(15));
+	</script>
 
 </body>
 

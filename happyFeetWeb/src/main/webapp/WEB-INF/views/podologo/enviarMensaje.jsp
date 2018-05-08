@@ -79,7 +79,7 @@
 <body>
 
 	<div id="wrapper">
-<!-- Navigation -->
+		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
@@ -95,9 +95,8 @@
 			<!-- /.navbar-header -->
 
 			<ul class="nav navbar-top-links navbar-right">
-				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
-							test="${podologo.paramSexo.id==6}">o</c:if><c:if
-							test="${podologo.paramSexo.id==7}">a</c:if> ${podologo.nombres}
+				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if	test="${podologo.paramSexo.id==6}">o</c:if><c:if test="${podologo.paramSexo.id==7}">a</c:if>
+						${podologo.nombres}
 				</Strong></li>
 				<li class="dropdown"><c:if test="${empty mensajesNuevos}">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
@@ -119,13 +118,13 @@
 								</a></li>
 							</c:forEach>
 						</c:if>
-						 
+
 						<li><a class="text-center"
 							href="${contextPath}/podologo/misMensajes"> <strong>Ver
 									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
-					</ul> </li>
-					<li class="dropdown"><c:if test="${empty notificaciones}">
+					</ul></li>
+				<li class="dropdown"><c:if test="${empty notificaciones}">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
 						</a>
@@ -186,7 +185,9 @@
 								<br>
 								<div align="center">
 									<span class="text-info text-center"><b>${podologo.nombres}
-											${podologo.apellidos}</b></span> <span class="text-info">Podólog<c:if test="${podologo.paramSexo.id==6}">o</c:if><c:if test="${podologo.paramSexo.id==7}">a</c:if></span>
+											${podologo.apellidos}</b></span> <span class="text-info">Podólog<c:if
+											test="${podologo.paramSexo.id==6}">o</c:if>
+										<c:if test="${podologo.paramSexo.id==7}">a</c:if></span>
 								</div>
 							</div> <!-- /input-group -->
 						</li>
@@ -201,11 +202,10 @@
 						<li><a href="${contextPath}/podologo/misMensajes"><i
 								class="fa fa-comments fa-fw"></i><Strong> Mensajes</Strong></a></li>
 						<li><a href="${contextPath}/podologo/misEvaluaciones"><i
-								class="fa fa-star-half-o fa-fw"></i> Evaluaciones a
-								Pacientes</a></li>
+								class="fa fa-star-half-o fa-fw"></i> Evaluaciones a Pacientes</a></li>
 						<li><a href="${contextPath}/podologo/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
-								<li><a href="${contextPath}/podologo/cuestionarios"><i
+						<li><a href="${contextPath}/podologo/cuestionarios"><i
 								class="fa fa-question-circle fa-fw"></i> Contestar encuesta</a></li>
 					</ul>
 				</div>
@@ -215,23 +215,7 @@
 		</nav>
 		<!-- Page Content -->
 		<div id="page-wrapper">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-lg-12">
-						<c:if test="${mensaje != null}">
-							<div class="alert alert-success alert-dismissable">
-								<button type="button" class="close" data-dismiss="alert"
-									aria-hidden="true">×</button>
-								${mensaje}
-							</div>
-						</c:if>
-						<h2 class="page-header"></h2>
-					</div>
-					<!-- /.col-lg-12 -->
-				</div>
-				<!-- /.row -->
-			</div>
-
+		<br>
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default">
@@ -242,8 +226,7 @@
 						<!-- /.panel-heading -->
 						<br>
 						<div class="row">
-						<div class="col-md-2">
-						</div>
+							<div class="col-md-2"></div>
 							<div class="col-md-3" style="padding-top: 31px;">
 								<div align="center">
 									<img class="img-responsive"
@@ -344,6 +327,7 @@
 				</div>
 				<!-- /.panel-body -->
 			</div>
+			<br><br><br>
 			<!-- /.panel -->
 		</div>
 	</div>
@@ -367,7 +351,21 @@
 
 	<!-- Custom Theme JavaScript -->
 	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+	<script>
+	(function(seconds) {
+	    var refresh,       
+	        intvrefresh = function() {
+	            clearInterval(refresh);
+	            refresh = setTimeout(function() {
+	               location.href = location.href;
+	            }, seconds * 1000);
+	        };
 
+	    $(document).on('keypress click', function() { intvrefresh() });
+	    intvrefresh();
+
+	}(15));
+	</script>
 </body>
 
 </html>
