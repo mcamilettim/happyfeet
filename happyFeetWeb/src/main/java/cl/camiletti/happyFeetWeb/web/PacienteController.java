@@ -37,6 +37,7 @@ import cl.camiletti.happyFeetWeb.model.custom.MensajeCustom;
 import cl.camiletti.happyFeetWeb.service.AgendaService;
 import cl.camiletti.happyFeetWeb.service.AtencionService;
 import cl.camiletti.happyFeetWeb.service.ComunaService;
+import cl.camiletti.happyFeetWeb.service.CuestionariopacienteService;
 import cl.camiletti.happyFeetWeb.service.EvaluacionService;
 import cl.camiletti.happyFeetWeb.service.HorarioService;
 import cl.camiletti.happyFeetWeb.service.MensajeService;
@@ -70,6 +71,8 @@ public class PacienteController {
 	SolicitudAtencionService solicitudAtencionService;
 	@Autowired
 	private PacienteService pacienteService;
+	@Autowired
+	private CuestionariopacienteService cuestionariopacienteService;
 
 	@Autowired
 	private ParametroService parametroService;
@@ -117,6 +120,7 @@ public class PacienteController {
 		Paciente paciente = pacienteService.findByEmail(user.getUsername());
 		NotificacionUtil.cargaNotificacionesPaciente(model, paciente, notificacionpacienteService, parametroService);
 		MensajesNuevosUtil.cargaMensajesNuevosPaciente(model, paciente, mensajeService, parametroService);
+		System.out.println(cuestionariopacienteService.findAll().size());
 		model.addAttribute("paciente", paciente);
 		return "paciente/paciente";
 	}
