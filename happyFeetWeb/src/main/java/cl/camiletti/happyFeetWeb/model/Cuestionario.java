@@ -23,6 +23,7 @@ public class Cuestionario implements Serializable {
 	private int id;
 
 	private String titulo;
+	private String fecha;
 
 	private String detalle;
 
@@ -69,6 +70,14 @@ public class Cuestionario implements Serializable {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public String getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
 	}
 
  

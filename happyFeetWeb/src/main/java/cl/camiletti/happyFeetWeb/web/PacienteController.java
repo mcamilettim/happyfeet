@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import cl.camiletti.happyFeetWeb.model.Agenda;
 import cl.camiletti.happyFeetWeb.model.Atencion;
 import cl.camiletti.happyFeetWeb.model.Comuna;
+import cl.camiletti.happyFeetWeb.model.Cuestionariopaciente;
 import cl.camiletti.happyFeetWeb.model.Evaluacion;
 import cl.camiletti.happyFeetWeb.model.Horario;
 import cl.camiletti.happyFeetWeb.model.Mensaje;
@@ -120,7 +121,6 @@ public class PacienteController {
 		Paciente paciente = pacienteService.findByEmail(user.getUsername());
 		NotificacionUtil.cargaNotificacionesPaciente(model, paciente, notificacionpacienteService, parametroService);
 		MensajesNuevosUtil.cargaMensajesNuevosPaciente(model, paciente, mensajeService, parametroService);
-		System.out.println(cuestionariopacienteService.findAll().size());
 		model.addAttribute("paciente", paciente);
 		return "paciente/paciente";
 	}
@@ -134,6 +134,33 @@ public class PacienteController {
 		return "paciente/quiz";
 	}
 
+	@RequestMapping(value = "/paciente/cuestionarios", method = RequestMethod.GET)
+	public String cuestionarios(Model model, @ModelAttribute("paciente") Paciente paciente) {
+		NotificacionUtil.cargaNotificacionesPaciente(model, paciente, notificacionpacienteService, parametroService);
+		MensajesNuevosUtil.cargaMensajesNuevosPaciente(model, paciente, mensajeService, parametroService);
+		Parametro parametro = parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_PENDIENTE);
+		List<Parametro> parametros = new ArrayList<Parametro>();
+		parametros.add(parametro);
+		List<Cuestionariopaciente> cuestionarios = cuestionariopacienteService
+				.findByPacienteAndParamEstadoCuestionarioIn(paciente, parametros);
+		model.addAttribute("cuestionariosPendientes", cuestionarios);
+		parametros = new ArrayList<Parametro>();
+		parametros.add(parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_RESUELTO));
+		cuestionarios = cuestionariopacienteService
+				.findByPacienteAndParamEstadoCuestionarioIn(paciente, parametros);
+		model.addAttribute("cuestionariosRealizados", cuestionarios);
+		return "paciente/cuestionarios";
+	}
+	
+	
+	@RequestMapping(value = "/paciente/verCuestionario", method = RequestMethod.GET)
+	public String verCuestionario(Model model, @RequestParam("id") int id) {
+		Cuestionariopaciente cuestionariopaciente=cuestionariopacienteService
+		.findById(id);
+		model.addAttribute("solicitudForm", new Solicitudatencion());
+		return "paciente/verCuestionario";
+	}
+	
 	@RequestMapping(value = "/paciente/selectPodologo", method = RequestMethod.GET)
 	public String seleccionaPatologia(Model model, @RequestParam("id") int id) {
 		Patologia patologia = patologiaService.findById(id);
@@ -177,10 +204,11 @@ public class PacienteController {
 			solicitudAtencionService.save(solicitudAtencion);
 			horario.setParamEstadoHorario(parametroService.findOne(Parametros.ESTADO_HORARIO_TOMADO));
 			horarioService.save(horario);
-		 
+
 			Notificacionpodologo notificacionpaciente = new Notificacionpodologo();
 			notificacionpaciente.setPodologo(solicitudAtencion.getPodologo());
-			notificacionpaciente.setParamEstadoNotificacion(parametroService.findOne(Parametros.ESTADO_MENSAJE_NO_VISTO));
+			notificacionpaciente
+					.setParamEstadoNotificacion(parametroService.findOne(Parametros.ESTADO_MENSAJE_NO_VISTO));
 			notificacionpaciente.setUrl(NotificacionPodologoConstantes.SOLICITUD_ATENCION + solicitudAtencion.getId());
 			notificacionpaciente.setTitulo(NotificacionPodologoConstantes.TITULO_SOLICITUD_ATENCION);
 			notificacionpaciente.setMensaje(solicitudAtencion.getPodologo().getNombres()
@@ -188,7 +216,7 @@ public class PacienteController {
 			notificacionpaciente.setFecha(DateUtil.getFechaHoyString());
 			notificacionpaciente.setHora(DateUtil.getHourSystem());
 			notificacionpodologoService.save(notificacionpaciente);
-			
+
 			if (podologo.getParamSexo().getId() == Parametros.ESTADO_SEXO_M)
 				model.addAttribute("mensaje",
 						"Solicitud de Atención ingresada, el Podólogo responderá a la brevedad... ");
@@ -209,6 +237,35 @@ public class PacienteController {
 		model.addAttribute("comunas", comunaService.findAll());
 
 		return "paciente/modificar";
+	}
+	@RequestMapping(value = "/paciente/modificarDatos", method = RequestMethod.POST)
+	public String modificarpost(@ModelAttribute("pacienteForm") Paciente pacienteForm,
+			@RequestParam("archivo") MultipartFile archivo, @ModelAttribute("paciente") Paciente paciente,
+			BindingResult bindingResult, Model model) {
+		FileManagerUtil fileManagerUtil = new FileManagerUtil();
+		if (bindingResult.hasErrors()) {
+
+		} else {
+			// Mail mail = new Mail(env);
+			if (paciente.getUsuario().getPassword().equals(pacienteForm.getUsuario().getPassword()) && paciente
+					.getUsuario().getPasswordConfirm().equals(pacienteForm.getUsuario().getPasswordConfirm())) {
+				paciente.getUbicacion().setLatitud(pacienteForm.getUbicacion().getLatitud());
+				paciente.getUbicacion().setNombre(pacienteForm.getUbicacion().getNombre());
+				paciente.getUbicacion().setLongitud(pacienteForm.getUbicacion().getLongitud());
+				paciente.getUbicacion().getComuna().setId(pacienteForm.getUbicacion().getComuna().getId());
+				paciente.setFono(pacienteForm.getFono());
+				if (!archivo.isEmpty()) {
+					String file = fileManagerUtil.getBase64FromFoto(archivo);
+					paciente.setFoto(file);
+				}
+				pacienteService.save(paciente);
+				model.addAttribute("mensaje", "Sus datos fueron guardados con éxito");
+			} else {
+				model.addAttribute("mensajeError", "Contraseña Incorrecta");
+			}
+		}
+		model.addAttribute("paciente", paciente);
+		return "paciente/paciente";
 	}
 
 	@RequestMapping(value = "/paciente/misAtenciones", method = RequestMethod.GET)
@@ -253,7 +310,7 @@ public class PacienteController {
 	public String misEvaluaciones(Model model, @ModelAttribute("paciente") Paciente paciente) {
 		NotificacionUtil.cargaNotificacionesPaciente(model, paciente, notificacionpacienteService, parametroService);
 		MensajesNuevosUtil.cargaMensajesNuevosPaciente(model, paciente, mensajeService, parametroService);
-		List<Integer> valor=new ArrayList<Integer>();
+		List<Integer> valor = new ArrayList<Integer>();
 		valor.add(0);
 		List<Evaluacion> evaluaciones = evaluacionService.findByPacienteAndValorPodologoNotIn(paciente, valor);
 		model.addAttribute("evaluaciones", evaluaciones);
@@ -309,8 +366,8 @@ public class PacienteController {
 		parametro = parametroService.findOne(Parametros.ESTADO_MENSAJE_VISTO);
 		List<Mensaje> mensajesVistos = mensajeService.findByReceptorRutAndParamEstadoMensaje(paciente.getRut(),
 				parametro);
-		model.addAttribute("mensajesVistos", MensajeCustom.cargarMensajesVistos(mensajesNoVistos,
-				pacienteService, podologoService, mensajesVistos));
+		model.addAttribute("mensajesVistos",
+				MensajeCustom.cargarMensajesVistos(mensajesNoVistos, pacienteService, podologoService, mensajesVistos));
 		return "paciente/mensajes";
 	}
 
@@ -401,35 +458,7 @@ public class PacienteController {
 		return "paciente/registrar";
 	}
 
-	@RequestMapping(value = "/paciente/modificarDatos", method = RequestMethod.POST)
-	public String modificarpost(@ModelAttribute("pacienteForm") Paciente pacienteForm,
-			@RequestParam("archivo") MultipartFile archivo, @ModelAttribute("paciente") Paciente paciente,
-			BindingResult bindingResult, Model model) {
-		FileManagerUtil fileManagerUtil = new FileManagerUtil();
-		if (bindingResult.hasErrors()) {
 
-		} else {
-			// Mail mail = new Mail(env);
-			if (paciente.getUsuario().getPassword().equals(pacienteForm.getUsuario().getPassword()) && paciente
-					.getUsuario().getPasswordConfirm().equals(pacienteForm.getUsuario().getPasswordConfirm())) {
-				paciente.getUbicacion().setLatitud(pacienteForm.getUbicacion().getLatitud());
-				paciente.getUbicacion().setNombre(pacienteForm.getUbicacion().getNombre());
-				paciente.getUbicacion().setLongitud(pacienteForm.getUbicacion().getLongitud());
-				paciente.getUbicacion().getComuna().setId(pacienteForm.getUbicacion().getComuna().getId());
-				paciente.setFono(pacienteForm.getFono());
-				if (!archivo.isEmpty()) {
-					String file = fileManagerUtil.getBase64FromFoto(archivo);
-					paciente.setFoto(file);
-				}
-				pacienteService.save(paciente);
-				model.addAttribute("mensaje", "Sus datos fueron guardados con éxito");
-			} else {
-				model.addAttribute("mensajeError", "Contraseña Incorrecta");
-			}
-		}
-		model.addAttribute("paciente", paciente);
-		return "paciente/paciente";
-	}
 
 	@RequestMapping(value = "/paciente/detalleSolicitud", method = RequestMethod.GET)
 	public String detalleSolicitud(Model model, @RequestParam("id") int id) {

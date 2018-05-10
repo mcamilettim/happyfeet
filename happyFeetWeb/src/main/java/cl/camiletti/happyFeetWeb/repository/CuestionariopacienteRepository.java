@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import cl.camiletti.happyFeetWeb.model.Cuestionariopaciente;
 import cl.camiletti.happyFeetWeb.model.Paciente;
+import cl.camiletti.happyFeetWeb.model.Parametro;
 
 public interface CuestionariopacienteRepository extends JpaRepository<Cuestionariopaciente, Long> {
 	  <S extends Cuestionariopaciente> S save(Cuestionariopaciente cuestionariopaciente);
@@ -13,6 +14,7 @@ public interface CuestionariopacienteRepository extends JpaRepository<Cuestionar
 	  List<Cuestionariopaciente> findAll();	 	
 	  void delete(Cuestionariopaciente cuestionariopaciente);	 
 	  List<Cuestionariopaciente >findByPaciente(Paciente paciente);
+	  List<Cuestionariopaciente>findByPacienteAndParamEstadoCuestionarioIn(Paciente paciente,List<Parametro> parametros);
 	 
 }
 

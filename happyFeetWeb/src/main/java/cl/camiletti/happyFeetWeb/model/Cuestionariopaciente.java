@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 
@@ -28,6 +29,9 @@ public class Cuestionariopaciente implements Serializable {
 	private int respuesta_uno;
 	private int respuesta_dos;
 	private int respuesta_tres;
+	@ManyToOne
+	@JoinColumn(name = "paramEstadoCuestionario_id")
+	private Parametro paramEstadoCuestionario;
 	
 	public int getId() {
 		return id;
@@ -64,6 +68,12 @@ public class Cuestionariopaciente implements Serializable {
 	}
 	public void setRespuesta_tres(int respuesta_tres) {
 		this.respuesta_tres = respuesta_tres;
+	}
+	public Parametro getParamEstadoCuestionario() {
+		return paramEstadoCuestionario;
+	}
+	public void setParamEstadoCuestionario(Parametro paramEstadoCuestionario) {
+		this.paramEstadoCuestionario = paramEstadoCuestionario;
 	}
 
 	

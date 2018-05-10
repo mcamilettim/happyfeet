@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import cl.camiletti.happyFeetWeb.model.Cuestionariopaciente;
 import cl.camiletti.happyFeetWeb.model.Paciente;
+import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.repository.CuestionariopacienteRepository;
 
 @Service
@@ -42,6 +43,13 @@ public class CuestionariopacienteServiceImpl implements CuestionariopacienteServ
 	public List<Cuestionariopaciente> findByPaciente(Paciente paciente) {
 		// TODO Auto-generated method stub
 		return cuestionariopacienteRepository.findByPaciente(paciente);
+	}
+
+	@Override
+	public List<Cuestionariopaciente> findByPacienteAndParamEstadoCuestionarioIn(Paciente paciente,
+			List<Parametro> parametros) {
+		// TODO Auto-generated method stub
+		return cuestionariopacienteRepository.findByPacienteAndParamEstadoCuestionarioIn(paciente, parametros);
 	}
 
 	 

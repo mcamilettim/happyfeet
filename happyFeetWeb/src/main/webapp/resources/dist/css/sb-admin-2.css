@@ -51,20 +51,20 @@ body {
 .navbar-top-links .dropdown-messages,
 .navbar-top-links .dropdown-tasks,
 .navbar-top-links .dropdown-alerts {
-  width: 310px;
+  width: 260px;
   min-width: 0;
 }
 .navbar-top-links .dropdown-messages {
-  margin-left: -131px;
+  margin-left: -179px;
 }
 .navbar-top-links .dropdown-tasks {
   margin-left: -59px;
 }
 .navbar-top-links .dropdown-alerts {
-  margin-left: -123px;
+  margin-left: -180px;
 }
 .navbar-top-links .dropdown-user {
-  right: 0;
+  right:-101;
   left: auto;
 }
 .sidebar .sidebar-nav.navbar-collapse {
