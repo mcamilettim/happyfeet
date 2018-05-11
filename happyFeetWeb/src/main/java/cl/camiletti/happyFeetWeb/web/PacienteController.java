@@ -64,7 +64,7 @@ import cl.camiletti.happyFeetWeb.util.Seccion;
 
 @Controller
 @SessionAttributes(value = { "sessionUser", "paciente", "notificaciones", "atencionParaFinalizar", "podologo",
-		"patologia" })
+		"patologia", "cuestionarioParaFinalizar" })
 public class PacienteController {
 	@Autowired
 	PodologoService podologoService;
@@ -146,21 +146,34 @@ public class PacienteController {
 		model.addAttribute("cuestionariosPendientes", cuestionarios);
 		parametros = new ArrayList<Parametro>();
 		parametros.add(parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_RESUELTO));
-		cuestionarios = cuestionariopacienteService
-				.findByPacienteAndParamEstadoCuestionarioIn(paciente, parametros);
+		cuestionarios = cuestionariopacienteService.findByPacienteAndParamEstadoCuestionarioIn(paciente, parametros);
 		model.addAttribute("cuestionariosRealizados", cuestionarios);
 		return "paciente/cuestionarios";
 	}
-	
-	
+
 	@RequestMapping(value = "/paciente/verCuestionario", method = RequestMethod.GET)
 	public String verCuestionario(Model model, @RequestParam("id") int id) {
-		Cuestionariopaciente cuestionariopaciente=cuestionariopacienteService
-		.findById(id);
+		Cuestionariopaciente cuestionariopaciente = cuestionariopacienteService.findById(id);
 		model.addAttribute("cuestionariopaciente", cuestionariopaciente);
+		model.addAttribute("cuestionarioParaFinalizar", cuestionariopaciente);
 		return "paciente/verCuestionario";
 	}
-	
+
+	@RequestMapping(value = "/paciente/guardarCuestionario", method = RequestMethod.POST)
+	public String guardarCuestionario(Model model, @RequestParam("respuestaUno") String respuestaUno,
+			@RequestParam("respuestaDos") String respuestaDos, @RequestParam("respuestaTres") String respuestaTres,
+			@ModelAttribute("cuestionarioParaFinalizar") Cuestionariopaciente cuestionariopaciente) {
+		cuestionariopaciente.setParamEstadoCuestionario(parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_RESUELTO));
+		cuestionariopaciente.setParamEstadoDescuento(parametroService.findOne(Parametros.ESTADO_DESCUENTO_DISPONIBLE));
+		cuestionariopaciente.setRespuesta_uno(respuestaUno);
+		cuestionariopaciente.setRespuesta_dos(respuestaDos);
+		cuestionariopaciente.setRespuesta_tres(respuestaTres);
+		cuestionariopacienteService.save(cuestionariopaciente);		
+		model.addAttribute("mensaje", "Encuesta guardada con éxito, usted posee un cupón de "
+				+ cuestionariopaciente.getCuestionario().getDescuento() + "% de descuento!");
+		return "paciente/paciente";
+	}
+
 	@RequestMapping(value = "/paciente/selectPodologo", method = RequestMethod.GET)
 	public String seleccionaPatologia(Model model, @RequestParam("id") int id) {
 		Patologia patologia = patologiaService.findById(id);
@@ -238,6 +251,7 @@ public class PacienteController {
 
 		return "paciente/modificar";
 	}
+
 	@RequestMapping(value = "/paciente/modificarDatos", method = RequestMethod.POST)
 	public String modificarpost(@ModelAttribute("pacienteForm") Paciente pacienteForm,
 			@RequestParam("archivo") MultipartFile archivo, @ModelAttribute("paciente") Paciente paciente,
@@ -457,8 +471,6 @@ public class PacienteController {
 		}
 		return "paciente/registrar";
 	}
-
-
 
 	@RequestMapping(value = "/paciente/detalleSolicitud", method = RequestMethod.GET)
 	public String detalleSolicitud(Model model, @RequestParam("id") int id) {

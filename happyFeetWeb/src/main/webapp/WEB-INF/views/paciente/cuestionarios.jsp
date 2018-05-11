@@ -221,7 +221,7 @@
 			<c:if
 				test="${fn:length(cuestionariosPendientes) == 0 && fn:length(cuestionariosRealizados) == 0}">
 				<div class="alert alert-warning" align="center">
-					<Strong>Usted no posee solicitudes de Pacientes</Strong>
+					<Strong>Usted no posee encuestas disponibles para responder</Strong>
 				</div>
 			</c:if>
 
@@ -241,6 +241,7 @@
 								<br>
 							</div>
 							<div class="table-responsive">
+							
 								<table class="table table-bordered">
 									<tr>
 										<th><div align="center">Nombre</div></th>
@@ -272,7 +273,7 @@
 					<div class="col-lg-12">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<strong>Mis Solicitudes Respondidas <span class="badge">${cuestionariosRealizados.size()}</span></strong>
+								<strong>Mis Encuestas Respondidas <span class="badge">${cuestionariosRealizados.size()}</span></strong>
 							</div>
 							<br>
 							<div align="center">
@@ -285,6 +286,7 @@
 								<table class="table table-bordered">
 									<tr>
 										<th><div align="center">Nombre</div></th>
+										<th><div align="center">Descuento %</div></th>
 										<th><div align="center">Fecha</div></th>
 										<th><div align="center">Acción</div></th>
 							 
@@ -293,12 +295,11 @@
 									<c:forEach items="${cuestionariosRealizados}" var="cuestionarioRealizado">
 										<tr>
 											<td align="center">${cuestionarioRealizado.cuestionario.titulo}</td>
+											<td align="center">${cuestionarioRealizado.cuestionario.descuento}</td>
 											<td align="center">${cuestionarioRealizado.cuestionario.fecha}</td>
 											<td align="center"><button
 													onclick="location.href='${contextPath}/paciente/verCuestionario?id=${cuestionarioRealizado.id}'"
 													type="submit" class="btn btn-primary">Ver</button></td>
-							 
-
 										</tr>
 									</c:forEach>
 								</table>
@@ -309,9 +310,6 @@
 				</div>
 			</c:if>
 	</div>
-
-
-
 
 	<!-- jQuery -->
 	<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>

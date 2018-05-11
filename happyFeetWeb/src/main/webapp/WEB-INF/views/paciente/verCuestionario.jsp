@@ -268,57 +268,88 @@
 									domicilio.</p>
 								<br>
 							</div>
+							<form action="guardarCuestionario" method="post">
+								<table class="table table-bordered">
+									<tr>
+										<th><div align="center">Pregunta</div></th>
+										<th><div align="center">Respuesta</div></th>
+									</tr>
+									<tr>
+										<td align="left"><p
+												style="text-align: justify; padding-left: 10px; padding-right: 10px;">${cuestionariopaciente.cuestionario.preguntas.pregunta_uno}.</p></td>
+										<td align="center"><select name="respuestaUno"
+											class="selectpicker">
+												<option>SI</option>
+												<option>NO</option>
+										</select></td>
+									</tr>
+									<tr>
+										<td align="left"><p
+												style="text-align: justify; padding-left: 10px; padding-right: 10px;">${cuestionariopaciente.cuestionario.preguntas.pregunta_dos}.</p></td>
+										<td align="center"><select name="respuestaDos"
+											class="selectpicker">
+												<option>SI</option>
+												<option>NO</option>
+										</select></td>
+									</tr>
+									<tr>
+										<td align="left"><p
+												style="text-align: justify; padding-left: 10px; padding-right: 10px;">${cuestionariopaciente.cuestionario.preguntas.pregunta_tres}.</p></td>
+										<td align="center"><select name="respuestaTres"
+											class="selectpicker">
+												<option>SI</option>
+												<option>NO</option>
+										</select></td>
+									</tr>
+									<tr>
+										<td align="center" colspan="2"><button type="button"
+												class="btn btn-primary" data-toggle="modal"
+												data-target="#exampleModal">Guardar Cuestionario</button></td>
+									</tr>
+								</table>
+									<div class="modal fade" id="exampleModal" tabindex="-1"
+								role="dialog" aria-labelledby="exampleModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h4 class="modal-title" id="exampleModalLabel">
+												<strong>Confirmación de Encuesta</strong>
+											</h4>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<p style="text-align: justify;">
+												<b>¿ Está seguro que desea guardar la encuesta ?</b>
+											</p>
 
-							<table class="table table-bordered">
-								<tr>
-									<th><div align="center">Pregunta</div></th>
-									<th><div align="center">Respuesta</div></th>
-								</tr>
-								<tr>
-									<td align="left"><p
-											style="text-align: justify; padding-left: 10px; padding-right: 10px;">${cuestionariopaciente.cuestionario.preguntas.pregunta_uno}.</p></td>
-									<td align="center"><select name="respuestaUno"
-										class="selectpicker">
-											<option>SI</option>
-											<option>NO</option>
-									</select></td>
-								</tr>
-								<tr>
-									<td align="left"><p
-											style="text-align: justify; padding-left: 10px; padding-right: 10px;">${cuestionariopaciente.cuestionario.preguntas.pregunta_dos}.</p></td>
-									<td align="center"><select name="respuestaDos"
-										class="selectpicker">
-											<option>SI</option>
-											<option>NO</option>
-									</select></td>
-								</tr>
-								<tr>
-									<td align="left"><p
-											style="text-align: justify; padding-left: 10px; padding-right: 10px;">${cuestionariopaciente.cuestionario.preguntas.pregunta_tres}.</p></td>
-									<td align="center"><select name="respuestaTres"
-										class="selectpicker">
-											<option>SI</option>
-											<option>NO</option>
-									</select></td>
-								</tr>
-								<tr>
-									<td align="center" colspan="2"><button type="button"
-											class="btn btn-primary" data-toggle="modal"
-											data-target="#exampleModal">Enviar Encuesta</button></td>
-								</tr>
-							</table>
+
+										</div>
+										<div class="modal-footer" align="left">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Cancelar</button>
+											<button type="submit" class="btn btn-primary"
+												name="respuesta" value="si">Si, estoy seguro</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							</form>
 						</c:if>
-<c:if
+						<c:if
 							test="${cuestionariopaciente.paramEstadoCuestionario.valor eq 'Resuelto'}">
-
-
-
 							<div align="center">
 								<p
-									style="text-align: justify; padding-left: 10px; padding-right: 10px;">Usted ya respondió este cuestionario y obtuvo un cupón de ${cuestionariopaciente.cuestionario.descuento} % de descuento, el cual se encuentra ${cuestionariopaciente.cuestionario.descuento}.</p>
+									style="text-align: justify; padding-left: 10px; padding-right: 10px;">
+									Usted ya respondió este cuestionario y obtuvo un cupón de <Strong>
+										${cuestionariopaciente.cuestionario.descuento} % </Strong> de
+									descuento, el cual se encuentra <Strong>${cuestionariopaciente.paramEstadoDescuento.valor}.</Strong>
+								</p>
 								<br>
 							</div>
-
 							<table class="table table-bordered">
 								<tr>
 									<th><div align="center">Pregunta</div></th>
@@ -327,34 +358,17 @@
 								<tr>
 									<td align="left"><p
 											style="text-align: justify; padding-left: 10px; padding-right: 10px;">${cuestionariopaciente.cuestionario.preguntas.pregunta_uno}.</p></td>
-									<td align="center"><select name="respuestaUno"
-										class="selectpicker">
-											<option>SI</option>
-											<option>NO</option>
-									</select></td>
+									<td align="center"><Strong>${cuestionariopaciente.respuesta_uno}</Strong></td>
 								</tr>
 								<tr>
 									<td align="left"><p
 											style="text-align: justify; padding-left: 10px; padding-right: 10px;">${cuestionariopaciente.cuestionario.preguntas.pregunta_dos}.</p></td>
-									<td align="center"><select name="respuestaDos"
-										class="selectpicker">
-											<option>SI</option>
-											<option>NO</option>
-									</select></td>
+									<td align="center"><Strong>${cuestionariopaciente.respuesta_dos}</Strong></td>
 								</tr>
 								<tr>
 									<td align="left"><p
 											style="text-align: justify; padding-left: 10px; padding-right: 10px;">${cuestionariopaciente.cuestionario.preguntas.pregunta_tres}.</p></td>
-									<td align="center"><select name="respuestaTres"
-										class="selectpicker">
-											<option>SI</option>
-											<option>NO</option>
-									</select></td>
-								</tr>
-								<tr>
-									<td align="center" colspan="2"><button type="button"
-											class="btn btn-primary" data-toggle="modal"
-											data-target="#exampleModal">Enviar Encuesta</button></td>
+									<td align="center"><Strong>${cuestionariopaciente.respuesta_tres}</Strong></td>
 								</tr>
 							</table>
 						</c:if>

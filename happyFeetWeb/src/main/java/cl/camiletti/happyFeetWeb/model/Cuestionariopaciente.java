@@ -26,29 +26,30 @@ public class Cuestionariopaciente implements Serializable {
 	private Cuestionario cuestionario;
 	@ManyToOne
 	private Paciente paciente;
-	private int respuesta_uno;
-	private int respuesta_dos;
-	private int respuesta_tres;
+	private String respuesta_uno;
+	private String respuesta_dos;
+	private String respuesta_tres;
 	@ManyToOne
 	@JoinColumn(name = "paramEstadoCuestionario_id")
 	private Parametro paramEstadoCuestionario;
+	@ManyToOne
+	@JoinColumn(name = "paramEstadoDescuento_id")
+	private Parametro paramEstadoDescuento;
 
-	private String estadoDescuento;
+ 
 
 	public int getId() {
 		return id;
 	}
+
+	public Parametro getParamEstadoDescuento() {
+		return paramEstadoDescuento;
+	}
+
+	public void setParamEstadoDescuento(Parametro paramEstadoDescuento) {
+		this.paramEstadoDescuento = paramEstadoDescuento;
+	}
  
-
-	public String getEstadoDescuento() {
-		return estadoDescuento;
-	}
-
-
-	public void setEstadoDescuento(String estadoDescuento) {
-		this.estadoDescuento = estadoDescuento;
-	}
-
 
 	public void setId(int id) {
 		this.id = id;
@@ -70,27 +71,28 @@ public class Cuestionariopaciente implements Serializable {
 		this.paciente = paciente;
 	}
 
-	public int getRespuesta_uno() {
+ 
+	public String getRespuesta_uno() {
 		return respuesta_uno;
 	}
 
-	public void setRespuesta_uno(int respuesta_uno) {
+	public void setRespuesta_uno(String respuesta_uno) {
 		this.respuesta_uno = respuesta_uno;
 	}
 
-	public int getRespuesta_dos() {
+	public String getRespuesta_dos() {
 		return respuesta_dos;
 	}
 
-	public void setRespuesta_dos(int respuesta_dos) {
+	public void setRespuesta_dos(String respuesta_dos) {
 		this.respuesta_dos = respuesta_dos;
 	}
 
-	public int getRespuesta_tres() {
+	public String getRespuesta_tres() {
 		return respuesta_tres;
 	}
 
-	public void setRespuesta_tres(int respuesta_tres) {
+	public void setRespuesta_tres(String respuesta_tres) {
 		this.respuesta_tres = respuesta_tres;
 	}
 
