@@ -157,7 +157,7 @@ public class PacienteController {
 	public String verCuestionario(Model model, @RequestParam("id") int id) {
 		Cuestionariopaciente cuestionariopaciente=cuestionariopacienteService
 		.findById(id);
-		model.addAttribute("solicitudForm", new Solicitudatencion());
+		model.addAttribute("cuestionariopaciente", cuestionariopaciente);
 		return "paciente/verCuestionario";
 	}
 	

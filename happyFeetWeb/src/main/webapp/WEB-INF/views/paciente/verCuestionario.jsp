@@ -1,7 +1,8 @@
+
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
@@ -47,7 +48,36 @@
 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">
 <title>Cuido mis pies</title>
-
+<link rel="apple-touch-icon" sizes="57x57"
+	href="${contextPath}/resources/icon/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60"
+	href="${contextPath}/resources/icon/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72"
+	href="${contextPath}/resources/icon/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76"
+	href="${contextPath}/resources/icon/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114"
+	href="${contextPath}/resources/icon/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120"
+	href="${contextPath}/resources/icon/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144"
+	href="${contextPath}/resources/icon/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152"
+	href="${contextPath}/resources/icon/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180"
+	href="${contextPath}/resources/icon/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"
+	href="${contextPath}/resources/icon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32"
+	href="${contextPath}/resources/icon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96"
+	href="${contextPath}/resources/icon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16"
+	href="${contextPath}/resources/icon/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
 <!-- Bootstrap Core CSS -->
 <link
 	href="${contextPath}/resources/vendor/bootstrap/css/bootstrap.min.css"
@@ -65,7 +95,9 @@
 <link
 	href="${contextPath}/resources/vendor/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
-
+<link href="${contextPath}/resources/css/jquery-ui.css" rel="stylesheet">
+<link href="${contextPath}/resources/js/bootstrap-datepicker.min.css"
+	rel="stylesheet">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -73,8 +105,9 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-</head>
 
+<link href="${contextPath}/resources/css/evaluacion/css/style.css"
+	rel="stylesheet">
 <body>
 
 	<div id="wrapper">
@@ -96,7 +129,7 @@
 
 			<ul class="nav navbar-top-links navbar-right">
 				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
-							test="${paciente.paramSexo.id==6}">o</c:if><c:if
+							test="${paciente.paramSexo.id==6}">o</c:if> <c:if
 							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
 				</Strong></li>
 				<li class="dropdown"><c:if test="${empty mensajesNuevos}">
@@ -119,13 +152,13 @@
 								</a></li>
 							</c:forEach>
 						</c:if>
-						 
+
 						<li><a class="text-center"
 							href="${contextPath}/paciente/misMensajes"> <strong>Ver
 									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
-					</ul> </li>
-					<li class="dropdown"><c:if test="${empty notificaciones}">
+					</ul></li>
+				<li class="dropdown"><c:if test="${empty notificaciones}">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
 						</a>
@@ -191,13 +224,13 @@
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
-								class="fa fa-home fa-fw"></i> <Strong>Inicio</Strong></a></li>
+								class="fa fa-home fa-fw"></i> Inicio</a></li>
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
 								class="fa fa-edit fa-fw"></i>Solicitar Atención</a></li>
 						<li><a href="${contextPath}/paciente/misSolicitudes"><i
 								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes de Atención</a></li>
 						<li><a href="${contextPath}/paciente/misAtenciones"><i
-								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
+								class="fa fa-user-md fa-fw"></i> <Strong>Mis atenciones</Strong></a></li>
 						<li><a href="${contextPath}/paciente/misMensajes"><i
 								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
 						<li><a href="${contextPath}/paciente/misEvaluaciones"><i
@@ -205,208 +238,139 @@
 								Profesionales</a></li>
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
-						<li><a href="${contextPath}/paciente/cuestionarios"><i
-								class="fa fa-question-circle fa-fw"></i> Contestar encuesta</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
 			</div>
 			<!-- /.navbar-static-side -->
 		</nav>
-
 		<!-- Page Content -->
 		<div id="page-wrapper">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-lg-12">
-						<h2 class="page-header">
-							<c:if test="${mensaje != null}">
-								<div class="alert alert-success alert-dismissable">
-									<button type="button" class="close" data-dismiss="alert"
-										aria-hidden="true">×</button>
-									${mensaje}
-								</div>
-							</c:if>
-							<c:if test="${mensajeError != null}">
-								<div class="alert alert-danger alert-dismissable">
-									<button type="button" class="close" data-dismiss="alert"
-										aria-hidden="true">×</button>
-									${mensajeError}
-								</div>
-							</c:if>
+			<br>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<strong>${cuestionariopaciente.cuestionario.titulo}</strong>
+						</div>
+						<br>
+						<c:if
+							test="${cuestionariopaciente.paramEstadoCuestionario.valor eq 'Sin Resolver'}">
 
-						</h2>
+
+
+							<div align="center">
+								<p
+									style="text-align: justify; padding-left: 10px; padding-right: 10px;">Al
+									responder este cuestionario usted obtendrá un cupón de
+									${cuestionariopaciente.cuestionario.descuento} % de descuento,
+									el cual puede usarlo cuando solicite atención podológica a
+									domicilio.</p>
+								<br>
+							</div>
+
+							<table class="table table-bordered">
+								<tr>
+									<th><div align="center">Pregunta</div></th>
+									<th><div align="center">Respuesta</div></th>
+								</tr>
+								<tr>
+									<td align="left"><p
+											style="text-align: justify; padding-left: 10px; padding-right: 10px;">${cuestionariopaciente.cuestionario.preguntas.pregunta_uno}.</p></td>
+									<td align="center"><select name="respuestaUno"
+										class="selectpicker">
+											<option>SI</option>
+											<option>NO</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td align="left"><p
+											style="text-align: justify; padding-left: 10px; padding-right: 10px;">${cuestionariopaciente.cuestionario.preguntas.pregunta_dos}.</p></td>
+									<td align="center"><select name="respuestaDos"
+										class="selectpicker">
+											<option>SI</option>
+											<option>NO</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td align="left"><p
+											style="text-align: justify; padding-left: 10px; padding-right: 10px;">${cuestionariopaciente.cuestionario.preguntas.pregunta_tres}.</p></td>
+									<td align="center"><select name="respuestaTres"
+										class="selectpicker">
+											<option>SI</option>
+											<option>NO</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td align="center" colspan="2"><button type="button"
+											class="btn btn-primary" data-toggle="modal"
+											data-target="#exampleModal">Enviar Encuesta</button></td>
+								</tr>
+							</table>
+						</c:if>
+<c:if
+							test="${cuestionariopaciente.paramEstadoCuestionario.valor eq 'Resuelto'}">
+
+
+
+							<div align="center">
+								<p
+									style="text-align: justify; padding-left: 10px; padding-right: 10px;">Usted ya respondió este cuestionario y obtuvo un cupón de ${cuestionariopaciente.cuestionario.descuento} % de descuento, el cual se encuentra ${cuestionariopaciente.cuestionario.descuento}.</p>
+								<br>
+							</div>
+
+							<table class="table table-bordered">
+								<tr>
+									<th><div align="center">Pregunta</div></th>
+									<th><div align="center">Respuesta</div></th>
+								</tr>
+								<tr>
+									<td align="left"><p
+											style="text-align: justify; padding-left: 10px; padding-right: 10px;">${cuestionariopaciente.cuestionario.preguntas.pregunta_uno}.</p></td>
+									<td align="center"><select name="respuestaUno"
+										class="selectpicker">
+											<option>SI</option>
+											<option>NO</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td align="left"><p
+											style="text-align: justify; padding-left: 10px; padding-right: 10px;">${cuestionariopaciente.cuestionario.preguntas.pregunta_dos}.</p></td>
+									<td align="center"><select name="respuestaDos"
+										class="selectpicker">
+											<option>SI</option>
+											<option>NO</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td align="left"><p
+											style="text-align: justify; padding-left: 10px; padding-right: 10px;">${cuestionariopaciente.cuestionario.preguntas.pregunta_tres}.</p></td>
+									<td align="center"><select name="respuestaTres"
+										class="selectpicker">
+											<option>SI</option>
+											<option>NO</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td align="center" colspan="2"><button type="button"
+											class="btn btn-primary" data-toggle="modal"
+											data-target="#exampleModal">Enviar Encuesta</button></td>
+								</tr>
+							</table>
+						</c:if>
 					</div>
-					<!-- /.col-lg-12 -->
 				</div>
-				<!-- /.row -->
 			</div>
 
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/paciente/quizPatologia">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-edit fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 20px;">
-										<Strong>Solicitar Atención</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Solicitar hora a
-									con un Profesional</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/paciente/misSolicitudes">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-lg-3 col-xs-3">
-									<i class="fa fa-calendar-plus-o fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 20px;">
-										<Strong>Solicitudes de Atención</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Revisar el estado
-									de mis solicitudes</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/paciente/misAtenciones">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-user-md fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 20px;">
-										<Strong>Mis Atenciones</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Hitorial de mis
-									atenciones</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/paciente/misEvaluaciones">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-star-half-o fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 20px;">
-										<Strong>Evaluar</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Evaluar
-									Profesional</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/paciente/misEvaluaciones">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-comments fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 20px;">
-										<Strong>Mensajes</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Ver mis mensajes</Strong></span>
-							<span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/paciente/modificarDatos">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-gear fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 20px;">
-										<Strong>Mis datos Personales</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Modifica tus
-									datos</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-
-
-			<br> <br> <br> <br> <br> <br>
-			<!-- /.container-fluid -->
 		</div>
-		<!-- /#page-wrapper -->
-
 	</div>
+
+
+	<!-- /.row -->
+
+
+	<!-- /.container-fluid -->
+
 	<!-- /#wrapper -->
 
 	<!-- jQuery -->
@@ -420,8 +384,20 @@
 	<script
 		src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
 
+	<script src="${contextPath}/resources/js/jquery-ui.min.js"></script>
+
 	<!-- Custom Theme JavaScript -->
 	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+
+	<script>
+		var logID = 'log', log = $('<div id="'+logID+'"></div>');
+		$('body').append(log);
+		$('[type*="radio"]').change(function() {
+			var me = $(this);
+			log.html(me.attr('value'));
+		});
+	</script>
+
 
 </body>
 

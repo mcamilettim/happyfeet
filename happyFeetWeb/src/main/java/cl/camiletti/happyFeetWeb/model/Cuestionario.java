@@ -24,6 +24,7 @@ public class Cuestionario implements Serializable {
 
 	private String titulo;
 	private String fecha;
+	private int descuento;
 
 	private String detalle;
 
@@ -34,6 +35,14 @@ public class Cuestionario implements Serializable {
 
 	public int getId() {
 		return id;
+	}
+
+	public int getDescuento() {
+		return descuento;
+	}
+
+	public void setDescuento(int descuento) {
+		this.descuento = descuento;
 	}
 
 	public void setId(int id) {
