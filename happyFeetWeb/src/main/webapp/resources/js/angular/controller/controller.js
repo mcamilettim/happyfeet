@@ -4,6 +4,8 @@ angular.module('myApp', [])
  $scope.modalConfirmar = false; 
  $scope.podologoSeleccionado = {};
  $scope.urlRuta = null;
+ $scope.selectedDescuento = -1;
+
  
  $scope.obtenerDatosPodologos = function(idComuna){
 	 return $http.get('/servicesAgendar/getPodologosPorComuna?idComuna='+idComuna);
@@ -28,13 +30,11 @@ $scope.obtenerDatosPaciente = function(){
 		var url = "http://maps.googleapis.com/maps/api/staticmap?sensor=false&"+
 		"&zoom=$zoomParam&size=850x650&markers=color:blue%7&path=enc:"+encodeURI(currentPointsResult);	
 		$scope.urlRuta=url;
-	 console.log(url);
+ 
 	      $http.get('/servicesAgendar/getPresupuesto?idPatologia='+idPatologia+'&rutPodologo='+$scope.podologos[index].rut+'&kilometros='+kilometros).
 		    then(function(response) {
 		    	 $scope.podologoSeleccionado=$scope.podologos[index];
 		        $scope.presupuesto = response.data;
-	            //console.log($scope.presupuesto);
-	            //window.scrollTo(0,document.body.scrollHeight); 
 		      }),
 		      function(response) {
 		        $scope.data = response.data || 'Request failed';
@@ -112,10 +112,10 @@ $scope.obtenerDatosPaciente = function(){
 			 
 	 
 				var objHtml = {
-					content: '<div align="center" class="table-responsive" style="height:150px; width:150px;">Pod&oacute;logo(a):'+
+					content: '<div align="center" class="table-responsive" style="height:165px; width:165px;">Pod&oacute;logo(a):'+
 						 '<h6>'+podologo.nombres+ ' '+ podologo.apellidos+'</h6> <img style="height:60px; width:60px;" '+
 						 'class="img-responsive" src="data:image/png;base64,'+podologo.foto+'" />'+
-						 '<table><tr><td>Evaluaci&oacute;n:&nbsp;'+podologo.evaluacion+'</td><td><img style="height:15px; width:15px;" class="img-responsive" src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/96/star-icon.png" /></td></tr></table>  </div>'
+						 '<table><tr><td><strong>Cantidad atenciones:</strong></td><td><strong>'+podologo.cantidadAtenciones+'</strong></td></tr><tr><td><strong>Promedio Evaluaci&oacute;n:&nbsp;'+podologo.evaluacion+'</strong></td><td><img style="height:10px; width:10px;" class="img-responsive" src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/96/star-icon.png"/></td></tr></table></div>'
 				}
 
 				var gInfoWindow = new google.maps.InfoWindow(objHtml);
@@ -199,17 +199,27 @@ $scope.obtenerDatosPaciente = function(){
 		   $scope.obtenerDireccionDinamica();
 		  })
     } 
+	 
 	//FIN CODIGO PARA IMAGEN DINÁMICA
 	  $scope.buscarPaciente=function(){
 		  $scope.setPromesaPaciente().then(
-		  function(response){
-			  console.log(response[0].data);
-			  $scope.paciente = response[0].data;
+		  function(response){		
+			  $scope.paciente=response[0].data
 			  $scope.buscarPodologos($scope.paciente.ubicacion.comuna.id);
 		  })
      } 
 	 
 	  $scope.buscarPaciente();
+	  
+	  $scope.calcularPresupuesto=function(descuentoID){
+		  $scope.selectedDescuento=descuentoID;
+	      for (var i = 0; i < $scope.paciente.descuentos.length; i++) {
+				if($scope.paciente.descuentos[i].id==descuentoID){		
+					  $scope.presupuesto.descuento=parseInt($scope.presupuesto.total*parseFloat(parseFloat($scope.paciente.descuentos[i].descuento)/100));
+					  $scope.presupuesto.totalConDescuento= $scope.presupuesto.total-$scope.presupuesto.descuento;
+				}
+			} 
+     }   
 })
  
 

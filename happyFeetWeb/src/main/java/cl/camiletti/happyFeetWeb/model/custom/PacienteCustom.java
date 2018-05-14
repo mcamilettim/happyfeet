@@ -1,5 +1,7 @@
 package cl.camiletti.happyFeetWeb.model.custom;
 
+import java.util.List;
+
 import cl.camiletti.happyFeetWeb.model.Ubicacion;
 
 public class PacienteCustom {
@@ -25,11 +27,25 @@ public class PacienteCustom {
 	private String nombres;
 
 	private Ubicacion ubicacion;
+	
+	List<DescuentoCustom> descuentos;
+	
+	public PacienteCustom() {
+		super();
+	}
+
+	public List<DescuentoCustom> getDescuentos() {
+		return descuentos;
+	}
+
+	public void setDescuentos(List<DescuentoCustom> descuentos) {
+		this.descuentos = descuentos;
+	}
 
 	public String getRut() {
 		return rut;
 	}
-
+ 
 	public void setRut(String rut) {
 		this.rut = rut;
 	}

@@ -8,10 +8,18 @@ import cl.camiletti.happyFeetWeb.model.Parametro;
 
 public interface CuestionariopacienteService {
 	void save(Cuestionariopaciente cuestionariopaciente);
+
 	Cuestionariopaciente findById(int id);
+	Cuestionariopaciente findByIdAndParamEstadoCuestionarioAndParamEstadoDescuento(int id,Parametro estadoCuestionario, Parametro estadoDescuento);
 	List<Cuestionariopaciente> findAll();
+
 	void deleteById(Cuestionariopaciente cuestionariopaciente);
-	List<Cuestionariopaciente>findByPaciente(Paciente paciente);
-	List<Cuestionariopaciente>findByPacienteAndParamEstadoCuestionarioIn(Paciente paciente,List<Parametro> parametros);
- 
+
+	List<Cuestionariopaciente> findByPaciente(Paciente paciente);
+
+	List<Cuestionariopaciente> findByPacienteAndParamEstadoCuestionarioIn(Paciente paciente,
+			List<Parametro> parametros);
+
+	List<Cuestionariopaciente> findByPacienteAndParamEstadoCuestionarioAndParamEstadoDescuento(Paciente paciente,
+			 Parametro estadoCuestionario, Parametro estadoDescuento);
 }

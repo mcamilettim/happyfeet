@@ -82,7 +82,7 @@
 
 	<div id="wrapper">
 
-			<!-- Navigation -->
+		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
@@ -97,7 +97,7 @@
 			</div>
 			<!-- /.navbar-header -->
 
-		<ul class="nav navbar-top-links navbar-right">
+			<ul class="nav navbar-top-links navbar-right">
 				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
 							test="${paciente.paramSexo.id==6}">o</c:if><c:if
 							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
@@ -200,20 +200,23 @@
 						<li><a href="${contextPath}/paciente/misSolicitudes"><i
 								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes de Atención</a></li>
 						<li><a href="${contextPath}/paciente/misAtenciones"><i
-								class="fa fa-user-md fa-fw"></i><Strong> Mis atenciones</Strong></a></li>
+								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
 						<li><a href="${contextPath}/paciente/misMensajes"><i
 								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
 						<li><a href="${contextPath}/paciente/misEvaluaciones"><i
-								class="fa fa-star-half-o fa-fw"></i> Evaluaciones a
-								Profesionales</a></li>
+								class="fa fa-star-half-o fa-fw"></i> <Strong>Evaluaciones a
+								Profesionales</Strong></a></li>
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
+						<li><a href="${contextPath}/paciente/cuestionarios"><i
+								class="fa fa-question-circle fa-fw"></i> Descuentos</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
 			</div>
 			<!-- /.navbar-static-side -->
 		</nav>
+
 		<!-- Page Content -->
 		<div id="page-wrapper">
 			<br>

@@ -33,6 +33,7 @@ import cl.camiletti.happyFeetWeb.model.custom.MensajeCustom;
 import cl.camiletti.happyFeetWeb.service.AgendaService;
 import cl.camiletti.happyFeetWeb.service.AtencionService;
 import cl.camiletti.happyFeetWeb.service.ComunaService;
+import cl.camiletti.happyFeetWeb.service.CuestionariopacienteService;
 import cl.camiletti.happyFeetWeb.service.EvaluacionService;
 import cl.camiletti.happyFeetWeb.service.HorarioService;
 import cl.camiletti.happyFeetWeb.service.MensajeService;
@@ -47,6 +48,7 @@ import cl.camiletti.happyFeetWeb.service.UsuarioService;
 import cl.camiletti.happyFeetWeb.util.Constantes;
 import cl.camiletti.happyFeetWeb.util.DateUtil;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
+import cl.camiletti.happyFeetWeb.util.Mail;
 import cl.camiletti.happyFeetWeb.util.MensajesNuevosUtil;
 import cl.camiletti.happyFeetWeb.util.NotificacionPacienteConstantes;
 import cl.camiletti.happyFeetWeb.util.NotificacionUtil;
@@ -99,6 +101,8 @@ public class PodologoController {
 
 	@Autowired
 	private AgendaService agendaService;
+	@Autowired
+	private CuestionariopacienteService cuestionariopacienteService;
 
 	@Autowired
 	private NotificacionpodologoService notificacionpodologoService;
@@ -387,7 +391,12 @@ public class PodologoController {
 				Horario horario = solicitudAtencion.getHorario();
 				horario.setParamEstadoHorario(parametro);
 				horarioService.save(horario);
-
+				
+				if(solicitudAtencion.getPresupuesto().getCuestionarioPaciente()!=null) {
+					parametro = parametroService.findOne(Parametros.ESTADO_DESCUENTO_DISPONIBLE);
+					solicitudAtencion.getPresupuesto().getCuestionarioPaciente().setParamEstadoDescuento(parametro);
+					cuestionariopacienteService.save(solicitudAtencion.getPresupuesto().getCuestionarioPaciente());
+				}
 				model.addAttribute("mensaje", "Solicitud Rechazada con Éxito");
 
 				parametro = parametroService.findOne(Parametros.ESTADO_MENSAJE_NO_VISTO);
@@ -407,6 +416,9 @@ public class PodologoController {
 				model.addAttribute("mensaje", "Respuesta de solicitud Incorrecta");
 			}
 		}
+		Mail mail = new Mail(env);
+		mail.sendEmailRespuestaSolicitudAtencion(solicitudAtencion.getPaciente().getEmail(),
+				solicitudAtencion.getPaciente().getNombres() + " " + solicitudAtencion.getPaciente().getApellidos());
 
 		NotificacionUtil.cargaNotificacionesPodologo(model, podologo, notificacionpodologoService, parametroService);
 		MensajesNuevosUtil.cargaMensajesNuevosPodologo(model, podologo, mensajeService, parametroService);
@@ -632,7 +644,10 @@ public class PodologoController {
 		notificacionpaciente.setFecha(DateUtil.getFechaHoyString());
 		notificacionpaciente.setHora(DateUtil.getHourSystem());
 		notificacionpacienteService.save(notificacionpaciente);
-
+		Mail mail = new Mail(env);
+		mail.sendEmailFinalizarAtencion(agenda.getPaciente().getEmail(),
+				agenda.getPaciente().getNombres() + " " + agenda.getPaciente().getApellidos());
+		
 		model.addAttribute("mensaje", "Atención Finalizada con Éxito");
 		return "podologo/podologo";
 	}

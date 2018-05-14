@@ -13,25 +13,33 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import cl.camiletti.happyFeetWeb.model.Agenda;
 import cl.camiletti.happyFeetWeb.model.Comuna;
+import cl.camiletti.happyFeetWeb.model.Cuestionariopaciente;
 import cl.camiletti.happyFeetWeb.model.Evaluacion;
 import cl.camiletti.happyFeetWeb.model.Horario;
 import cl.camiletti.happyFeetWeb.model.Paciente;
+import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Patologia;
 import cl.camiletti.happyFeetWeb.model.Podologo;
 import cl.camiletti.happyFeetWeb.model.Ubicacion;
+import cl.camiletti.happyFeetWeb.model.custom.DescuentoCustom;
 import cl.camiletti.happyFeetWeb.model.custom.HorarioCustom;
 import cl.camiletti.happyFeetWeb.model.custom.PacienteCustom;
 import cl.camiletti.happyFeetWeb.model.custom.PodologoCustom;
 import cl.camiletti.happyFeetWeb.model.custom.PresupuestoCustom;
 import cl.camiletti.happyFeetWeb.service.AgendaService;
+import cl.camiletti.happyFeetWeb.service.AtencionService;
 import cl.camiletti.happyFeetWeb.service.ComunaService;
+import cl.camiletti.happyFeetWeb.service.CuestionariopacienteService;
 import cl.camiletti.happyFeetWeb.service.EvaluacionService;
 import cl.camiletti.happyFeetWeb.service.HorarioService;
 import cl.camiletti.happyFeetWeb.service.PacienteService;
+import cl.camiletti.happyFeetWeb.service.ParametroService;
 import cl.camiletti.happyFeetWeb.service.PatologiaService;
 import cl.camiletti.happyFeetWeb.service.PodologoService;
 import cl.camiletti.happyFeetWeb.util.Constantes;
+import cl.camiletti.happyFeetWeb.util.Parametros;
 
 @RestController
 @RequestMapping("/servicesAgendar")
@@ -54,6 +62,11 @@ public class AgendarControllerRest {
 	
 	@Autowired
 	HorarioService horarioService;
+	@Autowired
+	CuestionariopacienteService cuestionariopacienteService;
+	@Autowired
+	private ParametroService parametroService;
+ 
 
 	@RequestMapping(value = "/getPodologosPorComuna", method = RequestMethod.GET, produces = "application/json")
 	public List<PodologoCustom> getPodologosPorComuna(Model model, @RequestParam("idComuna") int idComuna)
@@ -62,11 +75,10 @@ public class AgendarControllerRest {
 		List<Ubicacion> ubicaciones = comuna.getUbicacions();
 		List<PodologoCustom> podologos = new ArrayList<PodologoCustom>();
 
-	 
 		for (Ubicacion ubicacion : ubicaciones) {
 			for (Podologo podologo : ubicacion.getPodologos()) {
 				PodologoCustom podoAux = new PodologoCustom();
-			     podoAux.setFoto(podologo.getFoto());
+			    podoAux.setFoto(podologo.getFoto());
 				 
 				podoAux.setNombres(podologo.getNombres());
 				podoAux.setApellidos(podologo.getApellidos());
@@ -75,17 +87,20 @@ public class AgendarControllerRest {
 				ubicacionAux.setLatitud(ubicacion.getLatitud());
 				ubicacionAux.setId(ubicacion.getId());
 				ubicacionAux.setLongitud(ubicacion.getLongitud());
-
+				
+				List<Agenda> atenciones =agendaService.findByPodologoAndParamEstadoAgenda(podologo, parametroService.findOne(Parametros.ESTADO_AGENDA_ACEPTADA));
+				podoAux.setCantidadAtenciones(atenciones.size());
 				podoAux.setUbicacion(ubicacionAux);
 				podoAux.setEvaluacion(getEvaluacion(podologo));
-
-				for (Horario horario : podologo.getHorarios()) {
-					if (horario.getParamEstadoHorario().getId() == 2) {
+				
+				List<Parametro> parametros = new ArrayList<Parametro>();
+				parametros.add(parametroService.findOne(Parametros.ESTADO_HORARIO_DISPONIBLE));
+				List<Horario> horarios=horarioService.findByPodologoAndParamEstadoHorarioIn(podologo, parametros);
+				for (Horario horario : horarios) {
 						podoAux.getHorarios()
 								.add(new HorarioCustom(horario.getId(), horario.getFecha(), horario.getHora(),
 										horario.getHoraFin(), horario.getPodologo().getRut(),
-										horario.getParamEstadoHorario().getId()));
-					}
+										horario.getParamEstadoHorario().getId())); 
 				}
 				podologos.add(podoAux);
 			}
@@ -98,8 +113,9 @@ public class AgendarControllerRest {
 		PacienteCustom custom=null;
 		try {
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			custom=new PacienteCustom();
+			
 			Paciente paciente = pacienteService.findByEmail(user.getUsername()); 
+			custom=new PacienteCustom();
 			Ubicacion ubicacionAux=new Ubicacion();
 		
 			ubicacionAux.setLatitud(paciente.getUbicacion().getLatitud());
@@ -111,11 +127,22 @@ public class AgendarControllerRest {
 			comunaAux.setId(paciente.getUbicacion().getComuna().getId());
 			comunaAux.setNombre(paciente.getUbicacion().getComuna().getNombre());
 			ubicacionAux.setComuna(comunaAux);
+ 
+			List<DescuentoCustom> descuentos=new ArrayList<DescuentoCustom>();
+			Parametro parametroCuestionario = parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_RESUELTO);
+			Parametro parametroDescuento = parametroService.findOne(Parametros.ESTADO_DESCUENTO_DISPONIBLE);
+			List<Cuestionariopaciente> cuestionarios=cuestionariopacienteService.findByPacienteAndParamEstadoCuestionarioAndParamEstadoDescuento(paciente, parametroCuestionario, parametroDescuento);
+			DescuentoCustom descuento =null;
+			for (Cuestionariopaciente cuestionariopaciente : cuestionarios) {
+				  descuento =new DescuentoCustom(cuestionariopaciente.getId(),cuestionariopaciente.getCuestionario().getTitulo(), cuestionariopaciente.getCuestionario().getDescuento());
+				  descuentos.add(descuento);
+			}
 			
 			custom.setUbicacion(ubicacionAux);
 			custom.setNombres(paciente.getNombres());
 			custom.setApellidos(paciente.getApellidos());
 			custom.setRut(paciente.getRut());
+			custom.setDescuentos(descuentos);
 			
 		} catch (Exception e) {
 			custom=null;
@@ -147,8 +174,11 @@ public class AgendarControllerRest {
 		presupuestoCustom.setMontoKilometros((int) (Double.parseDouble(kilometros) * 1125));
 		presupuestoCustom.setPatologia_id(idPatologia);
 		presupuestoCustom.setTotal(presupuestoCustom.getMontoKilometros() + presupuestoCustom.getPatologia_monto());
+		presupuestoCustom.setDescuento(0);
+		presupuestoCustom.setTotalConDescuento(presupuestoCustom.getTotal());
 		return presupuestoCustom;
 	}
+ 
 	public Double getEvaluacion(Podologo podologo) {
 		List<Evaluacion> evaluaciones = evaluacionService.findByPodologo(podologo);
 		double valoracionTotal = 0;
@@ -158,7 +188,7 @@ public class AgendarControllerRest {
 		if (evaluaciones != null && evaluaciones.size() > 0) {
 			return valoracionTotal / evaluaciones.size();
 		} else {
-			return (double) 5;
+			return  (double) 0;
 		}
 	}
 }

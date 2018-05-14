@@ -129,7 +129,7 @@
 
 			<ul class="nav navbar-top-links navbar-right">
 				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
-							test="${paciente.paramSexo.id==6}">o</c:if> <c:if
+							test="${paciente.paramSexo.id==6}">o</c:if><c:if
 							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
 				</Strong></li>
 				<li class="dropdown"><c:if test="${empty mensajesNuevos}">
@@ -152,13 +152,13 @@
 								</a></li>
 							</c:forEach>
 						</c:if>
-
+						 
 						<li><a class="text-center"
 							href="${contextPath}/paciente/misMensajes"> <strong>Ver
 									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
-					</ul></li>
-				<li class="dropdown"><c:if test="${empty notificaciones}">
+					</ul> </li>
+					<li class="dropdown"><c:if test="${empty notificaciones}">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
 						</a>
@@ -224,13 +224,13 @@
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
-								class="fa fa-home fa-fw"></i> Inicio</a></li>
+								class="fa fa-home fa-fw"></i> <Strong>Inicio</Strong></a></li>
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
 								class="fa fa-edit fa-fw"></i>Solicitar Atención</a></li>
 						<li><a href="${contextPath}/paciente/misSolicitudes"><i
 								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes de Atención</a></li>
 						<li><a href="${contextPath}/paciente/misAtenciones"><i
-								class="fa fa-user-md fa-fw"></i> <Strong>Mis atenciones</Strong></a></li>
+								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
 						<li><a href="${contextPath}/paciente/misMensajes"><i
 								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
 						<li><a href="${contextPath}/paciente/misEvaluaciones"><i
@@ -238,12 +238,15 @@
 								Profesionales</a></li>
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
+						<li><a href="${contextPath}/paciente/cuestionarios"><i
+								class="fa fa-question-circle fa-fw"></i> Descuentos</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
 			</div>
 			<!-- /.navbar-static-side -->
 		</nav>
+
 		<!-- Page Content -->
 		<div id="page-wrapper">
 			<br>
@@ -256,9 +259,6 @@
 						<br>
 						<c:if
 							test="${cuestionariopaciente.paramEstadoCuestionario.valor eq 'Sin Resolver'}">
-
-
-
 							<div align="center">
 								<p
 									style="text-align: justify; padding-left: 10px; padding-right: 10px;">Al
@@ -341,15 +341,8 @@
 						</c:if>
 						<c:if
 							test="${cuestionariopaciente.paramEstadoCuestionario.valor eq 'Resuelto'}">
-							<div align="center">
-								<p
-									style="text-align: justify; padding-left: 10px; padding-right: 10px;">
-									Usted ya respondió este cuestionario y obtuvo un cupón de <Strong>
-										${cuestionariopaciente.cuestionario.descuento} % </Strong> de
-									descuento, el cual se encuentra <Strong>${cuestionariopaciente.paramEstadoDescuento.valor}.</Strong>
-								</p>
-								<br>
-							</div>
+							
+								<div>
 							<table class="table table-bordered">
 								<tr>
 									<th><div align="center">Pregunta</div></th>
@@ -371,6 +364,16 @@
 									<td align="center"><Strong>${cuestionariopaciente.respuesta_tres}</Strong></td>
 								</tr>
 							</table>
+								</div>
+								<div align="center">
+								<p
+									style="text-align: justify; padding-left: 20px; padding-right: 20px;">
+									Usted ya respondió este cuestionario y obtuvo un cupón de <Strong>
+										${cuestionariopaciente.cuestionario.descuento} % </Strong> de
+									descuento, el cual se encuentra <Strong>${cuestionariopaciente.paramEstadoDescuento.valor}.</Strong>
+								</p>
+								<br>
+							</div>
 						</c:if>
 					</div>
 				</div>

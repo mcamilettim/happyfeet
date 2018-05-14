@@ -4,51 +4,75 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the presupuesto database table.
  * 
  */
 @Entity
-@NamedQuery(name="Presupuesto.findAll", query="SELECT p FROM Presupuesto p")
+@NamedQuery(name = "Presupuesto.findAll", query = "SELECT p FROM Presupuesto p")
 public class Presupuesto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
 	private int tarifaKM;
-	private Double  cantidadKM;
+	private Double cantidadKM;
 	private int total;
-
+	private int subtotal;
 	private int viajePodologo;
-
-	 
-
-	//bi-directional many-to-one association to Detallepresupuesto
-	@OneToMany(mappedBy="presupuesto", fetch=FetchType.EAGER)
+	private int montoDescuento;
+	// bi-directional many-to-one association to Detallepresupuesto
+	@OneToMany(mappedBy = "presupuesto", fetch = FetchType.EAGER)
 	private List<Detallepresupuesto> detallepresupuestos;
 
-	//bi-directional many-to-one association to Ubicacion
 	@ManyToOne
-	@JoinColumn(name="ubicacionLlegada_id")
+	@JoinColumn(name = "cuestionariopaciente_id")
+	private Cuestionariopaciente cuestionarioPaciente;
+	// bi-directional many-to-one association to Ubicacion
+	@ManyToOne
+	@JoinColumn(name = "ubicacionLlegada_id")
 	private Ubicacion ubicacionLlegada;
 
-	//bi-directional many-to-one association to Ubicacion
+	// bi-directional many-to-one association to Ubicacion
 	@ManyToOne
-	@JoinColumn(name="ubicacionPartida_id")
+	@JoinColumn(name = "ubicacionPartida_id")
 	private Ubicacion ubicacionPartida;
 
-	//bi-directional many-to-one association to Solicitudatencion
-	@OneToMany(mappedBy="presupuesto", fetch=FetchType.EAGER)
+	// bi-directional many-to-one association to Solicitudatencion
+	@OneToMany(mappedBy = "presupuesto", fetch = FetchType.EAGER)
 	private List<Solicitudatencion> solicitudatencions;
-	
-	//bi-directional many-to-one association to Solicitudatencion
-	@OneToMany(mappedBy="presupuesto", fetch=FetchType.EAGER)
+
+	// bi-directional many-to-one association to Solicitudatencion
+	@OneToMany(mappedBy = "presupuesto", fetch = FetchType.EAGER)
 	private List<Agenda> agendas;
 
 	public Presupuesto() {
+	}
+
+	public Cuestionariopaciente getCuestionarioPaciente() {
+		return cuestionarioPaciente;
+	}
+
+	public void setCuestionarioPaciente(Cuestionariopaciente cuestionarioPaciente) {
+		this.cuestionarioPaciente = cuestionarioPaciente;
+	}
+
+	public int getSubtotal() {
+		return subtotal;
+	}
+
+	public int getMontoDescuento() {
+		return montoDescuento;
+	}
+
+	public void setMontoDescuento(int montoDescuento) {
+		this.montoDescuento = montoDescuento;
+	}
+
+	public void setSubtotal(int subtotal) {
+		this.subtotal = subtotal;
 	}
 
 	public int getId() {
@@ -90,8 +114,6 @@ public class Presupuesto implements Serializable {
 	public void setViajePodologo(int viajePodologo) {
 		this.viajePodologo = viajePodologo;
 	}
-
- 
 
 	public List<Detallepresupuesto> getDetallepresupuestos() {
 		return this.detallepresupuestos;

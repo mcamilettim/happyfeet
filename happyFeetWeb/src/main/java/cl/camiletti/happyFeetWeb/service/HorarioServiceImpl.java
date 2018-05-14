@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cl.camiletti.happyFeetWeb.model.Horario;
+import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Podologo;
 import cl.camiletti.happyFeetWeb.repository.HorarioRepository;
 
@@ -42,5 +43,11 @@ public class HorarioServiceImpl implements HorarioService{
 	@Override
 	public List<Horario> findByFechaAndPodologo(String fecha, Podologo podologo) {
 		return horarioRepository.findByFechaAndPodologo(fecha, podologo);
+	}
+
+	@Override
+	public List<Horario> findByPodologoAndParamEstadoHorarioIn(Podologo podologo, List<Parametro> parametros) {
+ 
+		return horarioRepository.findByPodologoAndParamEstadoHorarioIn(podologo, parametros);
 	}
 }

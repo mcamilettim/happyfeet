@@ -2,12 +2,8 @@ package cl.camiletti.happyFeetWeb.util;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -27,7 +23,6 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import org.apache.commons.codec.Charsets;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
 import cl.camiletti.happyFeetWeb.model.Paciente;
@@ -71,7 +66,24 @@ public class Mail {
 		return envioSeguro(to, html, 
 				"CuidosMisPies - Bienvenido a CuidoMisPies.cl", false, true, "", null);
 	}
-	
+	public boolean sendEmailSolicitudAtencion(String to, String nombre) {
+		String html = readHtml("SolicitudAtencionPodologo.html");
+		html = html.replace("[nombre]", nombre);
+		return envioSeguro(to, html, 
+				"CuidosMisPies - Solicitud de atención Podológica CuidoMisPies.cl", false, true, "", null);
+	}
+	public boolean sendEmailRespuestaSolicitudAtencion(String to, String nombre) {
+		String html = readHtml("RespuestaSolicitudAtencionPodologo.html");
+		html = html.replace("[nombre]", nombre);
+		return envioSeguro(to, html, 
+				"CuidosMisPies - Respuesta Solicitud de atención Podológica CuidoMisPies.cl", false, true, "", null);
+	}
+	public boolean sendEmailFinalizarAtencion(String to, String nombre) {
+		String html = readHtml("FinalizarAtencionPodologo.html");
+		html = html.replace("[nombre]", nombre);
+		return envioSeguro(to, html, 
+				"CuidosMisPies - Gracias por Atenderse con CuidoMisPies.cl", false, true, "", null);
+	}
 	public boolean sendEmailSolicitudPodologoAdmin(String to, String nombre, String link, String cc, List<String> archivos, Solicitud solicitud) {
 		String html = readHtml("SolicitudPodologoAdmin.html");
 		html = html.replace("[rut]", solicitud.getRutPodologo());

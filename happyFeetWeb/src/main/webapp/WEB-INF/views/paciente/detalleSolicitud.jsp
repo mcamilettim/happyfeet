@@ -80,7 +80,7 @@
 
 	<div id="wrapper">
 
-			<!-- Navigation -->
+		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
@@ -192,11 +192,11 @@
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
-								class="fa fa-home fa-fw"></i> Inicio</a></li>
+								class="fa fa-home fa-fw"></i>Inicio</a></li>
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
 								class="fa fa-edit fa-fw"></i>Solicitar Atención</a></li>
 						<li><a href="${contextPath}/paciente/misSolicitudes"><i
-								class="fa fa-calendar-plus-o fa-fw"></i><Strong>Solicitudes de Atención</Strong></a></li>
+								class="fa fa-calendar-plus-o fa-fw"></i> <Strong>Solicitudes de Atención</Strong></a></li>
 						<li><a href="${contextPath}/paciente/misAtenciones"><i
 								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
 						<li><a href="${contextPath}/paciente/misMensajes"><i
@@ -206,12 +206,15 @@
 								Profesionales</a></li>
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
+						<li><a href="${contextPath}/paciente/cuestionarios"><i
+								class="fa fa-question-circle fa-fw"></i> Descuentos</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
 			</div>
 			<!-- /.navbar-static-side -->
 		</nav>
+
 		<!-- Page Content -->
 		<div id="page-wrapper">
 			<br>
@@ -376,7 +379,24 @@
 										value="${solicitudAtencion.patologia.costo}" type="currency"
 										pattern="#,##0" /></td>
 							</tr>
-
+							<tr>
+									<th class="bg-info">Monto subTotal</th>
+									<td style="background: #FAFAFA;">$<fmt:formatNumber
+											value="${solicitudAtencion.presupuesto.subtotal}" type="currency"
+											pattern="#,##0" /></td>
+								</tr>
+							<c:if test="${solicitudAtencion.presupuesto.cuestionarioPaciente != null}">
+							<tr>
+								<th class="bg-info">Cupón de Descuento </th>
+								<td style="background: #FAFAFA;">${solicitudAtencion.presupuesto.cuestionarioPaciente.cuestionario.titulo} - ${solicitudAtencion.presupuesto.cuestionarioPaciente.cuestionario.descuento} %</td>
+							</tr>
+							<tr>
+								<th class="bg-info">Monto Descuento</th>
+								<td style="background: #FAFAFA;">$<fmt:formatNumber
+										value="${solicitudAtencion.presupuesto.montoDescuento}" type="currency"
+										pattern="#,##0" /></td>
+							</tr>
+					   	  </c:if>
 							<tr>
 								<td style="background: #FAFAFA;"><strong> Mi
 										Comentario</strong></td>

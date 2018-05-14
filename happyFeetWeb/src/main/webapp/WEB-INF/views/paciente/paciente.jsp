@@ -206,7 +206,7 @@
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
 						<li><a href="${contextPath}/paciente/cuestionarios"><i
-								class="fa fa-question-circle fa-fw"></i> Contestar encuesta</a></li>
+								class="fa fa-question-circle fa-fw"></i> Descuentos</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->

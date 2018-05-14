@@ -128,8 +128,9 @@
 
 			<ul class="nav navbar-top-links navbar-right">
 				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
-							test="${podologo.paramSexo.id==6}">o</c:if><c:if
-							test="${podologo.paramSexo.id==7}">a</c:if> ${podologo.nombres}
+							test="${podologo.paramSexo.id==6}">o</c:if>
+						<c:if test="${podologo.paramSexo.id==7}">a</c:if>
+						${podologo.nombres}
 				</Strong></li>
 				<li class="dropdown"><c:if test="${empty mensajesNuevos}">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
@@ -151,13 +152,13 @@
 								</a></li>
 							</c:forEach>
 						</c:if>
-						 
+
 						<li><a class="text-center"
 							href="${contextPath}/podologo/misMensajes"> <strong>Ver
 									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
-					</ul> </li>
-					<li class="dropdown"><c:if test="${empty notificaciones}">
+					</ul></li>
+				<li class="dropdown"><c:if test="${empty notificaciones}">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
 						</a>
@@ -218,7 +219,9 @@
 								<br>
 								<div align="center">
 									<span class="text-info text-center"><b>${podologo.nombres}
-											${podologo.apellidos}</b></span> <span class="text-info">Podólog<c:if test="${podologo.paramSexo.id==6}">o</c:if><c:if test="${podologo.paramSexo.id==7}">a</c:if></span>
+											${podologo.apellidos}</b></span> <span class="text-info">Podólog<c:if
+											test="${podologo.paramSexo.id==6}">o</c:if>
+										<c:if test="${podologo.paramSexo.id==7}">a</c:if></span>
 								</div>
 							</div> <!-- /input-group -->
 						</li>
@@ -227,17 +230,17 @@
 						<li><a href="${contextPath}/podologo/miAgenda"><i
 								class="fa fa-edit fa-fw"></i>Mi Horario</a></li>
 						<li><a href="${contextPath}/podologo/misSolicitudes"><i
-								class="fa fa-calendar-plus-o fa-fw"></i><Strong>Solicitudes de Atención</Strong></a></li>
+								class="fa fa-calendar-plus-o fa-fw"></i><Strong>Solicitudes
+									de Atención</Strong></a></li>
 						<li><a href="${contextPath}/podologo/misAtenciones"><i
 								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
 						<li><a href="${contextPath}/podologo/misMensajes"><i
 								class="fa fa-comments fa-fw"></i> Mensajes</a></li>
 						<li><a href="${contextPath}/podologo/misEvaluaciones"><i
-								class="fa fa-star-half-o fa-fw"></i> Evaluaciones a
-								Pacientes</a></li>
+								class="fa fa-star-half-o fa-fw"></i> Evaluaciones a Pacientes</a></li>
 						<li><a href="${contextPath}/podologo/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
-								<li><a href="${contextPath}/podologo/cuestionarios"><i
+						<li><a href="${contextPath}/podologo/cuestionarios"><i
 								class="fa fa-question-circle fa-fw"></i> Contestar encuesta</a></li>
 					</ul>
 				</div>
@@ -380,6 +383,28 @@
 											value="${solicitudAtencion.patologia.costo}" type="currency"
 											pattern="#,##0" /></td>
 								</tr>
+								<tr>
+									<th class="bg-info">Monto subTotal</th>
+									<td style="background: #FAFAFA;">$<fmt:formatNumber
+											value="${solicitudAtencion.presupuesto.subtotal}" type="currency"
+											pattern="#,##0" /></td>
+								</tr>
+								<c:if
+									test="${solicitudAtencion.presupuesto.cuestionarioPaciente != null}">
+									<tr>
+										<th class="bg-info">Cupón de Descuento</th>
+										<td style="background: #FAFAFA;">${solicitudAtencion.presupuesto.cuestionarioPaciente.cuestionario.titulo}
+											-
+											${solicitudAtencion.presupuesto.cuestionarioPaciente.cuestionario.descuento}
+											%</td>
+									</tr>
+									<tr>
+										<th class="bg-info">Monto Descuento</th>
+										<td style="background: #FAFAFA;">$<fmt:formatNumber
+												value="${solicitudAtencion.presupuesto.montoDescuento}"
+												type="currency" pattern="#,##0" /></td>
+									</tr>
+								</c:if>
 								<tr>
 									<th class="bg-success" colspan="2">Total por la Atención:
 										$<fmt:formatNumber

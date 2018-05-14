@@ -22,6 +22,8 @@ public class PodologoCustom {
 	private Ubicacion ubicacion;
 
 	private double evaluacion;
+	
+	private int cantidadAtenciones;
 
 	private List<HorarioCustom> horarios;
 
@@ -31,6 +33,14 @@ public class PodologoCustom {
 	public PodologoCustom() {
 		super();
 		this.horarios=new ArrayList<HorarioCustom>();
+	}
+
+	public int getCantidadAtenciones() {
+		return cantidadAtenciones;
+	}
+
+	public void setCantidadAtenciones(int cantidadAtenciones) {
+		this.cantidadAtenciones = cantidadAtenciones;
 	}
 
 	public List<HorarioCustom> getHorarios() {

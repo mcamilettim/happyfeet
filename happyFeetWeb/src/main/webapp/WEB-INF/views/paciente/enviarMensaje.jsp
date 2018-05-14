@@ -94,8 +94,9 @@
 			</div>
 			<!-- /.navbar-header -->
 
-		<ul class="nav navbar-top-links navbar-right">
-				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if	test="${paciente.paramSexo.id==6}">o</c:if><c:if
+			<ul class="nav navbar-top-links navbar-right">
+				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
+							test="${paciente.paramSexo.id==6}">o</c:if><c:if
 							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
 				</Strong></li>
 				<li class="dropdown"><c:if test="${empty mensajesNuevos}">
@@ -190,7 +191,7 @@
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
-								class="fa fa-home fa-fw"></i>Inicio</a></li>
+								class="fa fa-home fa-fw"></i> Inicio</a></li>
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
 								class="fa fa-edit fa-fw"></i>Solicitar Atención</a></li>
 						<li><a href="${contextPath}/paciente/misSolicitudes"><i
@@ -198,12 +199,14 @@
 						<li><a href="${contextPath}/paciente/misAtenciones"><i
 								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
 						<li><a href="${contextPath}/paciente/misMensajes"><i
-								class="fa fa-comments fa-fw"></i> <Strong> Mensajes</Strong></a></li>
+								class="fa fa-comments fa-fw"></i> <Strong>Mensajes</Strong></a></li>
 						<li><a href="${contextPath}/paciente/misEvaluaciones"><i
 								class="fa fa-star-half-o fa-fw"></i> Evaluaciones a
 								Profesionales</a></li>
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
+						<li><a href="${contextPath}/paciente/cuestionarios"><i
+								class="fa fa-question-circle fa-fw"></i> Descuentos</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
@@ -211,9 +214,10 @@
 			<!-- /.navbar-static-side -->
 		</nav>
 
+
 		<!-- Page Content -->
 		<div id="page-wrapper">
-<br>
+		<br>
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default">
@@ -265,9 +269,9 @@
 														</span>
 															<div class="chat-body clearfix">
 																<div class="header">
-																	<strong class="primary-font">${paciente.nombres}</strong>
+																	<strong class="primary-font">${paciente.nombres}  </strong>
 																	<small class="pull-right text-muted"> <span
-																		class="glyphicon glyphicon-time"></span>12 mins ago
+																		class="glyphicon glyphicon-time"></span>${mensaje.hora}  ${mensaje.fecha}
 																	</small>
 																</div>
 																<p>${mensaje.cuerpo}</p>
@@ -282,7 +286,7 @@
 															<div class="chat-body clearfix">
 																<div class="header">
 																	<small class=" text-muted"><span
-																		class="glyphicon glyphicon-time"></span>13 mins ago</small> <strong
+																		class="glyphicon glyphicon-time"></span> ${mensaje.hora}  ${mensaje.fecha}</small> <strong
 																		class="pull-right primary-font">${podologo.nombres}
 																		${podologo.apellidos}</strong>
 																</div>

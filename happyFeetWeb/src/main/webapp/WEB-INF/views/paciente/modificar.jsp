@@ -190,7 +190,7 @@
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/paciente/index"><i
-								class="fa fa-home fa-fw"></i>Inicio</a></li>
+								class="fa fa-home fa-fw"></i> Inicio</a></li>
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
 								class="fa fa-edit fa-fw"></i>Solicitar Atención</a></li>
 						<li><a href="${contextPath}/paciente/misSolicitudes"><i
@@ -203,13 +203,16 @@
 								class="fa fa-star-half-o fa-fw"></i> Evaluaciones a
 								Profesionales</a></li>
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
-								class="fa fa-gear fa-fw"></i> <Strong> Modificar mis datos</Strong></a></li>
+								class="fa fa-gear fa-fw"></i> <Strong>Modificar mis datos</Strong></a></li>
+						<li><a href="${contextPath}/paciente/cuestionarios"><i
+								class="fa fa-question-circle fa-fw"></i> Descuentos</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
 			</div>
 			<!-- /.navbar-static-side -->
 		</nav>
+
 		<!-- Page Content -->
 		<div id="page-wrapper">
 	  <br>

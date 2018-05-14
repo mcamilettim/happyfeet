@@ -79,7 +79,7 @@
 
 	<div id="wrapper">
 
-		<!-- Navigation -->
+				<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
@@ -135,7 +135,7 @@
 							class="badge">${notificaciones.size()}</span>
 						</a>
 					</c:if>
-					<ul class="dropdown-menu dropdown-alerts">
+					<ul class="dropdown-menu dropdown-messages">
 						<c:if test="${not empty notificaciones}">
 							<c:forEach items="${notificaciones}" var="notificacion">
 								<li><a
@@ -195,8 +195,7 @@
 						<li><a href="${contextPath}/paciente/quizPatologia"><i
 								class="fa fa-edit fa-fw"></i>Solicitar Atención</a></li>
 						<li><a href="${contextPath}/paciente/misSolicitudes"><i
-								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes
-									de Atención</a></li>
+								class="fa fa-calendar-plus-o fa-fw"></i>Solicitudes de Atención</a></li>
 						<li><a href="${contextPath}/paciente/misAtenciones"><i
 								class="fa fa-user-md fa-fw"></i> Mis atenciones</a></li>
 						<li><a href="${contextPath}/paciente/misMensajes"><i
@@ -207,7 +206,7 @@
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
 						<li><a href="${contextPath}/paciente/cuestionarios"><i
-								class="fa fa-question-circle fa-fw"></i> <Strong> Contestar encuesta</Strong></a></li>
+								class="fa fa-question-circle fa-fw"></i> <Strong> Descuentos</Strong></a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
@@ -217,11 +216,31 @@
 
 		<!-- Page Content -->
 		<div id="page-wrapper">
-		<br>
+			<br>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<strong>Información</strong>
+						</div>
+						<br>
+						<div align="center">
+							<p
+								style="text-align: justify; padding-left: 10px; padding-right: 10px;">Bienvenido
+								a las encuestas de <strong>CUIDO MIS PIES</strong>, en esta sección usted podra
+								responder preguntas para ayudar a futuras mejoras del sistema y
+								con esto, obtener cupones de descuento para sus futuras
+								atenciones.</p>
+							<br>
+						</div>
+					</div>
+				</div>
+			</div>
 			<c:if
 				test="${fn:length(cuestionariosPendientes) == 0 && fn:length(cuestionariosRealizados) == 0}">
 				<div class="alert alert-warning" align="center">
-					<Strong>Usted no posee encuestas disponibles para responder</Strong>
+					<Strong>Usted no posee encuestas disponibles para
+						responder</Strong>
 				</div>
 			</c:if>
 
@@ -236,28 +255,32 @@
 							<div align="center">
 								<p
 									style="text-align: justify; padding-left: 10px; padding-right: 10px;">A
-									continuación se detallan todas las encuestas del sistema pendientes que
-									puede responder y obtener descuentos en atenciones.</p>
+									continuación se detallan todas las encuestas del sistema
+									pendientes que puede responder y obtener descuentos en
+									atenciones.</p>
 								<br>
 							</div>
 							<div class="table-responsive">
-							
+
 								<table class="table table-bordered">
 									<tr>
 										<th><div align="center">Nombre</div></th>
+										<th><div align="center">Descuento %</div></th>
 										<th><div align="center">Fecha</div></th>
 										<th><div align="center">Acción</div></th>
-							 
+
 
 									</tr>
-									<c:forEach items="${cuestionariosPendientes}" var="cuestionarioPendiente">
+									<c:forEach items="${cuestionariosPendientes}"
+										var="cuestionarioPendiente">
 										<tr>
 											<td align="center">${cuestionarioPendiente.cuestionario.titulo}</td>
+											<td align="center">${cuestionarioPendiente.cuestionario.descuento}</td>
 											<td align="center">${cuestionarioPendiente.cuestionario.fecha}</td>
 											<td align="center"><button
 													onclick="location.href='${contextPath}/paciente/verCuestionario?id=${cuestionarioPendiente.id}'"
 													type="submit" class="btn btn-primary">Responder</button></td>
-							 
+
 
 										</tr>
 									</c:forEach>
@@ -279,22 +302,26 @@
 							<div align="center">
 								<p
 									style="text-align: justify; padding-left: 10px; padding-right: 10px;">A
-									continuación se detallan todas las encuestas del sistema realizadas.</p>
+									continuación se detallan todas las encuestas del sistema
+									realizadas.</p>
 								<br>
 							</div>
 							<div class="table-responsive">
 								<table class="table table-bordered">
 									<tr>
 										<th><div align="center">Nombre</div></th>
+										<th><div align="center">Estado Descuento</div></th>
 										<th><div align="center">Descuento %</div></th>
 										<th><div align="center">Fecha</div></th>
 										<th><div align="center">Acción</div></th>
-							 
+
 
 									</tr>
-									<c:forEach items="${cuestionariosRealizados}" var="cuestionarioRealizado">
+									<c:forEach items="${cuestionariosRealizados}"
+										var="cuestionarioRealizado">
 										<tr>
 											<td align="center">${cuestionarioRealizado.cuestionario.titulo}</td>
+											<td align="center">${cuestionarioRealizado.paramEstadoDescuento.valor}</td>
 											<td align="center">${cuestionarioRealizado.cuestionario.descuento}</td>
 											<td align="center">${cuestionarioRealizado.cuestionario.fecha}</td>
 											<td align="center"><button
@@ -309,21 +336,21 @@
 					</div>
 				</div>
 			</c:if>
-	</div>
+		</div>
 
-	<!-- jQuery -->
-	<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+		<!-- jQuery -->
+		<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 
-	<!-- Bootstrap Core JavaScript -->
-	<script
-		src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+		<!-- Bootstrap Core JavaScript -->
+		<script
+			src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 
-	<!-- Metis Menu Plugin JavaScript -->
-	<script
-		src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
+		<!-- Metis Menu Plugin JavaScript -->
+		<script
+			src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
 
-	<!-- Custom Theme JavaScript -->
-	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+		<!-- Custom Theme JavaScript -->
+		<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
 </body>
 
 </html>

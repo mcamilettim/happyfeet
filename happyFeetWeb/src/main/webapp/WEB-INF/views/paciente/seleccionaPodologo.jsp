@@ -79,7 +79,7 @@
 <body data-ng-controller="UserCtrl">
 
 	<div id="wrapper">
-	<!-- Navigation -->
+		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
@@ -205,12 +205,15 @@
 								Profesionales</a></li>
 						<li><a href="${contextPath}/paciente/modificarDatos"><i
 								class="fa fa-gear fa-fw"></i> Modificar mis datos</a></li>
+						<li><a href="${contextPath}/paciente/cuestionarios"><i
+								class="fa fa-question-circle fa-fw"></i> Descuentos</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
 			</div>
 			<!-- /.navbar-static-side -->
 		</nav>
+
 		<!-- Page Content -->
 		<div id="page-wrapper">
 			<br>
@@ -226,16 +229,20 @@
 
 								<tr>
 									<td><strong>${patologia.nombre}</strong></td>
-									<td><div align="center"><img class="img-responsive"
-										style="width: 110px; height: 110px;"
-										src="data:image/png;base64,${patologia.foto}" /></div></td>
+									<td><div align="center">
+											<img class="img-responsive"
+												style="width: 110px; height: 110px;"
+												src="data:image/png;base64,${patologia.foto}" />
+										</div></td>
 								</tr>
 								<tr>
 									<td colspan="2"><strong>Descripción: </strong>
 										<p
 											style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">${patologia.descripcion}
 											<br> <strong>Tratar esta Patología tiene un
-												precio Base de: $ ${patologia.costo} pesos, a esto se le
+												precio Base de: $ <fmt:formatNumber
+															value="${patologia.costo}" type="currency"
+															pattern="#,##0" /> pesos, a esto se le
 												debe sumar el costo de viaje del Podólogo a su hogar, el
 												cual se calculará a continuación.</strong>
 										</p></td>
@@ -254,43 +261,53 @@
 							<div class="panel-heading">
 								<strong>Seleccion de Podologo</strong>
 							</div>
-							<div align="center" >
+							<div align="center">
 								<p
 									style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">
 									De acuerdo a la distancia del podólogo seleccionado y usted se
-									obtendrá el monto del viaje a domicilio, el cual se sumará al monto de la Patología<br>
+									obtendrá el monto del viaje a domicilio, el cual se sumará al
+									monto de la Patología<br>
 								</p>
 
 							</div>
-						<div class="table-responsive" align="center">
-							<table class="table table-bordered">
-								<thead>
-									<tr>
-										<th  style="background: #FAFAFA;"><p align="center">VIAJE</p></th>
-										<th   style="background: #FAFAFA;"><p align="center">PATOLOGÍA</p></th>
-										<th   style="background: #FAFAFA;"><p align="center">TOTAL</p></th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td><p align="center"><strong ng-if="presupuesto.montoKilometros">{{presupuesto.montoKilometros
-												| number}}</strong> <strong ng-if="!presupuesto.montoKilometros">
-												?</strong></p></td>
-										<td><p align="center"><strong><fmt:formatNumber
-													value="${patologia.costo}" type="currency" pattern="#,##0" />
-										</strong></p></td>
-										<td><p align="center"><strong ng-if="presupuesto.total">{{presupuesto.total
-												| number}}</strong><strong ng-if="!presupuesto.total">?</strong></p></td>
-									</tr>
-									<tr ng-if="presupuesto.total">	 
-										<td colspan="3"><p align="center">  <button ng-click="confirmarPresupuesto()" ng-if="presupuesto.total"
-												type="button" class="btn btn-info">Continuar</button></p> </td>
-									</tr>
-								</tbody>
-							</table>
-							
- </div>
-							 
+							<div class="table-responsive" align="center">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th style="background: #FAFAFA;"><p align="center">VIAJE</p></th>
+											<th style="background: #FAFAFA;"><p align="center">PATOLOGÍA</p></th>
+											<th style="background: #FAFAFA;"><p align="center">TOTAL</p></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><p align="center">
+													<strong ng-if="presupuesto.montoKilometros">{{presupuesto.montoKilometros
+														| number}}</strong> <strong ng-if="!presupuesto.montoKilometros">
+														?</strong>
+												</p></td>
+											<td><p align="center">
+													<strong><fmt:formatNumber
+															value="${patologia.costo}" type="currency"
+															pattern="#,##0" /> </strong>
+												</p></td>
+											<td><p align="center">
+													<strong ng-if="presupuesto.total">{{presupuesto.total
+														| number}}</strong><strong ng-if="!presupuesto.total">?</strong>
+												</p></td>
+										</tr>
+										<tr ng-if="presupuesto.total">
+											<td colspan="3"><p align="center">
+													<button ng-click="confirmarPresupuesto()"
+														ng-if="presupuesto.total" type="button"
+														class="btn btn-info">Continuar</button>
+												</p></td>
+										</tr>
+									</tbody>
+								</table>
+
+							</div>
+
 							<div class="table-responsive">
 								<div id="mapa2" class="col-lg-12" style="height: 550px"></div>
 							</div>
@@ -401,9 +418,14 @@
 										</tr>
 										<tr style="display: none;">
 											<th scope="row" colspan="2"><input
-												ng-model="urlRuta" type="text"
-												class="form-control" name="urlRuta" required="required"
+												ng-model="selectedDescuento" type="text"
+												class="form-control" name="idCuestionario" required="required"
 												readonly="readonly" /></th>
+										</tr>
+										<tr style="display: none;">
+											<th scope="row" colspan="2"><input ng-model="urlRuta"
+												type="text" class="form-control" name="urlRuta"
+												required="required" readonly="readonly" /></th>
 										</tr>
 										<tr>
 											<th scope="col">Evaluación</th>
@@ -427,11 +449,13 @@
 										</tr>
 										<tr>
 											<th scope="col">Monto por Kilómetro</th>
-											<th scope="row">$ {{presupuesto.montoPorKilometro | number}}</th>
+											<th scope="row">$ {{presupuesto.montoPorKilometro |
+												number}}</th>
 										</tr>
 										<tr>
 											<th scope="col">Viaje del Podólogo a su Casa</th>
-											<th scope="row">$ {{presupuesto.montoKilometros | number}}</th>
+											<th scope="row">$ {{presupuesto.montoKilometros |
+												number}}</th>
 										</tr>
 										<tr>
 											<th scope="col">Patología a Tratar</th>
@@ -439,16 +463,30 @@
 										</tr>
 										<tr>
 											<th scope="col">Patología a Tratar Monto</th>
-											<th scope="row">$ {{presupuesto.patologia_monto | number}}</th>
+											<th scope="row">$ {{presupuesto.patologia_monto |
+												number}}</th>
+										</tr>
+
+										<tr>
+											<th scope="col">Cupón de Descuento</th>
+											<th scope="row" ng-if="paciente.descuentos.length > 0 ">
+											<select  ng-model="selectedDescuento" ng-change="calcularPresupuesto(selectedDescuento)">
+ 											<option ng-repeat="descuento in paciente.descuentos" ng-selected="selectedDescuento == descuento.id" value="{{descuento.id}}">{{descuento.nombre}}
+														- {{descuento.descuento}}%</option>
+											</select>
+											<th scope="row" ng-if="paciente.descuentos.length == 0 ">SIN
+												CUPONES &nbsp;... &nbsp;<a class="btn btn-info" href="cuestionarios" role="button">Cómo obtener Cupones?</a></th>
 										</tr>
 										<tr>
 											<th scope="col" colspan="2">Foto de sus Pies <input
 												type="file" class="form-control" name="fotoPiePaciente"
-												value="Subir Carnet" required="required"  accept="image/x-png,image/gif,image/jpeg" ></input></th>
+												value="Subir Carnet" required="required"
+												accept="image/x-png,image/gif,image/jpeg"></input></th>
 										</tr>
 										<tr>
 											<th scope="col" colspan="2">Comentario para el Podólogo
-												<textarea class="form-control" rows="3" name="comentarioPaciente"></textarea>
+												<textarea class="form-control" rows="3"
+													name="comentarioPaciente"></textarea>
 											</th>
 										</tr>
 
@@ -457,8 +495,22 @@
 								<div align="center" class="bg-info"
 									style="height: 40px; padding-top: 10px;">
 									<p>
-										<strong> Monto total por la atención : $
+										<strong> Monto subTotal: $
 											{{presupuesto.total | number}}</strong>
+									</p>
+								</div>
+								<div  ng-if="paciente.descuentos.length > 0 && presupuesto.descuento > 0" align="center" class="bg-secondary"
+									style="height: 40px; padding-top: 10px;">
+									<p>
+										<strong> Monto Descuento Cupón : 
+											{{presupuesto.descuento | number}}</strong>
+									</p>
+								</div>
+							    <div align="center" class="bg-info"
+									style="height: 40px; padding-top: 10px;">
+									<p>
+										<strong> Monto total por la atención : $
+											{{presupuesto.totalConDescuento | number}}</strong>
 									</p>
 								</div>
 							</div>
@@ -497,7 +549,7 @@
 									<div class="modal-body">
 										<p style="text-align: justify;">
 											<strong><span style="color: red;">*</span> Monto
-												Atención: $ {{presupuesto.total | number}} <br> <span
+												Atención: $ {{presupuesto.totalConDescuento | number}} <br> <span
 												style="color: red;">*</span> Horario Atención:
 												{{horarioSeleccionado.hora}} -
 												{{horarioSeleccionado.horaFin}} <br> <span

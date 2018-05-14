@@ -11,14 +11,14 @@ import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.repository.CuestionariopacienteRepository;
 
 @Service
-public class CuestionariopacienteServiceImpl implements CuestionariopacienteService{
+public class CuestionariopacienteServiceImpl implements CuestionariopacienteService {
 	@Autowired
 	CuestionariopacienteRepository cuestionariopacienteRepository;
 
 	@Override
 	public void save(Cuestionariopaciente cuestionariopaciente) {
 		cuestionariopacienteRepository.save(cuestionariopaciente);
-		
+
 	}
 
 	@Override
@@ -36,21 +36,34 @@ public class CuestionariopacienteServiceImpl implements CuestionariopacienteServ
 	@Override
 	public void deleteById(Cuestionariopaciente cuestionariopaciente) {
 		cuestionariopacienteRepository.delete(cuestionariopaciente);
-		
+
 	}
 
 	@Override
 	public List<Cuestionariopaciente> findByPaciente(Paciente paciente) {
-		// TODO Auto-generated method stub
+
 		return cuestionariopacienteRepository.findByPaciente(paciente);
 	}
 
 	@Override
 	public List<Cuestionariopaciente> findByPacienteAndParamEstadoCuestionarioIn(Paciente paciente,
 			List<Parametro> parametros) {
-		// TODO Auto-generated method stub
 		return cuestionariopacienteRepository.findByPacienteAndParamEstadoCuestionarioIn(paciente, parametros);
 	}
 
+	@Override
+	public   List<Cuestionariopaciente> findByPacienteAndParamEstadoCuestionarioAndParamEstadoDescuento(
+			Paciente paciente, Parametro estadoCuestionario, Parametro estadoDescuento) {
+		return cuestionariopacienteRepository.findByPacienteAndParamEstadoCuestionarioAndParamEstadoDescuento(
+				paciente, estadoCuestionario, estadoDescuento);
 	 
+	}
+
+	@Override
+	public Cuestionariopaciente findByIdAndParamEstadoCuestionarioAndParamEstadoDescuento(int id,
+			Parametro estadoCuestionario, Parametro estadoDescuento) {
+ 
+		return cuestionariopacienteRepository.findByIdAndParamEstadoCuestionarioAndParamEstadoDescuento(id, estadoCuestionario, estadoDescuento);
+	}
+
 }

@@ -163,12 +163,13 @@ public class PacienteController {
 	public String guardarCuestionario(Model model, @RequestParam("respuestaUno") String respuestaUno,
 			@RequestParam("respuestaDos") String respuestaDos, @RequestParam("respuestaTres") String respuestaTres,
 			@ModelAttribute("cuestionarioParaFinalizar") Cuestionariopaciente cuestionariopaciente) {
-		cuestionariopaciente.setParamEstadoCuestionario(parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_RESUELTO));
+		cuestionariopaciente
+				.setParamEstadoCuestionario(parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_RESUELTO));
 		cuestionariopaciente.setParamEstadoDescuento(parametroService.findOne(Parametros.ESTADO_DESCUENTO_DISPONIBLE));
 		cuestionariopaciente.setRespuesta_uno(respuestaUno);
 		cuestionariopaciente.setRespuesta_dos(respuestaDos);
 		cuestionariopaciente.setRespuesta_tres(respuestaTres);
-		cuestionariopacienteService.save(cuestionariopaciente);		
+		cuestionariopacienteService.save(cuestionariopaciente);
 		model.addAttribute("mensaje", "Encuesta guardada con éxito, usted posee un cupón de "
 				+ cuestionariopaciente.getCuestionario().getDescuento() + "% de descuento!");
 		return "paciente/paciente";
@@ -187,7 +188,8 @@ public class PacienteController {
 	public String guardarAgenda(Model model, @ModelAttribute("solicitudForm") Solicitudatencion solicitudAtencion,
 			@RequestParam("fotoPiePaciente") MultipartFile fotoPiePaciente,
 			@RequestParam("kilometros") String kilometros, @RequestParam("urlRuta") String urlRuta,
-			@ModelAttribute("paciente") Paciente paciente, @ModelAttribute("patologia") Patologia patologia) {
+			@ModelAttribute("paciente") Paciente paciente, @ModelAttribute("patologia") Patologia patologia,
+			@RequestParam("idCuestionario") int idCuestionario) {
 		Podologo podologo = podologoService.find(solicitudAtencion.getPodologo().getRut());
 		Horario horario = horarioService.findById(solicitudAtencion.getHorario().getId());
 		FileManagerUtil fileManagerUtil = new FileManagerUtil();
@@ -195,6 +197,17 @@ public class PacienteController {
 		if (solicitudAtencionService.findByHorario(horario) == null) {
 			urlRuta = fileManagerUtil.getPathImageFromUrl(urlRuta, paciente.getRut(), podologo.getRut(),
 					Seccion.SOLICITUDES_RUTAS, Double.parseDouble(kilometros));
+			
+			Cuestionariopaciente cuestionario = null;
+			Parametro parametroCuestionario =null;
+			Parametro parametroDescuento =null;
+			if (idCuestionario != -1) {
+				parametroCuestionario = parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_RESUELTO);
+				parametroDescuento = parametroService.findOne(Parametros.ESTADO_DESCUENTO_DISPONIBLE);
+				cuestionario = cuestionariopacienteService.findByIdAndParamEstadoCuestionarioAndParamEstadoDescuento(
+						idCuestionario, parametroCuestionario, parametroDescuento);
+			}
+
 			// saca presupuesto
 			Presupuesto presupuesto = new Presupuesto();
 			presupuesto.setUbicacionPartida(podologo.getUbicacion());
@@ -202,7 +215,18 @@ public class PacienteController {
 			presupuesto.setCantidadKM(Double.parseDouble(kilometros));
 			presupuesto.setTarifaKM(Constantes.VALOR_POR_KILOMETRO);
 			presupuesto.setViajePodologo((int) (presupuesto.getTarifaKM() * presupuesto.getCantidadKM()));
-			presupuesto.setTotal(presupuesto.getViajePodologo() + patologia.getCosto());
+			presupuesto.setSubtotal(presupuesto.getViajePodologo() + patologia.getCosto());
+			presupuesto.setTotal(presupuesto.getSubtotal());
+			presupuesto.setMontoDescuento(0);
+			if (cuestionario != null) {
+				presupuesto.setCuestionarioPaciente(cuestionario);
+				presupuesto.setMontoDescuento((int)(presupuesto.getTotal() * (float)cuestionario.getCuestionario().getDescuento() / 100));
+				presupuesto.setTotal(presupuesto.getTotal()
+						- presupuesto.getMontoDescuento());
+				parametroDescuento = parametroService.findOne(Parametros.ESTADO_DESCUENTO_NO_DISPONIBLE);
+				cuestionario.setParamEstadoDescuento(parametroDescuento);
+				cuestionariopacienteService.save(cuestionario);
+			}
 
 			solicitudAtencion.setPaciente(paciente);
 			solicitudAtencion.setPatologia(patologia);
@@ -229,6 +253,10 @@ public class PacienteController {
 			notificacionpaciente.setFecha(DateUtil.getFechaHoyString());
 			notificacionpaciente.setHora(DateUtil.getHourSystem());
 			notificacionpodologoService.save(notificacionpaciente);
+			
+			Mail mail = new Mail(env);
+			mail.sendEmailSolicitudAtencion(solicitudAtencion.getPodologo().getEmail(),
+					solicitudAtencion.getPodologo().getNombres() + " " + solicitudAtencion.getPodologo().getApellidos());
 
 			if (podologo.getParamSexo().getId() == Parametros.ESTADO_SEXO_M)
 				model.addAttribute("mensaje",
