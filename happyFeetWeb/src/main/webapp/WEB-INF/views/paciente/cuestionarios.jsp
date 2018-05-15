@@ -337,7 +337,7 @@
 				</div>
 			</c:if>
 		</div>
-
+</div>
 		<!-- jQuery -->
 		<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 

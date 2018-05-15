@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cl.camiletti.happyFeetWeb.model.Cuestionario;
 import cl.camiletti.happyFeetWeb.model.Cuestionariopaciente;
 import cl.camiletti.happyFeetWeb.model.Paciente;
 import cl.camiletti.happyFeetWeb.model.Parametro;
@@ -56,14 +57,17 @@ public class CuestionariopacienteServiceImpl implements CuestionariopacienteServ
 			Paciente paciente, Parametro estadoCuestionario, Parametro estadoDescuento) {
 		return cuestionariopacienteRepository.findByPacienteAndParamEstadoCuestionarioAndParamEstadoDescuento(
 				paciente, estadoCuestionario, estadoDescuento);
-	 
 	}
 
 	@Override
 	public Cuestionariopaciente findByIdAndParamEstadoCuestionarioAndParamEstadoDescuento(int id,
 			Parametro estadoCuestionario, Parametro estadoDescuento) {
- 
 		return cuestionariopacienteRepository.findByIdAndParamEstadoCuestionarioAndParamEstadoDescuento(id, estadoCuestionario, estadoDescuento);
+	}
+
+	@Override
+	public List<Cuestionariopaciente> findByCuestionario(Cuestionario cuestionario) {
+		return cuestionariopacienteRepository.findByCuestionario(cuestionario);
 	}
 
 }

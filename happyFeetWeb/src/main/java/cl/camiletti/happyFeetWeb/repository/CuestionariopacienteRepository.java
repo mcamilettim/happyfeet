@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import cl.camiletti.happyFeetWeb.model.Cuestionario;
 import cl.camiletti.happyFeetWeb.model.Cuestionariopaciente;
 import cl.camiletti.happyFeetWeb.model.Paciente;
 import cl.camiletti.happyFeetWeb.model.Parametro;
@@ -12,8 +13,8 @@ public interface CuestionariopacienteRepository extends JpaRepository<Cuestionar
 	<S extends Cuestionariopaciente> S save(Cuestionariopaciente cuestionariopaciente);
 
 	Cuestionariopaciente findById(int id);
-
 	List<Cuestionariopaciente> findAll();
+	List<Cuestionariopaciente> findByCuestionario(Cuestionario cuestionario);
 
 	void delete(Cuestionariopaciente cuestionariopaciente);
 

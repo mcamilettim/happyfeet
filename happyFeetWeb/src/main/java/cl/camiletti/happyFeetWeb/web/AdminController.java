@@ -19,11 +19,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import cl.camiletti.happyFeetWeb.model.Cuestionario;
+import cl.camiletti.happyFeetWeb.model.Cuestionariopaciente;
 import cl.camiletti.happyFeetWeb.model.Paciente;
+import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Patologia;
 import cl.camiletti.happyFeetWeb.model.Podologo;
 import cl.camiletti.happyFeetWeb.model.Usuario;
 import cl.camiletti.happyFeetWeb.service.ComunaService;
+import cl.camiletti.happyFeetWeb.service.CuestionarioService;
+import cl.camiletti.happyFeetWeb.service.CuestionariopacienteService;
 import cl.camiletti.happyFeetWeb.service.PacienteService;
 import cl.camiletti.happyFeetWeb.service.ParametroService;
 import cl.camiletti.happyFeetWeb.service.PatologiaService;
@@ -34,10 +39,11 @@ import cl.camiletti.happyFeetWeb.service.UsuarioService;
 import cl.camiletti.happyFeetWeb.util.DateUtil;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 import cl.camiletti.happyFeetWeb.util.Mail;
+import cl.camiletti.happyFeetWeb.util.Parametros;
 import cl.camiletti.happyFeetWeb.util.Seccion;
 
 @Controller
-@SessionAttributes("sessionUser paciente")
+@SessionAttributes(value = { "admin"})
 public class AdminController {
 	@Autowired
 	private PacienteService pacienteService;
@@ -74,12 +80,17 @@ public class AdminController {
 	
 	@Autowired
 	private PatologiaService patologiaService;
+	
+	@Autowired
+	private CuestionariopacienteService cuestionariopacienteService;
+	@Autowired
+	private CuestionarioService cuestionarioService;
 
 	@RequestMapping(value = "/admin/index", method = RequestMethod.GET)
 	public String registration(Model model) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Usuario usuario = usuarioService.findByEmail(user.getUsername());
-		model.addAttribute("user", usuario);
+		model.addAttribute("admin", usuario);
 
 		return "admin/admin";
 	}
@@ -350,5 +361,25 @@ public class AdminController {
     	model.addAttribute("patologias", patologiaService.findAll());
     	return "admin/listarPatologias";
 
-    }   
+    } 
+    
+    @RequestMapping(value = "/admin/cuestionarios", method = RequestMethod.GET)
+    public String cuestionarios(Model model) {   	
+    	List<Cuestionario> cuestionariosPaciente=cuestionarioService.findByTipo("paciente");
+    	List<Cuestionario> cuestionariosPodologo=cuestionarioService.findByTipo("podologo");
+		model.addAttribute("cuestionariosPaciente", cuestionariosPaciente);
+		model.addAttribute("cuestionariosPodologo", cuestionariosPodologo);
+		
+		return "admin/cuestionarios";
+ 
+
+    }  
+    @RequestMapping(value = "/admin/verCuestionario", method = RequestMethod.GET)
+    public String cuestionarios(Model model,@RequestParam("id") int id) {   	
+    	Cuestionario cuestionario=cuestionarioService.findById(id);
+		model.addAttribute("cuestionario", cuestionario);
+		return "admin/verCuestionario";
+ 
+
+    }  
 }

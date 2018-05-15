@@ -113,16 +113,15 @@
 					<ul class="nav" id="side-menu">
 						<li class="sidebar-search">
 							<div class="input-group custom-search-form">
-							<img src="${contextPath}/resources/img/sinfoto.jpg"
-											class="img-responsive" style="width: 200px;">
-								<br>
+								<img src="${contextPath}/resources/img/sinfoto.jpg"
+									class="img-responsive" style="width: 200px;"> <br>
 								<div align="center">
-									 <span class="text-info">Administrador</span>
+									<span class="text-info">Administrador</span>
 								</div>
 							</div> <!-- /input-group -->
 						</li>
 						<li><a href="${contextPath}/admin/index"><i
-								class="fa fa-home fa-fw"></i> <Strong>Inicio</Strong></a></li>
+								class="fa fa-home fa-fw"></i> Inicio</a></li>
 						<li><a href="${contextPath}/admin/solicitudes"><i
 								class="fa fa-envelope fa-fw"></i>Solicitudes de Atención</a></li>
 						<li><a href="${contextPath}/admin/pacientes"><i
@@ -132,7 +131,7 @@
 						<li><a href="${contextPath}/admin/patologias"><i
 								class="fa fa-ambulance fa-fw"></i>Patologías</a></li>
 						<li><a href="${contextPath}/admin/cuestionarios"><i
-								class="fa fa-question-circle fa-fw"></i> Descuentos</a></li>
+								class="fa fa-question-circle fa-fw"></i> <Strong>Descuentos</Strong></a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
@@ -140,172 +139,128 @@
 			<!-- /.navbar-static-side -->
 		</nav>
 
+
 		<!-- Page Content -->
 		<div id="page-wrapper">
-			<div class="container-fluid">
+			<br>
+
+			<c:if
+				test="${fn:length(cuestionariosPaciente) == 0 && fn:length(cuestionariosPodologo) == 0}">
+				<div class="alert alert-warning" align="center">
+					<Strong>No existen cuestionarios en el Sistema</Strong>
+				</div>
+			</c:if>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<strong>Nuevo Cuestionario</strong>
+						</div>
+						<br>
+						<div align="center">
+							<button
+								onclick="location.href='${contextPath}/admin/nuevoCuestionario'"
+								type="submit" class="btn btn-primary">Ingresar nuevo
+								cuestionario</button>
+							<br>
+						</div>
+						<br>
+					</div>
+				</div>
+			</div>
+
+			<c:if test="${not empty cuestionariosPaciente}">
 				<div class="row">
 					<div class="col-lg-12">
-						<h2 class="page-header">
-							<c:if test="${mensaje != null}">
-								<div class="alert alert-success alert-dismissable">
-									<button type="button" class="close" data-dismiss="alert"
-										aria-hidden="true">×</button>
-									${mensaje}
-								</div>
-							</c:if>
-							<c:if test="${mensajeError != null}">
-								<div class="alert alert-danger alert-dismissable">
-									<button type="button" class="close" data-dismiss="alert"
-										aria-hidden="true">×</button>
-									${mensajeError}
-								</div>
-							</c:if>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<strong>Cuestionarios Paciente <span class="badge">
+										${cuestionariosPaciente.size()}</span></strong>
+							</div>
+							<br>
+							<div align="center">
+								<p
+									style="text-align: justify; padding-left: 10px; padding-right: 10px;">Cuestionarios
+									dirigidos a pacientes para que obtngan descuentos en atención a
+									cambio de retralimentacion acerca de la aplicación.</p>
+								<br>
+							</div>
+							<div class="table-responsive">
 
-						</h2>
+								<table class="table table-bordered">
+									<tr>
+										<th><div align="center">Titulo</div></th>
+										<th><div align="center">Descuento %</div></th>
+										<th><div align="center">Fecha</div></th>
+										<th><div align="center">Acción</div></th>
+									</tr>
+									<c:forEach items="${cuestionariosPaciente}"
+										var="cuestionarioPaciente">
+										<tr>
+											<td align="center">${cuestionarioPaciente.titulo}</td>
+											<td align="center">${cuestionarioPaciente.descuento}</td>
+											<td align="center">${cuestionarioPaciente.fecha}</td>
+											<td align="center"><button
+													onclick="location.href='${contextPath}/admin/verCuestionario?id=${cuestionarioPaciente.id}'"
+													type="submit" class="btn btn-primary">Ver</button></td>
+
+
+										</tr>
+									</c:forEach>
+								</table>
+							</div>
+
+						</div>
 					</div>
-					<!-- /.col-lg-12 -->
 				</div>
-				<!-- /.row -->
-			</div>
-
-<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/admin/solicitudes">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-lg-3 col-xs-3">
-									<i class="fa fa-envelope fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 20px;">
-										<Strong>Solicitudes de Ingreso</Strong>
-									</div>
-									<div></div>
-								</div>
+			</c:if>
+			<c:if test="${not empty cuestionariosPodologo}">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<strong>Cuestionarios Paciente <span class="badge">
+										${cuestionariosPodologo.size()}</span></strong>
 							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Revisar el estado
-									de mis solicitudes</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/admin/podologos">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-lg-3 col-xs-3">
-									<i class="fa fa-user-md fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 20px;">
-										<Strong>Podólogos</Strong>
-									</div>
-									<div></div>
-								</div>
+							<br>
+							<div align="center">
+								<p
+									style="text-align: justify; padding-left: 10px; padding-right: 10px;">Cuestionarios
+									dirigidos a pacientes para que obtngan descuentos en atención a
+									cambio de retralimentacion acerca de la aplicación.</p>
+								<br>
 							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Podólogos del Sistema</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
+							<div class="table-responsive">
 
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/admin/cuestionarios">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-question-circle fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 20px;">
-										<Strong>Cuestionarios</Strong>
-									</div>
-									<div></div>
-								</div>
+								<table class="table table-bordered">
+									<tr>
+										<th><div align="center">Titulo</div></th>
+										<th><div align="center">Descuento %</div></th>
+										<th><div align="center">Fecha</div></th>
+										<th><div align="center">Acción</div></th>
+									</tr>
+									<c:forEach items="${cuestionariosPodologo}"
+										var="cuestionarioPodologo">
+										<tr>
+											<td align="center">${cuestionarioPodologo.titulo}</td>
+											<td align="center">${cuestionarioPodologo.descuento}</td>
+											<td align="center">${cuestionarioPodologo.fecha}</td>
+											<td align="center"><button
+													onclick="location.href='${contextPath}/admin/verCuestionario?id=${cuestionarioPodologo.id}'"
+													type="submit" class="btn btn-primary">Ver</button></td>
+
+
+										</tr>
+									</c:forEach>
+								</table>
 							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Cuestionarios del Sistema</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
 
+						</div>
 					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/admin/pacientes">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-wheelchair fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 20px;">
-										<Strong>Pacientes</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Pacientes del Sistema</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-			 <div class="col-lg-4 col-md-6">
-				<a href="${contextPath}/admin/patologias">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-ambulance fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge" style="font-size: 20px;">
-										<Strong>Patologías</Strong>
-									</div>
-									<div></div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class="pull-left"><Strong>Patologías del Sistema</Strong></span> <span class="pull-right"><i
-								class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-
-					</div>
-				</a>
-			</div>
-
-			 
-
-
-			<br> <br> <br> <br> <br> <br>
-			<!-- /.container-fluid -->
+				</div>
+			</c:if>
 		</div>
-		<!-- /#page-wrapper -->
-
 	</div>
-	<!-- /#wrapper -->
-
 	<!-- jQuery -->
 	<script src="${contextPath}/resources/vendor/jquery/jquery.min.js"></script>
 
@@ -319,7 +274,6 @@
 
 	<!-- Custom Theme JavaScript -->
 	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
-
 </body>
 
 </html>

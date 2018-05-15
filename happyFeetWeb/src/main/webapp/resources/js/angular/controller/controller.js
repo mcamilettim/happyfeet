@@ -204,7 +204,7 @@ $scope.obtenerDatosPaciente = function(){
 	  $scope.buscarPaciente=function(){
 		  $scope.setPromesaPaciente().then(
 		  function(response){		
-			  $scope.paciente=response[0].data
+			  $scope.paciente=response[0].data;
 			  $scope.buscarPodologos($scope.paciente.ubicacion.comuna.id);
 		  })
      } 
