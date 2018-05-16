@@ -24,6 +24,7 @@ import cl.camiletti.happyFeetWeb.service.SolicitudService;
 import cl.camiletti.happyFeetWeb.service.UbicacionService;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 import cl.camiletti.happyFeetWeb.util.Mail;
+import cl.camiletti.happyFeetWeb.util.Seccion;
 
 @Controller
 public class SolicitudController {
@@ -62,11 +63,14 @@ public class SolicitudController {
     public String solicitud(@ModelAttribute("solicitudForm") Solicitud solicitud, BindingResult bindingResult, Model model, @RequestParam("carnet") MultipartFile carnet, @RequestParam("titulo") MultipartFile titulo) throws IOException {
     	
     	
-    	String fotoCarnet = fileManagerUtil.getBase64FromFoto(carnet);
-    	String fotoTitulo = fileManagerUtil.getBase64FromFoto(titulo);
+    	String fotoCarnetBase64 = fileManagerUtil.getBase64FromFoto(carnet);
+    	String fotoTituloBase64 = fileManagerUtil.getBase64FromFoto(titulo);
     	
-    	solicitud.setCarnet(fotoCarnet);
-    	solicitud.setTitulo(fotoCarnet);
+    	String fotoCarnetFile = fileManagerUtil.subirArchivo(carnet, solicitud.getRutPodologo());
+    	String fotoTituloFile = fileManagerUtil.subirArchivo(titulo, solicitud.getRutPodologo());
+    	
+    	solicitud.setCarnet(fotoCarnetBase64);
+    	solicitud.setTitulo(fotoTituloBase64);
     	solicitud.setParamEstadoSolicitud(new Parametro(12));
     	ubicacionService.save(solicitud.getUbicacion());
     	solicitud.setUbicacion(ubicacionService.findByNombre(solicitud.getUbicacion().getNombre()));
@@ -74,11 +78,13 @@ public class SolicitudController {
     	
     	Mail mail = new Mail(env);
     	List<String> archivos = new ArrayList<String>();
-    	archivos.add(fotoCarnet);
-    	archivos.add(fotoTitulo);
+    	archivos.add(fotoCarnetFile);
+    	archivos.add(fotoTituloFile);
     	mail.sendEmailSolicitudPodologo(solicitud.getEmail(), solicitud.getNombres() + solicitud.getApellidos(), "", "", null, solicitud);
     	mail.sendEmailSolicitudPodologoAdmin(env.getProperty("emails.admins"), solicitud.getNombres(), "", "", archivos, solicitud);
     	model.addAttribute("exito", "Solicitud enviada con éxito.");
+    	fileManagerUtil.deleteFile(fotoCarnetFile);
+    	fileManagerUtil.deleteFile(fotoTituloFile);
     	return "solicitud";
     }
 

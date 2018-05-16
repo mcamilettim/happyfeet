@@ -59,6 +59,24 @@
 		margin-left: 10px;
 	}
 	</style>
+	<style type="text/css">
+		.loader {
+		    border: 16px solid #f3f3f3; /* Light grey */
+		    border-top: 16px solid #3498db; /* Blue */
+		    border-radius: 50%;
+		    width: 120px;
+		    height: 120px;
+		    animation: spin 2s linear infinite;
+		}
+			
+		@keyframes spin {
+		    0% { transform: rotate(0deg); }
+		    100% { transform: rotate(360deg); }
+		}
+		body {
+	    background: url(../resources/img/bg-banner.jpg) no-repeat fixed;
+}
+	</style>
 </head>
 <body>
     <div class="container">
@@ -241,13 +259,18 @@
 				    $("#mensajeDirecion").html("Dirección [OK]");
 				    $("#mensajeDirecion").css("color", "black");	
 				    $("#ubicacion").val(results[0].formatted_address);	
-				    validaComuna(results[0].address_components[2].short_name);
-				   // console.log(results[0].address_components[2].short_name);
-				  //  $("#ubicacion").val("");
-					}else{
-						 $("#mensajeDirecion").html("Dirección [No encontrada]");
-						 $("#mensajeDirecion").css("color", "red");				
-					}
+				    if(results[0].address_components.length<3){
+						 $(':input[type="submit"]').prop('disabled', true);
+						 $("#mensajeDirecion").css("color", "red");	
+						 $("#mensajeDirecion").html("Dirección [ Sólo Pudahuel y Maipú ]");
+						}else{
+						    var comuna=results[0].address_components[2].short_name;
+						    validaComuna(comuna);}
+				 
+						}else{
+							 $("#mensajeDirecion").html("Dirección [No encontrada]");
+							 $("#mensajeDirecion").css("color", "red");				
+						}
 		   });
 		}			
 		$("#ubicacion" ).focusout(function() {

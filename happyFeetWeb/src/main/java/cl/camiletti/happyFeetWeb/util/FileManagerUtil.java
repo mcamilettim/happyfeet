@@ -31,18 +31,18 @@ public class FileManagerUtil {
 		this.DIR_SINGLE = this.util.getProperty(Properties.DIR_SINGLE);
 	}
 
-	public String subirArchivo(MultipartFile archivoEntrada, String seccion, String rut) {
+	public String subirArchivo(MultipartFile archivoEntrada, String rut) {
 
 		File serverFilearchivoEntrada = null;
 		if (!archivoEntrada.isEmpty()) {
 			try {
 				byte[] bytesarchivoEntrada = archivoEntrada.getBytes();
-				File dir = new File(ROOT_PATH + File.separator + DIR_SINGLE + File.separator + seccion);
+				File dir = new File(ROOT_PATH + File.separator + DIR_SINGLE);
 				if (!dir.exists())
 					dir.mkdirs();
 				String nombreArchivo = archivoEntrada.getOriginalFilename();
 				String ext = nombreArchivo.substring(nombreArchivo.lastIndexOf("."));
-				String rutaDefinitiva = ROOT_PATH + File.separator + DIR_SINGLE + File.separator + seccion
+				String rutaDefinitiva = ROOT_PATH + File.separator + DIR_SINGLE
 						+ File.separator;
 				nombreArchivo = rut + ext;
 				String nombrePrimero = nombreArchivo + ext;
@@ -62,7 +62,7 @@ public class FileManagerUtil {
 						new FileOutputStream(serverFilearchivoEntrada));
 				streamarchivoEntrada.write(bytesarchivoEntrada);
 				streamarchivoEntrada.close();
-				return DIR_SINGLE + File.separator + seccion + File.separator + serverFilearchivoEntrada.getName();
+				return  ROOT_PATH + File.separator + DIR_SINGLE + File.separator + serverFilearchivoEntrada.getName();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -140,7 +140,10 @@ public class FileManagerUtil {
 		}
 
 	}
-
+	public boolean deleteFile(String fileName) {
+		File file = new File(fileName);
+	return file.delete();
+	}
 	public String encodeFileToBase64Binary(String fileName) {
 		File file = new File(fileName);
 		byte[] bytes = loadFile(file);

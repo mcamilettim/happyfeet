@@ -89,7 +89,7 @@ public class Mail {
 		html = html.replace("[rut]", solicitud.getRutPodologo());
 		html = html.replace("[nombre]", solicitud.getNombres() + " " + solicitud.getApellidos() );
 		html = html.replace("[direccion]", solicitud.getUbicacion().getNombre());
-		html = html.replace("[edad]", new DateUtil().getAge(solicitud.getFechaNacimiento()) + " a&ntilde;os.");
+		html = html.replace("[fecha_nacimiento]", solicitud.getFechaNacimiento());
 		html = html.replace("[idMinSal]", solicitud.getIdMinSal());
 		html = html.replace("[telefono]", solicitud.getFono());
 //		html = html.replace("[sexo]", solicitud.getParamSexo().);
@@ -178,17 +178,14 @@ public class Mail {
          if(archivos != null)
          for (String archivo : archivos) {
              messageBodyPart = new MimeBodyPart();
-             DataSource source = new FileDataSource(fileUtil.getROOT_PATH() + File.separator + fileUtil.getDIR_SINGLE() + File.separator + archivo);
+             File file=new File(archivo);
+             DataSource source = new FileDataSource(archivo);
              messageBodyPart.setDataHandler(new DataHandler(source));
-             messageBodyPart.setFileName(archivo);
+             messageBodyPart.setFileName(file.getName());
              multipart.addBodyPart(messageBodyPart);
 		}
-
-
          message.setContent(multipart);
 
-		 
-		 
 		 Transport.send(message);	  
 		 return true;
 		 

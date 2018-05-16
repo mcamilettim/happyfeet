@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 
@@ -27,7 +28,9 @@ public class Cuestionario implements Serializable {
 	private int descuento;
 
 	private String detalle;
-
+	@ManyToOne
+	@JoinColumn(name = "paramEstadoCuestionario_id")
+	private Parametro paramEstadoCuestionario;
 	@ManyToOne
 	private Preguntas preguntas;
 
@@ -35,6 +38,14 @@ public class Cuestionario implements Serializable {
 
 	public int getId() {
 		return id;
+	}
+
+	public Parametro getParamEstadoCuestionario() {
+		return paramEstadoCuestionario;
+	}
+
+	public void setParamEstadoCuestionario(Parametro paramEstadoCuestionario) {
+		this.paramEstadoCuestionario = paramEstadoCuestionario;
 	}
 
 	public int getDescuento() {
