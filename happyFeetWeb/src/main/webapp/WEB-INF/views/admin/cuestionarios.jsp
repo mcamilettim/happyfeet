@@ -219,7 +219,7 @@
 					<div class="col-lg-12">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<strong>Cuestionarios Paciente <span class="badge">
+								<strong>Cuestionarios Podólogo <span class="badge">
 										${cuestionariosPodologo.size()}</span></strong>
 							</div>
 							<br>
@@ -235,7 +235,6 @@
 								<table class="table table-bordered">
 									<tr>
 										<th><div align="center">Titulo</div></th>
-										<th><div align="center">Descuento %</div></th>
 										<th><div align="center">Fecha</div></th>
 										<th><div align="center">Acción</div></th>
 									</tr>
@@ -243,7 +242,6 @@
 										var="cuestionarioPodologo">
 										<tr>
 											<td align="center">${cuestionarioPodologo.titulo}</td>
-											<td align="center">${cuestionarioPodologo.descuento}</td>
 											<td align="center">${cuestionarioPodologo.fecha}</td>
 											<td align="center"><button
 													onclick="location.href='${contextPath}/admin/verCuestionario?id=${cuestionarioPodologo.id}'"

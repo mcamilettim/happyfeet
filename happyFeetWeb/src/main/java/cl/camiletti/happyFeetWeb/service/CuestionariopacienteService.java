@@ -25,6 +25,7 @@ public interface CuestionariopacienteService {
 	List<Cuestionariopaciente> findByPacienteAndParamEstadoCuestionarioIn(Paciente paciente,
 			List<Parametro> parametros);
 
+	List<Cuestionariopaciente> findByCuestionarioAndParamEstadoCuestionario(Cuestionario cuestionario,Parametro parametro);
 	List<Cuestionariopaciente> findByPacienteAndParamEstadoCuestionarioAndParamEstadoDescuento(Paciente paciente,
 			 Parametro estadoCuestionario, Parametro estadoDescuento);
 }

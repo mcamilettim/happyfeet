@@ -13,7 +13,9 @@ public interface CuestionariopacienteRepository extends JpaRepository<Cuestionar
 	<S extends Cuestionariopaciente> S save(Cuestionariopaciente cuestionariopaciente);
 
 	Cuestionariopaciente findById(int id);
+
 	List<Cuestionariopaciente> findAll();
+
 	List<Cuestionariopaciente> findByCuestionario(Cuestionario cuestionario);
 
 	void delete(Cuestionariopaciente cuestionariopaciente);
@@ -28,5 +30,8 @@ public interface CuestionariopacienteRepository extends JpaRepository<Cuestionar
 
 	Cuestionariopaciente findByIdAndParamEstadoCuestionarioAndParamEstadoDescuento(int id, Parametro estadoCuestionario,
 			Parametro estadoDescuento);
+
+	List<Cuestionariopaciente> findByCuestionarioAndParamEstadoCuestionario(Cuestionario cuestionario,
+			Parametro parametro);
 
 }

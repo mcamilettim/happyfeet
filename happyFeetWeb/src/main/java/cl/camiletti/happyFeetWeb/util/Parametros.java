@@ -34,5 +34,6 @@ public interface Parametros {
 	int ESTADO_PODOLOGO=66;
 	int ESTADO_SOLICITUD=77;
  
-	
+	String ESTADO_TIPO_CUESTIONARIO_PODOLOGO="podologo";
+	String ESTADO_TIPO_CUESTIONARIO_PACIENTE="paciente";
 }

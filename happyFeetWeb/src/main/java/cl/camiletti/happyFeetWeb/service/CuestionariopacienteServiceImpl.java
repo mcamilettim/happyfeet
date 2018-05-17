@@ -70,4 +70,15 @@ public class CuestionariopacienteServiceImpl implements CuestionariopacienteServ
 		return cuestionariopacienteRepository.findByCuestionario(cuestionario);
 	}
 
+	@Override
+	public List<Cuestionariopaciente> findByCuestionarioAndParamEstadoCuestionario(Cuestionario cuestionario,
+			Parametro parametro) {
+		// TODO Auto-generated method stub
+		return cuestionariopacienteRepository.findByCuestionarioAndParamEstadoCuestionario(cuestionario, parametro);
+	}
+
+ 
+
+ 
+
 }

@@ -43,7 +43,7 @@ import cl.camiletti.happyFeetWeb.util.Parametros;
 import cl.camiletti.happyFeetWeb.util.Seccion;
 
 @Controller
-@SessionAttributes(value = { "admin"})
+@SessionAttributes(value = { "admin" })
 public class AdminController {
 	@Autowired
 	private PacienteService pacienteService;
@@ -77,10 +77,10 @@ public class AdminController {
 
 	@Autowired
 	private PodologoService podologoService;
-	
+
 	@Autowired
 	private PatologiaService patologiaService;
-	
+
 	@Autowired
 	private CuestionariopacienteService cuestionariopacienteService;
 	@Autowired
@@ -138,45 +138,6 @@ public class AdminController {
 	// return "paciente/paciente";
 	// }
 
-	@RequestMapping(value = "/admin/modificardatos", method = RequestMethod.POST)
-	public String modificarpost(@ModelAttribute("pacienteForm") Paciente pacienteForm,
-			@RequestParam("archivo") MultipartFile archivo, BindingResult bindingResult, Model model) {
-		if (bindingResult.hasErrors()) {
-			
-		} else {
-			Mail mail = new Mail(env);
-			if (archivo != null) {
-				String file = fileManagerUtil.subirArchivo(archivo,Seccion.ADMIN,pacienteForm.getRut());
-				List<String> archivos = new ArrayList<String>();
-				archivos.add(file);
-				mail.sendEmailSolicitudPaciente(env.getProperty("emails.admins"), archivos, null);
-			}
-
-			if (usuarioService.findByEmail(pacienteForm.getEmail()) != null) {
-				if (ubicacionService.findByNombre(pacienteForm.getUbicacion().getNombre()) == null) {
-					ubicacionService.save(pacienteForm.getUbicacion());
-				}
-				Usuario user = new Usuario();
-				user.setEmail(pacienteForm.getEmail());
-				user.setPassword(pacienteForm.getUsuario().getPassword());
-				user.setPasswordConfirm(pacienteForm.getUsuario().getPasswordConfirm());
-				usuarioService.save(user);
-
-				pacienteForm.setUsuario(usuarioService.findByEmail(pacienteForm.getEmail()));
-				pacienteForm.setUbicacion(ubicacionService.findByNombre(pacienteForm.getUbicacion().getNombre()));
-				pacienteForm.getUsuario().setParamTipoUsuario(parametroService.findOne(17));
-				pacienteForm.setEdad(dateUtil.getAge(pacienteForm.getFechaNacimiento()));
-				usuarioService.save(pacienteForm.getUsuario());
-				pacienteService.save(pacienteForm);
-
-				mail.sendEmailBienvenidoPaciente(pacienteForm.getEmail(),
-						pacienteForm.getNombres() + pacienteForm.getApellidos());
-				model.addAttribute("mensaje", "Sus datos fueron guardados con éxito");
-			}
-		}
-		return "paciente/modificardatos";
-	}
-
 	@RequestMapping(value = "/admin/buscarPacientes", method = RequestMethod.POST)
 	public String buscarPaciente(Model model, @RequestParam("selectBuscar") String criterioBusqueda,
 			@RequestParam("textBuscar") String textBuscar) {
@@ -216,8 +177,8 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/admin/modificarDatosPaciente", method = RequestMethod.POST)
-	public String modificarPacientePost(@ModelAttribute("pacienteForm") Paciente pacienteForm, BindingResult bindingResult,
-			Model model) {
+	public String modificarPacientePost(@ModelAttribute("pacienteForm") Paciente pacienteForm,
+			BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
 
 		} else {
@@ -266,8 +227,8 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/admin/modificarDatosPodologo", method = RequestMethod.POST)
-	public String modificarPodologoPost(@ModelAttribute("podologoForm") Podologo podologoForm, BindingResult bindingResult,
-			Model model) {
+	public String modificarPodologoPost(@ModelAttribute("podologoForm") Podologo podologoForm,
+			BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
 
 		} else {
@@ -283,103 +244,97 @@ public class AdminController {
 		model.addAttribute("podologos", podologoService.findAll());
 		return "admin/podologos";
 	}
-	
-    @RequestMapping(value = "/admin/listarPatologias", method = RequestMethod.GET)
-    public String listarPatologias(Model model) {
-    	
-    	List<Patologia> patologias = patologiaService.findAll();
-    	model.addAttribute("patologias",patologias);
-    	model.addAttribute("patologiaForm", new Patologia());
-    	
-    	return "admin/listarPatologias";
-    }
-    
-    @RequestMapping(value = "/admin/buscarPatologias", method = RequestMethod.POST)
-    public String buscarPatologias(Model model, @RequestParam("textBuscar") String textBuscar){
-    	model.addAttribute("patologias", patologiaService.findByNombreIsLike(textBuscar));
-    	model.addAttribute("patologiaForm", new Patologia());
-    	return "admin/listarPatologias"; 
-    }    
-    
-    @RequestMapping(value = "/admin/ingresarPatologia", method = RequestMethod.POST)
-    public String ingresarPatologia(Model model, @ModelAttribute("patologiaForm") Patologia patologiaForm, @RequestParam("fotoFile") MultipartFile foto) {
-    	
-    	patologiaForm.setFoto(patologiaForm.getNombre()+"."+FilenameUtils.getExtension(foto.getOriginalFilename()));
-    /*	try {
-			foto.transferTo(new File("c:\\"+patologiaForm.getFoto()));
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-    	
-    	//fileManagerUtil.subirArchivoPaciente(foto,"c:/");
-    	
-    	patologiaService.save(patologiaForm);
-    	model.addAttribute("patologias", patologiaService.findAll());
-    	return "admin/listarPatologias";
-    }
-    
-    @RequestMapping(value = "/admin/eliminarPatologia", method = RequestMethod.GET)
-    public String eliminarPatologia(Model model, @RequestParam("idPatologia") int idPatologia) {
-    	Patologia patologia=new Patologia();
-    	patologia.setId(idPatologia);
-    	patologiaService.deleteById(patologia); 
-    	model.addAttribute("mensaje", "Patologia eliminada con éxito");
-    	List<Patologia> patologias = patologiaService.findAll();
-    	model.addAttribute("patologias",patologias);  
-    	model.addAttribute("patologiaForm", new Patologia());
-    	return "admin/listarPatologias";
-    }
-    
-    @RequestMapping(value = "/admin/modificarPatologia", method = RequestMethod.GET)
-    public String modificarPatologiaGet(Model model, @RequestParam("idPatologia") int idPatologia) {
-    	Patologia patologiaForm=patologiaService.findById(idPatologia);
-    	model.addAttribute("patologiaForm", patologiaForm);
-    	return "admin/modificarPatologia";
-    } 
-    
-    @RequestMapping(value = "/admin/modificarPatologia", method = RequestMethod.POST)
-    public String modificarPatologiaPost(Model model, @ModelAttribute("patologiaForm") Patologia patologiaForm, @RequestParam("fotoFile") MultipartFile foto) {
-    	    	
-    	patologiaForm.setFoto(patologiaForm.getNombre()+"."+FilenameUtils.getExtension(foto.getOriginalFilename()));
-    /*	try {
-			foto.transferTo(new File("c:\\"+patologiaForm.getFoto()));
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-    	
-    	//fileManagerUtil.subirArchivoPaciente(foto,"c:/");
-    	patologiaService.save(patologiaForm);
-    	model.addAttribute("mensaje", "Patologia modificada con éxito");
-    	model.addAttribute("patologias", patologiaService.findAll());
-    	return "admin/listarPatologias";
 
-    } 
-    
-    @RequestMapping(value = "/admin/cuestionarios", method = RequestMethod.GET)
-    public String cuestionarios(Model model) {   	
-    	List<Cuestionario> cuestionariosPaciente=cuestionarioService.findByTipo("paciente");
-    	List<Cuestionario> cuestionariosPodologo=cuestionarioService.findByTipo("podologo");
+	@RequestMapping(value = "/admin/listarPatologias", method = RequestMethod.GET)
+	public String listarPatologias(Model model) {
+
+		List<Patologia> patologias = patologiaService.findAll();
+		model.addAttribute("patologias", patologias);
+		model.addAttribute("patologiaForm", new Patologia());
+
+		return "admin/listarPatologias";
+	}
+
+	@RequestMapping(value = "/admin/buscarPatologias", method = RequestMethod.POST)
+	public String buscarPatologias(Model model, @RequestParam("textBuscar") String textBuscar) {
+		model.addAttribute("patologias", patologiaService.findByNombreIsLike(textBuscar));
+		model.addAttribute("patologiaForm", new Patologia());
+		return "admin/listarPatologias";
+	}
+
+	@RequestMapping(value = "/admin/ingresarPatologia", method = RequestMethod.POST)
+	public String ingresarPatologia(Model model, @ModelAttribute("patologiaForm") Patologia patologiaForm,
+			@RequestParam("fotoFile") MultipartFile foto) {
+
+		patologiaForm.setFoto(patologiaForm.getNombre() + "." + FilenameUtils.getExtension(foto.getOriginalFilename()));
+		/*
+		 * try { foto.transferTo(new File("c:\\"+patologiaForm.getFoto())); } catch
+		 * (IllegalStateException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); } catch (IOException e) { // TODO Auto-generated catch
+		 * block e.printStackTrace(); }
+		 */
+
+		// fileManagerUtil.subirArchivoPaciente(foto,"c:/");
+
+		patologiaService.save(patologiaForm);
+		model.addAttribute("patologias", patologiaService.findAll());
+		return "admin/listarPatologias";
+	}
+
+	@RequestMapping(value = "/admin/eliminarPatologia", method = RequestMethod.GET)
+	public String eliminarPatologia(Model model, @RequestParam("idPatologia") int idPatologia) {
+		Patologia patologia = new Patologia();
+		patologia.setId(idPatologia);
+		patologiaService.deleteById(patologia);
+		model.addAttribute("mensaje", "Patologia eliminada con éxito");
+		List<Patologia> patologias = patologiaService.findAll();
+		model.addAttribute("patologias", patologias);
+		model.addAttribute("patologiaForm", new Patologia());
+		return "admin/listarPatologias";
+	}
+
+	@RequestMapping(value = "/admin/modificarPatologia", method = RequestMethod.GET)
+	public String modificarPatologiaGet(Model model, @RequestParam("idPatologia") int idPatologia) {
+		Patologia patologiaForm = patologiaService.findById(idPatologia);
+		model.addAttribute("patologiaForm", patologiaForm);
+		return "admin/modificarPatologia";
+	}
+
+	@RequestMapping(value = "/admin/modificarPatologia", method = RequestMethod.POST)
+	public String modificarPatologiaPost(Model model, @ModelAttribute("patologiaForm") Patologia patologiaForm,
+			@RequestParam("fotoFile") MultipartFile foto) {
+
+		patologiaForm.setFoto(patologiaForm.getNombre() + "." + FilenameUtils.getExtension(foto.getOriginalFilename()));
+		/*
+		 * try { foto.transferTo(new File("c:\\"+patologiaForm.getFoto())); } catch
+		 * (IllegalStateException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); } catch (IOException e) { // TODO Auto-generated catch
+		 * block e.printStackTrace(); }
+		 */
+
+		// fileManagerUtil.subirArchivoPaciente(foto,"c:/");
+		patologiaService.save(patologiaForm);
+		model.addAttribute("mensaje", "Patologia modificada con éxito");
+		model.addAttribute("patologias", patologiaService.findAll());
+		return "admin/listarPatologias";
+
+	}
+
+	@RequestMapping(value = "/admin/cuestionarios", method = RequestMethod.GET)
+	public String cuestionarios(Model model) {
+		List<Cuestionario> cuestionariosPaciente = cuestionarioService.findByTipo("paciente");
+		List<Cuestionario> cuestionariosPodologo = cuestionarioService.findByTipo("podologo");
 		model.addAttribute("cuestionariosPaciente", cuestionariosPaciente);
 		model.addAttribute("cuestionariosPodologo", cuestionariosPodologo);
-		
-		return "admin/cuestionarios";
- 
 
-    }  
-    @RequestMapping(value = "/admin/verCuestionario", method = RequestMethod.GET)
-    public String cuestionarios(Model model,@RequestParam("id") int id) {   	
-    	Cuestionario cuestionario=cuestionarioService.findById(id);
+		return "admin/cuestionarios";
+
+	}
+
+	@RequestMapping(value = "/admin/verCuestionario", method = RequestMethod.GET)
+	public String cuestionarios(Model model, @RequestParam("id") int id) {
+		Cuestionario cuestionario = cuestionarioService.findById(id);
 		model.addAttribute("cuestionario", cuestionario);
 		return "admin/verCuestionario";
- 
-
-    }  
+	}
 }

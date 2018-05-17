@@ -64,22 +64,36 @@
 <link
 	href="${contextPath}/resources/vendor/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
-
+ 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
- <style>
- #chartDiv {
-	height:100%;
-	width:100%;
-	min-height:150px;
+<style>
+#chartBarraDiv {
+	height: 100%;
+	width: 100%;
+	min-height: 150px;
 }
+
 .zc-ref {
-	display:none;
-}</style>
+	display: none;
+}
+
+#myChartRespondidosPendientes {
+	width: 100%;
+	height: 100%;
+	min-height: 250px;
+}
+#myChartConformidad {
+	width: 100%;
+	height: 100%;
+	min-height: 250px;
+}
+</style>
+
 </head>
 
 <body data-ng-controller="UserCtrlChart">
@@ -157,49 +171,59 @@
 						<div class="panel-heading">
 							<strong>${cuestionario.titulo}</strong>
 						</div>
-						<br>
-						<div class="col-lg-9">
-							<p
-								style="text-align: justify; padding-left: 10px; padding-right: 10px;">${cuestionario.detalle}</p>
+						<div class="panel-body">
+							<br>
+							<div class="col-lg-9">
+								<p
+									style="text-align: justify; padding-left: 10px; padding-right: 10px;">${cuestionario.detalle}</p>
+								<br>
+							</div>
+							<div class="col-lg-3"></div>
+							<br>
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th scope="col"><div align="right">Pregunta</div></th>
+										<th><div align="center"></div></th>
+										<th><div align="center"> SI</div></th>
+										<th><div align="center"> NO</div></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<th scope="row"><div align="center">1</div></th>
+										<td>${cuestionario.preguntas.pregunta_uno}</td>
+										<th><div align="center">{{cuestionario.total_respuesta_uno_si}}</div></th>
+										<th><div align="center">{{cuestionario.total_respuesta_uno_no}}</div></th>
+									</tr>
+									<tr>
+										<th scope="row"><div align="center">2</div></th>
+										<td>${cuestionario.preguntas.pregunta_dos}</td>
+										<th><div align="center">{{cuestionario.total_respuesta_dos_si}}</div></th>
+										<th><div align="center">{{cuestionario.total_respuesta_dos_no}}</div></th>
+									</tr>
+									<tr>
+										<th scope="row"><div align="center">3</div></th>
+										<td>${cuestionario.preguntas.pregunta_tres}</td>
+										<th><div align="center">{{cuestionario.total_respuesta_tres_si}}</div></th>
+										<th><div align="center">{{cuestionario.total_respuesta_tres_no}}</div></th>
+									</tr>
+								</tbody>
+							</table>
+							<br>
+							<div class="col-lg-12">
+								<div id="chartBarraDiv"></div>
+							</div>
+
+							<br>
+							<div class="col-md-6">
+								<div id="myChartRespondidosPendientes"></div>
+							</div>
+							<div class="col-md-6">
+								<div id="myChartConformidad"></div>
+							</div>
 							<br>
 						</div>
-						<br>
-						<table class="table table-striped">
-							<thead>
-								<tr>
-									<th scope="col"><div align="right">Pregunta</div></th>
-									<th><div align="center"></div></th>
-									<th><div align="center">SI</div></th>
-									<th><div align="center">NO</div></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<th scope="row"><div align="center">1</div></th>
-									<td>${cuestionario.preguntas.pregunta_uno}</td>
-									<th><div align="center">{{cuestionario.total_respuesta_uno_si}}</div></th>
-									<th><div align="center">{{cuestionario.total_respuesta_uno_no}}</div></th>
-								</tr>
-								<tr>
-									<th scope="row"><div align="center">2</div></th>
-									<td>${cuestionario.preguntas.pregunta_dos}</td>
-									<th><div align="center">{{cuestionario.total_respuesta_dos_si}}</div></th>
-									<th><div align="center">{{cuestionario.total_respuesta_dos_no}}</div></th>
-								</tr>
-								<tr>
-									<th scope="row"><div align="center">3</div></th>
-									<td>${cuestionario.preguntas.pregunta_tres}</td>
-									<th><div align="center">{{cuestionario.total_respuesta_tres_si}}</div></th>
-									<th><div align="center">{{cuestionario.total_respuesta_tres_no}}</div></th>
-								</tr>
-							</tbody>
-						</table>
-						<br>
-						 
-							<div id="chartDiv"></div>
-							<br>
-						 
-						<br>
 					</div>
 				</div>
 			</div>
@@ -226,7 +250,7 @@
 	<script type="text/javascript"
 		src="${contextPath}/resources/js/angular/angular.js"></script>
 	<script type="text/javascript"
-		src="${contextPath}/resources/js/angular/controller/controllerChart.js"></script>
+		src="${contextPath}/resources/js/angular/controller/controllerChart.js" charset="UTF-8"></script>
 </body>
 
 </html>

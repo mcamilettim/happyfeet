@@ -20,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cl.camiletti.happyFeetWeb.model.Agenda;
 import cl.camiletti.happyFeetWeb.model.Atencion;
+import cl.camiletti.happyFeetWeb.model.Cuestionariopaciente;
+import cl.camiletti.happyFeetWeb.model.Cuestionariopodologo;
 import cl.camiletti.happyFeetWeb.model.Evaluacion;
 import cl.camiletti.happyFeetWeb.model.Horario;
 import cl.camiletti.happyFeetWeb.model.Mensaje;
@@ -34,6 +36,7 @@ import cl.camiletti.happyFeetWeb.service.AgendaService;
 import cl.camiletti.happyFeetWeb.service.AtencionService;
 import cl.camiletti.happyFeetWeb.service.ComunaService;
 import cl.camiletti.happyFeetWeb.service.CuestionariopacienteService;
+import cl.camiletti.happyFeetWeb.service.CuestionariopodologoService;
 import cl.camiletti.happyFeetWeb.service.EvaluacionService;
 import cl.camiletti.happyFeetWeb.service.HorarioService;
 import cl.camiletti.happyFeetWeb.service.MensajeService;
@@ -56,7 +59,7 @@ import cl.camiletti.happyFeetWeb.util.Parametros;
 
 @Controller
 @SessionAttributes(value = { "podologo", "paciente", "atencion", "pacientes", "solicitudes", "agendaParaFinalizar",
-		"solicitudAtencion", "mensajesNuevos", "notificaciones" })
+		"solicitudAtencion", "mensajesNuevos", "notificaciones","cuestionarioParaFinalizar" })
 public class PodologoController {
 	@Autowired
 	private PodologoService podologoService;
@@ -103,7 +106,8 @@ public class PodologoController {
 	private AgendaService agendaService;
 	@Autowired
 	private CuestionariopacienteService cuestionariopacienteService;
-
+	@Autowired
+	private CuestionariopodologoService cuestionariopodologoService;
 	@Autowired
 	private NotificacionpodologoService notificacionpodologoService;
 	@Autowired
@@ -649,6 +653,44 @@ public class PodologoController {
 				agenda.getPaciente().getNombres() + " " + agenda.getPaciente().getApellidos());
 		
 		model.addAttribute("mensaje", "Atención Finalizada con Éxito");
+		return "podologo/podologo";
+	}
+	@RequestMapping(value = "/podologo/cuestionarios", method = RequestMethod.GET)
+	public String cuestionarios(Model model, @ModelAttribute("podologo") Podologo podologo) {
+		NotificacionUtil.cargaNotificacionesPodologo(model, podologo, notificacionpodologoService, parametroService);
+		MensajesNuevosUtil.cargaMensajesNuevosPodologo(model, podologo, mensajeService, parametroService);
+		Parametro parametro = parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_PENDIENTE);
+		List<Parametro> parametros = new ArrayList<Parametro>();
+		parametros.add(parametro);
+		List<Cuestionariopodologo> cuestionarios = cuestionariopodologoService
+				.findByPodologoAndParamEstadoCuestionarioIn(podologo, parametros);
+		model.addAttribute("cuestionariosPendientes", cuestionarios);
+		parametros = new ArrayList<Parametro>();
+		parametros.add(parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_RESUELTO));
+		cuestionarios = cuestionariopodologoService.findByPodologoAndParamEstadoCuestionarioIn(podologo, parametros);
+		model.addAttribute("cuestionariosRealizados", cuestionarios);
+		return "podologo/cuestionarios";
+	}
+	@RequestMapping(value = "/podologo/verCuestionario", method = RequestMethod.GET)
+	public String verCuestionario(Model model, @RequestParam("id") int id) {
+		Cuestionariopodologo cuestionariopodologo = cuestionariopodologoService.findById(id);
+		model.addAttribute("cuestionariopodologo", cuestionariopodologo);
+		model.addAttribute("cuestionarioParaFinalizar", cuestionariopodologo);
+		return "podologo/verCuestionario";
+	}
+
+	@RequestMapping(value = "/podologo/guardarCuestionario", method = RequestMethod.POST)
+	public String guardarCuestionario(Model model, @RequestParam("respuestaUno") String respuestaUno,
+			@RequestParam("respuestaDos") String respuestaDos, @RequestParam("respuestaTres") String respuestaTres,
+			@ModelAttribute("cuestionarioParaFinalizar") Cuestionariopodologo cuestionariopodologo) {
+		cuestionariopodologo
+				.setParamEstadoCuestionario(parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_RESUELTO));
+		cuestionariopodologo.setParamEstadoDescuento(parametroService.findOne(Parametros.ESTADO_DESCUENTO_DISPONIBLE));
+		cuestionariopodologo.setRespuesta_uno(respuestaUno);
+		cuestionariopodologo.setRespuesta_dos(respuestaDos);
+		cuestionariopodologo.setRespuesta_tres(respuestaTres);
+		cuestionariopodologoService.save(cuestionariopodologo);
+		model.addAttribute("mensaje", "Encuesta guardada con éxito, puede seguir ofreciendo sus Servicios");
 		return "podologo/podologo";
 	}
 }
