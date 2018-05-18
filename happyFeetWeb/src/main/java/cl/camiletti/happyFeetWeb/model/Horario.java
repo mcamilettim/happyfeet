@@ -10,7 +10,7 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name="Horario.findAll", query="SELECT h FROM Horario h")
+@NamedQuery(name="horario.findAll", query="SELECT h FROM Horario h")
 public class Horario implements Serializable {
 	private static final long serialVersionUID = 1L;
 

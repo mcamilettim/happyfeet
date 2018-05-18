@@ -385,7 +385,7 @@
 				<br>
 				<div class="row">
 					<form:form method="POST" modelAttribute="solicitudForm"
-						action="guardarAgenda" enctype="multipart/form-data">
+						action="guardarAgenda" enctype="multipart/form-data" onsubmit="return checkSize()" >
 						<div class="col-lg-12">
 							<div class="panel panel-default">
 								<div class="panel-heading">
@@ -470,18 +470,18 @@
 										<tr>
 											<th scope="col">Cupón de Descuento</th>
 											<th scope="row" ng-if="paciente.descuentos.length > 0 ">
-											<select  ng-model="selectedDescuento" ng-change="calcularPresupuesto(selectedDescuento)">
- 											<option ng-repeat="descuento in paciente.descuentos" ng-selected="selectedDescuento == descuento.id" value="{{descuento.id}}">{{descuento.nombre}}
-														- {{descuento.descuento}}%</option>
+											 <select ng-model="selectedDescuento"  ng-selected="selectedDescuento == descuento.id" ng-change="calcularPresupuesto(selectedDescuento)" ng-options="descuento.id as (descuento.nombre+' '+descuento.descuento+' %') for descuento in paciente.descuentos" >
+   												 <option style="display:none" value="">SELECCIONE UN CUPÓN</option>
 											</select>
 											<th scope="row" ng-if="paciente.descuentos.length == 0 ">SIN
 												CUPONES &nbsp;... &nbsp;<a class="btn btn-info" href="cuestionarios" role="button">Cómo obtener Cupones?</a></th>
 										</tr>
 										<tr>
 											<th scope="col" colspan="2">Foto de sus Pies <input
-												type="file" class="form-control" name="fotoPiePaciente"
+												type="file" class="form-control" name="fotoPiePaciente" id="idFotoPiePaciente"
 												value="Subir Carnet" required="required"
-												accept="image/x-png,image/gif,image/jpeg"></input></th>
+												accept="image/x-png,image/gif,image/jpeg"></input>
+											 </th>
 										</tr>
 										<tr>
 											<th scope="col" colspan="2">Comentario para el Podólogo
@@ -601,7 +601,24 @@
 		src="${contextPath}/resources/js/angular/controller/controller.js"></script>
 
 
+<script type="text/javascript">
+function checkSize()
+{	max_img_size=2097152;
+    var input = document.getElementById("idFotoPiePaciente");
+ 
+    if(input.files && input.files.length == 1)
+    {    
+        if (input.files[0].size > max_img_size) 
+        {	var mb=max_img_size/1024;
+        	mb=mb/1024;
+            alert("La imagen subida del pie no puede superar los " + (mb) + "MB");
+            return false;
+        }
+    }
 
+    return true;
+}
+</script>
 </body>
 
 </html>

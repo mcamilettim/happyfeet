@@ -9,7 +9,7 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name = "Presupuesto.findAll", query = "SELECT p FROM Presupuesto p")
+@NamedQuery(name = "presupuesto.findAll", query = "SELECT p FROM Presupuesto p")
 public class Presupuesto implements Serializable {
 	private static final long serialVersionUID = 1L;
 

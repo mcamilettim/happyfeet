@@ -9,7 +9,7 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name = "Podologo.findAll", query = "SELECT p FROM Podologo p")
+@NamedQuery(name = "podologo.findAll", query = "SELECT p FROM Podologo p")
 public class Podologo implements Serializable {
 	private static final long serialVersionUID = 1L;
 

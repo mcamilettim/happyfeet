@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cl.camiletti.happyFeetWeb.model.Cuestionario;
+import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.repository.CuestionarioRepository;
 
 @Service
@@ -36,6 +37,12 @@ public class CuestionarioServiceImpl implements CuestionarioService {
 	@Override
 	public List<Cuestionario> findByTipo(String tipo) {
 		return cuestionarioRepository.findByTipo(tipo);
+	}
+
+	@Override
+	public List<Cuestionario> findByTipoAndParamEstadoCuestionario(String tipo, Parametro parametro) {
+		// TODO Auto-generated method stub
+		return cuestionarioRepository.findByTipoAndParamEstadoCuestionario(tipo, parametro);
 	}
 
  

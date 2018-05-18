@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import cl.camiletti.happyFeetWeb.model.Agenda;
 import cl.camiletti.happyFeetWeb.model.Atencion;
 import cl.camiletti.happyFeetWeb.model.Comuna;
+import cl.camiletti.happyFeetWeb.model.Cuestionario;
 import cl.camiletti.happyFeetWeb.model.Cuestionariopaciente;
 import cl.camiletti.happyFeetWeb.model.Evaluacion;
 import cl.camiletti.happyFeetWeb.model.Horario;
@@ -38,6 +39,7 @@ import cl.camiletti.happyFeetWeb.model.custom.MensajeCustom;
 import cl.camiletti.happyFeetWeb.service.AgendaService;
 import cl.camiletti.happyFeetWeb.service.AtencionService;
 import cl.camiletti.happyFeetWeb.service.ComunaService;
+import cl.camiletti.happyFeetWeb.service.CuestionarioService;
 import cl.camiletti.happyFeetWeb.service.CuestionariopacienteService;
 import cl.camiletti.happyFeetWeb.service.EvaluacionService;
 import cl.camiletti.happyFeetWeb.service.HorarioService;
@@ -74,7 +76,8 @@ public class PacienteController {
 	private PacienteService pacienteService;
 	@Autowired
 	private CuestionariopacienteService cuestionariopacienteService;
-
+	@Autowired
+	private CuestionarioService cuestionarioService;
 	@Autowired
 	private ParametroService parametroService;
 
@@ -488,6 +491,21 @@ public class PacienteController {
 
 				usuarioService.save(pacienteForm.getUsuario());
 				pacienteService.save(pacienteForm);
+				
+				
+				List<Cuestionario> cuestionariosHabilitados=cuestionarioService.findByTipoAndParamEstadoCuestionario(Parametros.ESTADO_TIPO_CUESTIONARIO_PACIENTE, parametroService.findOne(Parametros.ESTADO_DESCUENTO_DISPONIBLE));
+				Cuestionariopaciente cuestionarioPaciente=null;
+				Parametro disponible=parametroService.findOne(Parametros.ESTADO_DESCUENTO_DISPONIBLE);
+				Parametro pendiente=parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_PENDIENTE);
+				for (Cuestionario cuestionario : cuestionariosHabilitados) {
+					cuestionarioPaciente=new Cuestionariopaciente();
+					cuestionarioPaciente.setCuestionario(cuestionario);
+					cuestionarioPaciente.setParamEstadoCuestionario(pendiente);
+					cuestionarioPaciente.setParamEstadoDescuento(disponible);
+					cuestionarioPaciente.setPaciente(pacienteForm);
+					cuestionariopacienteService.save(cuestionarioPaciente);
+				}
+				
 				Mail mail = new Mail(env);
 				mail.sendEmailBienvenidoPaciente(pacienteForm.getEmail(),
 						pacienteForm.getNombres() + " " + pacienteForm.getApellidos());

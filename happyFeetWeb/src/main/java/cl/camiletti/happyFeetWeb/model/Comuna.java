@@ -10,7 +10,7 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name="Comuna.findAll", query="SELECT c FROM Comuna c")
+@NamedQuery(name="comuna.findAll", query="SELECT c FROM Comuna c")
 public class Comuna implements Serializable {
 	private static final long serialVersionUID = 1L;
 

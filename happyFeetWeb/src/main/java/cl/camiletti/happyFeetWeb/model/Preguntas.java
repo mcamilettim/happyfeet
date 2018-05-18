@@ -16,7 +16,7 @@ import javax.persistence.OneToMany;
  * 
  */
 @Entity
-@NamedQuery(name = "Preguntas.findAll", query = "SELECT p FROM Preguntas p")
+@NamedQuery(name = "preguntas.findAll", query = "SELECT p FROM Preguntas p")
 public class Preguntas implements Serializable {
 	private static final long serialVersionUID = 1L;
 

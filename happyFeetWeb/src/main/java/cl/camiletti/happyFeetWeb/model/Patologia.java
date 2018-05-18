@@ -9,7 +9,7 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name = "Patologia.findAll", query = "SELECT p FROM Patologia p")
+@NamedQuery(name = "patologia.findAll", query = "SELECT p FROM Patologia p")
 public class Patologia implements Serializable {
 	private static final long serialVersionUID = 1L;
 

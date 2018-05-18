@@ -9,7 +9,7 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name = "Agenda.findAll", query = "SELECT a FROM Agenda a")
+@NamedQuery(name = "agenda.findAll", query = "SELECT a FROM Agenda a")
 public class Agenda implements Serializable {
 	private static final long serialVersionUID = 1L;
 

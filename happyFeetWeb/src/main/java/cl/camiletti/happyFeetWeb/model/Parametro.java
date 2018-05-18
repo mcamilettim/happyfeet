@@ -1,8 +1,10 @@
 package cl.camiletti.happyFeetWeb.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 
 
 /**
@@ -10,7 +12,7 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name="Parametro.findAll", query="SELECT p FROM Parametro p")
+@NamedQuery(name="parametro.findAll", query="SELECT p FROM Parametro p")
 public class Parametro implements Serializable {
 	private static final long serialVersionUID = 1L;
 

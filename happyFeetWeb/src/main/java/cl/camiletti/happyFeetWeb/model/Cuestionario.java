@@ -15,7 +15,7 @@ import javax.persistence.NamedQuery;
  * 
  */
 @Entity
-@NamedQuery(name = "Cuestionario.findAll", query = "SELECT c FROM Cuestionario c")
+@NamedQuery(name = "cuestionario.findAll", query = "SELECT c FROM Cuestionario c")
 public class Cuestionario implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -14,7 +14,7 @@ import javax.persistence.NamedQuery;
  * 
  */
 @Entity
-@NamedQuery(name = "Evaluacion.findAll", query = "SELECT e FROM Evaluacion e")
+@NamedQuery(name = "evaluacion.findAll", query = "SELECT e FROM Evaluacion e")
 public class Evaluacion implements Serializable {
 	private static final long serialVersionUID = 1L;
 

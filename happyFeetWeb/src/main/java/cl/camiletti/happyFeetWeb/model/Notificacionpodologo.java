@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 
 @Entity
-@NamedQuery(name = "Notificacionpodologo.findAll", query = "SELECT e FROM Notificacionpodologo e")
+@NamedQuery(name = "notificacionpodologo.findAll", query = "SELECT e FROM Notificacionpodologo e")
 public class Notificacionpodologo {
 	private static final long serialVersionUID = 1L;
 
