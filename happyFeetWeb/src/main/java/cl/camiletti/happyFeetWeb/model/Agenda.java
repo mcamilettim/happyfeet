@@ -1,8 +1,14 @@
 package cl.camiletti.happyFeetWeb.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 /**
  * The persistent class for the agenda database table.
@@ -49,10 +55,6 @@ public class Agenda implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "paramEstadoAgenda_id")
 	private Parametro paramEstadoAgenda;
-
-	// bi-directional many-to-one association to Atencion
-	@OneToMany(mappedBy = "agenda", fetch = FetchType.EAGER)
-	private List<Atencion> atencions;
 
 	public Podologo getPodologo() {
 		return podologo;
@@ -151,28 +153,6 @@ public class Agenda implements Serializable {
 
 	public void setParamEstadoAgenda(Parametro paramEstadoAgenda) {
 		this.paramEstadoAgenda = paramEstadoAgenda;
-	}
-
-	public List<Atencion> getAtencions() {
-		return this.atencions;
-	}
-
-	public void setAtencions(List<Atencion> atencions) {
-		this.atencions = atencions;
-	}
-
-	public Atencion addAtencion(Atencion atencion) {
-		getAtencions().add(atencion);
-		atencion.setAgenda(this);
-
-		return atencion;
-	}
-
-	public Atencion removeAtencion(Atencion atencion) {
-		getAtencions().remove(atencion);
-		atencion.setAgenda(null);
-
-		return atencion;
 	}
 
 }

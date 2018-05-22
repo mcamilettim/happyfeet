@@ -38,6 +38,7 @@ import cl.camiletti.happyFeetWeb.service.PacienteService;
 import cl.camiletti.happyFeetWeb.service.ParametroService;
 import cl.camiletti.happyFeetWeb.service.PatologiaService;
 import cl.camiletti.happyFeetWeb.service.PodologoService;
+import cl.camiletti.happyFeetWeb.service.UbicacionService;
 import cl.camiletti.happyFeetWeb.util.Constantes;
 import cl.camiletti.happyFeetWeb.util.Parametros;
 
@@ -66,20 +67,21 @@ public class AgendarControllerRest {
 	CuestionariopacienteService cuestionariopacienteService;
 	@Autowired
 	private ParametroService parametroService;
- 
+	@Autowired
+	UbicacionService ubicacionService;
 
 	@RequestMapping(value = "/getPodologosPorComuna", method = RequestMethod.GET, produces = "application/json")
 	public List<PodologoCustom> getPodologosPorComuna(Model model, @RequestParam("idComuna") int idComuna)
 			throws IOException {
 		Comuna comuna = comunaService.findById(idComuna);
-		List<Ubicacion> ubicaciones = comuna.getUbicacions();
+		List<Ubicacion> ubicaciones = ubicacionService.findByComuna(comuna);
 		List<PodologoCustom> podologos = new ArrayList<PodologoCustom>();
 
 		for (Ubicacion ubicacion : ubicaciones) {
-			for (Podologo podologo : ubicacion.getPodologos()) {
+			List<Podologo> podologosByUbicacion=podologoService.findByUbicacion(ubicacion);
+			for (Podologo podologo : podologosByUbicacion) {
 				PodologoCustom podoAux = new PodologoCustom();
 			    podoAux.setFoto(podologo.getFoto());
-				 
 				podoAux.setNombres(podologo.getNombres());
 				podoAux.setApellidos(podologo.getApellidos());
 				podoAux.setRut(podologo.getRut());

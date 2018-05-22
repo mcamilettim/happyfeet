@@ -1,8 +1,12 @@
 package cl.camiletti.happyFeetWeb.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 
 
 /**
@@ -19,10 +23,6 @@ public class Comuna implements Serializable {
 	private int id;
 
 	private String nombre;
-
-	//bi-directional many-to-one association to Ubicacion
-	@OneToMany(mappedBy="comuna", fetch=FetchType.EAGER)
-	private List<Ubicacion> ubicacions;
 
 	public Comuna() {
 	}
@@ -42,27 +42,4 @@ public class Comuna implements Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
-	public List<Ubicacion> getUbicacions() {
-		return this.ubicacions;
-	}
-
-	public void setUbicacions(List<Ubicacion> ubicacions) {
-		this.ubicacions = ubicacions;
-	}
-
-	public Ubicacion addUbicacion(Ubicacion ubicacion) {
-		getUbicacions().add(ubicacion);
-		ubicacion.setComuna(this);
-
-		return ubicacion;
-	}
-
-	public Ubicacion removeUbicacion(Ubicacion ubicacion) {
-		getUbicacions().remove(ubicacion);
-		ubicacion.setComuna(null);
-
-		return ubicacion;
-	}
-
 }

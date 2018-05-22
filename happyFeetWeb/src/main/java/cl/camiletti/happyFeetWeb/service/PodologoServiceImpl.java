@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cl.camiletti.happyFeetWeb.model.Podologo;
+import cl.camiletti.happyFeetWeb.model.Ubicacion;
 import cl.camiletti.happyFeetWeb.repository.PodologoRepository;
 
 @Service
@@ -39,8 +40,8 @@ public class PodologoServiceImpl implements PodologoService{
 	}
 
 	@Override
-	public List<Podologo> findAllByComuna() {
+	public List<Podologo> findByUbicacion(Ubicacion ubicacion) { 
 		// TODO Auto-generated method stub
-		return null;
+		return podologoRepository.findByUbicacion(ubicacion);
 	}
 }

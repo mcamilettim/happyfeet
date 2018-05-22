@@ -22,9 +22,7 @@ public class Atencion implements Serializable {
 	private String foto;
 
 	private String indicaciones;
-
  
-
 	//bi-directional many-to-one association to Agenda
 	@ManyToOne
 	private Agenda agenda;

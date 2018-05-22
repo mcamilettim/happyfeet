@@ -1,8 +1,12 @@
 package cl.camiletti.happyFeetWeb.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 
 /**
  * The persistent class for the patologia database table.
@@ -24,30 +28,10 @@ public class Patologia implements Serializable {
 	private int costo;
 
 	private String descripcion;
-
  
-	// bi-directional many-to-one association to Solicitudatencion
-	@OneToMany(mappedBy = "patologia", fetch = FetchType.EAGER)
-	private List<Solicitudatencion> solicitudatencions;
-
-	// bi-directional many-to-one association to Solicitudatencion
-	@OneToMany(mappedBy = "patologia", fetch = FetchType.EAGER)
-	private List<Agenda> agendas;
-
-	// bi-directional many-to-one association to Tratamiento
-	@OneToMany(mappedBy = "patologia", fetch = FetchType.EAGER)
-	private List<Tratamiento> tratamientos;
-
 	public Patologia() {
 	}
-
-	public List<Agenda> getAgendas() {
-		return agendas;
-	}
-
-	public void setAgendas(List<Agenda> agendas) {
-		this.agendas = agendas;
-	}
+ 
 
 	public int getId() {
 		return this.id;
@@ -81,50 +65,7 @@ public class Patologia implements Serializable {
 		this.costo = costo;
 	}
  
-	public List<Solicitudatencion> getSolicitudatencions() {
-		return this.solicitudatencions;
-	}
-
-	public void setSolicitudatencions(List<Solicitudatencion> solicitudatencions) {
-		this.solicitudatencions = solicitudatencions;
-	}
-
-	public Solicitudatencion addSolicitudatencion(Solicitudatencion solicitudatencion) {
-		getSolicitudatencions().add(solicitudatencion);
-		solicitudatencion.setPatologia(this);
-
-		return solicitudatencion;
-	}
-
-	public Solicitudatencion removeSolicitudatencion(Solicitudatencion solicitudatencion) {
-		getSolicitudatencions().remove(solicitudatencion);
-		solicitudatencion.setPatologia(null);
-
-		return solicitudatencion;
-	}
-
-	public List<Tratamiento> getTratamientos() {
-		return this.tratamientos;
-	}
-
-	public void setTratamientos(List<Tratamiento> tratamientos) {
-		this.tratamientos = tratamientos;
-	}
-
-	public Tratamiento addTratamiento(Tratamiento tratamiento) {
-		getTratamientos().add(tratamiento);
-		tratamiento.setPatologia(this);
-
-		return tratamiento;
-	}
-
-	public Tratamiento removeTratamiento(Tratamiento tratamiento) {
-		getTratamientos().remove(tratamiento);
-		tratamiento.setPatologia(null);
-
-		return tratamiento;
-	}
-
+ 
 	public String getDescripcion() {
 		return descripcion;
 	}

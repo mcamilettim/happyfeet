@@ -1,6 +1,7 @@
 package cl.camiletti.happyFeetWeb.repository;
 
 import cl.camiletti.happyFeetWeb.model.Podologo;
+import cl.camiletti.happyFeetWeb.model.Ubicacion;
 
 import java.util.List;
 
@@ -12,5 +13,6 @@ public interface PodologoRepository extends JpaRepository<Podologo, Long> {
 	  List<Podologo> findAll();	 	
 	  void delete(Podologo podologo);	
 	  Podologo findByEmail(String email);	
+	  List<Podologo> findByUbicacion(Ubicacion ubicacion);
 }
 

@@ -1,8 +1,14 @@
 package cl.camiletti.happyFeetWeb.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 /**
  * The persistent class for the podologo database table.
@@ -27,12 +33,6 @@ public class Podologo implements Serializable {
 
 	private String nombres;
 
-	 
-
-	// bi-directional many-to-one association to Horario
-	@OneToMany(mappedBy = "podologo", fetch = FetchType.EAGER)
-	private List<Horario> horarios;
-
 	// bi-directional many-to-one association to Parametro
 	@ManyToOne
 	@JoinColumn(name = "paramEstadoPodologo_id")
@@ -51,22 +51,7 @@ public class Podologo implements Serializable {
 	@ManyToOne
 	private Usuario usuario;
 
-	// bi-directional many-to-one association to Solicitudatencion
-	@OneToMany(mappedBy = "podologo", fetch = FetchType.EAGER)
-	private List<Solicitudatencion> solicitudatencions;
-	// bi-directional many-to-one association to Solicitudatencion
-	@OneToMany(mappedBy = "podologo", fetch = FetchType.EAGER)
-	private List<Agenda> agendas;
-
 	public Podologo() {
-	}
-
-	public List<Agenda> getAgendas() {
-		return agendas;
-	}
-
-	public void setAgendas(List<Agenda> agendas) {
-		this.agendas = agendas;
 	}
 
 	public String getRut() {
@@ -116,28 +101,7 @@ public class Podologo implements Serializable {
 	public void setNombres(String nombres) {
 		this.nombres = nombres;
 	}
- 
-	public List<Horario> getHorarios() {
-		return this.horarios;
-	}
 
-	public void setHorarios(List<Horario> horarios) {
-		this.horarios = horarios;
-	}
-
-	public Horario addHorario(Horario horario) {
-		getHorarios().add(horario);
-		horario.setPodologo(this);
-
-		return horario;
-	}
-
-	public Horario removeHorario(Horario horario) {
-		getHorarios().remove(horario);
-		horario.setPodologo(null);
-
-		return horario;
-	}
 
 	public Parametro getParamEstadoPodologo() {
 		return this.paramEstadoPodologo;
@@ -171,26 +135,5 @@ public class Podologo implements Serializable {
 		this.usuario = usuario;
 	}
 
-	public List<Solicitudatencion> getSolicitudatencions() {
-		return this.solicitudatencions;
-	}
-
-	public void setSolicitudatencions(List<Solicitudatencion> solicitudatencions) {
-		this.solicitudatencions = solicitudatencions;
-	}
-
-	public Solicitudatencion addSolicitudatencion(Solicitudatencion solicitudatencion) {
-		getSolicitudatencions().add(solicitudatencion);
-		solicitudatencion.setPodologo(this);
-
-		return solicitudatencion;
-	}
-
-	public Solicitudatencion removeSolicitudatencion(Solicitudatencion solicitudatencion) {
-		getSolicitudatencions().remove(solicitudatencion);
-		solicitudatencion.setPodologo(null);
-
-		return solicitudatencion;
-	}
 
 }

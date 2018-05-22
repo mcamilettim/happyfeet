@@ -1,5 +1,7 @@
 package cl.camiletti.happyFeetWeb.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,7 +12,7 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @NamedQuery(name = "notificacionpodologo.findAll", query = "SELECT e FROM Notificacionpodologo e")
-public class Notificacionpodologo {
+public class Notificacionpodologo  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

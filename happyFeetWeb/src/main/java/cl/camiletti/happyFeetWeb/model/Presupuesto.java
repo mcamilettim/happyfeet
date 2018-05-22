@@ -1,8 +1,17 @@
 package cl.camiletti.happyFeetWeb.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 /**
  * The persistent class for the presupuesto database table.
@@ -39,14 +48,7 @@ public class Presupuesto implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "ubicacionPartida_id")
 	private Ubicacion ubicacionPartida;
-
-	// bi-directional many-to-one association to Solicitudatencion
-	@OneToMany(mappedBy = "presupuesto", fetch = FetchType.EAGER)
-	private List<Solicitudatencion> solicitudatencions;
-
-	// bi-directional many-to-one association to Solicitudatencion
-	@OneToMany(mappedBy = "presupuesto", fetch = FetchType.EAGER)
-	private List<Agenda> agendas;
+ 
 
 	public Presupuesto() {
 	}
@@ -78,15 +80,7 @@ public class Presupuesto implements Serializable {
 	public int getId() {
 		return this.id;
 	}
-
-	public List<Agenda> getAgendas() {
-		return agendas;
-	}
-
-	public void setAgendas(List<Agenda> agendas) {
-		this.agendas = agendas;
-	}
-
+ 
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -152,29 +146,8 @@ public class Presupuesto implements Serializable {
 	public void setUbicacionPartida(Ubicacion ubicacionPartida) {
 		this.ubicacionPartida = ubicacionPartida;
 	}
-
-	public List<Solicitudatencion> getSolicitudatencions() {
-		return this.solicitudatencions;
-	}
-
-	public void setSolicitudatencions(List<Solicitudatencion> solicitudatencions) {
-		this.solicitudatencions = solicitudatencions;
-	}
-
-	public Solicitudatencion addSolicitudatencion(Solicitudatencion solicitudatencion) {
-		getSolicitudatencions().add(solicitudatencion);
-		solicitudatencion.setPresupuesto(this);
-
-		return solicitudatencion;
-	}
-
-	public Solicitudatencion removeSolicitudatencion(Solicitudatencion solicitudatencion) {
-		getSolicitudatencions().remove(solicitudatencion);
-		solicitudatencion.setPresupuesto(null);
-
-		return solicitudatencion;
-	}
-
+ 
+ 
 	public Double getCantidadKM() {
 		return cantidadKM;
 	}

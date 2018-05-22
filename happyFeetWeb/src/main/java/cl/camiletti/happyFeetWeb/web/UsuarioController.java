@@ -37,7 +37,7 @@ import cl.camiletti.happyFeetWeb.util.StringEncrypt;
 import cl.camiletti.happyFeetWeb.util.VerifyRecaptcha;
 
 @Controller
-@SessionAttributes(value = { "podologo", "paciente"})
+@SessionAttributes(value = { "podologo", "paciente" })
 public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
@@ -90,6 +90,18 @@ public class UsuarioController {
 	public void login(@ModelAttribute("loginForm") Usuario loginForm, BindingResult bindingResult, Model model) {
 		// userValidator.validate(loginForm, bindingResult);
 		Usuario usuario = usuarioService.login(loginForm);
+		if (usuario != null) {
+			Podologo podologo = podologoService.findByEmail(usuario.getEmail());
+			if (podologo != null)
+				model.addAttribute("podologo", podologo);
+			else {
+				Paciente paciente = pacienteService.findByEmail(usuario.getEmail());
+				if (paciente != null)
+					model.addAttribute("paciente", paciente);
+			}
+
+		}
+
 		model.addAttribute("loginForm", usuario);
 	}
 
@@ -103,14 +115,14 @@ public class UsuarioController {
 
 		for (Parametro parametro : parametros) {
 			if (parametro.getValor().equals(rol)) {
-				if(rol.equalsIgnoreCase("podologo")) {
+				if (rol.equalsIgnoreCase("podologo")) {
 					Podologo podologo = podologoService.findByEmail(user.getUsername());
 					model.addAttribute("podologo", podologo);
 				}
-				if(rol.equalsIgnoreCase("paciente")) {
+				if (rol.equalsIgnoreCase("paciente")) {
 					Paciente paciente = pacienteService.findByEmail(user.getUsername());
 					model.addAttribute("paciente", paciente);
-				}	
+				}
 				return new ModelAndView("redirect:" + rol.toLowerCase() + "/index");
 			}
 		}

@@ -1,8 +1,14 @@
 package cl.camiletti.happyFeetWeb.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 
 /**
@@ -32,10 +38,6 @@ public class Horario implements Serializable {
 		this.horaFin = horaFin;
 	}
 
-	//bi-directional many-to-one association to Agenda
-	@OneToMany(mappedBy="horario", fetch=FetchType.EAGER)
-	private List<Agenda> agendas;
-
 	//bi-directional many-to-one association to Parametro
 	@ManyToOne
 	@JoinColumn(name="paramEstadoHorario_id")
@@ -44,10 +46,6 @@ public class Horario implements Serializable {
 	//bi-directional many-to-one association to Podologo
 	@ManyToOne
 	private Podologo podologo;
-
-	//bi-directional many-to-one association to Solicitudatencion
-	@OneToMany(mappedBy="horario", fetch=FetchType.EAGER)
-	private List<Solicitudatencion> solicitudatencions;
 
 	public Horario() {
 	}
@@ -76,28 +74,6 @@ public class Horario implements Serializable {
 		this.hora = hora;
 	}
 
-	public List<Agenda> getAgendas() {
-		return this.agendas;
-	}
-
-	public void setAgendas(List<Agenda> agendas) {
-		this.agendas = agendas;
-	}
-
-	public Agenda addAgenda(Agenda agenda) {
-		getAgendas().add(agenda);
-		agenda.setHorario(this);
-
-		return agenda;
-	}
-
-	public Agenda removeAgenda(Agenda agenda) {
-		getAgendas().remove(agenda);
-		agenda.setHorario(null);
-
-		return agenda;
-	}
-
 	public Parametro getParamEstadoHorario() {
 		return this.paramEstadoHorario;
 	}
@@ -113,27 +89,4 @@ public class Horario implements Serializable {
 	public void setPodologo(Podologo podologo) {
 		this.podologo = podologo;
 	}
-
-	public List<Solicitudatencion> getSolicitudatencions() {
-		return this.solicitudatencions;
-	}
-
-	public void setSolicitudatencions(List<Solicitudatencion> solicitudatencions) {
-		this.solicitudatencions = solicitudatencions;
-	}
-
-	public Solicitudatencion addSolicitudatencion(Solicitudatencion solicitudatencion) {
-		getSolicitudatencions().add(solicitudatencion);
-		solicitudatencion.setHorario(this);
-
-		return solicitudatencion;
-	}
-
-	public Solicitudatencion removeSolicitudatencion(Solicitudatencion solicitudatencion) {
-		getSolicitudatencions().remove(solicitudatencion);
-		solicitudatencion.setHorario(null);
-
-		return solicitudatencion;
-	}
-
 }

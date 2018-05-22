@@ -1,8 +1,14 @@
 package cl.camiletti.happyFeetWeb.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 
 /**
@@ -23,15 +29,7 @@ public class Usuario implements Serializable {
 	private String password;
 
 	private String passwordConfirm;
-
-	//bi-directional many-to-one association to Paciente
-	@OneToMany(mappedBy="usuario", fetch=FetchType.EAGER)
-	private List<Paciente> pacientes;
-
-	//bi-directional many-to-one association to Podologo
-	@OneToMany(mappedBy="usuario", fetch=FetchType.EAGER)
-	private List<Podologo> podologos;
-
+ 
 	//bi-directional many-to-one association to Parametro
 	@ManyToOne
 	@JoinColumn(name="paramTipoUsuario_id")
@@ -71,50 +69,8 @@ public class Usuario implements Serializable {
 	public void setPasswordConfirm(String passwordConfirm) {
 		this.passwordConfirm = passwordConfirm;
 	}
-
-	public List<Paciente> getPacientes() {
-		return this.pacientes;
-	}
-
-	public void setPacientes(List<Paciente> pacientes) {
-		this.pacientes = pacientes;
-	}
-
-	public Paciente addPaciente(Paciente paciente) {
-		getPacientes().add(paciente);
-		paciente.setUsuario(this);
-
-		return paciente;
-	}
-
-	public Paciente removePaciente(Paciente paciente) {
-		getPacientes().remove(paciente);
-		paciente.setUsuario(null);
-
-		return paciente;
-	}
-
-	public List<Podologo> getPodologos() {
-		return this.podologos;
-	}
-
-	public void setPodologos(List<Podologo> podologos) {
-		this.podologos = podologos;
-	}
-
-	public Podologo addPodologo(Podologo podologo) {
-		getPodologos().add(podologo);
-		podologo.setUsuario(this);
-
-		return podologo;
-	}
-
-	public Podologo removePodologo(Podologo podologo) {
-		getPodologos().remove(podologo);
-		podologo.setUsuario(null);
-
-		return podologo;
-	}
+   
+	 
 
 	public Parametro getParamTipoUsuario() {
 		return this.paramTipoUsuario;

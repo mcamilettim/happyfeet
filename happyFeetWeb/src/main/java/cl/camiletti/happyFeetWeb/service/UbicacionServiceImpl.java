@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cl.camiletti.happyFeetWeb.model.Comuna;
 import cl.camiletti.happyFeetWeb.model.Ubicacion;
 import cl.camiletti.happyFeetWeb.repository.UbicacionRepository;
 
@@ -40,5 +41,11 @@ public class UbicacionServiceImpl implements UbicacionService{
 			return ubicacion;
 		}
 		return null;
+	}
+
+	@Override
+	public List<Ubicacion> findByComuna(Comuna comuna) {
+		// TODO Auto-generated method stub
+		return ubicacionRepository.findByComuna(comuna);
 	}
 }

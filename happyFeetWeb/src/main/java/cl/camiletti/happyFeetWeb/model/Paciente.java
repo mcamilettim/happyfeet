@@ -1,16 +1,20 @@
 package cl.camiletti.happyFeetWeb.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 /**
  * The persistent class for the paciente database table.
  * 
  */
 @Entity
-@NamedQuery(name="paciente.findAll", query="SELECT p FROM Paciente p")
+@NamedQuery(name = "paciente.findAll", query = "SELECT p FROM Paciente p")
 public class Paciente implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -35,48 +39,25 @@ public class Paciente implements Serializable {
 
 	private String nombres;
 
- 
-
-	//bi-directional many-to-one association to Agenda
-	@OneToMany(mappedBy="paciente", fetch=FetchType.EAGER)
-	private List<Agenda> agendas;
-
-
-	//bi-directional many-to-one association to Parametro
+	// bi-directional many-to-one association to Parametro
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="paramSexo_id")
+	@JoinColumn(name = "paramSexo_id")
 	private Parametro paramSexo;
 
-	//bi-directional many-to-one association to Parametro
+	// bi-directional many-to-one association to Parametro
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="paramEstadoPaciente_id")
+	@JoinColumn(name = "paramEstadoPaciente_id")
 	private Parametro paramEstadoPaciente;
 
-	//bi-directional many-to-one association to Ubicacion
+	// bi-directional many-to-one association to Ubicacion
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Ubicacion ubicacion;
 
-	//bi-directional many-to-one association to Usuario
+	// bi-directional many-to-one association to Usuario
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Usuario usuario;
 
-	//bi-directional many-to-one association to Solicitudatencion
-	@OneToMany(mappedBy="paciente", fetch=FetchType.EAGER)
-	private List<Solicitudatencion> solicitudatencions;
-	
-	//bi-directional many-to-one association to Solicitudatencion
-	@OneToMany(mappedBy="paciente", fetch=FetchType.EAGER)
-	private List<Notificacionpaciente> notificacion;
-
 	public Paciente() {
-	}
-
-	public List<Notificacionpaciente> getNotificacion() {
-		return notificacion;
-	}
-
-	public void setNotificacion(List<Notificacionpaciente> notificacion) {
-		this.notificacion = notificacion;
 	}
 
 	public String getRut() {
@@ -159,31 +140,6 @@ public class Paciente implements Serializable {
 		this.nombres = nombres;
 	}
 
-	 
-	public List<Agenda> getAgendas() {
-		return this.agendas;
-	}
-
-	public void setAgendas(List<Agenda> agendas) {
-		this.agendas = agendas;
-	}
-
-	public Agenda addAgenda(Agenda agenda) {
-		getAgendas().add(agenda);
-		agenda.setPaciente(this);
-
-		return agenda;
-	}
-
-	public Agenda removeAgenda(Agenda agenda) {
-		getAgendas().remove(agenda);
-		agenda.setPaciente(null);
-
-		return agenda;
-	}
-
-
-
 	public Parametro getParamSexo() {
 		return this.paramSexo;
 	}
@@ -214,28 +170,6 @@ public class Paciente implements Serializable {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
-	}
-
-	public List<Solicitudatencion> getSolicitudatencions() {
-		return this.solicitudatencions;
-	}
-
-	public void setSolicitudatencions(List<Solicitudatencion> solicitudatencions) {
-		this.solicitudatencions = solicitudatencions;
-	}
-
-	public Solicitudatencion addSolicitudatencion(Solicitudatencion solicitudatencion) {
-		getSolicitudatencions().add(solicitudatencion);
-		solicitudatencion.setPaciente(this);
-
-		return solicitudatencion;
-	}
-
-	public Solicitudatencion removeSolicitudatencion(Solicitudatencion solicitudatencion) {
-		getSolicitudatencions().remove(solicitudatencion);
-		solicitudatencion.setPaciente(null);
-
-		return solicitudatencion;
 	}
 
 }
