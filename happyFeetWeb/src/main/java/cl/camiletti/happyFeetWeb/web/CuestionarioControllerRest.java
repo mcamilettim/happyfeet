@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cl.camiletti.happyFeetWeb.model.Cuestionario;
 import cl.camiletti.happyFeetWeb.model.Cuestionariopaciente;
 import cl.camiletti.happyFeetWeb.model.Cuestionariopodologo;
+import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.custom.CuestionarioCustom;
 import cl.camiletti.happyFeetWeb.service.CuestionarioService;
 import cl.camiletti.happyFeetWeb.service.CuestionariopacienteService;
@@ -42,18 +43,15 @@ public class CuestionarioControllerRest {
 		cuestionarioCustom.setFecha(cuestionario.getFecha());
 		cuestionarioCustom.setId(cuestionario.getId());
 		cuestionarioCustom.setDescuento(cuestionario.getDescuento());
-
+		Parametro paramResuelto=parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_RESUELTO);
 		if (cuestionarioCustom.getTipo().equals(Parametros.ESTADO_TIPO_CUESTIONARIO_PACIENTE)) {
-			List<Cuestionariopaciente> totalCuestionarioPaciente = cuestionariopacienteService
-					.findByCuestionarioAndParamEstadoCuestionario(cuestionario,
-							parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_RESUELTO));
-			cuestionarioCustom.setTotal_cuestionario_paciente_respondido(totalCuestionarioPaciente.size());
-			totalCuestionarioPaciente = cuestionariopacienteService.findByCuestionarioAndParamEstadoCuestionario(
+			List<Cuestionariopaciente> totalCuestionarioPaciente = cuestionariopacienteService.findByCuestionarioAndParamEstadoCuestionario(
 					cuestionario, parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_PENDIENTE));
-			cuestionarioCustom.setTotal_cuestionario_paciente_pendiente(totalCuestionarioPaciente.size());
-			List<Cuestionariopaciente> cuestionarios = cuestionariopacienteService.findByCuestionario(cuestionario);
+         	cuestionarioCustom.setTotal_cuestionario_paciente_pendiente(totalCuestionarioPaciente.size());
+         	totalCuestionarioPaciente = cuestionariopacienteService.findByCuestionarioAndParamEstadoCuestionario(cuestionario, paramResuelto);
+			cuestionarioCustom.setTotal_cuestionario_paciente_respondido(totalCuestionarioPaciente.size());
 			int resultado = 0;
-			for (Cuestionariopaciente cuestionariopaciente : cuestionarios) {
+			for (Cuestionariopaciente cuestionariopaciente : totalCuestionarioPaciente) {
 
 				if (cuestionariopaciente.getRespuesta_uno().equalsIgnoreCase("SI")) {
 					resultado = resultado + 1;
