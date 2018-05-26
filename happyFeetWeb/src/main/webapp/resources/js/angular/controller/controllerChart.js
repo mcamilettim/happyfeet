@@ -74,17 +74,17 @@ angular.module('myAppChart', [])
 	    var myConfigAprobacion = {
 	    		  "type":"pie3d",
 	    		  "title":{
-	    		    "text":"Aprobación de "+tipo.toUpperCase()
+	    		    "text":"PARTICIPARON EN ATENCIÓN"
 	    		  },
 	    		  "series":[
 	    			  {
 		    			  values : [satisfecho],
-		    			  text: "Satisfechos",
+		    			  text: "SI",
 		    			  backgroundColor: '#50ADF5',
 		    			},
 		    			{
 		    			  values: [insatisfecho],
-		    			  text: "Insatisfechos",
+		    			  text: "NO",
 		    			  backgroundColor: '#FF7965',
 		    			  detached:true
 		    			},
