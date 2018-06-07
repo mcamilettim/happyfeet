@@ -125,13 +125,13 @@
 						<li><a href="${contextPath}/admin/solicitudes"><i
 								class="fa fa-envelope fa-fw"></i>Solicitudes</a></li>
 						<li><a href="${contextPath}/admin/pacientes"><i
-								class="fa fa-wheelchair fa-fw"></i><Strong>Pacientes</Strong></a></li>
+								class="fa fa-wheelchair fa-fw"></i> Pacientes</a></li>
 						<li><a href="${contextPath}/admin/podologos"><i
 								class="fa fa-user-md fa-fw"></i>Podólogos</a></li>
 						<li><a href="${contextPath}/admin/patologias"><i
 								class="fa fa-ambulance fa-fw"></i>Patologías</a></li>
 						<li><a href="${contextPath}/admin/cuestionarios"><i
-								class="fa fa-question-circle fa-fw"></i> Descuentos</a></li>
+								class="fa fa-question-circle fa-fw"></i> <Strong>Descuentos</Strong></a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
@@ -144,60 +144,66 @@
 		<div id="page-wrapper">
 			<br>
 
-			<c:if
-				test="${fn:length(pacientes) == 0 && fn:length(pacientes) == 0}">
-				<div class="alert alert-warning" align="center">
-					<Strong>No existen Pacientes en el Sistema</Strong>
-				</div>
-			</c:if>
-			 
-
-			<c:if test="${not empty pacientes}">
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<strong>Pacientes <span class="badge">
-										${pacientes.size()}</span></strong>
-							</div>
-							<br>
-							<div align="center">
-								<p
-									style="text-align: justify; padding-left: 10px; padding-right: 10px;">Pacientes que se encuentran operando en la aplicación.</p>
-								<br>
-							</div>
-							<div class="table-responsive">
-
-								<table class="table table-bordered">
-									<tr>
-									<th><div align="center">Rut</div></th>
-										<th><div align="center">Nombre</div></th>
-										<th><div align="center">telefono</div></th>
-										<th><div align="center">Comuna</div></th>
-										<th><div align="center">Acción</div></th>
-									</tr>
-									<c:forEach items="${pacientes}"
-										var="paciente">
-										<tr>
-										<td align="center">${paciente.rut}</td>
-											<td align="center">${paciente.nombres}</td>
-											<td align="center">${paciente.fono}</td>
-											<td align="center">${paciente.ubicacion.comuna.nombre}</td>
-											<td align="center"><button
-													onclick="location.href='${contextPath}/admin/verCuestionario?id=${cuestionarioPaciente.id}'"
-													type="submit" class="btn btn-primary">Ver</button></td>
-
-
-										</tr>
-									</c:forEach>
-								</table>
-							</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<strong>Nuevo Cuestionario</strong>
+						</div>
+						<div class="panel-body">
+							<form>
+								<div class="form-group">
+									<label for="exampleFormControlInput1">Titulo</label> <input
+										type="text" class="form-control" name="titulo">
+								</div>
+								<div class="form-group">
+									<label for="exampleFormControlSelect1">Seleccione para
+										quien será el Cuestionario</label> <select class="form-control"
+										id="exampleFormControlSelect1">
+										<option>Podólogo</option>
+										<option>Paciente</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="exampleFormControlSelect1">Descuento %</label> <select
+										class="form-control" id="exampleFormControlSelect1">
+										<option>10%</option>
+										<option>15%</option>
+										<option>20%</option>
+										<option>25%</option>
+										<option>30%</option>
+										<option>35%</option>
+										<option>40%</option>
+										<option>45%</option>
+										<option>50%</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="exampleFormControlInput1">Detalle</label> <input
+										type="text" class="form-control" name="titulo">
+								</div>
+								<div class="form-group">
+									<label for="exampleFormControlInput1">Pregunta uno</label> <input
+										type="text" class="form-control" name="titulo">
+								</div>
+								<div class="form-group">
+									<label for="exampleFormControlInput1">Pregunta dos</label> <input
+										type="text" class="form-control" name="titulo">
+								</div>
+								<div class="form-group">
+									<label for="exampleFormControlInput1">Pregunta tres</label> <input
+										type="text" class="form-control" name="titulo">
+								</div>
+								  <button type="submit" class="btn btn-primary">Guardar</button>
+							</form>
 
 						</div>
+						<br> <br>
 					</div>
 				</div>
-			</c:if>
-			 
+			</div>
+
+
 		</div>
 	</div>
 	<!-- jQuery -->

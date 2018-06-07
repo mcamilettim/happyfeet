@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Solicitud;
 import cl.camiletti.happyFeetWeb.repository.SolicitudRepository;
 
@@ -31,5 +32,17 @@ public class SolicitudServiceImpl implements SolicitudService{
 	@Override
 	public void deleteById(Solicitud solicitud) {
 		solicitudRepository.delete(solicitud);
+	}
+
+	@Override
+	public List<Solicitud> findByParamEstadoSolicitudIn(List<Parametro> parametro) {
+		// TODO Auto-generated method stub
+		return solicitudRepository.findByParamEstadoSolicitudIn(parametro);
+	}
+
+	@Override
+	public List<Solicitud> findByParamEstadoSolicitudNotIn(List<Parametro> parametro) {
+		// TODO Auto-generated method stub
+		return solicitudRepository.findByParamEstadoSolicitudNotIn(parametro);
 	}
 }

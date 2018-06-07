@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import cl.camiletti.happyFeetWeb.model.Cuestionario;
-import cl.camiletti.happyFeetWeb.model.Cuestionariopaciente;
 import cl.camiletti.happyFeetWeb.model.Paciente;
 import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Patologia;
@@ -34,13 +33,13 @@ import cl.camiletti.happyFeetWeb.service.ParametroService;
 import cl.camiletti.happyFeetWeb.service.PatologiaService;
 import cl.camiletti.happyFeetWeb.service.PodologoService;
 import cl.camiletti.happyFeetWeb.service.SecurityService;
+import cl.camiletti.happyFeetWeb.service.SolicitudService;
 import cl.camiletti.happyFeetWeb.service.UbicacionService;
 import cl.camiletti.happyFeetWeb.service.UsuarioService;
 import cl.camiletti.happyFeetWeb.util.DateUtil;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 import cl.camiletti.happyFeetWeb.util.Mail;
 import cl.camiletti.happyFeetWeb.util.Parametros;
-import cl.camiletti.happyFeetWeb.util.Seccion;
 
 @Controller
 @SessionAttributes(value = { "admin" })
@@ -80,6 +79,9 @@ public class AdminController {
 
 	@Autowired
 	private PatologiaService patologiaService;
+	
+	@Autowired
+	private SolicitudService solicitudService;
 
 	@Autowired
 	private CuestionariopacienteService cuestionariopacienteService;
@@ -195,7 +197,7 @@ public class AdminController {
 		return "admin/pacientes";
 	}
 
-	@RequestMapping(value = "/admin/verPacientes", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/pacientes", method = RequestMethod.GET)
 	public String verPacientes(Model model) {
 
 		model.addAttribute("pacientes", pacienteService.findAll());
@@ -203,14 +205,22 @@ public class AdminController {
 		return "admin/pacientes";
 	}
 
-	@RequestMapping(value = "/admin/verPodologos", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/podologos", method = RequestMethod.GET)
 	public String verPodologos(Model model) {
 
 		model.addAttribute("podologos", podologoService.findAll());
 
 		return "admin/podologos";
 	}
-
+	@RequestMapping(value = "/admin/solicitudes", method = RequestMethod.GET)
+	public String solicitudes(Model model) {
+		List<Parametro> parametros=new ArrayList<Parametro>();
+		Parametro parametro = parametroService.findOne(Parametros.ESTADO_SOLICITUD_PENDIENTE);
+		parametros.add(parametro);
+		model.addAttribute("solicitudesPendientes", solicitudService.findByParamEstadoSolicitudIn(parametros));
+		model.addAttribute("solicitudesRespondidas", solicitudService.findByParamEstadoSolicitudNotIn(parametros));
+		return "admin/solicitudes";
+	}
 	@RequestMapping(value = "/admin/modificarDatosPodologo", method = RequestMethod.GET)
 	public String modificarPodologoGet(Model model, @RequestParam String rut) {
 		Podologo podologo = podologoService.find(rut);
@@ -329,6 +339,12 @@ public class AdminController {
 
 		return "admin/cuestionarios";
 
+	}
+
+	@RequestMapping(value = "/admin/nuevoCuestionario", method = RequestMethod.GET)
+	public String nuevoCuestionario(Model model) {
+		model.addAttribute("cuestionario", new Cuestionario());
+		return "admin/nuevoCuestionario";
 	}
 
 	@RequestMapping(value = "/admin/verCuestionario", method = RequestMethod.GET)

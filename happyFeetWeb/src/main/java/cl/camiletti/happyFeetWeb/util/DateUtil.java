@@ -66,7 +66,8 @@ public class DateUtil {
 		Calendar birthDate = Calendar.getInstance();
 		birthDate.setTime(dateOfBirth);
 		if (birthDate.after(today)) {
-			throw new IllegalArgumentException("You don't exist yet");
+			//throw new IllegalArgumentException("You don't exist yet");
+			return 0;
 		}
 		int todayYear = today.get(Calendar.YEAR);
 		int birthDateYear = birthDate.get(Calendar.YEAR);

@@ -468,6 +468,12 @@ public class PacienteController {
 		if (bindingResult.hasErrors()) {
 
 		} else {
+			Paciente pacienteEncontrado=pacienteService.find(pacienteForm.getRut().replace(".", ""));
+			if(pacienteEncontrado!=null) {
+				model.addAttribute("mensaje", "Este rut se encuentra registrado. Inicie sesión. "+pacienteEncontrado.getEmail());
+				return "login";
+			}
+				
 			pacienteForm.setRut(pacienteForm.getRut().replace(".", ""));
 			FileManagerUtil fileManagerUtil = new FileManagerUtil();
 			String fotoPerfil = fileManagerUtil.getBase64FromFoto(fotoPerfilPath);

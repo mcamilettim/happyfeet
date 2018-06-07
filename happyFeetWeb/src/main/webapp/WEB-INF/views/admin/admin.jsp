@@ -124,7 +124,7 @@
 						<li><a href="${contextPath}/admin/index"><i
 								class="fa fa-home fa-fw"></i> <Strong>Inicio</Strong></a></li>
 						<li><a href="${contextPath}/admin/solicitudes"><i
-								class="fa fa-envelope fa-fw"></i>Solicitudes de Atención</a></li>
+								class="fa fa-envelope fa-fw"></i>Solicitudes</a></li>
 						<li><a href="${contextPath}/admin/pacientes"><i
 								class="fa fa-wheelchair fa-fw"></i> Pacientes</a></li>
 						<li><a href="${contextPath}/admin/podologos"><i
