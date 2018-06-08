@@ -96,8 +96,9 @@
 
 			<ul class="nav navbar-top-links navbar-right">
 				<li class="dropdown" style="padding-left: 10px;"><Strong>Bienvenid<c:if
-							test="${paciente.paramSexo.id==6}">o</c:if><c:if
-							test="${paciente.paramSexo.id==7}">a</c:if> ${paciente.nombres}
+							test="${paciente.paramSexo.id==6}">o</c:if>
+						<c:if test="${paciente.paramSexo.id==7}">a</c:if>
+						${paciente.nombres}
 				</Strong></li>
 				<li class="dropdown"><c:if test="${empty mensajesNuevos}">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
@@ -119,13 +120,13 @@
 								</a></li>
 							</c:forEach>
 						</c:if>
-						 
+
 						<li><a class="text-center"
 							href="${contextPath}/paciente/misMensajes"> <strong>Ver
 									todos los mensajes</strong> <i class="fa fa-angle-right"></i>
 						</a></li>
-					</ul> </li>
-					<li class="dropdown"><c:if test="${empty notificaciones}">
+					</ul></li>
+				<li class="dropdown"><c:if test="${empty notificaciones}">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
 							class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
 						</a>
@@ -241,10 +242,10 @@
 											style="text-align: justify; padding-left: 10px; padding-right: 10px; padding-top: 10px;">${patologia.descripcion}
 											<br> <strong>Tratar esta Patología tiene un
 												precio Base de: $ <fmt:formatNumber
-															value="${patologia.costo}" type="currency"
-															pattern="#,##0" /> pesos, a esto se le
-												debe sumar el costo de viaje del Podólogo a su hogar, el
-												cual se calculará a continuación.</strong>
+													value="${patologia.costo}" type="currency" pattern="#,##0" />
+												pesos, a esto se le debe sumar el costo de viaje del
+												Podólogo a su hogar, el cual se calculará a continuación.
+											</strong>
 										</p></td>
 								</tr>
 							</table>
@@ -355,7 +356,7 @@
 											<th scope="col">Fecha</th>
 											<th scope="col">Hora Inicio</th>
 											<th scope="col">Hora Fin</th>
-											<th scope="col">Seleccionar</th>
+											<th scope="col"></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -385,128 +386,140 @@
 				<br>
 				<div class="row">
 					<form:form method="POST" modelAttribute="solicitudForm"
-						action="guardarAgenda" enctype="multipart/form-data" onsubmit="return checkSize()" >
+						action="guardarAgenda" enctype="multipart/form-data"
+						onsubmit="return checkSize()">
 						<div class="col-lg-12">
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<strong>Detalle Presupuesto</strong>
 								</div>
 								<div>
+									<div class="table-responsive">
+										<table class="table">
+											<tr>
+												<th scope="col">Podólogo</th>
+												<th scope="row">{{presupuesto.nombrePodologo}}</th>
+											</tr>
+											<tr style="display: none;">
+												<th scope="row" colspan="2"><input
+													ng-model="horarioSeleccionado.id" type="text"
+													class="form-control" name="horario.id" required="required"
+													readonly="readonly" /></th>
+											</tr>
+											<tr style="display: none;">
+												<th scope="row" colspan="2"><input
+													ng-model="presupuesto.rutPodologo" type="text"
+													class="form-control" name="podologo.rut"
+													required="required" readonly="readonly" /></th>
+											</tr>
+											<tr style="display: none;">
+												<th scope="row" colspan="2"><input
+													ng-model="presupuesto.kilometros" type="text"
+													class="form-control" name="kilometros" required="required"
+													readonly="readonly" /></th>
+											</tr>
+											<tr style="display: none;">
+												<th scope="row" colspan="2"><input
+													ng-model="selectedDescuento" type="text"
+													class="form-control" name="idCuestionario"
+													required="required" readonly="readonly" /></th>
+											</tr>
+											<tr style="display: none;">
+												<th scope="row" colspan="2"><input ng-model="urlRuta"
+													type="text" class="form-control" name="urlRuta"
+													required="required" readonly="readonly" /></th>
+											</tr>
+											<tr>
+												<th scope="col">Evaluación</th>
+												<th scope="row">&nbsp;{{presupuesto.evaluacion}}<img
+													align="left" ng-if="presupuesto.evaluacion"
+													style="height: 15px; width: 15px;" class="img-responsive"
+													src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/96/star-icon.png" />
+												</th>
+											</tr>
+											<tr>
+												<th scope="col">Direccion Origen</th>
+												<th scope="row">{{presupuesto.direccion_origen}}</th>
+											</tr>
+											<tr>
+												<th scope="col">Direccion Destino</th>
+												<th scope="row">{{presupuesto.direccion_destino}}</th>
+											</tr>
+											<tr>
+												<th scope="col">Kilómetros</th>
+												<th scope="row">{{presupuesto.kilometros}} Kms</th>
+											</tr>
+											<tr>
+												<th scope="col">Monto por Kilómetro</th>
+												<th scope="row">$ {{presupuesto.montoPorKilometro |
+													number}}</th>
+											</tr>
+											<tr>
+												<th scope="col">Viaje del Podólogo a su Casa</th>
+												<th scope="row">$ {{presupuesto.montoKilometros |
+													number}}</th>
+											</tr>
+											<tr>
+												<th scope="col">Patología a Tratar</th>
+												<th scope="row">{{presupuesto.patologia_nombre}}</th>
+											</tr>
+											<tr>
+												<th scope="col">Patología a Tratar Monto</th>
+												<th scope="row">$ {{presupuesto.patologia_monto |
+													number}}</th>
+											</tr>
 
-									<table class="table">
-										<tr>
-											<th scope="col">Podólogo</th>
-											<th scope="row">{{presupuesto.nombrePodologo}}</th>
-										</tr>
-										<tr style="display: none;">
-											<th scope="row" colspan="2"><input
-												ng-model="horarioSeleccionado.id" type="text"
-												class="form-control" name="horario.id" required="required"
-												readonly="readonly" /></th>
-										</tr>
-										<tr style="display: none;">
-											<th scope="row" colspan="2"><input
-												ng-model="presupuesto.rutPodologo" type="text"
-												class="form-control" name="podologo.rut" required="required"
-												readonly="readonly" /></th>
-										</tr>
-										<tr style="display: none;">
-											<th scope="row" colspan="2"><input
-												ng-model="presupuesto.kilometros" type="text"
-												class="form-control" name="kilometros" required="required"
-												readonly="readonly" /></th>
-										</tr>
-										<tr style="display: none;">
-											<th scope="row" colspan="2"><input
-												ng-model="selectedDescuento" type="text"
-												class="form-control" name="idCuestionario" required="required"
-												readonly="readonly" /></th>
-										</tr>
-										<tr style="display: none;">
-											<th scope="row" colspan="2"><input ng-model="urlRuta"
-												type="text" class="form-control" name="urlRuta"
-												required="required" readonly="readonly" /></th>
-										</tr>
-										<tr>
-											<th scope="col">Evaluación</th>
-											<th scope="row">&nbsp;{{presupuesto.evaluacion}}<img
-												align="left" ng-if="presupuesto.evaluacion"
-												style="height: 15px; width: 15px;" class="img-responsive"
-												src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/96/star-icon.png" />
-											</th>
-										</tr>
-										<tr>
-											<th scope="col">Direccion Origen</th>
-											<th scope="row">{{presupuesto.direccion_origen}}</th>
-										</tr>
-										<tr>
-											<th scope="col">Direccion Destino</th>
-											<th scope="row">{{presupuesto.direccion_destino}}</th>
-										</tr>
-										<tr>
-											<th scope="col">Kilómetros</th>
-											<th scope="row">{{presupuesto.kilometros}} Kms</th>
-										</tr>
-										<tr>
-											<th scope="col">Monto por Kilómetro</th>
-											<th scope="row">$ {{presupuesto.montoPorKilometro |
-												number}}</th>
-										</tr>
-										<tr>
-											<th scope="col">Viaje del Podólogo a su Casa</th>
-											<th scope="row">$ {{presupuesto.montoKilometros |
-												number}}</th>
-										</tr>
-										<tr>
-											<th scope="col">Patología a Tratar</th>
-											<th scope="row">{{presupuesto.patologia_nombre}}</th>
-										</tr>
-										<tr>
-											<th scope="col">Patología a Tratar Monto</th>
-											<th scope="row">$ {{presupuesto.patologia_monto |
-												number}}</th>
-										</tr>
+											<tr>
+												<th scope="col">Cupón de Descuento</th>
+												<th scope="row" ng-if="paciente.descuentos.length > 0 ">
+													<select ng-model="selectedDescuento"
+													ng-selected="selectedDescuento == descuento.id"
+													ng-change="calcularPresupuesto(selectedDescuento)"
+													ng-options="descuento.id as (descuento.nombre+' '+descuento.descuento+' %') for descuento in paciente.descuentos">
+														<option style="display: none" value="">SELECCIONE
+															UN CUPÓN</option>
+												</select>
+												<th scope="row" ng-if="paciente.descuentos.length == 0 ">SIN
+													CUPONES &nbsp;... &nbsp;<a class="btn btn-info"
+													href="cuestionarios" role="button">Cómo obtener
+														Cupones?</a>
+												</th>
+											</tr>
+											<tr>
+												<th scope="col" colspan="2">Foto de sus Pies <input
+													type="file" class="form-control" name="fotoPiePaciente"
+													id="idFotoPiePaciente" value="Subir Carnet"
+													required="required"
+													accept="image/x-png,image/gif,image/jpeg"></input>
+												</th>
+											</tr>
+											<tr>
+												<th scope="col" colspan="2">Comentario para el Podólogo
+													<textarea class="form-control" rows="3"
+														name="comentarioPaciente"></textarea>
+												</th>
+											</tr>
 
-										<tr>
-											<th scope="col">Cupón de Descuento</th>
-											<th scope="row" ng-if="paciente.descuentos.length > 0 ">
-											 <select ng-model="selectedDescuento"  ng-selected="selectedDescuento == descuento.id" ng-change="calcularPresupuesto(selectedDescuento)" ng-options="descuento.id as (descuento.nombre+' '+descuento.descuento+' %') for descuento in paciente.descuentos" >
-   												 <option style="display:none" value="">SELECCIONE UN CUPÓN</option>
-											</select>
-											<th scope="row" ng-if="paciente.descuentos.length == 0 ">SIN
-												CUPONES &nbsp;... &nbsp;<a class="btn btn-info" href="cuestionarios" role="button">Cómo obtener Cupones?</a></th>
-										</tr>
-										<tr>
-											<th scope="col" colspan="2">Foto de sus Pies <input
-												type="file" class="form-control" name="fotoPiePaciente" id="idFotoPiePaciente"
-												value="Subir Carnet" required="required"
-												accept="image/x-png,image/gif,image/jpeg"></input>
-											 </th>
-										</tr>
-										<tr>
-											<th scope="col" colspan="2">Comentario para el Podólogo
-												<textarea class="form-control" rows="3"
-													name="comentarioPaciente"></textarea>
-											</th>
-										</tr>
-
-									</table>
+										</table>
+									</div>
 								</div>
 								<div align="center" class="bg-info"
 									style="height: 40px; padding-top: 10px;">
 									<p>
-										<strong> Monto subTotal: $
-											{{presupuesto.total | number}}</strong>
+										<strong> Monto subTotal: $ {{presupuesto.total |
+											number}}</strong>
 									</p>
 								</div>
-								<div  ng-if="paciente.descuentos.length > 0 && presupuesto.descuento > 0" align="center" class="bg-secondary"
+								<div
+									ng-if="paciente.descuentos.length > 0 && presupuesto.descuento > 0"
+									align="center" class="bg-secondary"
 									style="height: 40px; padding-top: 10px;">
 									<p>
-										<strong> Monto Descuento Cupón : 
+										<strong> Monto Descuento Cupón :
 											{{presupuesto.descuento | number}}</strong>
 									</p>
 								</div>
-							    <div align="center" class="bg-info"
+								<div align="center" class="bg-info"
 									style="height: 40px; padding-top: 10px;">
 									<p>
 										<strong> Monto total por la atención : $
@@ -549,8 +562,8 @@
 									<div class="modal-body">
 										<p style="text-align: justify;">
 											<strong><span style="color: red;">*</span> Monto
-												Atención: $ {{presupuesto.totalConDescuento | number}} <br> <span
-												style="color: red;">*</span> Horario Atención:
+												Atención: $ {{presupuesto.totalConDescuento | number}} <br>
+												<span style="color: red;">*</span> Horario Atención:
 												{{horarioSeleccionado.hora}} -
 												{{horarioSeleccionado.horaFin}} <br> <span
 												style="color: red;">*</span> Fecha Atención:
@@ -601,24 +614,24 @@
 		src="${contextPath}/resources/js/angular/controller/controller.js"></script>
 
 
-<script type="text/javascript">
-function checkSize()
-{	max_img_size=2097152;
-    var input = document.getElementById("idFotoPiePaciente");
- 
-    if(input.files && input.files.length == 1)
-    {    
-        if (input.files[0].size > max_img_size) 
-        {	var mb=max_img_size/1024;
-        	mb=mb/1024;
-            alert("La imagen subida del pie no puede superar los " + (mb) + "MB");
-            return false;
-        }
-    }
+	<script type="text/javascript">
+		function checkSize() {
+			max_img_size = 5242880;
+			var input = document.getElementById("idFotoPiePaciente");
 
-    return true;
-}
-</script>
+			if (input.files && input.files.length == 1) {
+				if (input.files[0].size > max_img_size) {
+					var mb = max_img_size / 1024;
+					mb = mb / 1024;
+					alert("La imagen subida del pie no puede superar los "
+							+ (mb) + "MB");
+					return false;
+				}
+			}
+
+			return true;
+		}
+	</script>
 </body>
 
 </html>

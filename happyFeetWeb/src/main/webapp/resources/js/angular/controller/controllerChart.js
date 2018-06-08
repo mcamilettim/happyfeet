@@ -121,8 +121,8 @@ angular.module('myAppChart', [])
 		  function(response){		
 			  $scope.cuestionario=response[0].data;
 			  console.log( $scope.cuestionario);
-			  if( $scope.cuestionario.tipo==="paciente"){
-				  $scope.cuestionario = {
+			 if( $scope.cuestionario.tipo==="paciente"){
+				     $scope.cuestionario = {
 							descuento : 20,
 							fecha : "28/04/2018",
 							id : 1,
@@ -141,7 +141,10 @@ angular.module('myAppChart', [])
 							total_respuesta_tres_no : 4,
 							total_respuesta_tres_si : 15,
 							total_respuesta_uno_no : 3,
-							total_respuesta_uno_si : 16	 }
+							total_respuesta_uno_si : 16,
+							total_paciente : 25,
+							total_podologo : 0	}  
+				 
 				 }else{
 					 $scope.cuestionario = {
 								descuento : 20,
@@ -162,7 +165,9 @@ angular.module('myAppChart', [])
 								total_respuesta_tres_no : 0,
 								total_respuesta_tres_si : 5,
 								total_respuesta_uno_no : 0,
-								total_respuesta_uno_si : 5}
+								total_respuesta_uno_si : 5,
+								total_paciente : 0,
+								total_podologo : 6}
 				 }
 			 
 			 

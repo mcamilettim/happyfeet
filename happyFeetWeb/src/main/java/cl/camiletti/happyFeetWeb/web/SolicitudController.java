@@ -68,7 +68,7 @@ public class SolicitudController {
     	
     	String fotoCarnetFile = fileManagerUtil.subirArchivo(carnet, solicitud.getRutPodologo());
     	String fotoTituloFile = fileManagerUtil.subirArchivo(titulo, solicitud.getRutPodologo());
-    	
+    	solicitud.setRutPodologo(solicitud.getRutPodologo().replace(".",""));
     	solicitud.setCarnet(fotoCarnetBase64);
     	solicitud.setTitulo(fotoTituloBase64);
     	solicitud.setParamEstadoSolicitud(new Parametro(12));

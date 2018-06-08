@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cl.camiletti.happyFeetWeb.model.Agenda;
 import cl.camiletti.happyFeetWeb.model.Atencion;
-import cl.camiletti.happyFeetWeb.model.Cuestionariopaciente;
 import cl.camiletti.happyFeetWeb.model.Cuestionariopodologo;
 import cl.camiletti.happyFeetWeb.model.Evaluacion;
 import cl.camiletti.happyFeetWeb.model.Horario;
@@ -462,6 +461,14 @@ public class PodologoController {
 			FileManagerUtil fileManagerUtil = new FileManagerUtil();
 			if (podologo.getUsuario().getPassword().equals(podologoForm.getUsuario().getPassword()) && podologo
 					.getUsuario().getPasswordConfirm().equals(podologoForm.getUsuario().getPasswordConfirm())) {
+				
+				/*
+					if (!podologoForm.getUbicacion().getLatitud().equals(podologo.getUbicacion().getLatitud())
+						|| !podologoForm.getUbicacion().getLongitud().equals(podologo.getUbicacion().getLongitud())) {
+					podologo.setUbicacion(podologoForm.getUbicacion());
+				}
+				 * 
+				 * */
 				podologo.getUbicacion().setLatitud(podologoForm.getUbicacion().getLatitud());
 				podologo.getUbicacion().setNombre(podologoForm.getUbicacion().getNombre());
 				podologo.getUbicacion().setLongitud(podologoForm.getUbicacion().getLongitud());

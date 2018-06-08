@@ -5,7 +5,8 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
-<html lang="es" ng-app="myAppChart">
+
+<html lang="es">
 
 <head>
 
@@ -64,39 +65,17 @@
 <link
 	href="${contextPath}/resources/vendor/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
- 
+
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-<style>
-#chartBarraDiv {
-	height: 100%;
-	width: 100%;
-	min-height: 150px;
-}
-
-.zc-ref {
-	display: none;
-}
-
-#myChartRespondidosPendientes {
-	width: 100%;
-	height: 100%;
-	min-height: 250px;
-}
-#myChartConformidad {
-	width: 100%;
-	height: 100%;
-	min-height: 250px;
-}
-</style>
 
 </head>
 
-<body data-ng-controller="UserCtrlChart">
+<body>
 
 	<div id="wrapper">
 
@@ -144,7 +123,7 @@
 						<li><a href="${contextPath}/admin/index"><i
 								class="fa fa-home fa-fw"></i> Inicio</a></li>
 						<li><a href="${contextPath}/admin/solicitudes"><i
-								class="fa fa-envelope fa-fw"></i>Solicitudes de Atención</a></li>
+								class="fa fa-envelope fa-fw"></i><Strong>Solicitudes</Strong></a></li>
 						<li><a href="${contextPath}/admin/pacientes"><i
 								class="fa fa-wheelchair fa-fw"></i> Pacientes</a></li>
 						<li><a href="${contextPath}/admin/podologos"><i
@@ -152,7 +131,7 @@
 						<li><a href="${contextPath}/admin/patologias"><i
 								class="fa fa-ambulance fa-fw"></i>Patologías</a></li>
 						<li><a href="${contextPath}/admin/cuestionarios"><i
-								class="fa fa-question-circle fa-fw"></i> <Strong>Descuentos</Strong></a></li>
+								class="fa fa-question-circle fa-fw"></i> Descuentos</a></li>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
@@ -169,74 +148,123 @@
 				<div class="col-lg-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<strong>${cuestionario.titulo}</strong>
+							<strong>Solicitudes De Ingreso de :${solicitud.nombres}
+								${solicitud.apellidos}</strong>
 						</div>
-						<div class="panel-heading" ng-if="cuestionario.total_podologo!=0">
-								<strong>Podólogos Registrados  <span class="badge">
-										 {{cuestionario.total_podologo}}</span></strong>
-						</div>
-						<div class="panel-heading" ng-if="cuestionario.total_paciente!=0">
-								<strong>Pacientes Registrados  <span class="badge">
-										 {{cuestionario.total_paciente}}</span></strong>
-						</div>
-						<div class="panel-body">
-							<br>
-							<div class="col-lg-9">
-								<p
-									style="text-align: justify; padding-left: 10px; padding-right: 10px;">${cuestionario.detalle} </p>
-								<br>
-							</div>
-							<div class="col-lg-3"></div>
-							<br>
-							<table class="table table-striped">
-								<thead>
-									<tr>
-										<th scope="col"><div align="right">Pregunta</div></th>
-										<th><div align="center"></div></th>
-										<th><div align="center"> SI</div></th>
-										<th><div align="center"> NO</div></th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<th scope="row"><div align="center">1</div></th>
-										<td>${cuestionario.preguntas.pregunta_uno}</td>
-										<th><div align="center">{{cuestionario.total_respuesta_uno_si}}</div></th>
-										<th><div align="center">{{cuestionario.total_respuesta_uno_no}}</div></th>
-									</tr>
-									<tr>
-										<th scope="row"><div align="center">2</div></th>
-										<td>${cuestionario.preguntas.pregunta_dos}</td>
-										<th><div align="center">{{cuestionario.total_respuesta_dos_si}}</div></th>
-										<th><div align="center">{{cuestionario.total_respuesta_dos_no}}</div></th>
-									</tr>
-									<tr>
-										<th scope="row"><div align="center">3</div></th>
-										<td>${cuestionario.preguntas.pregunta_tres}</td>
-										<th><div align="center">{{cuestionario.total_respuesta_tres_si}}</div></th>
-										<th><div align="center">{{cuestionario.total_respuesta_tres_no}}</div></th>
-									</tr>
-								</tbody>
-							</table>
-							<br>
-							<div class="col-lg-12">
-								<div id="chartBarraDiv"></div>
-							</div>
+						<br>
 
-							<br>
-							<div class="col-md-6">
-								<div id="myChartRespondidosPendientes"></div>
-							</div>
-							<div class="col-md-6">
-								<div id="myChartConformidad"></div>
-							</div>
-							<br>
+
+
+						<div class="panel-body">
+							<form:form method="POST" modelAttribute="solicitud"
+								action="responderSolicitud">
+								<div class="table-responsive">
+
+									<table class="table table-bordered">
+										<tr>
+											<th><div align="center">RUT</div></th>
+											<th><div align="center">ID MINSAL</div></th>
+											<th><div align="center">UBICACIÓN</div></th>
+											<th><div align="center">FECHA NACIMIENTO</div></th>
+										</tr>
+
+										<tr>
+											<td align="center">${solicitud.rutPodologo}</td>
+											<td align="center">${solicitud.idMinSal}</td>
+											<td align="center">${solicitud.ubicacion.nombre}</td>
+											<td align="center">${solicitud.fechaNacimiento}</td>
+
+										</tr>
+										<tr>
+											<td colspan="4"><Strong>Respuesta</Strong></td>
+										</tr>
+										<tr>
+											<td colspan="4"><textarea class="form-control"
+													name="razon"></textarea></td>
+										</tr>
+
+									</table>
+
+								</div>
+								<br>
+								<div align="center">
+									<button type="button" class="btn btn-primary"
+										data-toggle="modal" data-target="#exampleModal">Aceptar
+										Atención</button>
+									<button type="button" class="btn btn-danger"
+										data-toggle="modal" data-target="#exampleModalRechazo">Rechazar
+										Atención</button>
+								</div>
+								<!-- Modal Aceptar-->
+								<div class="modal fade" id="exampleModal" tabindex="-1"
+									role="dialog" aria-labelledby="exampleModalLabel"
+									aria-hidden="true">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h4 class="modal-title" id="exampleModalLabel">
+													<strong>Usted está aceptando solicitud de
+														Prodólogo</strong>
+												</h4>
+												<button type="button" class="close" data-dismiss="modal"
+													aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+											<div class="modal-body">
+												<p style="text-align: justify;">
+													<strong> ¿ Está seguro ?</strong>
+												</p>
+
+											</div>
+											<div class="modal-footer" align="left">
+												<button type="button" class="btn btn-secondary"
+													data-dismiss="modal">Cancelar</button>
+												<button type="submit" class="btn btn-primary"
+													name="respuesta" value="si">Si, estoy de acuerdo</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- Modal Aceptar-->
+								<!-- Modal Rechazar-->
+								<div class="modal fade" id="exampleModalRechazo" tabindex="-1"
+									role="dialog" aria-labelledby="exampleModalLabel"
+									aria-hidden="true">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h4 class="modal-title" id="exampleModalLabel">
+													<strong>Usted está rechazando solicitud de
+														Prodólogo</strong>
+												</h4>
+												<button type="button" class="close" data-dismiss="modal"
+													aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+											<div class="modal-body">
+												<p style="text-align: justify;">
+													<strong> ¿ Está seguro ?</strong>
+												</p>
+											</div>
+											<div class="modal-footer" align="left">
+												<button type="button" class="btn btn-secondary"
+													data-dismiss="modal">Cancelar</button>
+												<button type="submit" name="respuesta" value="no"
+													class="btn btn-danger">Si, rechazar</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- Modal -->
+							</form:form>
 						</div>
+
+
 					</div>
 				</div>
 			</div>
-
-
 
 		</div>
 	</div>
@@ -253,12 +281,6 @@
 
 	<!-- Custom Theme JavaScript -->
 	<script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
-
-	<script src="https://cdn.zingchart.com/zingchart.min.js"></script>
-	<script type="text/javascript"
-		src="${contextPath}/resources/js/angular/angular.js"></script>
-	<script type="text/javascript"
-		src="${contextPath}/resources/js/angular/controller/controllerChart.js" charset="UTF-8"></script>
 </body>
 
 </html>

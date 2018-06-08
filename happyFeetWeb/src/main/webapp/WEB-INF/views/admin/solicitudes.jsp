@@ -175,7 +175,7 @@
 											<td align="center">${solicitudPendiente.rutPodologo}</td>
 											<td align="center">${solicitudPendiente.idMinSal}</td>
 											<td align="center"><button
-													onclick="location.href='${contextPath}/admin/verCuestionario?id=${cuestionarioPaciente.id}'"
+													onclick="location.href='${contextPath}/admin/verSolicitud?id=${solicitudPendiente.id}'"
 													type="submit" class="btn btn-primary">Ver</button></td>
 
 
@@ -212,7 +212,7 @@
 											<td align="center">${solicitudRespondida.rutPodologo}</td>
 											<td align="center">${solicitudRespondida.idMinSal}</td>
 											<td align="center"><button
-													onclick="location.href='${contextPath}/admin/verCuestionario?id=${cuestionarioPodologo.id}'"
+													onclick="location.href='${contextPath}/admin/verSolicitud?id=${solicitudRespondida.id}'"
 													type="submit" class="btn btn-primary">Ver</button></td>
 
 

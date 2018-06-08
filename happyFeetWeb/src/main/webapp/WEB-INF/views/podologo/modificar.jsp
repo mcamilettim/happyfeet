@@ -221,7 +221,7 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                        <form:form method="POST" modelAttribute="podologoForm"  action="modificardatos" role="form" enctype="multipart/form-data">
+                                        <form:form method="POST" modelAttribute="podologoForm"  action="modificarDatos" role="form" enctype="multipart/form-data">
 								        <spring:bind path="rut">
 								            <div class="form-group ${status.error ? 'has-error' : ''}">
 								            Rut

@@ -6,7 +6,7 @@ public class CuestionarioCustom {
 	private int descuento;
 	private String fecha;
 	private String tipo;
-	
+
 	private int total_cuestionario_podologo_respondido;
 	private int total_cuestionario_paciente_respondido;
 	private int total_cuestionario_paciente_pendiente;
@@ -24,10 +24,28 @@ public class CuestionarioCustom {
 
 	private int total_podologo_insatisfecho;
 	private int total_paciente_insatisfecho;
- 
-	 
+
+	private int total_podologo;
+	private int total_paciente;
+
 	public String getTipo() {
 		return tipo;
+	}
+
+	public int getTotal_podologo() {
+		return total_podologo;
+	}
+
+	public void setTotal_podologo(int total_podologo) {
+		this.total_podologo = total_podologo;
+	}
+
+	public int getTotal_paciente() {
+		return total_paciente;
+	}
+
+	public void setTotal_paciente(int total_paciente) {
+		this.total_paciente = total_paciente;
 	}
 
 	public void setTipo(String tipo) {
@@ -49,8 +67,7 @@ public class CuestionarioCustom {
 	public void setTotal_paciente_insatisfecho(int total_paciente_insatisfecho) {
 		this.total_paciente_insatisfecho = total_paciente_insatisfecho;
 	}
-  
-	 
+
 	public int getTotal_podologo_satisfecho() {
 		return total_podologo_satisfecho;
 	}
@@ -82,8 +99,6 @@ public class CuestionarioCustom {
 	public void setTotal_cuestionario_podologo_pendiente(int total_cuestionario_podologo_pendiente) {
 		this.total_cuestionario_podologo_pendiente = total_cuestionario_podologo_pendiente;
 	}
-
-	 
 
 	public int getTotal_cuestionario_podologo_respondido() {
 		return total_cuestionario_podologo_respondido;

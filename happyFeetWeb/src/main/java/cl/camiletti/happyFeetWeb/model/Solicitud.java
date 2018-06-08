@@ -3,18 +3,17 @@ package cl.camiletti.happyFeetWeb.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
-
 /**
  * The persistent class for the solicitud database table.
  * 
  */
 @Entity
-@NamedQuery(name="solicitud.findAll", query="SELECT s FROM Solicitud s")
+@NamedQuery(name = "solicitud.findAll", query = "SELECT s FROM Solicitud s")
 public class Solicitud implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
 	private String apellidos;
@@ -34,18 +33,19 @@ public class Solicitud implements Serializable {
 	private String rutPodologo;
 
 	private String titulo;
+	private String razon;
 
-	//bi-directional many-to-one association to Parametro
+	// bi-directional many-to-one association to Parametro
 	@ManyToOne
-	@JoinColumn(name="paramSexo_id")
+	@JoinColumn(name = "paramSexo_id")
 	private Parametro paramSexo;
 
-	//bi-directional many-to-one association to Parametro
+	// bi-directional many-to-one association to Parametro
 	@ManyToOne
-	@JoinColumn(name="paramEstadoSolicitud_id")
+	@JoinColumn(name = "paramEstadoSolicitud_id")
 	private Parametro paramEstadoSolicitud;
 
-	//bi-directional many-to-one association to Ubicacion
+	// bi-directional many-to-one association to Ubicacion
 	@ManyToOne
 	private Ubicacion ubicacion;
 
@@ -72,6 +72,14 @@ public class Solicitud implements Serializable {
 		return this.carnet;
 	}
 
+	public String getRazon() {
+		return razon;
+	}
+
+	public void setRazon(String razon) {
+		this.razon = razon;
+	}
+
 	public void setCarnet(String carnet) {
 		this.carnet = carnet;
 	}
@@ -83,7 +91,7 @@ public class Solicitud implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public String getFechaNacimiento() {
 		return this.fechaNacimiento;
 	}

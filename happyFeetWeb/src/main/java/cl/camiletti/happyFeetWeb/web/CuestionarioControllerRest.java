@@ -17,7 +17,9 @@ import cl.camiletti.happyFeetWeb.model.custom.CuestionarioCustom;
 import cl.camiletti.happyFeetWeb.service.CuestionarioService;
 import cl.camiletti.happyFeetWeb.service.CuestionariopacienteService;
 import cl.camiletti.happyFeetWeb.service.CuestionariopodologoService;
+import cl.camiletti.happyFeetWeb.service.PacienteService;
 import cl.camiletti.happyFeetWeb.service.ParametroService;
+import cl.camiletti.happyFeetWeb.service.PodologoService;
 import cl.camiletti.happyFeetWeb.util.Parametros;
 
 @RestController
@@ -29,7 +31,10 @@ public class CuestionarioControllerRest {
 	private CuestionariopacienteService cuestionariopacienteService;
 	@Autowired
 	private CuestionariopodologoService cuestionariopodologoService;
-
+	@Autowired
+	private PacienteService pacienteService;
+	@Autowired
+	private PodologoService podologoService;
 	@Autowired
 	ParametroService parametroService;
 
@@ -38,17 +43,24 @@ public class CuestionarioControllerRest {
 		Cuestionario cuestionario = cuestionarioService.findById(id);
 
 		CuestionarioCustom cuestionarioCustom = new CuestionarioCustom();
+		
+	
 		cuestionarioCustom.setTipo(cuestionario.getTipo());
 		cuestionarioCustom.setNombre(cuestionario.getTitulo());
 		cuestionarioCustom.setFecha(cuestionario.getFecha());
 		cuestionarioCustom.setId(cuestionario.getId());
 		cuestionarioCustom.setDescuento(cuestionario.getDescuento());
-		Parametro paramResuelto=parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_RESUELTO);
+		Parametro paramResuelto = parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_RESUELTO);
 		if (cuestionarioCustom.getTipo().equals(Parametros.ESTADO_TIPO_CUESTIONARIO_PACIENTE)) {
-			List<Cuestionariopaciente> totalCuestionarioPaciente = cuestionariopacienteService.findByCuestionarioAndParamEstadoCuestionario(
-					cuestionario, parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_PENDIENTE));
-         	cuestionarioCustom.setTotal_cuestionario_paciente_pendiente(totalCuestionarioPaciente.size());
-         	totalCuestionarioPaciente = cuestionariopacienteService.findByCuestionarioAndParamEstadoCuestionario(cuestionario, paramResuelto);
+			cuestionarioCustom.setTotal_paciente(pacienteService.findAll().size());
+			List<Cuestionariopaciente> totalCuestionarioPaciente = cuestionariopacienteService
+					.findByCuestionarioAndParamEstadoCuestionario(cuestionario,
+							parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_PENDIENTE));
+
+			cuestionarioCustom.setTotal_cuestionario_paciente_pendiente(totalCuestionarioPaciente.size());
+
+			totalCuestionarioPaciente = cuestionariopacienteService
+					.findByCuestionarioAndParamEstadoCuestionario(cuestionario, paramResuelto);
 			cuestionarioCustom.setTotal_cuestionario_paciente_respondido(totalCuestionarioPaciente.size());
 			int resultado = 0;
 			for (Cuestionariopaciente cuestionariopaciente : totalCuestionarioPaciente) {
@@ -92,16 +104,19 @@ public class CuestionarioControllerRest {
 			}
 
 		} else {
+			cuestionarioCustom.setTotal_podologo(podologoService.findAll().size());
 			List<Cuestionariopodologo> totalCuestionarioPodologo = cuestionariopodologoService
 					.findByCuestionarioAndParamEstadoCuestionario(cuestionario,
-							parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_RESUELTO));
-			cuestionarioCustom.setTotal_cuestionario_podologo_respondido(totalCuestionarioPodologo.size());
-			totalCuestionarioPodologo = cuestionariopodologoService.findByCuestionarioAndParamEstadoCuestionario(
-					cuestionario, parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_PENDIENTE));
-			List<Cuestionariopodologo> cuestionarios = cuestionariopodologoService.findByCuestionario(cuestionario);
+							parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_PENDIENTE));
+
 			cuestionarioCustom.setTotal_cuestionario_podologo_pendiente(totalCuestionarioPodologo.size());
+
+			totalCuestionarioPodologo = cuestionariopodologoService.findByCuestionarioAndParamEstadoCuestionario(
+					cuestionario, parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_RESUELTO));
+
+			cuestionarioCustom.setTotal_cuestionario_podologo_respondido(totalCuestionarioPodologo.size());
 			int resultado = 0;
-			for (Cuestionariopodologo cuestionariopodologo : cuestionarios) {
+			for (Cuestionariopodologo cuestionariopodologo : totalCuestionarioPodologo) {
 
 				if (cuestionariopodologo.getRespuesta_uno().equalsIgnoreCase("SI")) {
 					resultado = resultado + 1;

@@ -20,14 +20,18 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import cl.camiletti.happyFeetWeb.model.Cuestionario;
+import cl.camiletti.happyFeetWeb.model.Cuestionariopaciente;
+import cl.camiletti.happyFeetWeb.model.Cuestionariopodologo;
 import cl.camiletti.happyFeetWeb.model.Paciente;
 import cl.camiletti.happyFeetWeb.model.Parametro;
 import cl.camiletti.happyFeetWeb.model.Patologia;
 import cl.camiletti.happyFeetWeb.model.Podologo;
+import cl.camiletti.happyFeetWeb.model.Solicitud;
 import cl.camiletti.happyFeetWeb.model.Usuario;
 import cl.camiletti.happyFeetWeb.service.ComunaService;
 import cl.camiletti.happyFeetWeb.service.CuestionarioService;
 import cl.camiletti.happyFeetWeb.service.CuestionariopacienteService;
+import cl.camiletti.happyFeetWeb.service.CuestionariopodologoService;
 import cl.camiletti.happyFeetWeb.service.PacienteService;
 import cl.camiletti.happyFeetWeb.service.ParametroService;
 import cl.camiletti.happyFeetWeb.service.PatologiaService;
@@ -36,13 +40,14 @@ import cl.camiletti.happyFeetWeb.service.SecurityService;
 import cl.camiletti.happyFeetWeb.service.SolicitudService;
 import cl.camiletti.happyFeetWeb.service.UbicacionService;
 import cl.camiletti.happyFeetWeb.service.UsuarioService;
+import cl.camiletti.happyFeetWeb.util.Constantes;
 import cl.camiletti.happyFeetWeb.util.DateUtil;
 import cl.camiletti.happyFeetWeb.util.FileManagerUtil;
 import cl.camiletti.happyFeetWeb.util.Mail;
 import cl.camiletti.happyFeetWeb.util.Parametros;
 
 @Controller
-@SessionAttributes(value = { "admin" })
+@SessionAttributes(value = { "admin", "solicitud" })
 public class AdminController {
 	@Autowired
 	private PacienteService pacienteService;
@@ -79,9 +84,11 @@ public class AdminController {
 
 	@Autowired
 	private PatologiaService patologiaService;
-	
+
 	@Autowired
 	private SolicitudService solicitudService;
+	@Autowired
+	private CuestionariopodologoService cuestionariopodologoService;
 
 	@Autowired
 	private CuestionariopacienteService cuestionariopacienteService;
@@ -93,7 +100,6 @@ public class AdminController {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Usuario usuario = usuarioService.findByEmail(user.getUsername());
 		model.addAttribute("admin", usuario);
-
 		return "admin/admin";
 	}
 
@@ -212,15 +218,17 @@ public class AdminController {
 
 		return "admin/podologos";
 	}
+
 	@RequestMapping(value = "/admin/solicitudes", method = RequestMethod.GET)
 	public String solicitudes(Model model) {
-		List<Parametro> parametros=new ArrayList<Parametro>();
+		List<Parametro> parametros = new ArrayList<Parametro>();
 		Parametro parametro = parametroService.findOne(Parametros.ESTADO_SOLICITUD_PENDIENTE);
 		parametros.add(parametro);
 		model.addAttribute("solicitudesPendientes", solicitudService.findByParamEstadoSolicitudIn(parametros));
 		model.addAttribute("solicitudesRespondidas", solicitudService.findByParamEstadoSolicitudNotIn(parametros));
 		return "admin/solicitudes";
 	}
+
 	@RequestMapping(value = "/admin/modificarDatosPodologo", method = RequestMethod.GET)
 	public String modificarPodologoGet(Model model, @RequestParam String rut) {
 		Podologo podologo = podologoService.find(rut);
@@ -348,9 +356,75 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/admin/verCuestionario", method = RequestMethod.GET)
-	public String cuestionarios(Model model, @RequestParam("id") int id) {
+	public String verCuestionario(Model model, @RequestParam("id") int id) {
 		Cuestionario cuestionario = cuestionarioService.findById(id);
 		model.addAttribute("cuestionario", cuestionario);
 		return "admin/verCuestionario";
+	}
+
+	@RequestMapping(value = "/admin/verSolicitud", method = RequestMethod.GET)
+	public String verSolicitud(Model model, @RequestParam("id") int id) {
+		Solicitud solicitud = solicitudService.findById(id);
+		model.addAttribute("solicitud", solicitud);
+		model.addAttribute("solicitudForm", solicitud);
+		return "admin/verSolicitud";
+	}
+
+	@RequestMapping(value = "/admin/responderSolicitud", method = RequestMethod.POST)
+	public String responderSolicitud(Model model, @RequestParam("respuesta") String respuesta,
+			@ModelAttribute("solicitud") Solicitud solicitud,
+			@ModelAttribute("solicitudForm") Solicitud solicitudForm) {
+		Parametro parametro = null;
+		solicitud.setRazon(solicitudForm.getRazon());
+		if (respuesta.equalsIgnoreCase(Constantes.RESPUESTA_SOLICITUD_ATENCION_SI)) {
+			parametro = parametroService.findOne(Parametros.ESTADO_SOLICITUD_ACEPTADA);
+			solicitud.setParamEstadoSolicitud(parametro);
+
+			Podologo podologo = new Podologo();
+			podologo.setNombres(solicitud.getNombres());
+			podologo.setApellidos(solicitud.getApellidos());
+			podologo.setFono(solicitud.getFono());
+			podologo.setEmail(solicitud.getEmail());
+			podologo.setParamSexo(solicitud.getParamSexo());
+			podologo.setUbicacion(solicitud.getUbicacion());
+			podologo.setRut(solicitud.getRutPodologo());
+
+			parametro = parametroService.findOne(Parametros.ESTADO_TIPO_USUARIO_PODOLOGO);
+			Usuario usuario = new Usuario();
+			usuario.setEmail(solicitud.getEmail());
+			usuario.setPassword("123");
+			usuario.setPasswordConfirm("123");
+			usuario.setParamTipoUsuario(parametro);
+			usuarioService.save(usuario);
+			podologo.setUsuario(usuario);
+			parametro = parametroService.findOne(Parametros.ESTADO_PODOLOGO_ACTIVO);
+			podologo.setParamEstadoPodologo(parametro);
+			podologoService.save(podologo);
+
+			List<Cuestionario> cuestionariosHabilitados = cuestionarioService.findByTipoAndParamEstadoCuestionario(
+					Parametros.ESTADO_TIPO_CUESTIONARIO_PODOLOGO,
+					parametroService.findOne(Parametros.ESTADO_DESCUENTO_DISPONIBLE));
+			Cuestionariopodologo cuestionarioPodologo = null;
+			Parametro disponible = parametroService.findOne(Parametros.ESTADO_DESCUENTO_DISPONIBLE);
+			Parametro pendiente = parametroService.findOne(Parametros.ESTADO_CUESTIONARIO_PENDIENTE);
+			for (Cuestionario cuestionario : cuestionariosHabilitados) {
+				cuestionarioPodologo = new Cuestionariopodologo();
+				cuestionarioPodologo.setCuestionario(cuestionario);
+				cuestionarioPodologo.setParamEstadoCuestionario(pendiente);
+				cuestionarioPodologo.setParamEstadoDescuento(disponible);
+				cuestionarioPodologo.setPodologo(podologo);
+				cuestionariopodologoService.save(cuestionarioPodologo);
+			}
+
+			model.addAttribute("mensaje", "Solicitud Aceptada con éxito");
+		} else {
+			parametro = parametroService.findOne(Parametros.ESTADO_SOLICITUD_RECHAZADA);
+			solicitud.setParamEstadoSolicitud(parametro);
+			model.addAttribute("mensaje", "Solicitud Rechazada con éxito");
+		}
+		solicitudService.save(solicitud);
+
+		model.addAttribute("solicitud", solicitud);
+		return "admin/admin";
 	}
 }

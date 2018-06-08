@@ -112,7 +112,7 @@ $scope.obtenerDatosPaciente = function(){
 			 
 	 
 				var objHtml = {
-					content: '<div align="center" class="table-responsive" style="height:165px; width:165px;">Pod&oacute;logo(a):'+
+					content: '<div align="center" class="table-responsive" style="height:170px; width:170px;">Pod&oacute;logo(a):'+
 						 '<h6>'+podologo.nombres+ ' '+ podologo.apellidos+'</h6> <img style="height:60px; width:60px;" '+
 						 'class="img-responsive" src="data:image/png;base64,'+podologo.foto+'" />'+
 						 '<table><tr><td><strong>Cantidad atenciones:</strong></td><td><strong>18</strong></td></tr><tr><td><strong>Promedio Evaluaci&oacute;n:&nbsp;4.7</strong></td><td><img style="height:10px; width:10px;" class="img-responsive" src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/96/star-icon.png"/></td></tr></table></div>'

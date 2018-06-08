@@ -166,11 +166,18 @@ public class FileManagerUtil {
 				if (!dir.exists())
 					dir.mkdirs();
 				serverFilearchivoEntrada = new File(name);
+				
+					
 				BufferedOutputStream streamarchivoEntrada = new BufferedOutputStream(
 						new FileOutputStream(serverFilearchivoEntrada));
 
 				streamarchivoEntrada.write(bytesarchivoEntrada);
 				streamarchivoEntrada.close();
+				if(serverFilearchivoEntrada.length()>614400) {
+					// resize bigger by 50%
+					double percent = 0.5;
+					ImageResizerUtil.resize(name, name, percent);
+				}
 				base64 = encodeFileToBase64Binary(name);
 				serverFilearchivoEntrada.delete();
 			} catch (IOException e) {
