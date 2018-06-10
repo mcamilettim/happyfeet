@@ -11,6 +11,12 @@ angular.module('myAppChart', [])
 	 return $http.get('/servicesCuestionario/getCuestionario?id='+id);
 }
  
+ $scope.calculate = function(total,obtenido){ 
+	   
+	    var avg = parseInt(obtenido*100/total);
+	   
+	    return avg; 
+	};
  
  $scope.setPromesaCuestionario=function(){	   
 	  var promesas=[];
@@ -46,7 +52,7 @@ angular.module('myAppChart', [])
 	  var  myConfig = {
    		  "type":"pie3d",
    		  "title":{
-   		    "text":"Respondidos Vs Pendientes"
+   		    "text":"Respondidos Vs Pendiente "+ $scope.calculate((respondido+pendiente),respondido)+"%"
    		  },
    		  "series":[
    			  {
@@ -74,7 +80,7 @@ angular.module('myAppChart', [])
 	    var myConfigAprobacion = {
 	    		  "type":"pie3d",
 	    		  "title":{
-	    		    "text":"PARTICIPARON EN ATENCIÓN"
+	    		    "text":"Participaron en Atención "+ $scope.calculate((satisfecho+insatisfecho),satisfecho)+"%"
 	    		  },
 	    		  "series":[
 	    			  {
@@ -136,12 +142,12 @@ angular.module('myAppChart', [])
 							total_paciente_satisfecho : 17,
 							total_podologo_insatisfecho : 0,
 							total_podologo_satisfecho : 9,
-							total_respuesta_dos_no : 1,
-							total_respuesta_dos_si : 18,
-							total_respuesta_tres_no : 4,
-							total_respuesta_tres_si : 15,
-							total_respuesta_uno_no : 3,
-							total_respuesta_uno_si : 16,
+							total_respuesta_dos_no : 6,
+							total_respuesta_dos_si : 13,
+							total_respuesta_tres_no : 2,
+							total_respuesta_tres_si : 17,
+							total_respuesta_uno_no : 1,
+							total_respuesta_uno_si : 18,
 							total_paciente : 25,
 							total_podologo : 0	}  
 				 
@@ -154,18 +160,18 @@ angular.module('myAppChart', [])
 								tipo : "podologo",
 								total_cuestionario_paciente_pendiente : 0,
 								total_cuestionario_paciente_respondido : 0,
-								total_cuestionario_podologo_pendiente : 1,
-								total_cuestionario_podologo_respondido : 5,
+								total_cuestionario_podologo_pendiente : 0,
+								total_cuestionario_podologo_respondido : 6,
 								total_paciente_insatisfecho : 0,
 								total_paciente_satisfecho : 0,
-								total_podologo_insatisfecho :0,
+								total_podologo_insatisfecho :1,
 								total_podologo_satisfecho : 5,
-								total_respuesta_dos_no : 0,
-								total_respuesta_dos_si : 5,
+								total_respuesta_dos_no : 5,
+								total_respuesta_dos_si : 1,
 								total_respuesta_tres_no : 0,
-								total_respuesta_tres_si : 5,
-								total_respuesta_uno_no : 0,
-								total_respuesta_uno_si : 5,
+								total_respuesta_tres_si : 6,
+								total_respuesta_uno_no : 5,
+								total_respuesta_uno_si : 1,
 								total_paciente : 0,
 								total_podologo : 6}
 				 }
@@ -179,7 +185,8 @@ angular.module('myAppChart', [])
 	  // ejecucion
 	  $scope.buscarCuestionario();
 	   
-  
+ 
+ 
 })
  
 

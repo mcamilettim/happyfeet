@@ -195,6 +195,7 @@
 										<th><div align="center"></div></th>
 										<th><div align="center"> SI</div></th>
 										<th><div align="center"> NO</div></th>
+										<th><div align="center"> SI %</div></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -203,18 +204,21 @@
 										<td>${cuestionario.preguntas.pregunta_uno}</td>
 										<th><div align="center">{{cuestionario.total_respuesta_uno_si}}</div></th>
 										<th><div align="center">{{cuestionario.total_respuesta_uno_no}}</div></th>
+										<th><div align="center">{{calculate((cuestionario.total_respuesta_uno_si+cuestionario.total_respuesta_uno_no),cuestionario.total_respuesta_uno_si)}}</div></th>
 									</tr>
 									<tr>
 										<th scope="row"><div align="center">2</div></th>
 										<td>${cuestionario.preguntas.pregunta_dos}</td>
 										<th><div align="center">{{cuestionario.total_respuesta_dos_si}}</div></th>
 										<th><div align="center">{{cuestionario.total_respuesta_dos_no}}</div></th>
+										<th><div align="center">{{calculate((cuestionario.total_respuesta_dos_si+cuestionario.total_respuesta_dos_no),cuestionario.total_respuesta_dos_si)}}</div></th>
 									</tr>
 									<tr>
 										<th scope="row"><div align="center">3</div></th>
 										<td>${cuestionario.preguntas.pregunta_tres}</td>
 										<th><div align="center">{{cuestionario.total_respuesta_tres_si}}</div></th>
 										<th><div align="center">{{cuestionario.total_respuesta_tres_no}}</div></th>
+										<th><div align="center">{{calculate((cuestionario.total_respuesta_tres_si+cuestionario.total_respuesta_tres_no),cuestionario.total_respuesta_tres_si)}}</div></th>
 									</tr>
 								</tbody>
 							</table>
